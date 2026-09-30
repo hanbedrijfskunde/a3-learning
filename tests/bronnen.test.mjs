@@ -80,6 +80,8 @@ test('MD-15 (6.11): de fictieve bronkaart heeft fictief: true, een aanduiding in
 test('BR-4: vindCitaties herkent (Auteur, jaar) en (Auteur & Ander, jaar) en (Org, z.d.), maar geen gewone haakjes', () => {
   const t = 'Zie (Mayer, 2004), (Hattie & Timperley, 2007) en (Atlassian, z.d.); niet (bijvoorbeeld HANQuest) of (zie 2004) of (mayer, 2004).';
   assert.deepEqual(vindCitaties(t).map((c) => c.citatie), ['Mayer, 2004', 'Hattie & Timperley, 2007', 'Atlassian, z.d.']);
+  assert.deepEqual(vindCitaties('Twee sjablonen (Strategyzer, z.d.-a) en (Strategyzer, z.d.-b).').map((c) => c.citatie), ['Strategyzer, z.d.-a', 'Strategyzer, z.d.-b'], 'APA: twee werken zonder datum van dezelfde auteur');
+  assert.equal(apaJaar('Strategyzer AG. (z.d.-a). *Titel*.'), 'z.d.');
 });
 
 test('BR-4: 100 % van de verwijzingen in leerblok 2 klikt naar een bronregel die op de bronnenpagina bestaat', () => {

@@ -35,14 +35,14 @@ test('Figuur six capitals: taak 2.1 toont het waardecreatieproces van het IIRC (
   assert.match(lees('js/leerblok.js'), /'six-capitals': \{ bouw: sixCapitalsFiguur, na: 1 \}/);
 });
 
-test('Figuur VPC: taak 6.1 toont het value proposition canvas van Strategyzer (z.d.) als citaat met bron, alt-tekst en de vakken van beide kanten (ADR B89)', () => {
+test('Figuur VPC: taak 6.1 toont het value proposition canvas van Strategyzer (z.d.-b) als citaat met bron, alt-tekst en de vakken van beide kanten (ADR B89)', () => {
   const t = blok(3).taken.find((x) => x.id === '6.1');
   assert.equal(t.stof.figuur, 'vpc');
   assert.match(t.stof.alineas[0], /klantprofiel.*waardekaart/s, 'de figuur staat na de alinea die de twee kanten beschrijft');
   const dom = lees('js/dom.js');
   assert.match(dom, /src: 'media\/citaten\/strategyzer-zd-value-proposition-canvas\.webp'/);
   assert.match(dom, /alt: 'Het value proposition canvas\./);
-  assert.match(dom, /met\('\(Strategyzer, z\.d\.\)'\)/, 'bronvermelding in het bijschrift');
+  assert.match(dom, /met\('\(Strategyzer, z\.d\.-b\)'\)/, 'bronvermelding in het bijschrift');
   for (const nl of ['Klanttaken', 'Pains', 'Gains', 'Producten en diensten', 'Pain relievers', 'Gain creators']) assert.ok(dom.includes(`'${nl}'`), nl);
   assert.match(lees('js/leerblok.js'), /vpc: \{ bouw: vpcFiguur, na: 0 \}/);
 });
@@ -53,8 +53,8 @@ test('Figuur VPC ook bij de oefening van taak 6.1: de student hoeft niet terug n
   assert.equal(t.oefening.figuur, 'vpc');
   assert.equal(bouwTaakModel(t, b).stappen[2].oefening.figuur, 'vpc', 'het taakmodel geeft de figuur door aan stap 3');
   assert.match(lees('js/leerblok.js'), /FIGUREN\[s3\.oefening\.figuur\]\?\.bouw\(\{ met \}\)/);
-  t.oefening.figuur = 'bmc';
-  assert.match(controleerFormaat(b, 'leerblok-3.json').fouten.join('\n'), /taak 6\.1: oefening\.figuur "bmc" is onbekend/);
+  t.oefening.figuur = 'swot';
+  assert.match(controleerFormaat(b, 'leerblok-3.json').fouten.join('\n'), /taak 6\.1: oefening\.figuur "swot" is onbekend/);
 });
 
 test('Figuur VPC ook bij de toepassing van taak 6.1; een onbekende toepassing.figuur wordt afgekeurd', () => {
@@ -63,8 +63,48 @@ test('Figuur VPC ook bij de toepassing van taak 6.1; een onbekende toepassing.fi
   assert.equal(t.toepassing.figuur, 'vpc');
   assert.equal(bouwTaakModel(t, b).stappen[3].figuur, 'vpc', 'het taakmodel geeft de figuur door aan stap 4');
   assert.match(lees('js/leerblok.js'), /FIGUREN\[s4\.figuur\]\?\.bouw\(\{ met \}\)/);
-  t.toepassing.figuur = 'bmc';
-  assert.match(controleerFormaat(b, 'leerblok-3.json').fouten.join('\n'), /taak 6\.1: toepassing\.figuur "bmc" is onbekend/);
+  t.toepassing.figuur = 'swot';
+  assert.match(controleerFormaat(b, 'leerblok-3.json').fouten.join('\n'), /taak 6\.1: toepassing\.figuur "swot" is onbekend/);
+});
+
+test('Figuur BMC: taak 7.1 toont het business model canvas van Strategyzer (z.d.-a, CC BY-SA 3.0) in stof, oefenen en toepassen; de stof licht toe en somt niet op (ADR B92)', () => {
+  const b = blok(3);
+  const t = b.taken.find((x) => x.id === '7.1');
+  assert.equal(t.stof.figuur, 'bmc');
+  assert.equal(t.oefening.figuur, 'bmc');
+  assert.equal(t.toepassing.figuur, 'bmc');
+  assert.equal(bouwTaakModel(t, b).stappen[2].oefening.figuur, 'bmc');
+  assert.equal(bouwTaakModel(t, b).stappen[3].figuur, 'bmc');
+  assert.match(t.stof.alineas[1], /midden.*[Rr]echts.*[Ll]inks.*[Oo]nderaan/s, 'de stof legt uit hoe je het canvas leest');
+  assert.doesNotMatch(t.stof.alineas.join(' '), /kernpartners, kernactiviteiten/i, 'de figuur toont de bouwstenen; de stof somt ze niet op');
+  const dom = lees('js/dom.js');
+  assert.match(dom, /src: 'media\/citaten\/strategyzer-zd-business-model-canvas\.webp', width: 1200, height: 728/);
+  assert.match(dom, /alt: 'Het business model canvas: /);
+  assert.match(dom, /met\('\(Strategyzer, z\.d\.-a\)'\)/, 'bronvermelding in het bijschrift');
+  assert.match(dom, /creativecommons\.org\/licenses\/by-sa\/3\.0\//, 'link naar de licentie van het sjabloon');
+  const opties = t.toepassing.velden.find((v) => v.id === 'geraakt').opties;
+  for (const nl of opties) assert.ok(dom.includes(`'${nl}'`), `de tabel onder de figuur noemt ${nl}`);
+  assert.match(lees('js/leerblok.js'), /bmc: \{ bouw: bmcFiguur, na: 0 \}/);
+});
+
+test('Figuur TOM-model: taak 8.1 toont een eigen weergave van de TOM³-indeling in stof, oefenen en toepassen; de vierde kolom verbindt de lagen (ADR B93)', () => {
+  const b = blok(3);
+  const t = b.taken.find((x) => x.id === '8.1');
+  for (const stap of [t.stof, t.oefening, t.toepassing]) assert.equal(stap.figuur, 'tom');
+  assert.equal(bouwTaakModel(t, b).stappen[3].figuur, 'tom');
+  assert.match(t.stof.alineas[0], /\(Westmoreland BV, z\.d\.\)/);
+  assert.match(t.stof.alineas[1], /van boven naar beneden/, 'de stof legt uit hoe je het raster leest');
+  assert.match(t.stof.alineas[2], /omhoog.*omlaag/s, 'de stof licht de lus van de vierde kolom toe');
+  assert.doesNotMatch(t.stof.alineas.join(' '), /Methode is hoe|De drie lagen zijn/, 'de figuur toont de lagen en kolommen; de stof definieert ze niet een voor een');
+  const dom = lees('js/dom.js');
+  assert.match(dom, /export function tomFiguur/);
+  assert.match(dom, /role: 'img',\s*'aria-label': 'Het TOM-model als raster/);
+  for (const naam of ['Strategisch', 'Tactisch', 'Operationeel', 'Methode', 'Mens', 'Machine', 'Informatie & Rapportage']) assert.ok(dom.includes(`['${naam}'`), naam);
+  assert.match(dom, /Eigen weergave van de TOM³-indeling naar ', met\('\(Westmoreland BV, z\.d\.\)'\)/);
+  const css = lees('css/site.css');
+  assert.match(css, /\.tom-lus \{ grid-column:5; grid-row:2 \/ 5;/, 'de pijlen lopen door alle drie de lagen');
+  assert.match(css, /\.tom-cel\.tom-ir \{ grid-column:5; \}/, 'de cellen van kolom 4 staan expliciet onder de pijlen');
+  assert.match(lees('js/leerblok.js'), /tom: \{ bouw: tomFiguur, na: 0 \}/);
 });
 
 test('SX-13: elke oefenvraag van de vier leerblokken heeft een hint; de hint staat achter een knop (details), niet op mouse-over', () => {

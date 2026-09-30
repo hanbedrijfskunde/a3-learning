@@ -15,10 +15,17 @@
       "apa": "Osterwalder, A., Pigneur, Y., Bernarda, G. & Smith, A. (2014). *Value proposition design: How to create products and services customers want*. Wiley."
     },
     {
-      "id": "strategyzer-zd",
-      "citatie": "Strategyzer, z.d.",
+      "id": "strategyzer-zd-a",
+      "citatie": "Strategyzer, z.d.-a",
       "type": "sjabloon",
-      "apa": "Strategyzer AG. (z.d.). *The value proposition canvas* [Sjabloon, versie 2.1]. Strategyzer.",
+      "apa": "Strategyzer AG. (z.d.-a). *The business model canvas* [Sjabloon]. Strategyzer. CC BY-SA 3.0.",
+      "link": "https://www.strategyzer.com/library/the-business-model-canvas"
+    },
+    {
+      "id": "strategyzer-zd",
+      "citatie": "Strategyzer, z.d.-b",
+      "type": "sjabloon",
+      "apa": "Strategyzer AG. (z.d.-b). *The value proposition canvas* [Sjabloon, versie 2.1]. Strategyzer.",
       "link": "https://www.strategyzer.com/library/the-value-proposition-canvas"
     },
     {

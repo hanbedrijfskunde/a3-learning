@@ -407,11 +407,27 @@ html { scroll-padding-bottom:5rem; }
 .a3-bezig { border-style:dashed; border-width:3px; }
 .a3-opbouw { font-size:.8125rem; }
 
-/* ---- figuur als citaat (ADR B84): het A3-sjabloon (taak 1.1; Schwagerman & Ulmer, 2013) , de six capitals (taak 2.1; IIRC, 2021) en het VPC (taak 6.1; Strategyzer, z.d.) ---- */
+/* ---- figuur als citaat (ADR B84): het A3-sjabloon (taak 1.1; Schwagerman & Ulmer, 2013), de six capitals (taak 2.1; IIRC, 2021), het VPC (taak 6.1; Strategyzer, z.d.-b) en het BMC (taak 7.1; Strategyzer, z.d.-a) ---- */
 .a3-vel { margin:1rem 0; }
 .a3-vel img { display:block; width:100%; height:auto; border:3px solid var(--zwart); background:var(--wit); }
 .a3-vel figcaption { font-size:.875rem; margin-top:.4rem; }
 .a3-vel figcaption p { margin:.25rem 0; }
+/* ---- TOM-model als eigen figuur (taak 8.1, ADR B93): 3 lagen × 4 kolommen, de vierde kolom verbindt de lagen ---- */
+.tom-raster { display:grid; grid-template-columns:minmax(4.5rem,.9fr) repeat(4,1fr); grid-template-rows:auto repeat(3,minmax(3.5rem,auto));
+  border:3px solid var(--zwart); background:var(--wit); font-size:.8125rem; line-height:1.25; hyphens:auto; overflow-wrap:anywhere; }
+.tom-kop { display:flex; flex-direction:column; gap:.15rem; padding:.4rem; border:1px solid var(--zwart); }
+.tom-kop span { color:var(--grijs-tekst); }
+.tom-laag { background:var(--grijs); }
+.tom-cel { border:1px solid var(--zwart); }
+.tom-ir { background:var(--roze); border-left:3px solid var(--accent); }
+.tom-cel.tom-ir { border-top-style:dashed; border-bottom-style:dashed; }
+/* de pijlenlaag ligt over kolom 5; wat daar hoort staat er expliciet, anders schuift automatische plaatsing het opzij */
+.tom-cel.tom-ir { grid-column:5; } .tom-rij-2 { grid-row:2; } .tom-rij-3 { grid-row:3; } .tom-rij-4 { grid-row:4; }
+.tom-lus { grid-column:5; grid-row:2 / 5; display:flex; justify-content:space-around; align-items:stretch; padding:.5rem 0; pointer-events:none; }
+.tom-pijl { display:flex; flex-direction:column; align-items:center; font-size:1rem; color:var(--accent-donker); line-height:1; }
+.tom-lijn { flex:1; width:3px; background:var(--accent-donker); }
+.tom-pijl small { font-size:.8125rem; color:var(--zwart); font-weight:400; white-space:nowrap; hyphens:none; }
+@media (max-width:480px) { .tom-kop { padding:.25rem; } .tom-pijl small { writing-mode:vertical-rl; margin:.2rem 0; } .tom-pijl:first-child small { transform:rotate(180deg); } }
 .a3-koppeling > summary { cursor:pointer; font-weight:700; min-height:2.75rem; display:flex; align-items:center; }
 .a3-koppeling table { border-collapse:collapse; width:100%; font-size:.875rem; }
 .a3-koppeling th, .a3-koppeling td { border:2px solid var(--zwart); padding:.25rem .4rem; text-align:left; vertical-align:top; }
