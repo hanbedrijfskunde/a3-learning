@@ -14,8 +14,8 @@
 
 export const MANIFEST = 'data/bronnen.json';
 
-/** Een in-tekstverwijzing: (Auteur, 2019), (Auteur & Ander, 2019a) of (Organisatie, z.d.). */
-export const CITATIE_RE = /\((\p{Lu}[^(),;]*?), (\d{4}[a-z]?|z\.d\.)\)/gu;
+/** Een in-tekstverwijzing: (Auteur, 2019), (Auteur & Ander, 2019a), (Organisatie, z.d.) of (Organisatie, z.d.-a). */
+export const CITATIE_RE = /\((\p{Lu}[^(),;]*?), (\d{4}[a-z]?|z\.d\.(?:-[a-z])?)\)/gu;
 
 /** Sorteersleutel van een APA-regel: zonder sterretjes, accenten, hoofdletters en leestekens. */
 export function sleutelVan(bron) {

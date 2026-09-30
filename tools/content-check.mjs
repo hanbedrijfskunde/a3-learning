@@ -31,7 +31,7 @@ import { controleerSpel } from './spel-check.mjs';
 import { KAPITALEN, VPC_ONDERDELEN, SPANNING, bouwOefenKaarten, maakVerband } from '../js/verbanden.js';
 
 // De figuren die de stap stof of de oefening kan tonen (FIGUREN in js/leerblok.js).
-const FIGUUR_NAMEN = ['a3-vel', 'six-capitals', 'vpc'];
+const FIGUUR_NAMEN = ['a3-vel', 'six-capitals', 'vpc', 'bmc'];
 const gevuld = (t) => typeof t === 'string' && t.trim() !== '';
 const lijstGevuld = (l) => Array.isArray(l) && l.length > 0;
 /** Een tekstveld is een tekst of een object { tekst }. */
@@ -511,12 +511,12 @@ export function controleerBronnen(map) {
         if (!/^[a-z0-9-]+$/.test(b?.id ?? '')) fout(`${wie}id bestaat uit kleine letters, cijfers en streepjes`);
         if (ids.has(b?.id)) fout(`${wie}id komt twee keer voor`);
         ids.add(b?.id);
-        const m = /^(.+), (\d{4}[a-z]?|z\.d\.)$/.exec(b?.citatie ?? '');
-        if (!m) fout(`${wie}citatie heeft de vorm "Auteur, 2019" of "Auteur, z.d."`);
+        const m = /^(.+), (\d{4}[a-z]?|z\.d\.(?:-[a-z])?)$/.exec(b?.citatie ?? '');
+        if (!m) fout(`${wie}citatie heeft de vorm "Auteur, 2019", "Auteur, z.d." of "Auteur, z.d.-a"`);
         else if (citaties.has(b.citatie)) fout(`${wie}citatie ${b.citatie} komt twee keer voor`);
         citaties.add(b?.citatie);
         if (!gevuld(b?.apa)) fout(`${wie}mist een APA-vermelding`);
-        else if (m && apaJaar(b.apa) !== m[2].replace(/[a-z]$/, '')) fout(`${wie}het jaar in de APA-regel (${apaJaar(b.apa) ?? 'geen'}) is niet dat van de citatie (${m[2]})`);
+        else if (m && apaJaar(b.apa) !== m[2].replace(/(?:-|(?<=\d))[a-z]$/, '')) fout(`${wie}het jaar in de APA-regel (${apaJaar(b.apa) ?? 'geen'}) is niet dat van de citatie (${m[2]})`);
         if (!BRONTYPEN.includes(b?.type)) fout(`${wie}type ${JSON.stringify(b?.type)}; kies uit ${BRONTYPEN.join(', ')}`);
         if (b?.link !== undefined && !(typeof b.link === 'string' && b.link.startsWith('https://'))) fout(`${wie}link begint met https://`);
         if (b?.type === 'ongepubliceerd') {

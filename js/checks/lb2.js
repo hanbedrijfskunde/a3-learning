@@ -190,9 +190,9 @@ export function verificatieBijRouteB({ id, veld, routeVeld, aantal = 2, blok, op
   }, { id, soort: 'A', blok, optioneel });
 }
 
-/** Het jaar tussen haakjes in een APA-regel: (2019), (2019, 9 februari), (2019a) of (z.d.). Anders undefined. */
+/** Het jaar tussen haakjes in een APA-regel: (2019), (2019, 9 februari), (2019a), (z.d.) of (z.d.-a). Anders undefined. */
 export function apaJaar(apa) {
-  const m = tekst(apa).match(/\((\d{4})[a-z]?(?:,[^)]*)?\)|\((z\.d\.)\)/);
+  const m = tekst(apa).match(/\((\d{4})[a-z]?(?:,[^)]*)?\)|\((z\.d\.)(?:-[a-z])?\)/);
   return m ? (m[1] ?? m[2]) : undefined;
 }
 
