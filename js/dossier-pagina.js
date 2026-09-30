@@ -1,6 +1,6 @@
 // Dossierpagina: Mijn stand (DS-11), dekking van de LUK (BW-13), export (DS-5, DS-6), afdrukbare pagina's (DS-7),
 // import (DS-3, DS-4) en de melding bij geblokkeerde opslag (DS-12). Alleen DOM; de regels zitten in dossier.js.
-import { h, wis, statusChip } from './dom.js';
+import { h, wis, statusChip, bestandKiezer } from './dom.js';
 import { kiesOpslag, maakStore } from './store.js';
 import {
   maakDossier, controleerDossier, importeerDossier, bouwMijnStand, bouwDekking, bouwLeeruitkomsten, bouwAfdruk, veldLabels, bouwFeedbackOverzicht,
@@ -230,15 +230,11 @@ async function start() {
       r.profiel.length ? h('p', { class: 'klein' }, 'Ook overgenomen uit je profiel: alias, teamnummer of vraagstuk waar je nog niets had ingevuld.') : "");
     tekenAlles();
   }
-  const bestandVeld = h('input', { type: 'file', id: 'import-bestand', accept: '.json,application/json', onchange: async (e) => {
-    const bestand = e.target.files[0];
-    if (bestand) await neemOver(await bestand.text());
-    e.target.value = '';
-  } });
+  const bestandVeld = bestandKiezer({ id: 'import-bestand', titel: 'Kies je dossierbestand', bijKeuze: async ([b]) => neemOver(await b.text()) });
   const importGebied = h('section', { id: 'importeren', class: 'kaart', 'aria-labelledby': 'import-kop' },
     h('h2', { id: 'import-kop' }, 'Dossier terugzetten'),
     h('p', {}, 'Een eerder geëxporteerd dossier lees je hier weer in, bijvoorbeeld in een andere browser. Bij een resultaat dat je hier al hebt, wint de nieuwste versie. Wat je in een oefening of als „klaar” hebt ingevuld zit niet in het dossier en komt niet terug.'),
-    h('label', { for: 'import-bestand' }, 'Kies je dossierbestand (.json)'), bestandVeld, importUitkomst);
+    bestandVeld, importUitkomst);
 
   // ---------------------------------------------------------------- pagina
 

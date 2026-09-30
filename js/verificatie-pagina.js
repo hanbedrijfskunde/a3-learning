@@ -1,7 +1,7 @@
 // Verificatiepagina voor de docent: leest één of meer dossiers lokaal in, herberekent de controlesom (DS-8) en toont een
 // tabel per student (DS-9). Deze pagina doet geen enkel verzoek met dossiergegevens (DS-10, PR-2): bestanden worden met
 // file.text() in de browser gelezen en nergens naartoe gestuurd; de enige verzoeken zijn de GET's van data/luk.json.
-import { h, wis, statusChip } from './dom.js';
+import { h, wis, statusChip, bestandKiezer } from './dom.js';
 import { controleerDossier, bouwVerificatie } from './dossier.js';
 
 async function start() {
@@ -60,15 +60,15 @@ async function start() {
     teken();
   }
 
-  const veld = h('input', { type: 'file', id: 'ver-bestanden', multiple: true, accept: '.json,application/json', onchange: async (e) => {
+  const veld = bestandKiezer({ id: 'ver-bestanden', titel: 'Kies één of meer dossierbestanden', meer: true, bijKeuze: async (bestanden) => {
     resultaten.length = 0;
-    await lees([...e.target.files]);
+    await lees(bestanden);
   } });
 
   main.append(h1,
     h('p', {}, 'Lees de dossiers (.json) van je studenten in. De controlesom wordt hier in je browser opnieuw uitgerekend; een bestand dat daarna is aangepast krijgt de melding „gewijzigd na export”.'),
     h('p', { class: 'klein' }, 'Deze pagina stuurt niets naar een server: de bestanden blijven op je eigen apparaat. De controlesom laat zien dat een bestand is aangepast; ze is geen handtekening. Wie de som zelf opnieuw uitrekent, kan een bestand ongemerkt aanpassen.'),
-    h('div', { class: 'kaart' }, h('label', { for: 'ver-bestanden' }, 'Kies één of meer dossierbestanden'), veld),
+    veld,
     uitkomsten, tabelGebied);
 }
 

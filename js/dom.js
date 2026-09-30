@@ -226,3 +226,44 @@ export function maakWisAlles(store, na) {
   knop.addEventListener('click', () => { knop.hidden = true; bevestig.hidden = false; bevestig.querySelector('#wis-annuleer').focus(); });
   return h('div', { class: 'wis' }, knop, bevestig);
 }
+
+const isJson = (b) => /\.json$/i.test(b.name) || b.type === 'application/json';
+
+/**
+ * Bestandkiezer (SX-14, DESIGN §6, ADR B94): een brede knop in plaats van de kale browserknop. Het echte
+ * <input type="file"> zit er onzichtbaar in, zodat toetsenbord, schermlezer en de bestandskiezer van de telefoon werken
+ * zoals altijd; met een muis kun je het bestand er ook op slepen. De knop noemt het gekozen bestand in het Nederlands,
+ * ook nadat het veld is leeggemaakt (de browser zou dan weer „No file chosen” tonen).
+ * @param {{id: string, titel: string, meer?: boolean, bijKeuze: (bestanden: File[]) => (void|Promise<void>)}} o
+ */
+export function bestandKiezer({ id, titel, meer = false, bijKeuze }) {
+  const gekozen = h('span', { class: 'bk-gekozen' });
+  async function kies(bestanden) {
+    const json = bestanden.filter(isJson);
+    gekozen.classList.toggle('fout', json.length === 0);
+    if (!json.length) { gekozen.textContent = 'Dat is geen .json-bestand. Kies een dossierbestand.'; return; }
+    const lijst = meer ? json : json.slice(0, 1);
+    gekozen.textContent = lijst.length === 1 ? `Gekozen: ${lijst[0].name}` : `Gekozen: ${lijst.length} bestanden`;
+    await bijKeuze(lijst);
+  }
+  const invoer = h('input', { type: 'file', id, class: 'sr-only', accept: '.json,application/json', multiple: meer, onchange: async (e) => {
+    const bestanden = [...e.target.files];
+    e.target.value = '';
+    if (bestanden.length) await kies(bestanden);
+  } });
+  const zet = (aan) => knop.classList.toggle('bk-slepen', aan);
+  const knop = h('label', {
+    class: 'bestandkiezer', for: id,
+    ondragover: (e) => { e.preventDefault(); zet(true); },
+    ondragleave: (e) => { if (!knop.contains(e.relatedTarget)) zet(false); },
+    ondrop: (e) => { e.preventDefault(); zet(false); kies([...e.dataTransfer.files]); },
+  },
+  h('span', { class: 'bk-icoon', 'aria-hidden': 'true' }, '↑'),
+  h('span', { class: 'bk-tekst' },
+    h('span', { class: 'bk-titel' }, titel),
+    h('span', { class: 'bk-hulp' },
+      h('span', { class: 'bk-tik' }, 'Tik om te kiezen'), h('span', { class: 'bk-sleep' }, meer ? 'Klik of sleep ze hierheen' : 'Klik of sleep het hierheen'), ' · .json'),
+    gekozen),
+  invoer);
+  return knop;
+}

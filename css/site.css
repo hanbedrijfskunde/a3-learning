@@ -54,6 +54,20 @@ input[type="checkbox"], input[type="radio"] { width:1.25rem; height:1.25rem; acc
 .knop-accent:hover { background:var(--accent-donker); }
 .knop:active { box-shadow:none; transform:translate(3px,3px); }
 .knoppen { display:flex; flex-wrap:wrap; gap:.75rem; margin:.75rem 0; }
+/* bestandkiezer (SX-14, ADR B94): een brede knop om het echte, onzichtbare bestandveld heen; knopschaduw, want hij staat vaak in een kaart */
+.bestandkiezer { display:flex; align-items:center; gap:1rem; width:100%; margin:.75rem 0; padding:.75rem 1rem; font-weight:400; cursor:pointer; background:var(--wit); border:var(--rand) solid var(--zwart); box-shadow:3px 3px 0 var(--zwart); }
+.bestandkiezer:hover { background:var(--grijs); }
+.bestandkiezer:active { box-shadow:none; transform:translate(3px,3px); }
+.bestandkiezer:has(input:focus-visible) { outline:4px solid var(--accent); outline-offset:2px; }
+.bestandkiezer.bk-slepen { background:var(--roze); border-style:dashed; }
+.bk-icoon { flex:none; display:grid; place-items:center; width:3rem; height:3rem; background:var(--zwart); color:var(--wit); font-size:1.75rem; font-weight:800; line-height:1; }
+.bestandkiezer:hover .bk-icoon, .bk-slepen .bk-icoon { background:var(--accent); }
+.bk-tekst { display:grid; gap:.125rem; min-width:0; }
+.bk-titel { font-size:1.125rem; font-weight:800; }
+.bk-hulp { font-size:.875rem; color:var(--grijs-tekst); }
+.bk-gekozen { font-weight:700; overflow-wrap:anywhere; }
+.bk-gekozen:empty, .bk-sleep { display:none; }
+@media (hover:hover) and (pointer:fine) { .bk-sleep { display:inline; } .bk-tik { display:none; } }
 .bevestiging { border:3px solid var(--accent); padding:1rem; margin-top:.75rem; }
 
 /* ---- status als tekst met kleur erbij (BW-3, TG-4) ---- */
@@ -348,7 +362,7 @@ html { scroll-padding-top:7rem; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition:none !important; animation:none !important; scroll-behavior:auto !important; }
-  .knop:active, .kaart-tik:active { transform:none; }
+  .knop:active, .kaart-tik:active, .bestandkiezer:active { transform:none; }
 }
 
 /* ---- fase 19: één taak per scherm (SX-6, SX-10; DESIGN §5.3) ---- */
