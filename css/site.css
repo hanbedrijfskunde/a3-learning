@@ -8,3 +8,51 @@ h1 { border-bottom:4px solid var(--accent); padding-bottom:.25rem; }
 .kaart { border:3px solid var(--zwart); box-shadow:5px 5px 0 var(--zwart); padding:1rem; margin:1rem 0; background:var(--wit); }
 footer { border-top:3px solid var(--zwart); font-size:.875rem; margin-top:2rem; }
 #pilot-banner { background:var(--accent); color:var(--wit); text-align:center; font-weight:700; padding:.25rem; }
+
+/* ---- formulieren: elk veld heeft een zichtbaar label en een duidelijke focusrand ---- */
+label, legend { font-weight:700; display:block; margin:.75rem 0 .25rem; }
+fieldset { border:3px solid var(--zwart); margin:.75rem 0; padding:.25rem .75rem .75rem; }
+input[type="text"], textarea, select { width:100%; font:inherit; color:var(--zwart); background:var(--wit); border:3px solid var(--zwart); padding:.4rem .6rem; }
+textarea { min-height:4.5rem; resize:vertical; }
+.optie { display:flex; align-items:center; gap:.5rem; margin:.25rem 0; }
+.optie label { display:inline; margin:0; font-weight:400; }
+input[type="checkbox"], input[type="radio"] { width:1.25rem; height:1.25rem; accent-color:var(--zwart); flex:none; }
+:focus-visible { outline:4px solid var(--accent); outline-offset:2px; }
+.klein { font-size:.875rem; }
+.meta { color:#333; }
+.fout { color:#b0003f; font-weight:700; }
+
+/* ---- knoppen ---- */
+.knop { font:inherit; font-weight:700; cursor:pointer; color:var(--zwart); background:var(--wit); border:3px solid var(--zwart); box-shadow:3px 3px 0 var(--zwart); padding:.4rem .9rem; text-decoration:none; display:inline-block; }
+.knop:hover { background:var(--grijs); }
+.knop-accent { background:var(--accent); color:var(--wit); }
+.knop-accent:hover { background:#b8004a; }
+.knoppen { display:flex; flex-wrap:wrap; gap:.75rem; margin:.75rem 0; }
+.bevestiging { border:3px solid var(--accent); padding:1rem; margin-top:.75rem; }
+
+/* ---- status als tekst met kleur erbij (BW-3, TG-4) ---- */
+.status { display:inline-block; border:3px solid var(--zwart); padding:.1rem .6rem; font-weight:700; background:var(--wit); }
+.status-compleet { box-shadow:inset 0 -6px 0 #1a7f37; }
+.status-bijna { box-shadow:inset 0 -6px 0 #b7791f; }
+.status-nog-niet { box-shadow:inset 0 -6px 0 var(--accent); }
+
+/* ---- leerblok en taak ---- */
+.taken-nav ol { padding-left:1.25rem; }
+.taak h2 { margin-top:0; }
+.nr { display:inline-block; background:var(--zwart); color:var(--wit); padding:0 .5rem; margin-right:.25rem; }
+.stap { border-top:2px solid var(--zwart); margin-top:1rem; padding-top:.25rem; }
+.stap h3 { font-size:1.05rem; margin:.5rem 0; }
+.oefening { background:var(--grijs); border:2px dashed var(--zwart); padding:.75rem 1rem; margin:.75rem 0; }
+.oefening h4 { margin:0 0 .5rem; }
+.model { border-left:6px solid var(--accent); background:var(--wit); padding:.25rem .75rem; margin-top:.75rem; }
+.model-lijst dt { font-weight:700; margin-top:.5rem; }
+.model-lijst dd { margin:0 0 0 1rem; }
+.format, .voorbeeld { border:3px solid var(--zwart); padding:.5rem .75rem; background:var(--wit); font-weight:700; }
+.uitkomst { margin-top:.75rem; }
+.ontbreekt { margin:.25rem 0; padding-left:1.25rem; }
+.compleet { font-weight:700; }
+.leerblokken { list-style:none; padding:0; }
+.leerblok h3 { margin-top:0; }
+.onderdeel { margin-right:.75rem; white-space:nowrap; }
+.hints { color:#b0003f; padding-left:1.25rem; }
+@media (max-width:40rem) { header, main, footer { padding:.75rem; } nav a { display:inline-block; margin:.25rem 1rem .25rem 0; } }

@@ -1,0 +1,57 @@
+{
+  "formaat": "1.0",
+  "start": {
+    "titel": "Begin met je eigen vraagstuk",
+    "intro": "Vul dit één keer in. Je oefent daarna alles op je eigen vraagstuk, en wat je typt blijft bewaard in deze browser.",
+    "velden": [
+      { "id": "alias", "label": "Alias of voornaam", "type": "tekst" },
+      { "id": "teamnummer", "label": "Teamnummer", "type": "tekst" },
+      { "id": "vraagstuk", "label": "Mijn vraagstuk in één zin", "type": "tekst" },
+      { "id": "waaromZin", "label": "Waarom ik dit vraagstuk wil aanpakken, in één zin", "type": "tekst" }
+    ],
+    "voorlopigLabel": "Ik heb nog geen scherp vraagstuk",
+    "privacytekst": "Je gegevens blijven in deze browser. De site gebruikt geen cookies en geen analytics, heeft geen account en stuurt niets naar een server. Vul geen namen van opdrachtgevers en geen andere vertrouwelijke gegevens in, ook niet in je vraagstuk of in je antwoorden. Gebruik een alias of je voornaam. Je werk staat alleen op dit apparaat: wis je de browsergegevens, dan is het weg. Met de knop Wis alles haal je zelf alles van deze site uit je browser."
+  },
+  "leerblokken": [
+    {
+      "nummer": 1,
+      "titel": "De A3 en je vraag",
+      "richttijd": 45,
+      "terugblik": 0,
+      "afgerondBewijs": "Onderzoeksvraag met zoekvragen en modelkeuze",
+      "bewijsonderdelen": ["EV-01", "EV-02"],
+      "el": "EL1–EL3",
+      "pagina": "leerblok-1.html"
+    },
+    {
+      "nummer": 2,
+      "titel": "Zoeken en beoordelen",
+      "richttijd": 45,
+      "terugblik": 15,
+      "afgerondBewijs": "Een beoordeelde bron in APA",
+      "bewijsonderdelen": ["EV-03", "EV-04", "EV-05"],
+      "el": "EL4, EL5",
+      "pagina": "leerblok-2.html"
+    },
+    {
+      "nummer": 3,
+      "titel": "Het vraagstuk plaatsen",
+      "richttijd": 45,
+      "terugblik": 15,
+      "afgerondBewijs": "Plaatsing met conclusie en onderzoeksvraag",
+      "bewijsonderdelen": ["EV-06", "EV-07", "EV-08"],
+      "el": "EL6, EL7",
+      "pagina": "leerblok-3.html"
+    },
+    {
+      "nummer": 4,
+      "titel": "Verbinden en reflecteren",
+      "richttijd": 45,
+      "terugblik": 15,
+      "afgerondBewijs": "Synthese met feedback en reflectie, en het dossier",
+      "bewijsonderdelen": ["EV-11", "EV-09", "EV-10"],
+      "el": "EL9, EL8",
+      "pagina": "leerblok-4.html"
+    }
+  ]
+}

@@ -11,3 +11,9 @@
     }
   } catch (e) { /* zonder config geen banner */ }
 })();
+
+// Markeert in het hoofdmenu de pagina waar je bent (aria-current).
+document.querySelectorAll('nav[aria-label="Hoofdmenu"] a').forEach((a) => {
+  const pagina = location.pathname.split('/').pop() || 'index.html';
+  if (a.getAttribute('href') === pagina) a.setAttribute('aria-current', 'page');
+});

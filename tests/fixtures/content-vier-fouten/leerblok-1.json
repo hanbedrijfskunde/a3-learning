@@ -1,39 +1,534 @@
 {
+  "formaat": "1.0",
   "leerblok": 1,
+  "titel": "De A3 en je vraag",
+  "richttijd": 45,
+  "eindigtMet": "Onderzoeksvraag met zoekvragen en modelkeuze (EV-01, EV-02)",
+  "oefencasus": "Webshop X",
   "taken": [
     {
       "id": "2.1",
-      "luk": [],
-      "bc": [],
-      "klaarAls": "Je onderzoeksvraag noemt gebruiker, probleem en waarde.",
-      "modelantwoord": "Hoe kan de retourafdeling klanten sneller helpen?",
-      "controles": [{ "id": "velden-gevuld", "soort": "A" }]
+      "titel": "De onderzoeksvraag als user story",
+      "vorm": "Team",
+      "richttijd": {
+        "tekst": "10 min",
+        "minuten": 10,
+        "bron": "werkboek"
+      },
+      "waarom": {
+        "tekst": "In week 4 formuleerde je een probleem. Nu formuleer je de vraag die je met onderzoek gaat beantwoorden. Het format dwingt je om te benoemen voor wie, welk probleem en welke waarde.",
+        "bron": "werkboek"
+      },
+      "klaarAls": {
+        "tekst": "alle drie de delen concreet zijn en de waarde verder gaat dan alleen geld.",
+        "bron": "werkboek"
+      },
+      "stof": {
+        "bron": "werkboek",
+        "opmerking": "Het format staat in werkboek 2.1, het voorbeeld (organisatie Y) in het kader bij 0:30 van het draaiboek. De uitleg van de termen (QA-5) is door de bouwer geschreven.",
+        "format": "Wat is de beste oplossing voor <gebruiker> om <probleem / pain / gain>, zodat <waardecreatie volgens de six capitals>?",
+        "alineas": [
+          "Een vraag in dit format heet een user story: een korte beschrijving van wie iets wil bereiken en waarom. Je vult drie delen in. De gebruiker is de persoon of groep voor wie je het onderzoek doet. Een pain is een last of ergernis van die gebruiker, een gain is een winst die hij of zij wil. De waardecreatie zegt wat het oplevert.",
+          "De six capitals (zes kapitalen) zijn zes soorten waarde die een organisatie kan opbouwen of verliezen: financieel, productie, intellectueel, menselijk, sociaal en relationeel, en natuurlijk. Kies er minstens één die niet financieel is.",
+          "Voorbeeld met een andere organisatie: „Wat is de beste oplossing voor de controller en de afdelingshoofden van organisatie Y om de gegevens voor de jaarlijkse duurzaamheidsrapportage op tijd en zonder handmatig uitzoekwerk te verzamelen, zodat de organisatie haar impact op het milieu betrouwbaar kan sturen (natuurlijk kapitaal), medewerkers minder tijd kwijt zijn aan rapportagewerk (menselijk kapitaal) en klanten en financiers de cijfers vertrouwen (sociaal en relationeel kapitaal)?”"
+        ]
+      },
+      "oefening": {
+        "opdracht": {
+          "tekst": "Casus: de klanttevredenheid bij webshop X is gedaald van een 8,1 naar een 6,3. Maak de vraag \"Hoe kan de klanttevredenheid verhoogd worden?\" concreet. Voeg context toe: waar, onder wie, welke productgroep. Schrijf hem dan in het format.",
+          "bron": "werkboek"
+        }
+      },
+      "modelantwoord": {
+        "bron": "draaiboek",
+        "opmerking": "Voorbeeld webshop uit het kader bij 0:30 in het draaiboek.",
+        "velden": {
+          "gebruiker": "terugkerende klanten van webshop X",
+          "pain": "weer een aankoopervaring te krijgen die ze minstens een 8 geven (nu een 6,3)",
+          "waarde": "de klantrelatie herstelt (sociaal en relationeel kapitaal) en de omzet uit herhaalaankopen stijgt (financieel kapitaal)",
+          "kapitalen": [
+            "sociaal en relationeel",
+            "financieel"
+          ]
+        }
+      },
+      "toepassing": {
+        "opdracht": {
+          "tekst": "Schrijf de onderzoeksvraag over je eigen vraagstuk in het format: voor wie, welk probleem en welke waarde.",
+          "bron": "werkboek"
+        },
+        "velden": [
+          {
+            "id": "gebruiker",
+            "label": "Gebruiker",
+            "type": "tekst"
+          },
+          {
+            "id": "pain",
+            "label": "Probleem / pain / gain",
+            "type": "lang"
+          },
+          {
+            "id": "waarde",
+            "label": "Waardecreatie",
+            "type": "lang"
+          },
+          {
+            "id": "kapitalen",
+            "label": "Welke kapitalen?",
+            "type": "meer",
+            "opties": [
+              "financieel",
+              "productie",
+              "intellectueel",
+              "menselijk",
+              "sociaal en relationeel",
+              "natuurlijk"
+            ]
+          }
+        ],
+        "livevoorbeeld": "onderzoeksvraag"
+      },
+      "controles": [
+        {
+          "id": "gebruiker-woorden",
+          "soort": "A",
+          "type": "minWoordenAanwezig",
+          "veld": "gebruiker",
+          "label": "de gebruiker",
+          "min": 4
+        },
+        {
+          "id": "pain-woorden",
+          "soort": "A",
+          "type": "minWoordenAanwezig",
+          "veld": "pain",
+          "label": "het probleem (pain of gain)",
+          "min": 4
+        },
+        {
+          "id": "waarde-woorden",
+          "soort": "A",
+          "type": "minWoordenAanwezig",
+          "veld": "waarde",
+          "label": "de waardecreatie",
+          "min": 4
+        },
+        {
+          "id": "kapitaal-niet-financieel",
+          "soort": "A",
+          "type": "kapitaalNietFinancieel",
+          "veld": "kapitalen",
+          "label": "een kapitaal"
+        },
+        {
+          "id": "verschilt-van-casus",
+          "soort": "B",
+          "type": "verschiltVanCasus",
+          "velden": [
+            "gebruiker",
+            "pain",
+            "waarde"
+          ]
+        }
+      ],
+      "bewijsonderdeel": "EV-01"
     },
     {
       "id": "2.2",
-      "luk": [1],
-      "bc": ["BC1"],
-      "klaarAls": "",
-      "modelantwoord": "Zoekvraag 1: wat weten we over retouren?",
-      "controles": [{ "id": "vraagteken", "soort": "A" }]
+      "titel": "Zoekvragen vanuit drie frames",
+      "vorm": "Team",
+      "richttijd": {
+        "tekst": "10 min",
+        "minuten": 10,
+        "bron": "werkboek"
+      },
+      "waarom": {
+        "tekst": "Een onderzoeksvraag beantwoord je niet in één keer. Je deelt hem op in zoekvragen. Elke zoekvraag kijkt vanuit een ander frame, zodat je niets over het hoofd ziet.",
+        "bron": "werkboek"
+      },
+      "stof": {
+        "bron": "werkboek",
+        "opmerking": "De frames en de modellen zijn letterlijk uit werkboek 2.2; de uitleg van het woord frame is door de bouwer geschreven.",
+        "alineas": [
+          "Een frame is een invalshoek: een bril waarmee je naar je onderzoeksvraag kijkt. Frames: functioneel: HR, financieel, logistiek, marketing · intern of extern · theoretisch (wat zegt de literatuur?) of empirisch (wat zie je bij de organisatie?)",
+          "Modellen die frames geven: 7S · Strategy Map (financieel, klant, interne processen, leren en groeien) · Six Capitals · TOM-model. Jullie kiezen als team één model dat je frames helpt bedenken.",
+          "Begin je zoekvragen bijvoorbeeld met „Welke factoren…”, „In hoeverre…” of „Wat is de relatie tussen…”. Een zoekvraag eindigt op een vraagteken."
+        ]
+      },
+      "oefening": {
+        "opdracht": {
+          "tekst": "Bij webshop X is de klanttevredenheid gedaald van een 8,1 naar een 6,3. Schrijf drie zoekvragen bij de onderzoeksvraag over die daling, elk vanuit een ander frame, en kies één model.",
+          "bron": "werkboek"
+        }
+      },
+      "modelantwoord": {
+        "bron": "werkboek",
+        "opmerking": "De drie zoekvragen komen uit het kader bij 0:30 en 0:40 van het draaiboek. De indeling in frames, het model, de verantwoording en het antwoord op wat je mist zijn door de bouwer geschreven.",
+        "velden": {
+          "frame1": "theoretisch of empirisch",
+          "zoekvraag1": "Welke factoren bepalen de klanttevredenheid bij webshops?",
+          "frame2": "functioneel",
+          "zoekvraag2": "In hoeverre haalt webshop X de beloofde levertijd?",
+          "frame3": "intern of extern",
+          "zoekvraag3": "In hoeverre kunnen klantenservicemedewerkers klachten zelf oplossen?",
+          "model": "Strategy Map",
+          "verantwoording": "De Strategy Map kijkt naar vier kanten van de organisatie (financieel, klant, interne processen, leren en groeien), en deze zoekvragen komen uit verschillende kanten.",
+          "mis": "Met alleen het functionele frame zie je de levertijd, maar niet wat de literatuur over tevredenheid zegt of wat medewerkers intern zelf kunnen oplossen."
+        }
+      },
+      "toepassing": {
+        "opdracht": {
+          "tekst": "Schrijf drie zoekvragen bij je onderzoeksvraag uit 2.1. Begin bijvoorbeeld met \"Welke factoren…\", \"In hoeverre…\" of \"Wat is de relatie tussen…\".",
+          "bron": "werkboek"
+        },
+        "velden": [
+          {
+            "id": "frame1",
+            "label": "Frame van zoekvraag 1",
+            "type": "lijst",
+            "opties": [
+              "functioneel",
+              "intern of extern",
+              "theoretisch of empirisch"
+            ]
+          },
+          {
+            "id": "zoekvraag1",
+            "label": "Zoekvraag 1",
+            "type": "tekst"
+          },
+          {
+            "id": "frame2",
+            "label": "Frame van zoekvraag 2",
+            "type": "lijst",
+            "opties": [
+              "functioneel",
+              "intern of extern",
+              "theoretisch of empirisch"
+            ]
+          },
+          {
+            "id": "zoekvraag2",
+            "label": "Zoekvraag 2",
+            "type": "tekst"
+          },
+          {
+            "id": "frame3",
+            "label": "Frame van zoekvraag 3",
+            "type": "lijst",
+            "opties": [
+              "functioneel",
+              "intern of extern",
+              "theoretisch of empirisch"
+            ]
+          },
+          {
+            "id": "zoekvraag3",
+            "label": "Zoekvraag 3",
+            "type": "tekst"
+          },
+          {
+            "id": "model",
+            "label": "Welk model kiest jullie team? (kies er één)",
+            "type": "keuze",
+            "opties": [
+              "7S",
+              "Strategy Map",
+              "Six Capitals",
+              "TOM-model"
+            ]
+          },
+          {
+            "id": "verantwoording",
+            "label": "Mijn verantwoording van de modelkeuze",
+            "type": "lang"
+          },
+          {
+            "id": "mis",
+            "label": "Wat mis je als je maar één frame kiest?",
+            "type": "lang"
+          }
+        ]
+      },
+      "controles": [
+        {
+          "id": "frame-1",
+          "soort": "A",
+          "type": "keuzeUitLijst",
+          "veld": "frame1",
+          "label": "een frame voor zoekvraag 1"
+        },
+        {
+          "id": "frame-2",
+          "soort": "A",
+          "type": "keuzeUitLijst",
+          "veld": "frame2",
+          "label": "een frame voor zoekvraag 2"
+        },
+        {
+          "id": "frame-3",
+          "soort": "A",
+          "type": "keuzeUitLijst",
+          "veld": "frame3",
+          "label": "een frame voor zoekvraag 3"
+        },
+        {
+          "id": "zoekvraag-1-vraagteken",
+          "soort": "A",
+          "type": "eindigtOp",
+          "veld": "zoekvraag1",
+          "label": "zoekvraag 1",
+          "tekens": [
+            "?"
+          ]
+        },
+        {
+          "id": "zoekvraag-2-vraagteken",
+          "soort": "A",
+          "type": "eindigtOp",
+          "veld": "zoekvraag2",
+          "label": "zoekvraag 2",
+          "tekens": [
+            "?"
+          ]
+        },
+        {
+          "id": "zoekvraag-3-vraagteken",
+          "soort": "A",
+          "type": "eindigtOp",
+          "veld": "zoekvraag3",
+          "label": "zoekvraag 3",
+          "tekens": [
+            "?"
+          ]
+        },
+        {
+          "id": "frames-verschillend",
+          "soort": "B",
+          "type": "verschillendeFrames",
+          "velden": [
+            "frame1",
+            "frame2",
+            "frame3"
+          ]
+        },
+        {
+          "id": "model-een",
+          "soort": "A",
+          "type": "precies1Keuze",
+          "veld": "model",
+          "label": "model"
+        },
+        {
+          "id": "verantwoording-zin",
+          "soort": "C",
+          "type": "minZinnen",
+          "veld": "verantwoording",
+          "label": "je verantwoording van de modelkeuze",
+          "min": 1
+        },
+        {
+          "id": "mis-ingevuld",
+          "soort": "A",
+          "type": "veldGevuld",
+          "veld": "mis",
+          "label": "wat je mist als je maar één frame kiest"
+        }
+      ],
+      "bewijsonderdeel": "EV-02",
+      "luk": [
+        1
+      ],
+      "bc": [
+        "BC1"
+      ]
     },
     {
       "id": "3.1",
-      "luk": [1],
-      "bc": ["BC1"],
-      "klaarAls": "Je hebt kernbegrippen met synoniemen.",
-      "modelantwoord": "Kernbegrip: retour; synoniem: terugzending.",
-      "controles": []
+      "titel": "De A3 in één oogopslag",
+      "vorm": "Alleen",
+      "richttijd": {
+        "tekst": "tijdens de uitleg",
+        "minuten": 10,
+        "bron": "werkboek",
+        "minutenBron": "werkboek"
+      },
+      "waarom": {
+        "tekst": "De A3 is jullie praatplaat voor de opdrachtgever. Jullie bespreken hem elke week en vullen hem steeds verder aan. Vandaag begin je aan vak 1.",
+        "bron": "werkboek"
+      },
+      "klaarAls": {
+        "tekst": "je de drie C's kunt noemen, weet wat er niet op één A3 past, hebt opgeschreven wat je nog van de A3 wist en de aanleiding van je eigen vraagstuk hebt vastgelegd.",
+        "bron": "werkboek"
+      },
+      "stof": {
+        "bron": "werkboek",
+        "opmerking": "De acht vakken en de Lean Yellow Belt komen uit werkboek 1.1; de zin over een praatplaat en de uitleg van 3xC staan er niet en zijn door de bouwer geschreven.",
+        "alineas": [
+          "Een A3 is één vel waarop je een vraagstuk van aanleiding tot vervolgstappen beschrijft. De acht vakken: 1 · Aanleiding / achtergrond, 2 · Huidige situatie, 3 · Doelen, 4 · Analyse, 5 · Toekomstige situatie, 6 · Implementatie, 7 · Borging en evaluatie, 8 · Next steps. Vandaag begin je aan vak 1.",
+          "Een A3 moet voldoen aan 3xC: drie eisen die met een C beginnen. Weet je ze niet meer, probeer ze dan eerst te bedenken en kijk daarna naar het modelantwoord."
+        ]
+      },
+      "oefening": {
+        "opdracht": {
+          "tekst": "Er is bij 1.1 geen casus: het gaat om wat je van de A3 weet. Beantwoord de drie vragen uit het werkboek.",
+          "bron": "werkboek"
+        },
+        "velden": [
+          {
+            "id": "drieC",
+            "label": "De A3 moet voldoen aan 3xC. Welke drie?",
+            "type": "lang"
+          },
+          {
+            "id": "pastNiet",
+            "label": "Wat past er niet op één A3, volgens de uitleg? En wat zegt dat over je begrip?",
+            "type": "lang"
+          },
+          {
+            "id": "yellowBelt",
+            "label": "Wat weet ik nog van de A3 uit de Lean Yellow Belt-training?",
+            "type": "lang"
+          }
+        ]
+      },
+      "modelantwoord": {
+        "bron": "draaiboek",
+        "opmerking": "Uit het kader bij 0:05 in het draaiboek. Het derde antwoord is aangepast: het draaiboek noemt verwachte punten die nog gecontroleerd moeten worden en die staan hier niet.",
+        "velden": {
+          "drieC": "Concreet, compleet en consistent. Concreet: to the point, zodat de lezer tijd bespaart. Compleet: alle vakken samen vertellen het hele verhaal. Consistent: de vakken sluiten op elkaar aan. De doelen passen bij het probleem, en de maatregelen bij de oorzaken.",
+          "pastNiet": "Alles wat je niet kort kunt opschrijven. Past het niet, dan vertel je te veel of begrijp je het probleem nog niet echt. Hoe beter je het begrijpt, hoe compacter de A3 wordt.",
+          "yellowBelt": "Geen vast antwoord: je haalt je eigen voorkennis op."
+        }
+      },
+      "toepassing": {
+        "opdracht": {
+          "tekst": "Schrijf in één of twee zinnen de aanleiding van je eigen vraagstuk: wat gebeurt er en waarom speelt het nu? Dit is de inhoud van vak 1 van je A3.",
+          "bron": "werkboek"
+        },
+        "velden": [
+          {
+            "id": "aanleiding",
+            "label": "Aanleiding van mijn vraagstuk (vak 1)",
+            "type": "lang"
+          }
+        ]
+      },
+      "controles": [],
+      "bewijsonderdeel": null,
+      "luk": [
+        1
+      ],
+      "bc": [
+        "BC1"
+      ]
     },
     {
       "id": "3.2",
-      "luk": [1],
-      "bc": ["BC1"],
-      "klaarAls": "Je hebt een zoekstring met operatoren.",
-      "controles": [{ "id": "operator", "soort": "A" }]
+      "titel": "De A3 in één oogopslag",
+      "vorm": "Alleen",
+      "richttijd": {
+        "tekst": "tijdens de uitleg",
+        "minuten": 10,
+        "bron": "werkboek",
+        "minutenBron": "werkboek"
+      },
+      "waarom": {
+        "tekst": "De A3 is jullie praatplaat voor de opdrachtgever. Jullie bespreken hem elke week en vullen hem steeds verder aan. Vandaag begin je aan vak 1.",
+        "bron": "werkboek"
+      },
+      "klaarAls": {
+        "tekst": "je de drie C's kunt noemen, weet wat er niet op één A3 past, hebt opgeschreven wat je nog van de A3 wist en de aanleiding van je eigen vraagstuk hebt vastgelegd.",
+        "bron": "werkboek"
+      },
+      "stof": {
+        "bron": "werkboek",
+        "opmerking": "De acht vakken en de Lean Yellow Belt komen uit werkboek 1.1; de zin over een praatplaat en de uitleg van 3xC staan er niet en zijn door de bouwer geschreven.",
+        "alineas": [
+          "Een A3 is één vel waarop je een vraagstuk van aanleiding tot vervolgstappen beschrijft. De acht vakken: 1 · Aanleiding / achtergrond, 2 · Huidige situatie, 3 · Doelen, 4 · Analyse, 5 · Toekomstige situatie, 6 · Implementatie, 7 · Borging en evaluatie, 8 · Next steps. Vandaag begin je aan vak 1.",
+          "Een A3 moet voldoen aan 3xC: drie eisen die met een C beginnen. Weet je ze niet meer, probeer ze dan eerst te bedenken en kijk daarna naar het modelantwoord."
+        ]
+      },
+      "oefening": {
+        "opdracht": {
+          "tekst": "Er is bij 1.1 geen casus: het gaat om wat je van de A3 weet. Beantwoord de drie vragen uit het werkboek.",
+          "bron": "werkboek"
+        },
+        "velden": [
+          {
+            "id": "drieC",
+            "label": "De A3 moet voldoen aan 3xC. Welke drie?",
+            "type": "lang"
+          },
+          {
+            "id": "pastNiet",
+            "label": "Wat past er niet op één A3, volgens de uitleg? En wat zegt dat over je begrip?",
+            "type": "lang"
+          },
+          {
+            "id": "yellowBelt",
+            "label": "Wat weet ik nog van de A3 uit de Lean Yellow Belt-training?",
+            "type": "lang"
+          }
+        ]
+      },
+      "toepassing": {
+        "opdracht": {
+          "tekst": "Schrijf in één of twee zinnen de aanleiding van je eigen vraagstuk: wat gebeurt er en waarom speelt het nu? Dit is de inhoud van vak 1 van je A3.",
+          "bron": "werkboek"
+        },
+        "velden": [
+          {
+            "id": "aanleiding",
+            "label": "Aanleiding van mijn vraagstuk (vak 1)",
+            "type": "lang"
+          }
+        ]
+      },
+      "controles": [
+        {
+          "id": "aanleiding-woorden",
+          "soort": "A",
+          "type": "minWoordenAanwezig",
+          "veld": "aanleiding",
+          "label": "de aanleiding van je vraagstuk",
+          "min": 4
+        }
+      ],
+      "bewijsonderdeel": null,
+      "luk": [
+        1
+      ],
+      "bc": [
+        "BC1"
+      ]
     }
   ],
+  "verdieping": {
+    "tekst": "Schrijf een vierde zoekvraag vanuit een frame dat je team nog niet gebruikte, en zeg wat die vraag verandert.",
+    "bron": "lrd",
+    "na": "2.2"
+  },
   "bewijsonderdelen": [
-    { "id": "EV-01", "taak": "2.1", "lukOnderdelen": ["LUK 1 · Formuleert een onderzoeksvraag"] }
+    {
+      "id": "EV-01",
+      "taak": "2.1",
+      "titel": "Onderzoeksvraag",
+      "lukOnderdelen": [
+        "LUK 1 · Formuleert een onderzoeksvraag",
+        "LUK 1 · Signaleert knelpunten in een intern proces"
+      ]
+    },
+    {
+      "id": "EV-02",
+      "taak": "2.2",
+      "titel": "Zoekvragen en modelkeuze",
+      "lukOnderdelen": [
+        "LUK 1 · Analyseert het probleem methodisch",
+        "LUK 1 · Selecteert relevante theorieën en modellen en voegt ze samen",
+        "LUK 1 · Ziet kansen en bedreigingen uit externe ontwikkelingen"
+      ]
+    }
   ]
 }
