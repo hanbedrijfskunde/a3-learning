@@ -267,6 +267,8 @@ input[type="checkbox"], input[type="radio"] { min-width:1.25rem; }
 .sp-toelichting { padding-left:1.25rem; }
 .sp-tekstversie > summary { cursor:pointer; font-weight:700; }
 .sp-opties { margin:.5rem 0; }
+.sp-na { margin:.5rem 0; }
+.sp-samengesteld { border:3px solid var(--zwart); box-shadow:4px 4px 0 var(--zwart); padding:.5rem .75rem; margin:.5rem 0; }
 @media (max-width:40rem) {
   .sp-tabel thead { position:absolute; left:-9999px; }
   .sp-tabel, .sp-tabel tbody, .sp-tabel tr, .sp-tabel td, .sp-tabel th { display:block; width:100%; }

@@ -256,5 +256,111 @@
       "titel": "Plaatsing van het vraagstuk",
       "lukOnderdelen": ["LUK 1 · Duidt achtergronden, oorzaken en ontwikkelingen"]
     }
-  ]
+  ],
+  "media": {
+    "taak": "5.1",
+    "uitleg": {
+      "titel": "Stakeholders op invloed en belang",
+      "bron": "concept-auteur",
+      "alineas": [
+        "Een stakeholder is iemand of een partij die het vraagstuk merkt of er invloed op heeft. Intern zit in de organisatie, extern erbuiten. Je bepaalt per stakeholder de invloed (hoog of laag) en het belang (hoog of laag).",
+        "Invloed en belang geven vier vakken: nauw betrekken, tevreden houden, op de hoogte houden en volgen. Een klant heeft meestal weinig invloed en veel belang. Een partij die regels stelt maar het vraagstuk nauwelijks merkt, heeft veel invloed en weinig belang.",
+        "Daarna plaats je het vraagstuk in de modellen die volgen: het value proposition canvas voor de klant (Osterwalder e.a., 2014), het business model canvas voor de organisatie (Osterwalder & Pigneur, 2010) en het TOM³-model met drie lagen en vier kolommen (Westmoreland BV, z.d.)."
+      ],
+      "voorbeeld": "Voorbeeld met een andere organisatie: bij het rapportagevraagstuk van organisatie Y is de controller intern, met hoge invloed en hoog belang, dus nauw betrekken. De accountant is extern, met hoge invloed en laag belang, dus tevreden houden.",
+      "modelantwoord": {
+        "taak": "5.1",
+        "velden": [
+          "stakeholders",
+          "merktEerst",
+          "belangHuidig"
+        ]
+      }
+    },
+    "video": {
+      "id": "V3",
+      "titel": "Het vraagstuk plaatsen: stakeholders, VPC, BMC en TOM-model",
+      "concept": true,
+      "bron": "concept-auteur",
+      "bestand": "media/v3-vraagstuk-plaatsen.mp4",
+      "ondertitels": "media/v3-vraagstuk-plaatsen.vtt",
+      "dias": [
+        {
+          "titel": "Het vraagstuk plaatsen",
+          "punten": [
+            "Leerblok 3 · Het vraagstuk plaatsen",
+            "Concept-video met computerstem"
+          ],
+          "spreektekst": "Dit is een conceptvideo met een computerstem. De docent kan later een eigen opname maken. In twee minuten plaats je een vraagstuk bij de stakeholders, de klant en de organisatie."
+        },
+        {
+          "titel": "Wie is een stakeholder?",
+          "punten": [
+            "Merkt het vraagstuk of heeft invloed",
+            "Intern: in de organisatie",
+            "Extern: erbuiten"
+          ],
+          "spreektekst": "Een stakeholder is iemand of een partij die het vraagstuk merkt of er invloed op heeft. Intern zit in de organisatie, extern erbuiten. Je bepaalt per stakeholder de invloed (hoog of laag) en het belang (hoog of laag)."
+        },
+        {
+          "titel": "Invloed en belang",
+          "punten": [
+            "Nauw betrekken: beide hoog",
+            "Tevreden houden: invloed hoog, belang laag",
+            "Op de hoogte houden: invloed laag, belang hoog",
+            "Volgen: beide laag"
+          ],
+          "spreektekst": "Invloed en belang geven vier vakken: nauw betrekken, tevreden houden, op de hoogte houden en volgen. Een klant heeft meestal weinig invloed en veel belang. Een partij die regels stelt maar het vraagstuk nauwelijks merkt, heeft veel invloed en weinig belang."
+        },
+        {
+          "titel": "Drie modellen om te plaatsen",
+          "punten": [
+            "VPC: de klant",
+            "BMC: de organisatie",
+            "TOM³: drie lagen, vier kolommen"
+          ],
+          "spreektekst": "Daarna plaats je het vraagstuk in de modellen die volgen: het value proposition canvas voor de klant (Osterwalder e.a., 2014), het business model canvas voor de organisatie (Osterwalder & Pigneur, 2010) en het TOM³-model met drie lagen en vier kolommen (Westmoreland BV, z.d.)."
+        },
+        {
+          "titel": "Voorbeeld",
+          "punten": [
+            "Organisatie Y",
+            "Controller: intern, hoog en hoog",
+            "Accountant: extern, invloed hoog, belang laag"
+          ],
+          "spreektekst": "Voorbeeld met een andere organisatie: bij het rapportagevraagstuk van organisatie Y is de controller intern, met hoge invloed en hoog belang, dus nauw betrekken. De accountant is extern, met hoge invloed en laag belang, dus tevreden houden."
+        },
+        {
+          "titel": "Nu jij",
+          "punten": [
+            "Pauzeer de video",
+            "Doe taak 5.1 op webshop X",
+            "Minstens vijf stakeholders"
+          ],
+          "spreektekst": "Nu ben jij aan de beurt. Pauzeer de video en doe de oefening bij taak 5.1 op webshop X. Noteer minstens vijf stakeholders en beantwoord de twee vragen. Kijk daarna pas verder.",
+          "pauzeNa": 4
+        },
+        {
+          "titel": "Modelantwoord voor webshop X",
+          "punten": [
+            "Klantenservice merkt het eerst",
+            "Bezorgdienst: belang bij de huidige situatie"
+          ],
+          "spreektekst": "Het modelantwoord voor webshop X. Stakeholders: Terugkerende klanten (extern): invloed laag, belang hoog. Klantenservice (intern): invloed laag, belang hoog. Directie van de webshop (intern): invloed hoog, belang hoog. Bezorgdienst (extern): invloed hoog, belang laag. Marketingafdeling (intern): invloed laag, belang laag. Concurrenten (extern): invloed laag, belang laag. Wie merkt het probleem het eerst? De klantenservice: klachten en vragen komen daar als eerste binnen. Wie heeft belang bij de huidige situatie? De bezorgdienst, als de huidige afspraken voor hen voordelig zijn."
+        },
+        {
+          "titel": "Klaar als",
+          "punten": [],
+          "spreektekst": "Je bent klaar als de map op vel 1 staat, het vraagstuk in het midden staat en bij elke stakeholder de relatie met het vraagstuk staat.",
+          "klaarAls": true
+        }
+      ]
+    },
+    "spel": {
+      "id": "stakeholder-radar",
+      "titel": "Stakeholder-radar",
+      "bestand": "spellen/stakeholder-radar.json",
+      "minuten": 5
+    }
+  }
 }

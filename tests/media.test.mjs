@@ -1,34 +1,39 @@
-// Media (fase 12): de routekeuze (MD-1, MD-2), de uitleg (MD-3), de video's (MD-4…MD-7), de spellen (MD-8…MD-11, MD-13, MD-15),
+// Media (fase 12 en 13): de routekeuze (MD-1, MD-2), de uitleg (MD-3), de video's (MD-4…MD-7), de spellen (MD-8…MD-11, MD-13, MD-15),
 // de kijktips (MD-14, MD-16) en de stapkaart van de docent (DM-13). Alles statisch of op de data: het gedrag in de browser
 // (toetsenbord, netwerktrace, afspelen) staat in de testpoort van het bouwplan.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
-import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
-import { dirname, resolve } from 'node:path';
+import { existsSync, mkdtempSync, readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { leesRoute, bewaarRoute, ROUTES, uitlegWoorden, modelRegels, klaarAlsVan, transcriptVan, MAX_WOORDEN_UITLEG, MAX_VIDEO_SECONDEN, MAX_VIDEO_BYTES } from '../js/media.js';
 import {
-  controleerSpel, tekstversie, beoordeelKaart, effectVan, vergelijkVoorspelling, voorspellingVolledig, KAPITALEN, geschatteSeconden, MAX_SECONDEN,
+  tekstversie, beoordeelKaart, effectVan, vergelijkVoorspelling, voorspellingVolledig, KAPITALEN, geschatteSeconden, MAX_SECONDEN,
+  beoordeelKeuze, stelVraagSamen, rasterVan, vakVoor,
 } from '../js/spel-model.js';
 import { maakStore, geheugenOpslag } from '../js/store.js';
-import { controleerMedia, controleerMap } from '../tools/content-check.mjs';
+import { controleerMedia, controleerMap, controleerVideo } from '../tools/content-check.mjs';
+import { controleerSpel } from '../tools/spel-check.mjs';
 import { ondertitelStukken, maakVtt } from '../tools/maak-video.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const lees = (p) => readFileSync(resolve(root, p), 'utf8');
 const json = (p) => JSON.parse(lees(p));
 const blok = (n) => json(`data/leerblok-${n}.json`);
-const MET_MEDIA = [2, 4].map(blok);
+const MET_MEDIA = [1, 2, 3, 4].map(blok);
 const spellen = () => MET_MEDIA.map((b) => json(b.media.spel.bestand));
+const spel = (id) => json(`spellen/${id}.json`);
 const bron = (p) => lees(p).replace(/(^|\s)\/\/.*$/gm, '$1').replace(/\/\*[\s\S]*?\*\//g, '');
 const htmlPaginas = readdirSync(root).filter((n) => n.endsWith('.html'));
 const heeftFfprobe = (() => { try { execFileSync('ffprobe', ['-version'], { stdio: 'ignore' }); return true; } catch (e) { return false; } })();
 const ffprobeDuur = (p) => Number(execFileSync('ffprobe', ['-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', p]).toString().trim());
+const heeftFfmpeg = (() => { try { execFileSync('ffmpeg', ['-version'], { stdio: 'ignore' }); return true; } catch (e) { return false; } })();
 
 // ---------------------------------------------------------------- MD-1, MD-2
 
-test('MD-1: leerblok 2 en 4 hebben elk drie routes (tekst, video, spel) met dezelfde oefentaak', () => {
+test('MD-1: alle vier de leerblokken hebben elk drie routes (tekst, video, spel) met dezelfde oefentaak', () => {
   assert.deepEqual(ROUTES, ['tekst', 'video', 'spel']);
   for (const b of MET_MEDIA) {
     assert.ok(b.media.uitleg && b.media.video && b.media.spel, `leerblok ${b.leerblok}: uitleg, video en spel`);
@@ -81,9 +86,12 @@ test('MD-3, BR-4: de uitleg noemt bronnen als (Auteur, jaar)', () => {
 
 // ---------------------------------------------------------------- MD-4, MD-5, MD-6, MD-7
 
-test('MD-4: elke eigen video duurt hoogstens 3 minuten en is hoogstens 20 MB (ffprobe, anders metadata)', () => {
+test('MD-4: er zijn vier eigen video\'s (V1 tot en met V4), elk hoogstens 3 minuten en hoogstens 20 MB (ffprobe, anders metadata)', () => {
   const meta = json('media/metadata.json');
+  assert.deepEqual(MET_MEDIA.map((b) => b.media.video.id), ['V1', 'V2', 'V3', 'V4']);
+  assert.equal(Object.keys(meta).length, 4, 'metadata voor precies vier video\'s');
   for (const b of MET_MEDIA) {
+    assert.deepEqual(controleerVideo(resolve(root, b.media.video.bestand), meta[b.media.video.bestand], b.media.video.id).fouten, [], `controleerVideo ${b.media.video.id}`);
     const v = b.media.video;
     const pad = resolve(root, v.bestand);
     assert.ok(existsSync(pad), `${v.bestand} bestaat`);
@@ -100,9 +108,22 @@ test('MD-4: elke eigen video duurt hoogstens 3 minuten en is hoogstens 20 MB (ff
 });
 const MAX_VIDEO_SECONDS_OF = () => MAX_VIDEO_SECONDEN;
 
-test('MD-4: de duurcontrole faalt bij een video van meer dan 3 minuten (metadata)', () => {
-  assert.ok(200 > MAX_VIDEO_SECONDEN);
-  assert.ok(25 * 1024 * 1024 > MAX_VIDEO_BYTES);
+test('MD-4: de videocontrole faalt bij een echte video van 4 minuten, een bestand van meer dan 20 MB en metadata die liegt', { skip: !heeftFfmpeg && 'ffmpeg ontbreekt' }, () => {
+  const map = mkdtempSync(join(tmpdir(), 'md4-'));
+  const lang = join(map, 'lang.mp4');
+  execFileSync('ffmpeg', ['-y', '-v', 'error', '-f', 'lavfi', '-i', 'color=c=white:s=64x64:r=1', '-f', 'lavfi', '-i', 'anullsrc=r=8000:cl=mono', '-t', '240', '-c:v', 'libx264', '-preset', 'ultrafast', '-c:a', 'aac', '-shortest', lang]);
+  const echt = ffprobeDuur(lang);
+  assert.ok(echt > MAX_VIDEO_SECONDEN, `testvideo duurt ${echt} s`);
+  const eerlijk = { duurSeconden: echt, bytes: statSync(lang).size };
+  assert.match(controleerVideo(lang, eerlijk, 'lang').fouten.join('\n'), /meer dan 180 s \(MD-4, ffprobe\)/, 'een echte video van 4 minuten faalt');
+  const leugen = { duurSeconden: 100, bytes: statSync(lang).size };
+  assert.match(controleerVideo(lang, leugen, 'lang').fouten.join('\n'), /ffprobe meldt 24\d/, 'metadata die te weinig zegt verbergt de echte duur niet');
+  const groot = join(map, 'groot.mp4');
+  writeFileSync(groot, Buffer.alloc(MAX_VIDEO_BYTES + 1));
+  assert.match(controleerVideo(groot, { duurSeconden: 60, bytes: MAX_VIDEO_BYTES + 1 }, 'groot').fouten.join('\n'), /is meer dan 20 MB/);
+  assert.match(controleerVideo(join(map, 'kort.mp4'), {}, 'kort').fouten.join('\n'), /bestaat niet/);
+  const echteVideo = resolve(root, blok(1).media.video.bestand);
+  assert.match(controleerVideo(echteVideo, { duurSeconden: 200, bytes: statSync(echteVideo).size }, 'V1').fouten.join('\n'), /metadata zegt 200 s/, 'metadata boven 3 minuten faalt ook');
 });
 
 test('MD-5: elke video heeft WebVTT-ondertitels en een transcript dat uit dezelfde spreektekst komt', () => {
@@ -166,9 +187,12 @@ test('MD-4: de ondertitelknip houdt regels kort en de VTT-tijden lopen op', () =
 
 // ---------------------------------------------------------------- spellen: MD-8, MD-9, MD-10, MD-11, MD-13, MD-15
 
-test('MD-8, MD-10, MD-13, MD-15: beide spellen voldoen aan de controle (duur, feedback per keuze, geen score, geen netwerk, fictief)', () => {
+test('MD-8, MD-10, MD-13, MD-15: alle vier de spellen voldoen aan de controle (duur, feedback per keuze, geen score, geen netwerk, fictief)', () => {
+  assert.deepEqual(spellen().map((s) => s.id), ['vraagslijper', 'bronnen-detective', 'stakeholder-radar', 'waarde-simulator']);
+  assert.deepEqual(spellen().map((s) => s.leerblok), [1, 2, 3, 4], 'één spel per leerblok');
   for (const s of spellen()) assert.deepEqual(controleerSpel(s), [], s.id);
-  const [detective, sim] = spellen();
+  for (const s of spellen()) assert.ok(geschatteSeconden(s) <= MAX_SECONDEN, `${s.id}: geschat ${geschatteSeconden(s)} s`);
+  const [detective, sim] = [spel('bronnen-detective'), spel('waarde-simulator')];
   assert.equal(detective.kaarten.length, 6);
   assert.ok(detective.kaarten.every((k) => k.fictief === true), '100 % van de kaarten is fictief');
   assert.equal(sim.beslissingen.length, 3);
@@ -176,8 +200,62 @@ test('MD-8, MD-10, MD-13, MD-15: beide spellen voldoen aan de controle (duur, fe
   for (const s of [detective, sim]) assert.ok(geschatteSeconden(s) <= MAX_SECONDEN);
 });
 
+test('MD-8, MD-10: de Vraagslijper heeft drie rondes met per veld drie opties, eigen feedback en één sterkste optie, en stelt de vraag samen in het format', () => {
+  const v = spel('vraagslijper');
+  assert.equal(v.rondes.length, 3);
+  assert.deepEqual(v.velden.map((x) => x.id), ['gebruiker', 'pain', 'waarde']);
+  for (const r of v.rondes) {
+    assert.equal(r.fictief, true);
+    for (const veld of v.velden) {
+      assert.equal(r.keuzes[veld.id].length, 3);
+      assert.equal(new Set(r.keuzes[veld.id].map((o) => beoordeelKeuze(r.keuzes[veld.id], o.id).feedback)).size, 3, 'eigen feedback per optie');
+      assert.equal(r.keuzes[veld.id].filter((o) => beoordeelKeuze(r.keuzes[veld.id], o.id).passend).length, 1);
+    }
+  }
+  const r = v.rondes[0];
+  const sterkste = Object.fromEntries(v.velden.map((x) => [x.id, r.keuzes[x.id].find((o) => o.passend).id]));
+  const vraag = stelVraagSamen(v, r, sterkste);
+  assert.match(vraag, /^Wat is de beste oplossing voor klanten die .* om niet lang .*, zodat klanten de webshop weer vertrouwen/);
+  assert.doesNotMatch(vraag, /[{}]/);
+  assert.match(stelVraagSamen(v, r, { gebruiker: sterkste.gebruiker }), /om \{pain\}, zodat \{waarde\}/, 'een ontbrekende keuze blijft zichtbaar');
+  assert.throws(() => beoordeelKeuze(r.keuzes.pain, 'z'));
+});
+
+test('MD-8, MD-10: de Stakeholder-radar heeft zes stakeholders met invloed en belang, vier vakken en twee slotvragen met feedback per keuze', () => {
+  const r = spel('stakeholder-radar');
+  assert.equal(r.rondes.length, 6);
+  assert.deepEqual(r.vakken.map((v) => v.naam), ['Nauw betrekken', 'Tevreden houden', 'Op de hoogte houden', 'Volgen']);
+  const plaatsing = {};
+  for (const s of r.rondes) {
+    assert.equal(s.fictief, true);
+    plaatsing[s.id] = Object.fromEntries(s.velden.map((v) => [v.id, v.opties.find((o) => o.passend).id]));
+  }
+  const raster = rasterVan(r, plaatsing);
+  assert.equal(raster.flatMap((v) => v.stakeholders).length, 6, 'elke stakeholder staat in precies één vak');
+  assert.deepEqual(raster.find((v) => v.id === 'nauw').stakeholders, ['Directie van de webshop']);
+  assert.equal(vakVoor(r, 'hoog', 'laag').id, 'tevreden');
+  assert.deepEqual(rasterVan(r, { s1: { invloed: 'hoog' } }).flatMap((v) => v.stakeholders), [], 'een halve keuze telt niet');
+  assert.deepEqual(r.slotVragen.map((q) => q.opties.find((o) => o.passend).id), ['s3', 's5']);
+  for (const q of r.slotVragen) assert.equal(new Set(q.opties.map((o) => o.feedback)).size, 6);
+});
+
+test('MD-8, MD-10, MD-15: de controle faalt bij een Vraagslijper of Stakeholder-radar zonder sterkste optie, zonder feedback of zonder fictief', () => {
+  const kapot = (id, f) => { const k = structuredClone(spel(id)); f(k); return controleerSpel(k).join('\n'); };
+  assert.match(kapot('vraagslijper', (k) => { k.rondes[0].keuzes.pain[1].passend = false; }), /precies één optie past het best/);
+  assert.match(kapot('vraagslijper', (k) => { k.rondes[1].keuzes.waarde[0].feedback = ''; }), /feedback/);
+  assert.match(kapot('vraagslijper', (k) => { k.rondes[2].fictief = false; }), /fictief/);
+  assert.match(kapot('vraagslijper', (k) => { k.rondes.pop(); }), /drie rondes/);
+  assert.match(kapot('vraagslijper', (k) => { k.format = 'Wat is de beste oplossing?'; }), /format/);
+  assert.match(kapot('stakeholder-radar', (k) => { k.rondes[3].velden[0].opties[1].feedback = k.rondes[3].velden[0].opties[0].feedback; }), /eigen feedback/);
+  assert.match(kapot('stakeholder-radar', (k) => { k.rondes[0].velden[1].opties[0].passend = false; }), /precies één/);
+  assert.match(kapot('stakeholder-radar', (k) => { k.slotVragen.pop(); }), /twee slotvragen/);
+  assert.match(kapot('stakeholder-radar', (k) => { k.rondes[2].soort = 'ergens'; }), /intern of extern/);
+  assert.match(kapot('stakeholder-radar', (k) => { k.rondes.push(...structuredClone(k.rondes)); }), /zes stakeholders|geschatte duur/);
+  assert.match(kapot('stakeholder-radar', (k) => { k.intro += ' Je haalt zoveel punten als je kunt.'; }), /score of ranglijst/);
+});
+
 test('MD-10: de controle faalt bij een score, een ranglijst, een kaart zonder fictief of een optie zonder feedback', () => {
-  const [detective] = spellen();
+  const detective = spel('bronnen-detective');
   const met = (f) => { const k = structuredClone(detective); f(k); return controleerSpel(k).join('\n'); };
   assert.match(met((k) => { k.score = 0; }), /score/);
   assert.match(met((k) => { k.kaarten[0].fictief = false; }), /fictief/);
@@ -188,7 +266,7 @@ test('MD-10: de controle faalt bij een score, een ranglijst, een kaart zonder fi
 });
 
 test('MD-9: elk spel heeft een tekstversie met alle kaarten of beslissingen, opties en feedback', () => {
-  const [detective, sim] = spellen();
+  const [detective, sim] = [spel('bronnen-detective'), spel('waarde-simulator')];
   const t1 = tekstversie(detective);
   assert.equal(t1.length, 6);
   for (const [i, k] of detective.kaarten.entries()) {
@@ -197,6 +275,13 @@ test('MD-9: elk spel heeft een tekstversie met alle kaarten of beslissingen, opt
     for (const g of k.gegevens) assert.ok(tekst.includes(g.tekst));
     assert.match(t1[i].kop, /fictief/);
   }
+  const vs = tekstversie(spel('vraagslijper'));
+  assert.equal(vs.length, 3);
+  for (const [i, r] of spel('vraagslijper').rondes.entries()) for (const veld of Object.values(r.keuzes)) for (const o of veld) assert.ok(vs[i].regels.join('\n').includes(o.feedback));
+  const rs = tekstversie(spel('stakeholder-radar'));
+  assert.equal(rs.length, 8, 'zes stakeholders en twee slotvragen');
+  for (const [i, s] of spel('stakeholder-radar').rondes.entries()) for (const v of s.velden) for (const o of v.opties) assert.ok(rs[i].regels.join('\n').includes(o.feedback));
+  for (const [i, q] of spel('stakeholder-radar').slotVragen.entries()) for (const o of q.opties) assert.ok(rs[6 + i].regels.join('\n').includes(o.feedback));
   const t2 = tekstversie(sim);
   assert.equal(t2.length, 3);
   for (const [i, b] of sim.beslissingen.entries()) for (const o of b.opties) assert.ok(t2[i].regels.join('\n').includes(o.feedback));
@@ -213,7 +298,7 @@ test('MD-9: het spel is met alleen het toetsenbord te bedienen: alleen knoppen, 
 });
 
 test('MD-10: de feedback per keuze klopt: elke optie geeft eigen tekst en de simulator vergelijkt per kapitaal, zonder totaal', () => {
-  const [detective, sim] = spellen();
+  const [detective, sim] = [spel('bronnen-detective'), spel('waarde-simulator')];
   for (const k of detective.kaarten) {
     assert.equal(new Set(k.opties.map((o) => beoordeelKaart(k, o.id).feedback)).size, 3);
     assert.equal(k.opties.filter((o) => beoordeelKaart(k, o.id).passend).length, 1);
@@ -244,9 +329,13 @@ test('MD-11: een spel levert nooit een bewijsrecord: spel.js en spel-model.js ra
   // een volledige spelrun op het model laat de opslag leeg
   const opslag = geheugenOpslag();
   const store = maakStore(opslag);
-  const [detective, sim] = spellen();
+  const [detective, sim] = [spel('bronnen-detective'), spel('waarde-simulator')];
   for (const k of detective.kaarten) for (const o of k.opties) beoordeelKaart(k, o.id);
   for (const b of sim.beslissingen) for (const o of b.opties) vergelijkVoorspelling(b, o.id, {});
+  const vsl = spel('vraagslijper');
+  for (const r of vsl.rondes) for (const veld of vsl.velden) for (const o of r.keuzes[veld.id]) beoordeelKeuze(r.keuzes[veld.id], o.id);
+  const rad = spel('stakeholder-radar');
+  for (const q of rad.slotVragen) for (const o of q.opties) beoordeelKeuze(q.opties, o.id);
   assert.equal(opslag.length, 0);
   assert.deepEqual(store.ids(), []);
 });
@@ -275,11 +364,55 @@ test('MD-16, MD-14: leerblok 1 toont twee kijktips als gewone link met bron, duu
   for (const bestand of readdirSync(resolve(root, 'js')).filter((n) => n.endsWith('.js'))) assert.doesNotMatch(bron(`js/${bestand}`), /['"`]iframe['"`]|['"`]embed['"`]|<iframe/i, `js/${bestand} maakt een iframe`);
 });
 
+// ---------------------------------------------------------------- MD-12
+
+/** Een leerblok zonder de mediasleutels: wat een student met alleen tekst te zien krijgt. */
+const alleenTekst = (b) => { const { media, kijktips, ...rest } = b; return rest; };
+/** Woorden die een taak van video of spel afhankelijk maken. */
+const MEDIA_AFHANKELIJK = /\b(bekijk de video|kijk de video|speel het spel|speel de simulatie|video \d|Vraagslijper|Bronnen-detective|Stakeholder-radar|Waarde-simulator)\b/i;
+
+test('MD-12: elke taak van elk leerblok heeft alle inhoud die een student voor „klaar als” nodig heeft in de tekst, zonder video of spel', () => {
+  for (const b of MET_MEDIA) {
+    const tekst = alleenTekst(b);
+    assert.equal(tekst.taken.length > 0, true, `leerblok ${b.leerblok}: taken`);
+    for (const t of tekst.taken) {
+      for (const veld of ['waarom', 'klaarAls', 'stof', 'oefening']) {
+        const w = t[veld];
+        const gevuld = typeof w === 'string' ? w.trim() : (w?.tekst ?? '').trim() || JSON.stringify(w ?? '').length > 4;
+        assert.ok(gevuld, `leerblok ${b.leerblok} taak ${t.id}: ${veld} staat in de tekst`);
+      }
+    }
+  }
+});
+
+test('MD-12: geen taak vraagt om een video of spel, en tekst is de standaardroute', () => {
+  for (const b of MET_MEDIA) {
+    assert.doesNotMatch(JSON.stringify(alleenTekst(b)), MEDIA_AFHANKELIJK, `leerblok ${b.leerblok}: een taak verwijst naar video of spel`);
+    assert.equal(leesRoute(maakStore(geheugenOpslag()), b.leerblok), 'tekst', `leerblok ${b.leerblok}: standaardroute`);
+  }
+});
+
+test('MD-12: de pagina van een leerblok bouwt de taken zonder de mediasectie (media wordt pas geladen als het leerblok media heeft)', () => {
+  const pagina = bron('js/leerblok.js');
+  assert.match(pagina, /const heeftMedia = Boolean\(blok\.media \|\| blok\.kijktips\)/);
+  assert.match(pagina, /mediaSectie\?\.element/, 'de mediasectie is optioneel in de opbouw');
+  assert.match(pagina, /const \{ bouwMediaSectie, bouwKijktips \} = heeftMedia \? await import/, 'media.js is een uitgestelde import');
+});
+
+test('MD-12: de controle vindt een taak die alleen via een video te doen is', () => {
+  const b = alleenTekst(json('data/leerblok-2.json'));
+  b.taken[0].oefening = `${typeof b.taken[0].oefening === 'string' ? b.taken[0].oefening : JSON.stringify(b.taken[0].oefening)} Bekijk de video V2 en beantwoord de vraag.`;
+  assert.match(JSON.stringify(b), MEDIA_AFHANKELIJK, 'saboteer: de taak verwijst naar video V2');
+  b.taken[1].klaarAls = '';
+  assert.equal((b.taken[1].klaarAls ?? '').trim(), '', 'saboteer: een lege „klaar als” valt op');
+});
+
 // ---------------------------------------------------------------- DM-13 en de contentcontrole
 
-test('DM-13: de stapkaart van Bronnen beoordelen en Eerste conclusies heeft video en spel (docent-data: media), zonder verzoeken naar andere domeinen', () => {
+test('DM-13: elke stapkaart van een onderdeel met media heeft video en spel (docent-data: media), zonder verzoeken naar andere domeinen', () => {
   const met = [1, 2].flatMap((n) => json(`data/docent-deel${n}.json`).onderdelen).filter((o) => o.media);
-  assert.deepEqual(met.map((o) => o.media.leerblok), [2, 4]);
+  assert.deepEqual(met.map((o) => o.id), ['d1-04', 'd1-10', 'd2-02', 'd2-10']);
+  assert.deepEqual(met.map((o) => o.media.leerblok), [1, 2, 3, 4]);
   for (const o of met) assert.ok(blok(o.media.leerblok).media.video && blok(o.media.leerblok).media.spel);
   const pagina = bron('js/docent/pagina.js');
   assert.match(pagina, /from '\.\.\/media\.js'/);

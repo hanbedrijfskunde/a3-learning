@@ -1,4 +1,4 @@
-// Bouwt de conceptvideo's van leerblok 2 en 4 (fase 12, MD-4…MD-7): tekstdia's met een computerstem, ondertitels en metadata.
+// Bouwt de conceptvideo's van leerblok 1 tot en met 4 (fase 12 en 13, MD-4…MD-7): tekstdia's met een computerstem, ondertitels en metadata.
 // Reproduceerbaar: de dia's en de spreektekst staan in `media.video.dias` van data/leerblok-N.json; dit script maakt er
 //   media/<naam>.mp4   (H.264 + AAC, 1280 × 720, stilstaande dia's)
 //   media/<naam>.vtt   (WebVTT-ondertitels, per zin verdeeld over de spreektijd van de dia)
@@ -10,7 +10,7 @@
 // met dezelfde bestandsnaam en ondertitels in media/ zetten.
 //
 // Gebruik: node tools/maak-video.mjs            beide video's (V2 en V4)
-//          node tools/maak-video.mjs V2         alleen V2
+//          node tools/maak-video.mjs V2         alleen V2 (V1 tot en met V4)
 //          STEM=Ellen node tools/maak-video.mjs  andere stem; TEMPO=170 (woorden per minuut, standaard 170)
 import { execFileSync } from 'node:child_process';
 import { existsSync, mkdtempSync, mkdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
@@ -30,6 +30,8 @@ const CHROME = [process.env.CHROME, '/Applications/Google Chrome.app/Contents/Ma
 const UITSPRAAK = [
   [/\(\+\)/g, ' plus'], [/\(−\)/g, ' min'], [/AAOCC/g, 'A A O C C'], [/\bAPA\b/g, 'A P A'], [/\bAI\b/g, 'A I'], [/\bVPC\b/g, 'V P C'],
   [/e\.a\./g, 'en anderen'], [/taak 4\.1/g, 'taak vier punt één'], [/taak 9\.4/g, 'taak negen punt vier'],
+  [/taak 2\.1/g, 'taak twee punt één'], [/taak 5\.1/g, 'taak vijf punt één'], [/\bA3\b/g, 'A drie'], [/TOM³/g, 'T O M drie'], [/\bTOM\b/g, 'T O M'],
+  [/\bBMC\b/g, 'B M C'], [/z\.d\./g, 'zonder datum'], [/ & /g, ' en '], [/Zo'n/g, 'Zo een'],
 ];
 const uitspraak = (t) => UITSPRAAK.reduce((s, [re, v]) => s.replace(re, v), t);
 const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
@@ -143,7 +145,7 @@ function main() {
     console.log(`${video.id}: ${r.duurSeconden} s, ${(r.bytes / 1048576).toFixed(2)} MB`);
   }
   mkdirSync(dirname(metaPad), { recursive: true });
-  writeFileSync(metaPad, `${JSON.stringify(meta, null, 2)}\n`);
+  writeFileSync(metaPad, `${JSON.stringify(Object.fromEntries(Object.entries(meta).sort(([a], [b]) => a.localeCompare(b))), null, 2)}\n`);
 }
 
 if (process.argv[1] && import.meta.url === new URL(`file://${process.argv[1]}`).href) main();

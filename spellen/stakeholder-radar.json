@@ -1,0 +1,375 @@
+{
+  "formaat": "1.0",
+  "id": "stakeholder-radar",
+  "type": "radar",
+  "titel": "Stakeholder-radar",
+  "leerblok": 3,
+  "taak": "5.1",
+  "bron": "concept-auteur",
+  "intro": "Bij webshop X stijgt het aantal retouren. Je plaatst zes stakeholders op invloed en belang en leest bij elke keuze de feedback. Daarna zie je je raster en beantwoord je twee vragen: wie merkt het probleem het eerst, en wie heeft er belang bij dat het blijft zoals het is?",
+  "fictiefUitleg": "Webshop X en de stakeholders zijn verzonnen.",
+  "geenBewijs": "Dit komt niet in je dossier.",
+  "vakken": [
+    {
+      "id": "nauw",
+      "naam": "Nauw betrekken",
+      "invloed": "hoog",
+      "belang": "hoog"
+    },
+    {
+      "id": "tevreden",
+      "naam": "Tevreden houden",
+      "invloed": "hoog",
+      "belang": "laag"
+    },
+    {
+      "id": "hoogte",
+      "naam": "Op de hoogte houden",
+      "invloed": "laag",
+      "belang": "hoog"
+    },
+    {
+      "id": "volgen",
+      "naam": "Volgen",
+      "invloed": "laag",
+      "belang": "laag"
+    }
+  ],
+  "rondes": [
+    {
+      "id": "s1",
+      "fictief": true,
+      "titel": "Directie van de webshop",
+      "soort": "intern",
+      "situatie": "Beslist over de retourregels en het budget. De directie wil de kosten van retouren omlaag brengen.",
+      "velden": [
+        {
+          "id": "invloed",
+          "label": "Hoeveel invloed heeft deze stakeholder op het vraagstuk?",
+          "opties": [
+            {
+              "id": "hoog",
+              "tekst": "Hoog",
+              "passend": true,
+              "feedback": "Klopt. De directie beslist over regels en budget, dus zij kan iets veranderen."
+            },
+            {
+              "id": "laag",
+              "tekst": "Laag",
+              "feedback": "De directie beslist over de retourregels en het budget. Dat is invloed: zij kan het vraagstuk echt veranderen."
+            }
+          ]
+        },
+        {
+          "id": "belang",
+          "label": "Hoeveel belang heeft deze stakeholder bij het vraagstuk?",
+          "opties": [
+            {
+              "id": "hoog",
+              "tekst": "Hoog",
+              "passend": true,
+              "feedback": "Klopt. Retouren kosten de webshop geld en de directie moet dat verantwoorden."
+            },
+            {
+              "id": "laag",
+              "tekst": "Laag",
+              "feedback": "Retouren kosten de webshop geld en de directie wil dat omlaag. Het raakt haar dus wel: het belang is hoog."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "fictief": true,
+      "titel": "Verkoopplatform",
+      "soort": "extern",
+      "situatie": "Een platform waarop webshop X ook verkoopt. Het stelt de retourregels voor alle verkopers vast. Voor het platform is één webshop een klein deel van het geheel.",
+      "velden": [
+        {
+          "id": "invloed",
+          "label": "Hoeveel invloed heeft deze stakeholder op het vraagstuk?",
+          "opties": [
+            {
+              "id": "hoog",
+              "tekst": "Hoog",
+              "passend": true,
+              "feedback": "Klopt. Het platform bepaalt de retourregels waar webshop X zich aan moet houden."
+            },
+            {
+              "id": "laag",
+              "tekst": "Laag",
+              "feedback": "Het platform stelt de regels vast waar webshop X zich aan moet houden. Dat is veel invloed."
+            }
+          ]
+        },
+        {
+          "id": "belang",
+          "label": "Hoeveel belang heeft deze stakeholder bij het vraagstuk?",
+          "opties": [
+            {
+              "id": "hoog",
+              "tekst": "Hoog",
+              "feedback": "Het platform heeft duizenden verkopers. De retouren van één webshop raken het weinig, dus het belang is laag."
+            },
+            {
+              "id": "laag",
+              "tekst": "Laag",
+              "passend": true,
+              "feedback": "Klopt. Voor het platform is één webshop een klein deel van het geheel, dus het raakt het weinig."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s3",
+      "fictief": true,
+      "titel": "Magazijnmedewerkers",
+      "soort": "intern",
+      "situatie": "Ontvangen de retourpakketten, controleren ze en zetten de artikelen terug. Over de retourregels gaan ze niet.",
+      "velden": [
+        {
+          "id": "invloed",
+          "label": "Hoeveel invloed heeft deze stakeholder op het vraagstuk?",
+          "opties": [
+            {
+              "id": "hoog",
+              "tekst": "Hoog",
+              "feedback": "Ze bepalen de regels niet. Ze voeren het werk uit, daarom is hun invloed op het vraagstuk laag."
+            },
+            {
+              "id": "laag",
+              "tekst": "Laag",
+              "passend": true,
+              "feedback": "Klopt. Ze voeren uit wat de regels zeggen en bepalen die niet zelf."
+            }
+          ]
+        },
+        {
+          "id": "belang",
+          "label": "Hoeveel belang heeft deze stakeholder bij het vraagstuk?",
+          "opties": [
+            {
+              "id": "hoog",
+              "tekst": "Hoog",
+              "passend": true,
+              "feedback": "Klopt. Elk retourpakket is extra werk voor hen, dus het raakt hen dagelijks."
+            },
+            {
+              "id": "laag",
+              "tekst": "Laag",
+              "feedback": "Elk retourpakket komt bij hen binnen. Het raakt hun werk dagelijks, dus het belang is hoog."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s4",
+      "fictief": true,
+      "titel": "Klanten die terugsturen",
+      "soort": "extern",
+      "situatie": "Sturen bestellingen terug en wachten op hun geld. Ze kennen de retourregels pas als ze iets terugsturen.",
+      "velden": [
+        {
+          "id": "invloed",
+          "label": "Hoeveel invloed heeft deze stakeholder op het vraagstuk?",
+          "opties": [
+            {
+              "id": "hoog",
+              "tekst": "Hoog",
+              "feedback": "Een enkele klant verandert de retourregels niet. Samen kunnen klanten iets bereiken, maar dat is hier niet het geval."
+            },
+            {
+              "id": "laag",
+              "tekst": "Laag",
+              "passend": true,
+              "feedback": "Klopt. Een enkele klant verandert de regels niet."
+            }
+          ]
+        },
+        {
+          "id": "belang",
+          "label": "Hoeveel belang heeft deze stakeholder bij het vraagstuk?",
+          "opties": [
+            {
+              "id": "hoog",
+              "tekst": "Hoog",
+              "passend": true,
+              "feedback": "Klopt. Het gaat om hun geld en hun bestelling."
+            },
+            {
+              "id": "laag",
+              "tekst": "Laag",
+              "feedback": "Ze wachten op hun geld en hun bestelling. Het raakt hen direct, dus het belang is hoog."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s5",
+      "fictief": true,
+      "titel": "Vervoerder",
+      "soort": "extern",
+      "situatie": "Haalt de retourpakketten op en verdient aan elke zending. Wat er in het pakket zit en waarom het terugkomt, maakt voor hem niet uit.",
+      "velden": [
+        {
+          "id": "invloed",
+          "label": "Hoeveel invloed heeft deze stakeholder op het vraagstuk?",
+          "opties": [
+            {
+              "id": "hoog",
+              "tekst": "Hoog",
+              "feedback": "De vervoerder bepaalt de retourregels niet. Hij haalt op wat er is, dus zijn invloed is laag."
+            },
+            {
+              "id": "laag",
+              "tekst": "Laag",
+              "passend": true,
+              "feedback": "Klopt. De vervoerder haalt pakketten op en bepaalt de retourregels niet."
+            }
+          ]
+        },
+        {
+          "id": "belang",
+          "label": "Hoeveel belang heeft deze stakeholder bij het vraagstuk?",
+          "opties": [
+            {
+              "id": "hoog",
+              "tekst": "Hoog",
+              "feedback": "Retouren doen hem weinig: hij haalt ze op zoals alle andere pakketten. Het vraagstuk raakt hem weinig."
+            },
+            {
+              "id": "laag",
+              "tekst": "Laag",
+              "passend": true,
+              "feedback": "Klopt. Het vraagstuk zelf raakt hem weinig. Dat is iets anders dan belang hebben bij hoe het nu gaat: daarover gaat de laatste vraag."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s6",
+      "fictief": true,
+      "titel": "Leveranciers",
+      "soort": "extern",
+      "situatie": "Leveren de artikelen aan de webshop. Ze horen niet welke artikelen worden teruggestuurd en beslissen niet over de retourregels.",
+      "velden": [
+        {
+          "id": "invloed",
+          "label": "Hoeveel invloed heeft deze stakeholder op het vraagstuk?",
+          "opties": [
+            {
+              "id": "hoog",
+              "tekst": "Hoog",
+              "feedback": "Ze beslissen niet over de retourregels en horen niet eens wat er terugkomt. Hun invloed is laag."
+            },
+            {
+              "id": "laag",
+              "tekst": "Laag",
+              "passend": true,
+              "feedback": "Klopt. Ze leveren en beslissen niet mee."
+            }
+          ]
+        },
+        {
+          "id": "belang",
+          "label": "Hoeveel belang heeft deze stakeholder bij het vraagstuk?",
+          "opties": [
+            {
+              "id": "hoog",
+              "tekst": "Hoog",
+              "feedback": "Ze horen niet wat er teruggestuurd wordt. Het vraagstuk raakt hen dus weinig."
+            },
+            {
+              "id": "laag",
+              "tekst": "Laag",
+              "passend": true,
+              "feedback": "Klopt. Ze horen niet wat er terugkomt, dus het raakt hen weinig. Dat kan veranderen als ze het wel horen."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "slotVragen": [
+    {
+      "id": "merktEerst",
+      "label": "Wie merkt het probleem het eerst?",
+      "opties": [
+        {
+          "id": "s1",
+          "tekst": "Directie van de webshop",
+          "feedback": "De directie ziet de kosten pas in de cijfers van het kwartaal. Dat is later dan iemand die de pakketten ziet."
+        },
+        {
+          "id": "s2",
+          "tekst": "Verkoopplatform",
+          "feedback": "Het platform ziet één webshop tussen duizenden. Het merkt het later."
+        },
+        {
+          "id": "s3",
+          "tekst": "Magazijnmedewerkers",
+          "passend": true,
+          "feedback": "Klopt. Elk retourpakket komt eerst in het magazijn binnen. Pas na enkele dagen bellen klanten over hun geld."
+        },
+        {
+          "id": "s4",
+          "tekst": "Klanten die terugsturen",
+          "feedback": "Klanten weten dat hun eigen bestelling niet paste, maar niet dat het er steeds meer worden. Het probleem van de webshop zien ze niet."
+        },
+        {
+          "id": "s5",
+          "tekst": "Vervoerder",
+          "feedback": "De vervoerder haalt pakketten op, maar ziet niet wat erin zit of waarom het terugkomt."
+        },
+        {
+          "id": "s6",
+          "tekst": "Leveranciers",
+          "feedback": "Leveranciers horen niet wat er terugkomt. Zij merken het het laatst."
+        }
+      ]
+    },
+    {
+      "id": "belangHuidig",
+      "label": "Wie heeft er belang bij dat het blijft zoals het is?",
+      "opties": [
+        {
+          "id": "s1",
+          "tekst": "Directie van de webshop",
+          "feedback": "De directie wil de retouren juist omlaag. Zij heeft geen belang bij hoe het nu gaat."
+        },
+        {
+          "id": "s2",
+          "tekst": "Verkoopplatform",
+          "feedback": "Het platform wil dat verkopers zich aan de regels houden. Of er meer of minder retouren zijn, verandert voor het platform weinig."
+        },
+        {
+          "id": "s3",
+          "tekst": "Magazijnmedewerkers",
+          "feedback": "Het magazijn heeft er extra werk van. Het blijft zo niet prettig voor hen."
+        },
+        {
+          "id": "s4",
+          "tekst": "Klanten die terugsturen",
+          "feedback": "Klanten wachten op hun geld en willen dat het sneller gaat. Zij hebben geen belang bij hoe het nu gaat."
+        },
+        {
+          "id": "s5",
+          "tekst": "Vervoerder",
+          "passend": true,
+          "feedback": "Klopt. Hij verdient aan elke zending. Dalen de retouren, dan verdient hij minder. Belang bij het vraagstuk en belang bij hoe het nu gaat zijn dus twee verschillende dingen."
+        },
+        {
+          "id": "s6",
+          "tekst": "Leveranciers",
+          "feedback": "Leveranciers verdienen niet aan de retouren. Ze hebben geen reden om het zo te laten."
+        }
+      ]
+    }
+  ],
+  "slot": "Je hebt zes stakeholders geplaatst. Let op: belang bij het vraagstuk is iets anders dan belang bij de huidige situatie. Kijk naar je eigen vraagstuk. Wie merkt het eerst, en wie heeft er belang bij dat het blijft zoals het is? Dat schrijf je in taak 5.1 voor je eigen vraagstuk."
+}

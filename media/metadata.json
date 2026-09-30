@@ -1,8 +1,20 @@
 {
+  "media/v1-user-story.mp4": {
+    "duurSeconden": 116.57,
+    "bytes": 1207057,
+    "ondertitels": "media/v1-user-story.vtt",
+    "stem": "Xander (macOS say, 170 woorden per minuut)"
+  },
   "media/v2-bronnen-beoordelen.mp4": {
     "duurSeconden": 114,
     "bytes": 1166478,
     "ondertitels": "media/v2-bronnen-beoordelen.vtt",
+    "stem": "Xander (macOS say, 170 woorden per minuut)"
+  },
+  "media/v3-vraagstuk-plaatsen.mp4": {
+    "duurSeconden": 132.73,
+    "bytes": 1372880,
+    "ondertitels": "media/v3-vraagstuk-plaatsen.vtt",
     "stem": "Xander (macOS say, 170 woorden per minuut)"
   },
   "media/v4-verbanden.mp4": {

@@ -18,15 +18,16 @@
 //                  "bewijsonderdeel": "EV-01" | null, "luk": [1], "bc": ["BC1"] } ],
 //     "verdieping": { "tekst", "bron", "na": "2.2" },
 //     "bewijsonderdelen": [ { "id": "EV-01", "taak": "2.1", "titel", "lukOnderdelen": ["…"] } ] }
-import { readdirSync, readFileSync, existsSync } from 'node:fs';
+import { readdirSync, readFileSync, existsSync, statSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { bouwControle } from '../js/checks/index.js';
 import { apaJaar } from '../js/checks/lb2.js';
 import { CITATIE_RE, eersteVolgordefout } from '../js/bronnen.js';
 import { normaliseerBlok } from '../js/blok.js';
-import { uitlegWoorden, modelRegels, MAX_WOORDEN_UITLEG } from '../js/media.js';
-import { controleerSpel } from '../js/spel-model.js';
+import { uitlegWoorden, modelRegels, MAX_WOORDEN_UITLEG, MAX_VIDEO_SECONDEN, MAX_VIDEO_BYTES, METADATA } from '../js/media.js';
+import { controleerSpel } from './spel-check.mjs';
 import { KAPITALEN, VPC_ONDERDELEN, SPANNING, bouwOefenKaarten, maakVerband } from '../js/verbanden.js';
 
 const gevuld = (t) => typeof t === 'string' && t.trim() !== '';
@@ -519,6 +520,37 @@ export function controleerBronnen(map) {
 const eersteZin = (t) => /^[^.!?]+[.!?]/.exec(t.trim())?.[0] ?? t.trim();
 const zonderOordeel = (t) => String(t ?? '').replace(/^[+?–-]\s*/u, '');
 
+/** Duur in seconden van een videobestand volgens ffprobe, of null als ffprobe ontbreekt of het bestand niet te lezen is. */
+export function ffprobeDuur(pad) {
+  try {
+    const n = Number(execFileSync('ffprobe', ['-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', pad], { stdio: ['ignore', 'pipe', 'ignore'] }).toString().trim());
+    return Number.isFinite(n) ? n : null;
+  } catch (e) { return null; }
+}
+
+/**
+ * MD-4: een eigen video duurt hoogstens 3 minuten en is hoogstens 20 MB. De duur komt uit ffprobe en de grootte uit het bestand zelf;
+ * de metadata (media/metadata.json) moet daarmee kloppen, zodat een aangepaste metadata een echte te lange video niet kan verbergen.
+ * Zonder ffprobe geldt de metadata en komt er een waarschuwing. Geeft { fouten, waarschuwingen }.
+ */
+export function controleerVideo(pad, meta, naam = pad) {
+  const fouten = [];
+  const waarschuwingen = [];
+  if (!existsSync(pad)) return { fouten: [`${naam}: bestand bestaat niet`], waarschuwingen };
+  const bytes = statSync(pad).size;
+  if (bytes > MAX_VIDEO_BYTES) fouten.push(`${naam}: ${(bytes / 1048576).toFixed(1)} MB is meer dan ${MAX_VIDEO_BYTES / 1048576} MB (MD-4)`);
+  const echt = ffprobeDuur(pad);
+  if (echt === null) waarschuwingen.push(`${naam}: ffprobe ontbreekt, de duur is alleen aan de metadata te zien (MD-4)`);
+  else if (echt > MAX_VIDEO_SECONDEN) fouten.push(`${naam}: ${echt.toFixed(1)} s is meer dan ${MAX_VIDEO_SECONDEN} s (MD-4, ffprobe)`);
+  if (!meta) fouten.push(`${naam}: geen regel in ${METADATA} (duur en grootte)`);
+  else {
+    if (meta.duurSeconden > MAX_VIDEO_SECONDEN) fouten.push(`${naam}: metadata zegt ${meta.duurSeconden} s, meer dan ${MAX_VIDEO_SECONDEN} s (MD-4)`);
+    if (meta.bytes !== bytes) fouten.push(`${naam}: metadata zegt ${meta.bytes} bytes, het bestand heeft er ${bytes}`);
+    if (echt !== null && Math.abs(meta.duurSeconden - echt) >= 1) fouten.push(`${naam}: metadata zegt ${meta.duurSeconden} s, ffprobe meldt ${echt.toFixed(1)} s`);
+  }
+  return { fouten, waarschuwingen };
+}
+
 /**
  * Controleert de media (fase 12): `media` in leerblok 2 en 4, `kijktips` in leerblok 1, de spellen in `spellen/`, de video's
  * in `media/` en het `media`-veld van de docentonderdelen. Geeft { fouten, waarschuwingen }.
@@ -532,6 +564,12 @@ export function controleerMedia(map, blokken, docentDelen = []) {
   const waarschuwingen = [];
   const site = resolve(map, '..');
   const fout = (bestand, wie, t) => fouten.push(`${bestand}: ${wie}${t}`);
+  let metaCache = null;
+  const videoMeta = () => {
+    if (metaCache) return metaCache;
+    try { metaCache = JSON.parse(readFileSync(resolve(site, METADATA), 'utf8')); } catch (e) { metaCache = {}; }
+    return metaCache;
+  };
   for (const blok of blokken) {
     const bestand = `leerblok-${blok.leerblok}.json`;
     const kt = blok.kijktips;
@@ -570,6 +608,11 @@ export function controleerMedia(map, blokken, docentDelen = []) {
       }
       for (const pad of [v.bestand, v.ondertitels]) if (gevuld(pad) && !existsSync(resolve(site, pad))) fout(bestand, wie, `${pad} bestaat niet (maak hem met tools/maak-video.mjs)`);
       if (!/^media\/[\w.-]+\.(mp4|webm)$/.test(v.bestand ?? '')) fout(bestand, wie, 'video staat in media/ als mp4 of webm, op dezelfde site (MD-7)');
+      else if (existsSync(resolve(site, v.bestand))) {
+        const vid = controleerVideo(resolve(site, v.bestand), videoMeta()[v.bestand], v.bestand);
+        fouten.push(...vid.fouten);
+        waarschuwingen.push(...vid.waarschuwingen);
+      }
     }
     const s = m.spel;
     if (!s || !gevuld(s.bestand) || !gevuld(s.titel) || !(s.minuten > 0)) { fout(bestand, wie, 'spel heeft bestand, titel en minuten'); continue; }

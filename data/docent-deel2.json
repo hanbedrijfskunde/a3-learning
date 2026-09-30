@@ -42,6 +42,7 @@
       "minuten": 20,
       "taak": "5.1",
       "leerblok": 3,
+      "media": { "leerblok": 3 },
       "dia": "\"1. Stakeholderanalyse\"",
       "materiaal": [
         "Deck Plaatsing, dia 1. Stakeholderanalyse",

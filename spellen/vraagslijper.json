@@ -1,0 +1,219 @@
+{
+  "formaat": "1.0",
+  "id": "vraagslijper",
+  "type": "rondes",
+  "titel": "Vraagslijper",
+  "leerblok": 1,
+  "taak": "2.1",
+  "bron": "concept-auteur",
+  "intro": "Drie vage vragen bij webshop X. Maak van elke vraag een onderzoeksvraag in het format van de user story: voor wie, welk probleem en welke waarde. Bij elk deel kies je een formulering en lees je meteen de feedback.",
+  "fictiefUitleg": "Webshop X, de vragen en de cijfers zijn verzonnen.",
+  "geenBewijs": "Dit komt niet in je dossier.",
+  "format": "Wat is de beste oplossing voor {gebruiker} om {pain}, zodat {waarde}?",
+  "velden": [
+    {
+      "id": "gebruiker",
+      "label": "Voor wie?"
+    },
+    {
+      "id": "pain",
+      "label": "Welk probleem, welke last of welke winst?"
+    },
+    {
+      "id": "waarde",
+      "label": "Welke waarde levert het op?"
+    }
+  ],
+  "rondes": [
+    {
+      "id": "r1",
+      "fictief": true,
+      "titel": "De klantenservice verbeteren",
+      "vageVraag": "Hoe kunnen we de klantenservice verbeteren?",
+      "situatie": "Klanten geven de klantenservice een 5,8: lang wachten en dezelfde vraag twee keer vertellen.",
+      "keuzes": {
+        "gebruiker": [
+          {
+            "id": "a",
+            "tekst": "de klanten",
+            "feedback": "Te breed. Kies een groep die je kunt vinden en vragen wat er misgaat."
+          },
+          {
+            "id": "b",
+            "tekst": "klanten die de klantenservice bellen met een vraag over hun bestelling",
+            "passend": true,
+            "feedback": "Goed. Je weet wie het zijn en waar je ze vindt."
+          },
+          {
+            "id": "c",
+            "tekst": "de manager van de klantenservice",
+            "feedback": "Dat kan, maar dan gaat je vraag over de werkdruk van de manager. Hier gaat het om wat klanten meemaken."
+          }
+        ],
+        "pain": [
+          {
+            "id": "a",
+            "tekst": "de klantenservice beter te maken",
+            "feedback": "Dit is de vage vraag in andere woorden. Een pain is een last die je kunt aanwijzen. Wat gaat er mis?"
+          },
+          {
+            "id": "b",
+            "tekst": "niet lang in de wacht te staan en niet twee keer hetzelfde te hoeven vertellen",
+            "passend": true,
+            "feedback": "Goed. Een concrete last die klanten zelf noemen."
+          },
+          {
+            "id": "c",
+            "tekst": "een nieuw telefoonsysteem te krijgen",
+            "feedback": "Dit is een oplossing, geen pain. Met een oplossing in de vraag sluit je andere oplossingen uit."
+          }
+        ],
+        "waarde": [
+          {
+            "id": "a",
+            "tekst": "de klantenservice beter wordt",
+            "feedback": "Dat is het doel van de vraag en geen waarde. Wat levert het op, en voor wie?"
+          },
+          {
+            "id": "b",
+            "tekst": "de webshop meer omzet haalt",
+            "feedback": "Omzet is een echte waarde (financieel kapitaal), maar alleen geld is te smal. Zoek een tweede kapitaal."
+          },
+          {
+            "id": "c",
+            "tekst": "klanten de webshop weer vertrouwen en medewerkers minder onder druk staan",
+            "passend": true,
+            "feedback": "Goed. Sociaal en relationeel kapitaal (vertrouwen) en menselijk kapitaal (werkdruk), twee die niet financieel zijn."
+          }
+        ]
+      }
+    },
+    {
+      "id": "r2",
+      "fictief": true,
+      "titel": "Minder retouren",
+      "vageVraag": "Hoe zorgen we dat er minder retouren zijn?",
+      "situatie": "Klanten sturen 18 procent van de bestellingen terug, vooral kleding, vaak met de reden: past niet.",
+      "keuzes": {
+        "gebruiker": [
+          {
+            "id": "a",
+            "tekst": "de webshop",
+            "feedback": "De webshop is een organisatie en geen gebruiker. Een user story gaat over een persoon of groep."
+          },
+          {
+            "id": "b",
+            "tekst": "klanten die weleens iets terugsturen",
+            "feedback": "Beter dan alle klanten, maar weleens is nog breed. Welke producten en waarom?"
+          },
+          {
+            "id": "c",
+            "tekst": "klanten die kleding bestellen en terugsturen omdat de maat niet past",
+            "passend": true,
+            "feedback": "Goed. Een groep, een productgroep en een reden. Zo kun je ze vinden en iets vragen."
+          }
+        ],
+        "pain": [
+          {
+            "id": "a",
+            "tekst": "geen retouren meer te hoeven doen",
+            "feedback": "Dit is een wens van de webshop. Kies de last die de klant zelf voelt."
+          },
+          {
+            "id": "b",
+            "tekst": "niet te kunnen zien welke maat past, waardoor ze thuis passen en terugsturen",
+            "passend": true,
+            "feedback": "Goed. Klanten herkennen dit, en je kunt onderzoeken of het klopt."
+          },
+          {
+            "id": "c",
+            "tekst": "een gratis retourlabel te krijgen",
+            "feedback": "Dit is een oplossing. Het label maakt terugsturen makkelijker, maar de vraag gaat over waarom ze terugsturen."
+          }
+        ],
+        "waarde": [
+          {
+            "id": "a",
+            "tekst": "de retourkosten dalen",
+            "feedback": "Financieel kapitaal telt, maar zoek ook waarde die niet in euro's zit."
+          },
+          {
+            "id": "b",
+            "tekst": "klanten een bestelling krijgen die past, er minder pakketten rondgaan en de retourkosten dalen",
+            "passend": true,
+            "feedback": "Goed. Sociaal en relationeel, natuurlijk en financieel kapitaal: drie kapitalen, twee niet financieel."
+          },
+          {
+            "id": "c",
+            "tekst": "iedereen tevreden is",
+            "feedback": "Te vaag. Wie is dan tevreden en waarom is dat waardevol? Noem de kapitalen."
+          }
+        ]
+      }
+    },
+    {
+      "id": "r3",
+      "fictief": true,
+      "titel": "Een efficiënter magazijn",
+      "vageVraag": "Hoe maken we het magazijn efficiënter?",
+      "situatie": "Medewerkers in het magazijn zoeken lang naar artikelen, vooral in drukke weken.",
+      "keuzes": {
+        "gebruiker": [
+          {
+            "id": "a",
+            "tekst": "het magazijn",
+            "feedback": "Een plek is geen gebruiker. Wie doet het werk en merkt het probleem?"
+          },
+          {
+            "id": "b",
+            "tekst": "de medewerkers in het magazijn die bestellingen verzamelen",
+            "passend": true,
+            "feedback": "Goed. Zij doen het werk en maken het probleem dagelijks mee."
+          },
+          {
+            "id": "c",
+            "tekst": "de magazijnmanager",
+            "feedback": "De manager kan belang hebben, maar de situatie beschrijft wat de medewerkers zeggen. Begin bij hen."
+          }
+        ],
+        "pain": [
+          {
+            "id": "a",
+            "tekst": "efficiënter te werken",
+            "feedback": "Dit is de vage vraag in andere woorden. Wat gaat er mis, en wanneer?"
+          },
+          {
+            "id": "b",
+            "tekst": "een nieuw magazijnsysteem te krijgen",
+            "feedback": "Dit is een oplossing. Zet je die in de vraag, dan onderzoek je niet meer of iets anders beter werkt."
+          },
+          {
+            "id": "c",
+            "tekst": "in drukke weken lang te moeten zoeken naar artikelen, waardoor ze overwerken",
+            "passend": true,
+            "feedback": "Goed. Concreet: wanneer, wat en met welk gevolg."
+          }
+        ],
+        "waarde": [
+          {
+            "id": "a",
+            "tekst": "het magazijn minder kost",
+            "feedback": "Dat is financieel kapitaal. Zoek ook waarde voor de mensen zelf."
+          },
+          {
+            "id": "b",
+            "tekst": "medewerkers minder overwerken en bestellingen op tijd bij de klant zijn",
+            "passend": true,
+            "feedback": "Goed. Menselijk kapitaal en sociaal en relationeel kapitaal, met een duidelijke ontvanger: medewerker en klant."
+          },
+          {
+            "id": "c",
+            "tekst": "het magazijn beter draait",
+            "feedback": "Te vaag. Wat betekent beter draaien, en voor wie? Noem de kapitalen."
+          }
+        ]
+      }
+    }
+  ],
+  "slot": "Je hebt drie vage vragen omgezet in een vraag met een gebruiker, een pain en een waarde. Kun je dat ook bij je eigen vraagstuk? Dat doe je in taak 2.1."
+}

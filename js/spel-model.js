@@ -1,102 +1,35 @@
 // Spellen en simulaties (MD-8…MD-11, MD-13, MD-15): alleen logica, geen DOM, geen netwerk en geen opslag. Een spel leest zijn
 // data (spellen/<id>.json) en geeft feedback; het schrijft nooit iets weg. Daarom importeert dit bestand `store.js` niet,
-// en `spel.js` evenmin (tests/media.test.mjs controleert dat, MD-11).
+// en `spel.js` evenmin (tests/media.test.mjs controleert dat, MD-11). De controle van de spelbestanden staat in tools/spel-check.mjs.
 //
-// Twee soorten (veld `type` in de data):
+// Vier soorten (veld `type` in de data):
 //   "kaarten"    Bronnen-detective: kaarten met gegevens om te onderzoeken, drie opties met feedback per optie, en het AAOCC-oordeel.
 //   "simulatie"  Waarde-simulator: per beslissing een optie kiezen, het effect op de zes kapitalen voorspellen en het effect zien.
+//   "rondes"     Vraagslijper: per ronde een vage vraag en per veld van het user-story-format een keuze met feedback.
+//   "radar"      Stakeholder-radar: per stakeholder invloed en belang kiezen, dan het raster zien en twee vragen beantwoorden.
 // Geen score, geen ranglijst en geen punten (MD-10): feedback is tekst per keuze. Alles wat verzonnen is heeft `fictief: true` (MD-15).
 
 export const KAPITALEN = Object.freeze(['financieel', 'productie', 'intellectueel', 'menselijk', 'sociaal en relationeel', 'natuurlijk']);
 export const TERMIJNEN = Object.freeze(['korte termijn', 'middellange termijn', 'lange termijn']);
 export const EFFECT_TEKST = Object.freeze({ geen: 'geen effect', input: 'input', plus: 'uitkomst plus', min: 'uitkomst min' });
+export const SOORTEN = Object.freeze(['kaarten', 'simulatie', 'rondes', 'radar']);
 export const AAOCC = Object.freeze(['Authority', 'Accuracy', 'Objectivity', 'Currency', 'Coverage']);
 
-/** Hoogstens vijf minuten (MD-8). De schatting is een bovengrens per onderdeel; de echte tijden meet fase 13 (13.4). */
+/** Hoogstens vijf minuten (MD-8). De tijden per onderdeel komen uit de meting van fase 13 (13.4, leestempo 240 woorden per minuut); zie het bouwplan. */
 export const MAX_SECONDEN = 300;
-export const SECONDEN_PER_KAART = 40;
-export const SECONDEN_PER_BESLISSING = 90;
-
-const isObject = (x) => x !== null && typeof x === 'object' && !Array.isArray(x);
-const gevuld = (t) => typeof t === 'string' && t.trim() !== '';
-/** Sleutels die op een score, punten of ranglijst wijzen (MD-10); ze komen in geen enkel spel voor. */
-const SCORE_SLEUTEL = /^(score|scores|punten|ranglijst|highscore|niveau|cijfer|goedAantal|aantalGoed)$/i;
+export const SECONDEN_PER_KAART = 50; // gemeten in fase 13 (13.4): 6 kaarten ongeveer 300 s
+export const SECONDEN_PER_BESLISSING = 100;
+export const SECONDEN_PER_RONDE = 85; // Vraagslijper: een vage vraag lezen en drie keuzes met feedback
+export const SECONDEN_PER_STAKEHOLDER = 35; // Stakeholder-radar: een stakeholder lezen en twee keuzes
+export const SECONDEN_PER_SLOTVRAAG = 35;
 
 /** Geschatte duur in seconden (bovengrens): aantal kaarten of beslissingen maal de tijd per onderdeel. */
 export function geschatteSeconden(spel) {
   if (spel?.type === 'kaarten') return (spel.kaarten ?? []).length * SECONDEN_PER_KAART;
   if (spel?.type === 'simulatie') return (spel.beslissingen ?? []).length * SECONDEN_PER_BESLISSING;
+  if (spel?.type === 'rondes') return (spel.rondes ?? []).length * SECONDEN_PER_RONDE;
+  if (spel?.type === 'radar') return (spel.rondes ?? []).length * SECONDEN_PER_STAKEHOLDER + (spel.slotVragen ?? []).length * SECONDEN_PER_SLOTVRAAG;
   return Infinity;
-}
-
-/** Alle sleutels in de data, ook diep erin (voor de controle op scores en netwerkadressen). */
-function sleutelsEnTeksten(x, uit = { sleutels: [], teksten: [] }) {
-  if (typeof x === 'string') uit.teksten.push(x);
-  else if (Array.isArray(x)) x.forEach((w) => sleutelsEnTeksten(w, uit));
-  else if (isObject(x)) for (const [k, w] of Object.entries(x)) { uit.sleutels.push(k); sleutelsEnTeksten(w, uit); }
-  return uit;
-}
-
-/**
- * Controleert een spel op de regels van het blueprint en geeft een lijst fouten.
- *   MD-8   hoogstens 5 minuten (geschat)
- *   MD-10  feedback bij elke keuze, geen score of ranglijst
- *   MD-13  werkt zonder netwerk: geen adressen in de data
- *   MD-15  elke kaart of beslissing is als fictief gemarkeerd, en het spel legt dat uit
- */
-export function controleerSpel(spel, naam = spel?.id ?? 'spel') {
-  const fouten = [];
-  const fout = (t) => fouten.push(`${naam}: ${t}`);
-  if (!isObject(spel)) return [`${naam}: geen object`];
-  if (spel.formaat !== '1.0') fout('formaat moet "1.0" zijn');
-  if (!gevuld(spel.id)) fout('mist een id');
-  if (!['kaarten', 'simulatie'].includes(spel.type)) fout('type moet kaarten of simulatie zijn');
-  if (!gevuld(spel.titel)) fout('mist een titel');
-  if (!gevuld(spel.intro)) fout('mist een introductie');
-  if (!gevuld(spel.fictiefUitleg) || !/verzonnen/i.test(spel.fictiefUitleg)) fout('fictiefUitleg moet zeggen dat de voorbeelden verzonnen zijn (MD-15)');
-  if (!gevuld(spel.geenBewijs)) fout('geenBewijs mist: het spel zegt dat het geen bewijs oplevert (MD-11)');
-  if (geschatteSeconden(spel) > MAX_SECONDEN) fout(`geschatte duur ${geschatteSeconden(spel)} s is meer dan ${MAX_SECONDEN} s (MD-8)`);
-
-  const { sleutels, teksten } = sleutelsEnTeksten(spel);
-  for (const k of sleutels) if (SCORE_SLEUTEL.test(k)) fout(`sleutel ${k}: een spel toont geen score of ranglijst (MD-10)`);
-  for (const t of teksten) {
-    if (/https?:\/\/|\/\/[\w-]+\.\w/i.test(t)) fout(`tekst met een netwerkadres (${t.slice(0, 40)}…): een spel werkt zonder netwerk (MD-13)`);
-    if (/\b(score|punten|ranglijst|highscore)\b/i.test(t) && !/geen (score|punten|ranglijst)/i.test(t)) fout(`tekst noemt een score of ranglijst (MD-10): ${t.slice(0, 50)}…`);
-  }
-
-  if (spel.type === 'kaarten') {
-    if (!Array.isArray(spel.kaarten) || spel.kaarten.length !== 6) fout('een bronnen-detective heeft zes kaarten');
-    for (const k of spel.kaarten ?? []) {
-      const wie = `kaart ${k?.id ?? '(zonder id)'}: `;
-      if (k?.fictief !== true) fout(`${wie}fictief moet true zijn (MD-15)`);
-      for (const veld of ['titel', 'soort', 'auteur', 'jaar', 'uitgever', 'samenvatting', 'kernpunt']) if (!gevuld(k?.[veld])) fout(`${wie}mist ${veld}`);
-      if (!Array.isArray(k?.gegevens) || k.gegevens.length < 3) fout(`${wie}minstens drie gegevens om te onderzoeken`);
-      for (const c of AAOCC) if (!gevuld(k?.aaocc?.[c])) fout(`${wie}AAOCC mist ${c}`);
-      if (!Array.isArray(k?.opties) || k.opties.length !== 3) fout(`${wie}drie opties`);
-      for (const o of k?.opties ?? []) if (!gevuld(o?.id) || !gevuld(o?.tekst) || !gevuld(o?.feedback)) fout(`${wie}elke optie heeft id, tekst en feedback (MD-10)`);
-      if ((k?.opties ?? []).filter((o) => o.passend).length !== 1) fout(`${wie}precies één optie past het best`);
-    }
-  }
-  if (spel.type === 'simulatie') {
-    if (!Array.isArray(spel.beslissingen) || spel.beslissingen.length !== 3) fout('een waarde-simulator heeft drie beslissingen');
-    if (spel.fictief !== true) fout('fictief moet true zijn (MD-15)');
-    if ((spel.voorspelOpties ?? []).map((o) => o.id).join() !== 'geen,input,plus,min') fout('voorspelOpties zijn geen, input, plus, min');
-    for (const b of spel.beslissingen ?? []) {
-      const wie = `beslissing ${b?.id ?? '(zonder id)'}: `;
-      if (b?.fictief !== true) fout(`${wie}fictief moet true zijn (MD-15)`);
-      for (const veld of ['titel', 'situatie']) if (!gevuld(b?.[veld])) fout(`${wie}mist ${veld}`);
-      if (!Array.isArray(b?.opties) || b.opties.length < 2) fout(`${wie}minstens twee opties`);
-      for (const o of b?.opties ?? []) {
-        if (!gevuld(o?.id) || !gevuld(o?.tekst) || !gevuld(o?.feedback)) fout(`${wie}elke optie heeft id, tekst en feedback (MD-10)`);
-        for (const [kap, e] of Object.entries(o?.effect ?? {})) {
-          if (!KAPITALEN.includes(kap)) fout(`${wie}${kap} is geen van de zes kapitalen`);
-          if (!Array.isArray(e?.termijn) || e.termijn.length !== 3 || e.termijn.some((t) => !(t in EFFECT_TEKST))) fout(`${wie}${kap} heeft drie termijnen uit geen, input, plus, min`);
-          if (!gevuld(e?.toelichting)) fout(`${wie}${kap} mist een toelichting (MD-10)`);
-        }
-      }
-    }
-  }
-  return fouten;
 }
 
 // ---------------------------------------------------------------- Bronnen-detective
@@ -153,6 +86,35 @@ export function spanningTekst(effect) {
   return delen.length ? delen.join(' ') : 'Bij deze keuze verandert geen enkel kapitaal van richting en neemt er op lange termijn niets af.';
 }
 
+// ---------------------------------------------------------------- Vraagslijper
+
+/** De feedback bij een gekozen optie van een veld in een ronde of stakeholder (alleen tekst, geen score). */
+export function beoordeelKeuze(opties, optieId) {
+  const optie = opties.find((o) => o.id === optieId);
+  if (!optie) throw new Error(`Onbekende optie ${optieId}`);
+  return { feedback: optie.feedback, passend: optie.passend === true, tekst: optie.tekst };
+}
+
+/** De vraag die de speler heeft samengesteld: het format met de gekozen tekst per veld. Ontbreekt een keuze, dan blijft {veld} staan. */
+export function stelVraagSamen(spel, ronde, keuzes) {
+  return spel.format.replace(/\{(\w+)\}/g, (los, id) => {
+    const optie = ronde.keuzes[id]?.find((o) => o.id === keuzes?.[id]);
+    return optie ? optie.tekst : los;
+  });
+}
+
+// ---------------------------------------------------------------- Stakeholder-radar
+
+/** In welk vak van het raster hoort een stakeholder bij deze invloed en dit belang? */
+export const vakVoor = (spel, invloed, belang) => spel.vakken.find((v) => v.invloed === invloed && v.belang === belang);
+
+/** Het raster van de speler: per vak de stakeholders die hij daar plaatste. Stakeholders zonder volledige keuze ontbreken. */
+export function rasterVan(spel, plaatsing) {
+  return spel.vakken.map((v) => ({
+    ...v, stakeholders: spel.rondes.filter((r) => plaatsing?.[r.id]?.invloed === v.invloed && plaatsing?.[r.id]?.belang === v.belang).map((r) => r.titel),
+  }));
+}
+
 // ---------------------------------------------------------------- tekstversie (MD-9)
 
 /**
@@ -170,6 +132,22 @@ export function tekstversie(spel) {
         ...AAOCC.map((c) => `${c}: ${k.aaocc[c]}`), k.kernpunt,
       ],
     }));
+  }
+  if (spel.type === 'rondes') {
+    return spel.rondes.map((r) => ({
+      kop: `${r.titel} (fictief)`,
+      regels: [`Vage vraag: ${r.vageVraag}`, r.situatie, `Format: ${spel.format}`,
+        ...spel.velden.flatMap((v) => r.keuzes[v.id].map((o) => `${v.label} Keuze: ${o.tekst}. ${o.feedback}`))],
+    }));
+  }
+  if (spel.type === 'radar') {
+    return [
+      ...spel.rondes.map((r) => ({
+        kop: `${r.titel} (${r.soort}, fictief)`,
+        regels: [r.situatie, ...r.velden.flatMap((v) => v.opties.map((o) => `${v.label} Keuze: ${o.tekst}. ${o.feedback}`))],
+      })),
+      ...spel.slotVragen.map((q) => ({ kop: q.label, regels: q.opties.map((o) => `Keuze: ${o.tekst}. ${o.feedback}`) })),
+    ];
   }
   return spel.beslissingen.map((b) => ({
     kop: `${b.titel} (fictief)`,

@@ -38,8 +38,10 @@ export const mediaTaak = (blok) => blok.taken.find((t) => t.id === blok.media?.t
 export function modelRegels(blok) {
   const taak = mediaTaak(blok);
   const gevraagd = blok.media?.uitleg?.modelantwoord?.velden ?? [];
+  // De velden staan bij de oefening zelf, of (leerblok 1, taak 2.1) bij de toepassing op het eigen vraagstuk.
+  const velden = [...(taak.oefening?.velden ?? []), ...(taak.toepassing?.velden ?? [])];
   return gevraagd.map((id) => ({
-    id, label: taak.oefening.velden.find((v) => v.id === id)?.label ?? id, tekst: taak.modelantwoord.velden[id],
+    id, label: velden.find((v) => v.id === id)?.label ?? id, tekst: taak.modelantwoord.velden[id],
   })).filter((r) => r.tekst !== undefined);
 }
 
