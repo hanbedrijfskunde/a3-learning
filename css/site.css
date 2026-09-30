@@ -74,3 +74,37 @@ input[type="checkbox"], input[type="radio"] { width:1.25rem; height:1.25rem; acc
 .wis-dl dd { margin:0 0 .25rem 1rem; }
 .wis-handmatig { margin:.75rem 0; }
 .wis-melding { min-height:1.25rem; }
+/* ---- dossier (fase 3): eigen klassen met prefix dos- en ver- ---- */
+.dos-stand { list-style:none; padding:0; display:grid; grid-template-columns:repeat(auto-fill,minmax(13rem,1fr)); gap:.75rem; }
+.dos-tegel { border:3px solid var(--zwart); padding:.5rem .75rem; display:flex; flex-direction:column; gap:.25rem; background:var(--wit); }
+.dos-tegel-id { font-weight:700; }
+.dos-tegel-titel { font-size:.875rem; }
+.dos-tegel-status { font-size:1.5rem; font-weight:700; }
+.dos-tegel-compleet { box-shadow:inset 0 -8px 0 #1a7f37; }
+.dos-tegel-bijna { box-shadow:inset 0 -8px 0 #b7791f; }
+.dos-tegel-nog-niet { box-shadow:inset 0 -8px 0 var(--accent); }
+.dos-tabelwrap, .ver-tabelwrap { overflow-x:auto; }
+.dos-tabel, .ver-tabel { border-collapse:collapse; width:100%; }
+.dos-tabel th, .dos-tabel td, .ver-tabel th, .ver-tabel td { border:2px solid var(--zwart); padding:.4rem .6rem; text-align:left; vertical-align:top; }
+.dos-tabel thead th, .ver-tabel thead th { background:var(--zwart); color:var(--wit); }
+.dos-caption { text-align:left; font-size:.875rem; padding-bottom:.25rem; }
+.dos-lijst { margin:0; padding-left:1.1rem; }
+.dos-herinnering, .dos-geblokkeerd { border-color:var(--accent); }
+.dos-pagina { border:3px solid var(--zwart); padding:1rem; margin:1rem 0; background:var(--wit); }
+.dos-onderdeel { border-top:2px solid var(--zwart); margin-top:.75rem; }
+.dos-velden dt { font-weight:700; margin-top:.5rem; }
+.dos-velden dd { margin:0 0 0 1rem; white-space:pre-wrap; }
+.dos-controlesom code { word-break:break-all; }
+#dos-afdruk { display:none; }
+body.dos-afdrukmodus #dos-afdruk { display:block; }
+body.dos-afdrukmodus main > :not(#dos-afdruk) { display:none; }
+.ver-bestanden { padding-left:1.25rem; }
+.ver-gewijzigd .ver-melding, .ver-rij-gewijzigd th { color:#b0003f; font-weight:700; }
+.ver-ok .ver-melding { font-weight:700; }
+.ver-rij-gewijzigd td, .ver-rij-gewijzigd th { border-color:var(--accent); }
+.ver-cel { white-space:nowrap; }
+@media print {
+  .dos-werkbalk { display:none; }
+  .dos-pagina { border:0; padding:0; margin:0; break-after:page; }
+  body.dos-afdrukmodus header, body.dos-afdrukmodus footer { display:none; }
+}

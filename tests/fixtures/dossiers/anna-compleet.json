@@ -1,0 +1,337 @@
+{
+  "formaat": "a3-bewijsdossier",
+  "schema": "1.0",
+  "elearning": "0.1.0",
+  "geexporteerd": "2026-10-05T12:00:00.000Z",
+  "alias": "Anna",
+  "teamnummer": "3",
+  "vraagstuk": "Hoe maken we roosters sneller?",
+  "waaromZin": "Medewerkers hebben last van late roosters.",
+  "voorlopig": false,
+  "records": [
+    {
+      "record": {
+        "schema": "1.0",
+        "id": "EV-01",
+        "taak": "2.1",
+        "leerblok": 1,
+        "luk": [
+          1
+        ],
+        "bc": [
+          "BC1"
+        ],
+        "inhoud": {
+          "antwoord": "Antwoord van Anna bij EV-01: de planners van de afdeling willen sneller roosteren."
+        },
+        "controles": [
+          {
+            "id": "velden-gevuld",
+            "resultaat": "ok"
+          }
+        ],
+        "status": "compleet",
+        "voorlopig": false,
+        "versie": 3,
+        "bijgewerkt": "2026-10-03T10:00:00+02:00",
+        "elearning": "0.1.0"
+      },
+      "eerdereVersies": 2
+    },
+    {
+      "record": {
+        "schema": "1.0",
+        "id": "EV-02",
+        "taak": "2.2",
+        "leerblok": 1,
+        "luk": [
+          1
+        ],
+        "bc": [
+          "BC1"
+        ],
+        "inhoud": {
+          "antwoord": "Antwoord van Anna bij EV-02: de planners van de afdeling willen sneller roosteren."
+        },
+        "controles": [
+          {
+            "id": "velden-gevuld",
+            "resultaat": "ok"
+          }
+        ],
+        "status": "compleet",
+        "voorlopig": false,
+        "versie": 1,
+        "bijgewerkt": "2026-10-01T10:00:00+02:00",
+        "elearning": "0.1.0"
+      },
+      "eerdereVersies": 0
+    },
+    {
+      "record": {
+        "schema": "1.0",
+        "id": "EV-03",
+        "taak": "3.1",
+        "leerblok": 2,
+        "luk": [
+          1
+        ],
+        "bc": [
+          "BC1"
+        ],
+        "inhoud": {
+          "antwoord": "Antwoord van Anna bij EV-03: de planners van de afdeling willen sneller roosteren."
+        },
+        "controles": [
+          {
+            "id": "velden-gevuld",
+            "resultaat": "ok"
+          }
+        ],
+        "status": "compleet",
+        "voorlopig": false,
+        "versie": 1,
+        "bijgewerkt": "2026-10-01T10:00:00+02:00",
+        "elearning": "0.1.0"
+      },
+      "eerdereVersies": 0
+    },
+    {
+      "record": {
+        "schema": "1.0",
+        "id": "EV-04",
+        "taak": "4.1",
+        "leerblok": 2,
+        "luk": [
+          1
+        ],
+        "bc": [
+          "BC1"
+        ],
+        "inhoud": {
+          "antwoord": "Antwoord van Anna bij EV-04: de planners van de afdeling willen sneller roosteren."
+        },
+        "controles": [
+          {
+            "id": "velden-gevuld",
+            "resultaat": "ok"
+          }
+        ],
+        "status": "compleet",
+        "voorlopig": false,
+        "versie": 1,
+        "bijgewerkt": "2026-10-01T10:00:00+02:00",
+        "elearning": "0.1.0"
+      },
+      "eerdereVersies": 0
+    },
+    {
+      "record": {
+        "schema": "1.0",
+        "id": "EV-05",
+        "taak": "4.2",
+        "leerblok": 2,
+        "luk": [
+          1
+        ],
+        "bc": [
+          "BC1"
+        ],
+        "inhoud": {
+          "antwoord": "Antwoord van Anna bij EV-05: de planners van de afdeling willen sneller roosteren."
+        },
+        "controles": [
+          {
+            "id": "velden-gevuld",
+            "resultaat": "ok"
+          }
+        ],
+        "status": "compleet",
+        "voorlopig": false,
+        "versie": 1,
+        "bijgewerkt": "2026-10-01T10:00:00+02:00",
+        "elearning": "0.1.0"
+      },
+      "eerdereVersies": 0
+    },
+    {
+      "record": {
+        "schema": "1.0",
+        "id": "EV-06",
+        "taak": "5.1",
+        "leerblok": 3,
+        "luk": [
+          1
+        ],
+        "bc": [
+          "BC1"
+        ],
+        "inhoud": {
+          "antwoord": "Antwoord van Anna bij EV-06: de planners van de afdeling willen sneller roosteren."
+        },
+        "controles": [
+          {
+            "id": "velden-gevuld",
+            "resultaat": "ok"
+          }
+        ],
+        "status": "compleet",
+        "voorlopig": false,
+        "versie": 1,
+        "bijgewerkt": "2026-10-01T10:00:00+02:00",
+        "elearning": "0.1.0"
+      },
+      "eerdereVersies": 0
+    },
+    {
+      "record": {
+        "schema": "1.0",
+        "id": "EV-07",
+        "taak": "6.1",
+        "leerblok": 3,
+        "luk": [
+          1
+        ],
+        "bc": [
+          "BC1"
+        ],
+        "inhoud": {
+          "antwoord": "Antwoord van Anna bij EV-07: de planners van de afdeling willen sneller roosteren."
+        },
+        "controles": [
+          {
+            "id": "velden-gevuld",
+            "resultaat": "ok"
+          }
+        ],
+        "status": "compleet",
+        "voorlopig": false,
+        "versie": 1,
+        "bijgewerkt": "2026-10-01T10:00:00+02:00",
+        "elearning": "0.1.0"
+      },
+      "eerdereVersies": 0
+    },
+    {
+      "record": {
+        "schema": "1.0",
+        "id": "EV-08",
+        "taak": "9.1",
+        "leerblok": 3,
+        "luk": [
+          1
+        ],
+        "bc": [
+          "BC1"
+        ],
+        "inhoud": {
+          "antwoord": "Antwoord van Anna bij EV-08: de planners van de afdeling willen sneller roosteren."
+        },
+        "controles": [
+          {
+            "id": "velden-gevuld",
+            "resultaat": "ok"
+          }
+        ],
+        "status": "compleet",
+        "voorlopig": false,
+        "versie": 1,
+        "bijgewerkt": "2026-10-01T10:00:00+02:00",
+        "elearning": "0.1.0"
+      },
+      "eerdereVersies": 0
+    },
+    {
+      "record": {
+        "schema": "1.0",
+        "id": "EV-09",
+        "taak": "6.2",
+        "leerblok": 4,
+        "luk": [
+          5
+        ],
+        "bc": [
+          "BC5"
+        ],
+        "inhoud": {
+          "antwoord": "Antwoord van Anna bij EV-09: de planners van de afdeling willen sneller roosteren."
+        },
+        "controles": [
+          {
+            "id": "velden-gevuld",
+            "resultaat": "ok"
+          }
+        ],
+        "status": "compleet",
+        "voorlopig": false,
+        "versie": 1,
+        "bijgewerkt": "2026-10-01T10:00:00+02:00",
+        "elearning": "0.1.0"
+      },
+      "eerdereVersies": 0
+    },
+    {
+      "record": {
+        "schema": "1.0",
+        "id": "EV-10",
+        "taak": "9.3",
+        "leerblok": 4,
+        "luk": [
+          5
+        ],
+        "bc": [
+          "BC5"
+        ],
+        "inhoud": {
+          "antwoord": "Antwoord van Anna bij EV-10: de planners van de afdeling willen sneller roosteren."
+        },
+        "controles": [
+          {
+            "id": "velden-gevuld",
+            "resultaat": "ok"
+          }
+        ],
+        "status": "compleet",
+        "voorlopig": false,
+        "versie": 1,
+        "bijgewerkt": "2026-10-01T10:00:00+02:00",
+        "elearning": "0.1.0"
+      },
+      "eerdereVersies": 0
+    },
+    {
+      "record": {
+        "schema": "1.0",
+        "id": "EV-11",
+        "taak": "9.4",
+        "leerblok": 4,
+        "luk": [
+          1
+        ],
+        "bc": [
+          "BC1"
+        ],
+        "inhoud": {
+          "antwoord": "Antwoord van Anna bij EV-11: de planners van de afdeling willen sneller roosteren."
+        },
+        "controles": [
+          {
+            "id": "velden-gevuld",
+            "resultaat": "ok"
+          }
+        ],
+        "status": "compleet",
+        "voorlopig": false,
+        "versie": 1,
+        "bijgewerkt": "2026-10-01T10:00:00+02:00",
+        "elearning": "0.1.0"
+      },
+      "eerdereVersies": 0
+    }
+  ],
+  "controlesom": {
+    "algoritme": "SHA-256",
+    "waarde": "726a3a5b2eeb119f76f042f184c8f12ad65db80714f63abe4333c1ac73a3b813",
+    "over": "alle velden behalve controlesom, met gesorteerde sleutels"
+  }
+}

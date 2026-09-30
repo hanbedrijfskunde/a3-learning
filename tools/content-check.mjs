@@ -1,4 +1,4 @@
-// Contentcontrole: valideert data/leerblok-*.json en data/leerblokken.json (QA-3, BW-12, TK-2, TK-13, QA-1).
+// Contentcontrole: valideert data/leerblok-*.json, data/leerblokken.json en data/luk.json (QA-3, BW-12, TK-2, TK-13, QA-1, BW-13).
 // Bronnen (BR-5) volgen in fase 6.
 //
 // Gebruik: node tools/content-check.mjs [datamap]   (standaard: data/)
@@ -207,6 +207,55 @@ export function controleerOverzicht(inhoud, bestand = 'leerblokken.json') {
   return fouten;
 }
 
+export const DEKKINGEN = Object.freeze(['gedekt', 'deels', 'buiten scope']);
+
+/**
+ * Controleert data/luk.json: de dekkingstabel van blueprint §4.3 met de 11 bewijsonderdelen (BW-13, fase 3).
+ * Zijn de leerblokbestanden meegegeven, dan moeten hun bewijsonderdelen erbij passen (titel, lukOnderdelen en luk).
+ * @param {object} inhoud geparste JSON
+ * @param {object[]} [blokken] geparste data/leerblok-N.json
+ */
+export function controleerLuk(inhoud, bestand = 'luk.json', blokken = []) {
+  const fouten = [];
+  const fout = (t) => fouten.push(`${bestand}: ${t}`);
+  if (inhoud?.formaat !== '1.0') fout('formaat moet "1.0" zijn');
+  const evs = Array.isArray(inhoud?.bewijsonderdelen) ? inhoud.bewijsonderdelen : [];
+  const rijen = Array.isArray(inhoud?.onderdelen) ? inhoud.onderdelen : [];
+  const verwacht = Array.from({ length: 11 }, (_, i) => `EV-${String(i + 1).padStart(2, '0')}`);
+  if (evs.map((e) => e.id).join(',') !== verwacht.join(',')) fout(`bewijsonderdelen moeten ${verwacht[0]} t/m ${verwacht[10]} zijn, in volgorde (blueprint §6.7)`);
+  for (const e of evs) if (!gevuld(e.titel)) fout(`bewijsonderdeel ${e.id} mist een titel`);
+  if (rijen.length !== 13) fout(`moet 13 onderdelen van de leeruitkomsten hebben (blueprint §4.3), heeft er ${rijen.length}`);
+  const ids = new Set(evs.map((e) => e.id));
+  const gebruikt = new Set();
+  rijen.forEach((r, i) => {
+    const wie = `onderdeel ${i + 1}`;
+    if (!gevuld(r.label)) fout(`${wie} mist een label`);
+    if (!DEKKINGEN.includes(r.dekking)) fout(`${wie}: dekking ${JSON.stringify(r.dekking)}; kies uit ${DEKKINGEN.join(', ')}`);
+    if (!(r.luk === null || (Number.isInteger(r.luk) && r.luk >= 1 && r.luk <= 5))) fout(`${wie}: luk moet 1 tot en met 5 of null zijn`);
+    if (!Array.isArray(r.bewijs)) { fout(`${wie} mist een lijst bewijs`); return; }
+    for (const id of r.bewijs) { if (!ids.has(id)) fout(`${wie} verwijst naar onbekend bewijsonderdeel ${id}`); gebruikt.add(id); }
+    if (r.dekking === 'buiten scope' && r.bewijs.length > 0) fout(`${wie} is buiten scope en mag geen bewijs hebben`);
+    if ((r.dekking === 'gedekt' || r.dekking === 'deels') && r.bewijs.length === 0) fout(`${wie} is ${r.dekking} en mist bewijs`);
+  });
+  for (const id of ids) if (!gebruikt.has(id)) fout(`bewijsonderdeel ${id} komt in geen enkel onderdeel voor`);
+
+  for (const blok of blokken) {
+    for (const ev of blok?.bewijsonderdelen ?? []) {
+      const naam = `leerblok ${blok.leerblok}: ${ev.id}`;
+      const eigen = evs.find((e) => e.id === ev.id);
+      if (!eigen) { fout(`${naam} staat niet in bewijsonderdelen`); continue; }
+      if (gevuld(ev.titel) && ev.titel !== eigen.titel) fout(`${naam} heet in het leerblok "${ev.titel}" en hier "${eigen.titel}"`);
+      for (const label of ev.lukOnderdelen ?? []) {
+        if (!rijen.some((r) => r.label === label && r.bewijs?.includes(ev.id))) fout(`${naam}: lukOnderdeel "${label}" staat hier niet met ${ev.id} als bewijs`);
+      }
+      const taak = (blok.taken ?? []).find((t) => t.id === ev.taak);
+      const luks = new Set(rijen.filter((r) => r.bewijs?.includes(ev.id)).map((r) => r.luk));
+      for (const n of taak?.luk ?? []) if (!luks.has(n)) fout(`${naam}: taak ${ev.taak} claimt LUK ${n}, maar ${ev.id} staat hier niet bij een onderdeel van LUK ${n}`);
+    }
+  }
+  return fouten;
+}
+
 /** Controleert alle leerblokbestanden in een map. */
 export function controleerMap(map) {
   const namen = existsSync(map) ? readdirSync(map).filter((n) => /^leerblok-\d\.json$/.test(n)).sort() : [];
@@ -216,9 +265,11 @@ export function controleerMap(map) {
     try { return JSON.parse(readFileSync(resolve(map, naam), 'utf8')); }
     catch (e) { fouten.push(`${naam}: geen geldige JSON (${e.message})`); return null; }
   };
+  const blokken = [];
   for (const naam of namen) {
     const inhoud = lees(naam);
     if (!inhoud) continue;
+    blokken.push(inhoud);
     fouten.push(...controleerLeerblok(inhoud, naam));
     const formaat = controleerFormaat(inhoud, naam);
     fouten.push(...formaat.fouten);
@@ -227,6 +278,10 @@ export function controleerMap(map) {
   if (namen.length > 0 || existsSync(resolve(map, 'leerblokken.json'))) {
     if (!existsSync(resolve(map, 'leerblokken.json'))) fouten.push('leerblokken.json ontbreekt (overzicht van de vier leerblokken)');
     else { const o = lees('leerblokken.json'); if (o) fouten.push(...controleerOverzicht(o)); }
+  }
+  if (existsSync(resolve(map, 'luk.json'))) {
+    const luk = lees('luk.json');
+    if (luk) fouten.push(...controleerLuk(luk, 'luk.json', blokken));
   }
   return { bestanden: namen.length, fouten, waarschuwingen };
 }

@@ -1,0 +1,32 @@
+{
+  "formaat": "1.0",
+  "bron": "blueprint §4.3 (dekking van de LUK), BW-13",
+  "bewijsonderdelen": [
+    { "id": "EV-01", "titel": "Onderzoeksvraag" },
+    { "id": "EV-02", "titel": "Zoekvragen en modelkeuze" },
+    { "id": "EV-03", "titel": "Gericht zoeken naar bronnen" },
+    { "id": "EV-04", "titel": "Beoordeelde bron" },
+    { "id": "EV-05", "titel": "Oordeel over AI-bronnen" },
+    { "id": "EV-06", "titel": "Stakeholders" },
+    { "id": "EV-07", "titel": "Feit en aanname bij de achtergrond" },
+    { "id": "EV-08", "titel": "Plaatsing van het vraagstuk" },
+    { "id": "EV-09", "titel": "Feedback ophalen en geven" },
+    { "id": "EV-10", "titel": "Reflectie (STARR)" },
+    { "id": "EV-11", "titel": "Verbanden tussen modellen" }
+  ],
+  "onderdelen": [
+    { "luk": 1, "label": "LUK 1 · Signaleert knelpunten in een intern proces", "dekking": "deels", "toelichting": "probleemzin komt van buiten; wordt niet getoetst", "bewijs": ["EV-01"] },
+    { "luk": 1, "label": "LUK 1 · Formuleert een onderzoeksvraag", "dekking": "gedekt", "toelichting": "", "bewijs": ["EV-01"] },
+    { "luk": 1, "label": "LUK 1 · Analyseert het probleem methodisch", "dekking": "deels", "toelichting": "zoekvragen en zoekstrategie", "bewijs": ["EV-02", "EV-03"] },
+    { "luk": 1, "label": "LUK 1 · Stelt een onderbouwde diagnose", "dekking": "buiten scope", "toelichting": "", "bewijs": [] },
+    { "luk": 1, "label": "LUK 1 · Selecteert relevante theorieën en modellen en voegt ze samen", "dekking": "gedekt", "toelichting": "", "bewijs": ["EV-02", "EV-11"] },
+    { "luk": 1, "label": "LUK 1 · Gebruikt en beoordeelt bronnen", "dekking": "gedekt", "toelichting": "", "bewijs": ["EV-03", "EV-04", "EV-05"] },
+    { "luk": 1, "label": "LUK 1 · Duidt achtergronden, oorzaken en ontwikkelingen", "dekking": "deels", "toelichting": "achtergrond, geen oorzaken", "bewijs": ["EV-07", "EV-08"] },
+    { "luk": 1, "label": "LUK 1 · Betrekt stakeholders binnen en buiten het organisatieonderdeel", "dekking": "gedekt", "toelichting": "", "bewijs": ["EV-06"] },
+    { "luk": 1, "label": "LUK 1 · Ziet kansen en bedreigingen uit externe ontwikkelingen", "dekking": "deels", "toelichting": "alleen via het frame „extern”", "bewijs": ["EV-02"] },
+    { "luk": 2, "label": "LUK 2 · Oog voor meervoudige waardecreatie", "dekking": "deels", "toelichting": "zien, niet herontwerpen", "bewijs": ["EV-11"] },
+    { "luk": null, "label": "LUK 2 (overig), LUK 3 en LUK 4", "dekking": "buiten scope", "toelichting": "", "bewijs": [] },
+    { "luk": 5, "label": "LUK 5 · Haalt feedback op en reflecteert erop", "dekking": "gedekt", "toelichting": "", "bewijs": ["EV-09", "EV-10"] },
+    { "luk": 5, "label": "LUK 5 · Formuleert ontwikkelpunten en werkt er aantoonbaar aan", "dekking": "deels", "toelichting": "actie en volgende stap (TK-10)", "bewijs": ["EV-09"] }
+  ]
+}

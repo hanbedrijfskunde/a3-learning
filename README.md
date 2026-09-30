@@ -47,9 +47,29 @@ De workflow `.github/workflows/pages.yml` draait deze drie bij elke push en publ
 
 **Logica zonder DOM:** `js/sessie.js` (beoordelen, bewaren, oefenen, klaar, verdieping, afsluiten), `js/weergave.js` (weergavemodellen), `js/afgerond.js` (TK-16), `js/profiel.js`. **DOM:** `js/dom.js` (`h`, `bouwVelden`, `maakWisAlles`), `js/leerblok.js` (pagina via `<body data-leerblok="N">`), `js/index-pagina.js`. Element-id's: `taak-<nr>`, `oefening-<nr>`, `uitkomst-<nr>`, `klaar-<nr>`, `afsluiten`; velden `oef-<nr>-<veld>` en `toe-<nr>-<veld>`.
 
+## Dossier, import en verificatie (fase 3)
+
+**Export.** `dossier.html` bewaart het dossier als `bewijsdossier-<alias>-<datum>.json` (`js/dossier.js`, `maakDossier`):
+
+```
+{ "formaat": "a3-bewijsdossier", "schema": "1.0", "elearning", "geexporteerd", "alias", "teamnummer", "vraagstuk", "waaromZin", "voorlopig",
+  "records": [ { "record": <nieuwste versie, schema 1.0>, "eerdereVersies": <aantal> } ],
+  "controlesom": { "algoritme": "SHA-256", "waarde": <64 hex>, "over": "…" } }
+```
+
+De controlesom loopt over alle velden behalve `controlesom`, in canonieke vorm (gesorteerde sleutels, dus onafhankelijk van witruimte en volgorde). Ze laat zien dat een bestand na export is gewijzigd (`verificatie.html`: „gewijzigd na export”); ze is geen handtekening, want wie de som opnieuw uitrekent kan een bestand ongemerkt aanpassen. Oefeninvoer, klaar-markeringen en verdieping zitten niet in het dossier (TK-4).
+
+**Import.** Schema 1.x tot en met de huidige versie wordt gelezen (`schemaAccepteerbaar`); een andere hoofdversie of een nieuwere minor geeft een melding. Een bestand met een verkeerde controlesom wordt pas ingelezen na „Toch importeren”. Bij een bestaand bewijsonderdeel wint het record met de laatste `bijgewerkt`; het profiel wordt alleen aangevuld waar het leeg is. `importeerDossier` schrijft het versienummer rechtstreeks terug in de recordlijst `a3l:rec:<id>` van `store.js`, omdat `store.save` altijd doortelt; de eerdere versies zelf zitten niet in het bestand en komen dus niet terug.
+
+**Verificatie.** `verificatie.html` leest één of meer bestanden met `file.text()`, rekent de controlesom opnieuw uit en toont per student de 11 bewijsonderdelen en 3 leeruitkomsten, met de meeste ontbrekende onderdelen bovenaan. De pagina en `dossier.html` hebben een `Content-Security-Policy` met `connect-src 'self'`; er gaat geen dossierinhoud over het netwerk.
+
+**Meldingen.** Na elk leerblok staat de bewaarmelding op het afsluitscherm; daarnaast toont elk leerblok na elke 10 wijzigingen (opgeslagen versies) „Bewaar je dossier”, tot de student exporteert of de melding wegklikt. Bij geblokkeerde opslag staat op de leerblokpagina's en op `dossier.html` een melding met een exportknop.
+
+**Data en tests.** `data/luk.json` is de dekkingstabel van blueprint §4.3 (13 onderdelen, 11 bewijsonderdelen); `tools/content-check.mjs` controleert hem en legt hem naast de leerblokbestanden. Vijf testdossiers staan in `tests/fixtures/dossiers/` (opnieuw te maken met `node tests/fixtures/maak-dossiers.mjs`), de tests in `tests/dossier.test.mjs`. Bestanden: `js/dossier.js` (logica), `js/dossier-dom.js` (download, meldingen), `js/dossier-pagina.js`, `js/verificatie-pagina.js`.
+
 ## Sitemap
 
-`index.html`, `leerblok-1.html` … `leerblok-4.html`, `dossier.html`, `verificatie.html`, `docent.html`. Testhulpmiddel, niet gelinkt vanaf de index: `controlelab.html` (recordvalidatie, statusregel en de 27 combinaties uit blueprint §5).
+`index.html`, `leerblok-1.html` … `leerblok-4.html`, `dossier.html`, `verificatie.html`, `docent.html`. `dossier.html` toont Mijn stand, de dekking van de leeruitkomsten, export, afdrukbare pagina's en import; `verificatie.html` is voor de docent. Testhulpmiddel, niet gelinkt vanaf de index: `controlelab.html` (recordvalidatie, statusregel en de 27 combinaties uit blueprint §5).
 
 ## De Wissel (fase 4)
 

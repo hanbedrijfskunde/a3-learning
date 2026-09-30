@@ -1,0 +1,47 @@
+{
+  "formaat": "a3-bewijsdossier",
+  "schema": "1.0",
+  "elearning": "0.1.0",
+  "geexporteerd": "2026-10-05T12:00:00.000Z",
+  "alias": "Chris",
+  "teamnummer": "5",
+  "vraagstuk": "",
+  "waaromZin": "Medewerkers hebben last van late roosters.",
+  "voorlopig": true,
+  "records": [
+    {
+      "record": {
+        "schema": "1.0",
+        "id": "EV-01",
+        "taak": "2.1",
+        "leerblok": 1,
+        "luk": [
+          1
+        ],
+        "bc": [
+          "BC1"
+        ],
+        "inhoud": {
+          "antwoord": "Antwoord van Chris bij EV-01: de planners van de afdeling willen sneller roosteren."
+        },
+        "controles": [
+          {
+            "id": "velden-gevuld",
+            "resultaat": "mist"
+          }
+        ],
+        "status": "nog niet",
+        "voorlopig": true,
+        "versie": 1,
+        "bijgewerkt": "2026-10-01T10:00:00+02:00",
+        "elearning": "0.1.0"
+      },
+      "eerdereVersies": 0
+    }
+  ],
+  "controlesom": {
+    "algoritme": "SHA-256",
+    "waarde": "f40d6d6b7c105cf31ee7130b1320d278cb382bba19339a8fe0de1a45b56200eb",
+    "over": "alle velden behalve controlesom, met gesorteerde sleutels"
+  }
+}

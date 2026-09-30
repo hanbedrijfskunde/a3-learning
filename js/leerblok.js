@@ -8,6 +8,7 @@ import { leesProfiel } from './profiel.js';
 import { VOORBEELDEN } from './checks/index.js';
 import { maakWissel, wisselContext, EV09_TAAK } from './wissel.js';
 import { bouwWisselPaneel } from './wissel-paneel.js';
+import { geblokkeerdMelding, toonBewaarHerinnering } from './dossier-dom.js'; // fase 3: DS-2, DS-12
 
 const laad = async (pad) => (await fetch(new URL(pad, import.meta.url))).json();
 const BEWAAR_NA_MS = 500; // bewaren na de laatste toetsaanslag; de controles zelf lopen direct
@@ -48,6 +49,7 @@ async function start() {
   const taken = new Map(); // id → { leesInhoud, toon }
   const foutGebied = h('p', { class: 'fout', role: 'alert', hidden: true });
   const afsluitStatus = h('div', { id: 'afsluit-status' });
+  const herinneringGebied = h('div', { id: 'bewaarherinnering' }); // DS-2: na elke 10 wijzigingen
 
   // ---------------------------------------------------------------- bewaren
 
@@ -65,6 +67,7 @@ async function start() {
     }
     tekenAfsluiten();
     tekenWissel();
+    toonBewaarHerinnering(herinneringGebied, store, config.versie);
   }
   const bewaarAlles = () => [...wachtend.keys()].forEach(bewaarNu);
   window.addEventListener('pagehide', bewaarAlles);
@@ -282,12 +285,13 @@ async function start() {
   main.append(...[
     h1,
     h('p', { class: 'meta' }, `Richttijd: ${blok.richttijd} min. Eindigt met: ${blok.eindigtMet}.`),
-    geblokkeerd ? h('p', { class: 'fout', role: 'alert' }, 'Je browser blokkeert opslag: wat je invult blijft alleen staan zolang deze pagina open is.') : null,
-    foutGebied, vraagstuk, inhoud,
+    geblokkeerd ? geblokkeerdMelding(store, config.versie) : null,
+    foutGebied, herinneringGebied, vraagstuk, inhoud,
     ...blok.taken.flatMap((t) => [taakArtikel(t), t.bewijsonderdeel === blok.wissel?.zichtbaarNa ? wisselSectie : null]), afsluiten,
   ].filter(Boolean));
   tekenAfsluiten();
   tekenWissel();
+  toonBewaarHerinnering(herinneringGebied, store, config.versie);
 }
 
 start().catch((e) => {

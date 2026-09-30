@@ -1,0 +1,17 @@
+{
+  "formaat": "a3-bewijsdossier",
+  "schema": "1.0",
+  "elearning": "0.1.0",
+  "geexporteerd": "2026-10-05T12:00:00.000Z",
+  "alias": "Eva",
+  "teamnummer": "5",
+  "vraagstuk": "Hoe maken we roosters sneller?",
+  "waaromZin": "Medewerkers hebben last van late roosters.",
+  "voorlopig": false,
+  "records": [],
+  "controlesom": {
+    "algoritme": "SHA-256",
+    "waarde": "e4bec34f489f4ead35e35f473e0a210b754e2a5403d99bd96ef749420694ba70",
+    "over": "alle velden behalve controlesom, met gesorteerde sleutels"
+  }
+}
