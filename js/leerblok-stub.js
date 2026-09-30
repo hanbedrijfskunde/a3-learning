@@ -11,9 +11,11 @@ async function start() {
   const overzicht = await (await fetch(new URL('../data/leerblokken.json', import.meta.url))).json();
   const { opslag } = kiesOpslag();
   const store = maakStore(opslag);
-  const aanbevolen = overzicht.leerblokken.find((b) => b.nummer === nummer)?.aanbevolen;
+  const lb = overzicht.leerblokken.find((b) => b.nummer === nummer);
+  const aanbevolen = lb?.aanbevolen;
   wis(main);
   main.append(h1,
+    lb ? h('p', { class: 'meta' }, `Richttijd: ${lb.richttijd} min.`) : null,
     aanbevolen ? h('p', { class: 'meta', id: 'aanbevolen' }, `Aanbevolen: ${aanbevolen.week}, ${aanbevolen.dag}.`) : null,
     await vorigeKeerSectie({ store, opslag, overzicht, leerblok: nummer }),
     h('p', {}, 'De taken van dit leerblok worden in een latere fase gevuld.'));

@@ -1,11 +1,23 @@
-:root { --accent:#E50056; --zwart:#000; --wit:#fff; --grijs:#f3f3f3; }
+/* HAN-huisstijl (QA-6): tokens uit de zusterdocumenten (docs/LRD-ELEARNING-A3.html). Systeemlettertypen, geen externe
+   fonts. Kleuren van tekst worden gecontroleerd door tests/contrast.test.mjs (TG-3): tekst minstens 4,5:1. */
+:root {
+  --accent:#E50056; --zwart:#000000; --wit:#FFFFFF; --grijs:#F2F2F0;
+  --grijs-tekst:#454545;              /* meta-tekst */
+  --fout:#B0003F;                     /* foutmelding, ook op grijs 4,5:1 */
+  --accent-donker:#B8004A;            /* hover van de accentknop, wit erop */
+  --roze:#FFD9E6;                     /* achtergrond van een afwijkende rij (controlelab) */
+  --groen:#1A7F37; --oker:#B7791F;    /* alleen onderstreping bij een status, nooit tekst (TG-4) */
+  --rand:3px; --schaduw:5px 5px 0 var(--zwart);
+  --f:"Avenir Next","Avenir","Nunito Sans","Segoe UI",Helvetica,Arial,sans-serif;
+  --fm:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+}
 * { box-sizing:border-box; }
-body { margin:0; font:16px/1.5 system-ui,sans-serif; color:var(--zwart); background:var(--wit); }
+body { margin:0; font:16px/1.5 var(--f); color:var(--zwart); background:var(--wit); }
 header,main,footer { max-width:60rem; margin:0 auto; padding:1rem; }
 nav a { margin-right:1rem; color:var(--zwart); font-weight:700; }
-nav a[aria-current="page"] { color:var(--accent); }
+nav a[aria-current="page"] { color:var(--accent); background:var(--wit); text-decoration:underline; text-decoration-thickness:4px; text-underline-offset:4px; }
 h1 { border-bottom:4px solid var(--accent); padding-bottom:.25rem; }
-.kaart { border:3px solid var(--zwart); box-shadow:5px 5px 0 var(--zwart); padding:1rem; margin:1rem 0; background:var(--wit); }
+.kaart { border:var(--rand) solid var(--zwart); box-shadow:var(--schaduw); padding:1rem; margin:1rem 0; background:var(--wit); }
 footer { border-top:3px solid var(--zwart); font-size:.875rem; margin-top:2rem; }
 #pilot-banner { background:var(--accent); color:var(--wit); text-align:center; font-weight:700; padding:.25rem; }
 
@@ -19,21 +31,21 @@ textarea { min-height:4.5rem; resize:vertical; }
 input[type="checkbox"], input[type="radio"] { width:1.25rem; height:1.25rem; accent-color:var(--zwart); flex:none; }
 :focus-visible { outline:4px solid var(--accent); outline-offset:2px; }
 .klein { font-size:.875rem; }
-.meta { color:#333; }
-.fout { color:#b0003f; font-weight:700; }
+.meta { color:var(--grijs-tekst); }
+.fout { color:var(--fout); font-weight:700; }
 
 /* ---- knoppen ---- */
 .knop { font:inherit; font-weight:700; cursor:pointer; color:var(--zwart); background:var(--wit); border:3px solid var(--zwart); box-shadow:3px 3px 0 var(--zwart); padding:.4rem .9rem; text-decoration:none; display:inline-block; }
 .knop:hover { background:var(--grijs); }
 .knop-accent { background:var(--accent); color:var(--wit); }
-.knop-accent:hover { background:#b8004a; }
+.knop-accent:hover { background:var(--accent-donker); }
 .knoppen { display:flex; flex-wrap:wrap; gap:.75rem; margin:.75rem 0; }
 .bevestiging { border:3px solid var(--accent); padding:1rem; margin-top:.75rem; }
 
 /* ---- status als tekst met kleur erbij (BW-3, TG-4) ---- */
 .status { display:inline-block; border:3px solid var(--zwart); padding:.1rem .6rem; font-weight:700; background:var(--wit); }
-.status-compleet { box-shadow:inset 0 -6px 0 #1a7f37; }
-.status-bijna { box-shadow:inset 0 -6px 0 #b7791f; }
+.status-compleet { box-shadow:inset 0 -6px 0 var(--groen); }
+.status-bijna { box-shadow:inset 0 -6px 0 var(--oker); }
 .status-nog-niet { box-shadow:inset 0 -6px 0 var(--accent); }
 
 /* ---- leerblok en taak ---- */
@@ -54,7 +66,7 @@ input[type="checkbox"], input[type="radio"] { width:1.25rem; height:1.25rem; acc
 .leerblokken { list-style:none; padding:0; }
 .leerblok h3 { margin-top:0; }
 .onderdeel { margin-right:.75rem; white-space:nowrap; }
-.hints { color:#b0003f; padding-left:1.25rem; }
+.hints { color:var(--fout); padding-left:1.25rem; }
 @media (max-width:40rem) { header, main, footer { padding:.75rem; } nav a { display:inline-block; margin:.25rem 1rem .25rem 0; } }
 
 /* ---- de Wissel (fase 4, prefix wis-) ---- */
@@ -80,8 +92,8 @@ input[type="checkbox"], input[type="radio"] { width:1.25rem; height:1.25rem; acc
 .dos-tegel-id { font-weight:700; }
 .dos-tegel-titel { font-size:.875rem; }
 .dos-tegel-status { font-size:1.5rem; font-weight:700; }
-.dos-tegel-compleet { box-shadow:inset 0 -8px 0 #1a7f37; }
-.dos-tegel-bijna { box-shadow:inset 0 -8px 0 #b7791f; }
+.dos-tegel-compleet { box-shadow:inset 0 -8px 0 var(--groen); }
+.dos-tegel-bijna { box-shadow:inset 0 -8px 0 var(--oker); }
 .dos-tegel-nog-niet { box-shadow:inset 0 -8px 0 var(--accent); }
 .dos-tabelwrap, .ver-tabelwrap { overflow-x:auto; }
 .dos-tabel, .ver-tabel { border-collapse:collapse; width:100%; }
@@ -99,7 +111,7 @@ input[type="checkbox"], input[type="radio"] { width:1.25rem; height:1.25rem; acc
 body.dos-afdrukmodus #dos-afdruk { display:block; }
 body.dos-afdrukmodus main > :not(#dos-afdruk) { display:none; }
 .ver-bestanden { padding-left:1.25rem; }
-.ver-gewijzigd .ver-melding, .ver-rij-gewijzigd th { color:#b0003f; font-weight:700; }
+.ver-gewijzigd .ver-melding, .ver-rij-gewijzigd th { color:var(--fout); font-weight:700; }
 .ver-ok .ver-melding { font-weight:700; }
 .ver-rij-gewijzigd td, .ver-rij-gewijzigd th { border-color:var(--accent); }
 .ver-cel { white-space:nowrap; }
@@ -151,3 +163,23 @@ body.dos-afdrukmodus main > :not(#dos-afdruk) { display:none; }
 .fb-kolommen { display:grid; grid-template-columns:repeat(auto-fit,minmax(18rem,1fr)); gap:1rem; }
 .fb-lijst { list-style:none; padding:0; margin:0; }
 .fb-regel { border:2px solid var(--zwart); padding:.4rem .6rem; margin:.5rem 0; }
+
+/* ---- toegankelijkheid en kleine schermen (fase 8: TG-2, TG-5, PF-1) ---- */
+.skip { position:absolute; left:-9999px; top:0; background:var(--zwart); color:var(--wit); padding:.5rem 1rem; font-weight:700; z-index:10; }
+.skip:focus { left:0; }
+main:focus { outline:none; }
+code, pre { font-family:var(--fm); overflow-wrap:anywhere; }
+pre { white-space:pre-wrap; }
+img, video, svg { max-width:100%; height:auto; }
+h1, h2, h3, p, li, dd, dt, td, th, summary, legend, label { overflow-wrap:anywhere; }
+button, .knop, summary, select { min-height:2.75rem; }
+input[type="checkbox"], input[type="radio"] { min-width:1.25rem; }
+@media (max-width:40rem) {
+  body { font-size:1rem; }
+  .kaart { box-shadow:3px 3px 0 var(--zwart); padding:.75rem; }
+  .knoppen .knop, .knoppen button { flex:1 1 100%; text-align:center; }
+  .dos-stand { grid-template-columns:1fr; }
+  .fb-kolommen { grid-template-columns:1fr; }
+  .onderdeel, .ver-cel { white-space:normal; }
+}
+@media (forced-colors:active) { .status { border-style:double; } }

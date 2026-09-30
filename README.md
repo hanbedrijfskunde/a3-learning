@@ -18,6 +18,12 @@ node tools/link-check.mjs
 
 De workflow `.github/workflows/pages.yml` draait deze drie bij elke push en publiceert alleen als alle drie slagen.
 
+Losse controles die ook in `node --test` zitten: `node tools/contrast-check.mjs` (TG-3: tekstparen uit `css/site.css` en de `<style>`-blokken, minimaal 4,5:1) en `node tools/gewicht-check.mjs` (PF-4: bytes van de eerste lading per pagina, grens 300 kB, en 0 verwijzingen naar een ander domein). Het gewicht is een bovengrens: het telt alle modules en alle databestanden die een pagina kan ophalen, ongecomprimeerd.
+
+## Huisstijl, toegankelijkheid en offline (fase 8)
+
+`css/site.css` begint met de tokens uit de zusterdocumenten (accent `#E50056`, zwart, wit, grijs, lettertypestapel Avenir Next met systeemlettertypen); buiten `:root` staan geen kleurcodes (`tests/toegankelijk.test.mjs`). Elke pagina heeft een sprongkoppeling „Naar de inhoud”, `header`, `nav`, `main` en `footer`. Statussen zijn tekst met kleur erbij (Compleet, Bijna, Nog niet). Offline: geen service worker; alles wordt bij het laden binnengehaald en daarna werkt de pagina lokaal (ADR B66).
+
 ## Contract voor latere fasen (vastgelegd in fase 2)
 
 **Contentformaat `data/leerblok-N.json`** (formaat `"1.0"`, gevalideerd door `tools/content-check.mjs`; een docent past teksten hier aan zonder code te bewerken, QA-1):
