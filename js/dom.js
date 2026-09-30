@@ -93,7 +93,7 @@ const VPC_VAKKEN = [
 
 /**
  * Figuur: het value proposition canvas van Strategyzer (z.d.), alleen het canvas zelf (zonder kop, QR-code en logo), als citaat
- * met bronvermelding (media/citaten.json, ADR B84 en B88). Lui geladen zoals het A3-vel (PF-4). Onder de figuur staat welk vak bij welke kant hoort.
+ * met bronvermelding (media/citaten.json, ADR B84 en B89). Lui geladen zoals het A3-vel (PF-4). Onder de figuur staat welk vak bij welke kant hoort.
  */
 export function vpcFiguur({ met = (t) => t } = {}) {
   return h('figure', { class: 'a3-vel citaat' },

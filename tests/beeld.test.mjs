@@ -34,7 +34,7 @@ test('Figuur six capitals: taak 2.1 toont het waardecreatieproces van het IIRC (
   assert.match(lees('js/leerblok.js'), /'six-capitals': \{ bouw: sixCapitalsFiguur, na: 1 \}/);
 });
 
-test('Figuur VPC: taak 6.1 toont het value proposition canvas van Strategyzer (z.d.) als citaat met bron, alt-tekst en de vakken van beide kanten (ADR B88)', () => {
+test('Figuur VPC: taak 6.1 toont het value proposition canvas van Strategyzer (z.d.) als citaat met bron, alt-tekst en de vakken van beide kanten (ADR B89)', () => {
   const t = blok(3).taken.find((x) => x.id === '6.1');
   assert.equal(t.stof.figuur, 'vpc');
   assert.match(t.stof.alineas[0], /klantprofiel.*waardekaart/s, 'de figuur staat na de alinea die de twee kanten beschrijft');
