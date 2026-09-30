@@ -22,6 +22,18 @@ test('Figuur A3-vel: taak 1.1 toont figuur 1 van Schwagerman & Ulmer (2013) als 
   for (const vak of ['1 · Aanleiding / achtergrond', '4 · Analyse', '7 · Borging en evaluatie', '8 · Next steps']) assert.ok(dom.includes(vak), vak);
 });
 
+test('Figuur six capitals: taak 2.1 toont het waardecreatieproces van het IIRC (2021) als citaat met bron, alt-tekst en de Nederlandse namen van de zes kapitalen (ADR B84)', () => {
+  const t = blok(1).taken.find((x) => x.id === '2.1');
+  assert.equal(t.stof.figuur, 'six-capitals');
+  assert.match(t.stof.alineas[1], /six capitals/, 'de figuur staat na de alinea die de kapitalen noemt');
+  const dom = lees('js/dom.js');
+  assert.match(dom, /src: 'media\/citaten\/iirc-2021-waardecreatieproces\.webp'/);
+  assert.match(dom, /alt: 'Het waardecreatieproces van het IIRC\./);
+  assert.match(dom, /met\('\(International Integrated Reporting Council, 2021\)'\)/, 'bronvermelding in het bijschrift');
+  for (const nl of ['Financieel', 'Productie', 'Intellectueel', 'Menselijk', 'Sociaal en relationeel', 'Natuurlijk']) assert.ok(dom.includes(`'${nl}'`), nl);
+  assert.match(lees('js/leerblok.js'), /'six-capitals': \{ bouw: sixCapitalsFiguur, na: 1 \}/);
+});
+
 test('SX-13: elke oefenvraag van de vier leerblokken heeft een hint; de hint staat achter een knop (details), niet op mouse-over', () => {
   let n = 0;
   for (const nr of [1, 2, 3, 4]) {

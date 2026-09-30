@@ -77,7 +77,8 @@
         "bron": "werkboek", "criteria": [{"tekst": "alle drie de delen concreet zijn", "controles": ["gebruiker-woorden", "pain-woorden", "waarde-woorden"]}, {"tekst": "de waarde verder gaat dan alleen geld", "controles": ["kapitaal-niet-financieel"]}]},
       "stof": {
         "bron": "concept-auteur",
-        "opmerking": "Het format staat in werkboek 2.1, het voorbeeld (organisatie Y) in het kader bij 0:30 van het draaiboek. De uitleg van de termen (QA-5) is door de bouwer geschreven.",
+        "opmerking": "Het format staat in werkboek 2.1, het voorbeeld (organisatie Y) in het kader bij 0:30 van het draaiboek. De uitleg van de termen (QA-5) is door de bouwer geschreven; de figuur is die van het waardecreatieproces uit het <IR>-framework (International Integrated Reporting Council, 2021), als citaat (media/citaten.json).",
+        "figuur": "six-capitals",
         "format": "Wat is de beste oplossing voor <gebruiker> om <probleem / pain / gain>, zodat <waardecreatie volgens de six capitals>?",
         "alineas": [
           "Een vraag in dit format heet een user story: een korte beschrijving van wie iets wil bereiken en waarom. Je vult drie delen in. De gebruiker is de persoon of groep voor wie je het onderzoek doet. Een pain is een last of ergernis van die gebruiker. Een gain is een winst die hij of zij wil. De waardecreatie zegt wat het oplevert.",
