@@ -225,6 +225,7 @@
       "minuten": 20,
       "taak": "9.1",
       "leerblok": 3,
+      "media": { "leerblok": 4 },
       "dia": "\"Eerste conclusies\"",
       "materiaal": [
         "Vier overzichten op twee vellen",

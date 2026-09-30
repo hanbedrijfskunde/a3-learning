@@ -6,6 +6,7 @@ import { h, wis } from '../dom.js';
 import { maakKlok, klokTekst, rondeFasen, rondeFase } from './klok.js';
 import { stapkaartModel, docentkaartModel, programmaModel, draaiboekModel, terugblikKaarten } from './kaarten.js';
 import { modusUitAdres, docentAdres } from './kies.js';
+import { bouwVideo, bouwSpelPaneel } from '../media.js'; // fase 12: video en spel vanaf de stapkaart (DM-13, alleen eigen bestanden)
 
 /** De delen met docentvelden (zelfde formaat): deel 1 uit fase 9, deel 2 uit fase 10 (DM-18). */
 const DELEN = { 1: 'data/docent-deel1.json', 2: 'data/docent-deel2.json' };
@@ -44,7 +45,7 @@ async function startDocentmodus(main) {
   let delen; let blokken; let terugblik;
   try {
     const bestanden = await Promise.all(Object.values(DELEN).map(laad));
-    const nrs = [...new Set(bestanden.flatMap((d) => d.onderdelen.map((o) => o.leerblok)).filter(Boolean))];
+    const nrs = [...new Set(bestanden.flatMap((d) => d.onderdelen.flatMap((o) => [o.leerblok, o.media?.leerblok])).filter(Boolean))];
     const [blokLijst, tb] = await Promise.all([Promise.all(nrs.map((n) => laad(`data/leerblok-${n}.json`))), laad('data/terugblik.json')]);
     blokken = Object.fromEntries(nrs.map((n, i) => [n, blokLijst[i]]));
     terugblik = tb;
@@ -80,8 +81,12 @@ async function startDocentmodus(main) {
   const nav = h('nav', { class: 'weergaven', 'aria-label': 'Weergave' });
   const paneel = h('section', { id: 'paneel', 'aria-live': 'off' });
   const afdruk = h('section', { id: 'afdruk', 'aria-label': 'Draaiboek om af te drukken' });
+  // Video en spel bij een onderdeel (DM-13): een eigen gebied naast de stapkaart, dat alleen opnieuw wordt getekend als het
+  // onderdeel wisselt, zodat een afspelende video niet stopt als de klok een keer ververst of de docent pauze drukt.
+  const mediaGebied = h('section', { class: 'sk-media', 'aria-label': 'Video en spel bij dit onderdeel', hidden: true });
+  let mediaVoor = null;
   wis(main);
-  main.append(h('h1', {}, 'Docentmodus'), balk, nav, paneel, afdruk);
+  main.append(h('h1', {}, 'Docentmodus'), balk, nav, paneel, mediaGebied, afdruk);
 
   function tekenBalk() {
     wis(balk); tik.length = 0;
@@ -201,6 +206,20 @@ async function startDocentmodus(main) {
   }
   function vulAfdruk() { wis(afdruk); afdruk.append(draaiboekEl(draaiboekModel(deel(), blokken, { metModel }))); }
 
+  function tekenMedia(o) {
+    if (weergave !== 'stapkaart' || !o.media) { mediaVoor = null; wis(mediaGebied); mediaGebied.hidden = true; return; }
+    if (mediaVoor === o.id) return;
+    mediaVoor = o.id; wis(mediaGebied); mediaGebied.hidden = false;
+    const m = blokken[o.media.leerblok].media;
+    const uitvoer = h('div', { class: 'sk-media-uitvoer' });
+    const toon = (paneelEl, startActie) => { wis(uitvoer); uitvoer.append(paneelEl); uitvoer.querySelector(`[data-actie="${startActie}"]`).click(); };
+    mediaGebied.append(
+      h('div', { class: 'knoppen' },
+        knop(`Video ${m.video.id} afspelen`, () => toon(bouwVideo({ video: m.video }), 'speel-video'), { 'data-media': 'video' }),
+        knop(`Spel starten: ${m.spel.titel}`, () => toon(bouwSpelPaneel({ spel: m.spel }), 'start-spel'), { 'data-media': 'spel' })),
+      uitvoer);
+  }
+
   function teken() {
     const t = staat();
     tekenBalk(); tekenNav(); wis(paneel);
@@ -213,6 +232,7 @@ async function startDocentmodus(main) {
     else if (weergave === 'programma') tekenProgramma(t);
     else if (weergave === 'terugblik') tekenTerugblik();
     else tekenAfdrukken();
+    tekenMedia(o);
     vulAfdruk();
     tik.forEach((f) => f());
   }

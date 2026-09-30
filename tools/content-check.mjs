@@ -25,6 +25,8 @@ import { bouwControle } from '../js/checks/index.js';
 import { apaJaar } from '../js/checks/lb2.js';
 import { CITATIE_RE, eersteVolgordefout } from '../js/bronnen.js';
 import { normaliseerBlok } from '../js/blok.js';
+import { uitlegWoorden, modelRegels, MAX_WOORDEN_UITLEG } from '../js/media.js';
+import { controleerSpel } from '../js/spel-model.js';
 import { KAPITALEN, VPC_ONDERDELEN, SPANNING, bouwOefenKaarten, maakVerband } from '../js/verbanden.js';
 
 const gevuld = (t) => typeof t === 'string' && t.trim() !== '';
@@ -492,6 +494,15 @@ export function controleerBronnen(map) {
       }
     }
   }
+  // de spellen (spellen/*.json) noemen ook bronnen (BR-4, BR-5)
+  const spellenMap = resolve(map, '..', 'spellen');
+  for (const naam of existsSync(spellenMap) ? readdirSync(spellenMap).filter((n) => n.endsWith('.json')).sort() : []) {
+    try {
+      for (const { pad, tekst } of tekstenMetPad(JSON.parse(readFileSync(resolve(spellenMap, naam), 'utf8')))) {
+        for (const m of tekst.matchAll(CITATIE_RE)) { const sleutel = `${m[1]}, ${m[2]}`; if (!geciteerd.has(sleutel)) geciteerd.set(sleutel, `spellen/${naam}: ${pad}`); }
+      }
+    } catch (e) { fouten.push(`spellen/${naam}: geen geldige JSON (${e.message})`); }
+  }
   const inBronnen = new Set(bronnen.map((b) => b.citatie));
   const inWacht = new Set(wachtend.map((b) => b.citatie));
   for (const [sleutel, plek] of geciteerd) {
@@ -502,6 +513,84 @@ export function controleerBronnen(map) {
   for (const b of bronnen) if (!geciteerd.has(b.citatie)) fouten.push(`${b.bestand}: bronregel ${b.id} (${b.citatie}) wordt nergens geciteerd (BR-5)`);
   if (wachtend.length > 0) waarschuwingen.push(`bronnen: ${wachtend.length} bronnen uit het LRD wachten nog op een citatie in de content (${wachtend.map((b) => b.id).join(', ')})`);
   return { fouten, waarschuwingen, bestanden: bronNamen.length };
+}
+
+/** Eerste zin van een tekst (tot en met het eerste leesteken dat een zin afsluit). */
+const eersteZin = (t) => /^[^.!?]+[.!?]/.exec(t.trim())?.[0] ?? t.trim();
+const zonderOordeel = (t) => String(t ?? '').replace(/^[+?–-]\s*/u, '');
+
+/**
+ * Controleert de media (fase 12): `media` in leerblok 2 en 4, `kijktips` in leerblok 1, de spellen in `spellen/`, de video's
+ * in `media/` en het `media`-veld van de docentonderdelen. Geeft { fouten, waarschuwingen }.
+ *   MD-2/MD-3  de uitleg is hoogstens 300 woorden, met voorbeeld en het modelantwoord van de oefencasus uit de taak zelf
+ *   MD-5       een video heeft ondertitels (bestand) en een transcript (de spreektekst van de dia's), verbonden met de uitleg
+ *   MD-8/10/11/13/15  de controle van elk spel (zie controleerSpel)
+ *   MD-14/16   kijktips zijn gewone https-links met verwijzing, duur en taal
+ */
+export function controleerMedia(map, blokken, docentDelen = []) {
+  const fouten = [];
+  const waarschuwingen = [];
+  const site = resolve(map, '..');
+  const fout = (bestand, wie, t) => fouten.push(`${bestand}: ${wie}${t}`);
+  for (const blok of blokken) {
+    const bestand = `leerblok-${blok.leerblok}.json`;
+    const kt = blok.kijktips;
+    if (kt !== undefined) {
+      if (!gevuld(kt.titel) || !gevuld(kt.intro)) fout(bestand, 'kijktips: ', 'titel en intro zijn nodig');
+      if (!Array.isArray(kt.items) || kt.items.length !== 2) fout(bestand, 'kijktips: ', 'precies twee kijktips (MD-16)');
+      for (const k of kt.items ?? []) {
+        const wie = `kijktip ${k?.id}: `;
+        if (!/^https:\/\//.test(k?.url ?? '')) fout(bestand, wie, 'url moet een https-link zijn (MD-14)');
+        for (const v of ['rol', 'titel', 'verwijzing', 'duur', 'taal', 'waarom']) if (!gevuld(k?.[v])) fout(bestand, wie, `mist ${v} (MD-16)`);
+        if (!/^\(.+, \d{4}\)$/.test(k?.verwijzing ?? '')) fout(bestand, wie, 'verwijzing heeft de vorm (Auteur, jaar) (BR-4)');
+      }
+    }
+    const m = blok.media;
+    if (m === undefined) continue;
+    const wie = 'media: ';
+    const taak = blok.taken.find((t) => t.id === m.taak);
+    if (!taak) { fout(bestand, wie, `taak ${m.taak} bestaat niet`); continue; }
+    const u = m.uitleg;
+    if (!u || !gevuld(u.titel) || !lijstGevuld(u.alineas) || !gevuld(u.voorbeeld)) { fout(bestand, wie, 'uitleg heeft titel, alinea’s en voorbeeld (MD-3)'); continue; }
+    if (u.bron === 'concept-auteur') waarschuwingen.push(`${bestand}: ${wie}de uitleg en de video zijn een concept van de bouwer (bron concept-auteur), wacht op akkoord van de auteur`);
+    const velden = u.modelantwoord?.velden ?? [];
+    if (u.modelantwoord?.taak !== m.taak || !lijstGevuld(velden) || velden.some((v) => taak.modelantwoord?.velden?.[v] === undefined)) fout(bestand, wie, 'het modelantwoord komt uit velden van de oefentaak (MD-3)');
+    const aantal = uitlegWoorden(blok);
+    if (aantal > MAX_WOORDEN_UITLEG) fout(bestand, wie, `uitleg heeft ${aantal} woorden; hoogstens ${MAX_WOORDEN_UITLEG} (MD-3)`);
+    const v = m.video;
+    if (!v) fout(bestand, wie, 'video ontbreekt');
+    else {
+      for (const veld of ['id', 'titel', 'bestand', 'ondertitels']) if (!gevuld(v[veld])) fout(bestand, wie, `video mist ${veld}`);
+      if (v.concept !== true && v.concept !== false) fout(bestand, wie, 'video.concept moet true of false zijn (eerlijk markeren)');
+      if (!lijstGevuld(v.dias) || v.dias.some((d) => !gevuld(d?.titel) || !gevuld(d?.spreektekst))) fout(bestand, wie, 'elke dia heeft titel en spreektekst (transcript, MD-5)');
+      else {
+        const transcript = v.dias.map((d) => d.spreektekst).join(' ');
+        const eis = [['voorbeeld', u.voorbeeld], ['„klaar als”', taak.klaarAls.tekst], ...modelRegels(blok).map((r) => [`modelantwoord ${r.id}`, zonderOordeel(r.tekst)]), ...u.alineas.map((a, i) => [`alinea ${i + 1} (eerste zin)`, eersteZin(a)])];
+        for (const [naam, tekst] of eis) if (!transcript.includes(tekst)) fout(bestand, wie, `het transcript bevat ${naam} van de uitleg niet letterlijk (video en uitleg horen bij elkaar)`);
+      }
+      for (const pad of [v.bestand, v.ondertitels]) if (gevuld(pad) && !existsSync(resolve(site, pad))) fout(bestand, wie, `${pad} bestaat niet (maak hem met tools/maak-video.mjs)`);
+      if (!/^media\/[\w.-]+\.(mp4|webm)$/.test(v.bestand ?? '')) fout(bestand, wie, 'video staat in media/ als mp4 of webm, op dezelfde site (MD-7)');
+    }
+    const s = m.spel;
+    if (!s || !gevuld(s.bestand) || !gevuld(s.titel) || !(s.minuten > 0)) { fout(bestand, wie, 'spel heeft bestand, titel en minuten'); continue; }
+    if (!/^spellen\/[\w.-]+\.json$/.test(s.bestand)) fout(bestand, wie, 'spel staat in spellen/ (op dezelfde site)');
+    const spelPad = resolve(site, s.bestand);
+    if (!existsSync(spelPad)) { fout(bestand, wie, `${s.bestand} bestaat niet`); continue; }
+    let data;
+    try { data = JSON.parse(readFileSync(spelPad, 'utf8')); } catch (e) { fout(s.bestand, '', `geen geldige JSON (${e.message})`); continue; }
+    fouten.push(...controleerSpel(data, s.bestand));
+    if (data.taak !== m.taak || data.leerblok !== blok.leerblok) fout(s.bestand, '', 'taak en leerblok van het spel horen bij de media van dit leerblok');
+    if (data.id !== s.id) fout(s.bestand, '', 'id van het spel komt niet overeen met de leerblokdata');
+    if (data.bron === 'concept-auteur') waarschuwingen.push(`${s.bestand}: het spel is een concept van de bouwer (bron concept-auteur), wacht op akkoord van de auteur`);
+  }
+  for (const d of docentDelen) {
+    for (const o of d.onderdelen ?? []) {
+      if (o?.media === undefined) continue;
+      const blok = blokken.find((b) => b.leerblok === o.media.leerblok);
+      if (!blok?.media) fouten.push(`docent-deel${d.deel}.json: onderdeel ${o.id}: media verwijst naar leerblok ${o.media.leerblok} zonder media (DM-13)`);
+    }
+  }
+  return { fouten, waarschuwingen };
 }
 
 /** Controleert alle leerblokbestanden in een map. */
@@ -545,6 +634,9 @@ export function controleerMap(map) {
   if (docentDelen.some((d) => d.deel === 1) && docentDelen.some((d) => d.deel === 2) && nietPauze !== 19) {
     fouten.push(`docent-deel1.json en docent-deel2.json: samen 19 onderdelen zonder pauzes (DM-18), niet ${nietPauze}`);
   }
+  const media = controleerMedia(map, blokken, docentDelen);
+  fouten.push(...media.fouten);
+  waarschuwingen.push(...media.waarschuwingen);
   const bronnen = controleerBronnen(map);
   fouten.push(...bronnen.fouten);
   waarschuwingen.push(...bronnen.waarschuwingen);

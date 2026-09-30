@@ -1539,5 +1539,119 @@
         "LUK 1 · Gebruikt en beoordeelt bronnen"
       ]
     }
-  ]
+  ],
+  "media": {
+    "taak": "4.1",
+    "uitleg": {
+      "titel": "Een bron beoordelen in vijf vragen",
+      "bron": "concept-auteur",
+      "alineas": [
+        "Een bron is pas bruikbaar als je weet of je hem kunt vertrouwen. AAOCC geeft je vijf vragen: Authority (wie schreef het en is die persoon deskundig?), Accuracy (klopt het en is het onderbouwd?), Objectivity (heeft de bron een belang?), Currency (is het actueel genoeg?) en Coverage (is het volledig genoeg?). Geef elk criterium een plus, een vraagteken of een min, met één zin toelichting.",
+        "Een AI-tool verzint soms bronnen of citeert ze verkeerd. Controleer daarom twee dingen: de bron bestaat echt, en er staat in wat de AI zegt. Open de bron zelf.",
+        "Daarna zet je de bron in APA, zodat de lezer kan zien waar je het vandaan hebt. De regels staan in de Publication manual (American Psychological Association, 2020)."
+      ],
+      "voorbeeld": "Voorbeeld: je vindt een blog van een webshopverkoper die schrijft dat klanten dol zijn op snelle bezorging. Bij Authority zet je een vraagteken, want er staat geen auteur bij. Bij Objectivity zet je een min, want de verkoper heeft er zelf belang bij. Dat is genoeg reden om verder te zoeken.",
+      "modelantwoord": {
+        "taak": "4.1",
+        "velden": [
+          "authority",
+          "currency"
+        ]
+      }
+    },
+    "video": {
+      "id": "V2",
+      "titel": "Zoeken en bronnen beoordelen: AAOCC en AI-bronnen controleren",
+      "concept": true,
+      "bron": "concept-auteur",
+      "bestand": "media/v2-bronnen-beoordelen.mp4",
+      "ondertitels": "media/v2-bronnen-beoordelen.vtt",
+      "dias": [
+        {
+          "titel": "Bronnen beoordelen",
+          "punten": [
+            "Leerblok 2 · Zoeken en beoordelen",
+            "Concept-video met computerstem"
+          ],
+          "spreektekst": "Dit is een conceptvideo met een computerstem. De docent kan later een eigen opname maken. In twee minuten zie je hoe je een bron beoordeelt en een bron van een AI-tool controleert."
+        },
+        {
+          "titel": "AAOCC: vijf vragen",
+          "punten": [
+            "Authority: wie schreef het?",
+            "Accuracy: klopt het?",
+            "Objectivity: welk belang?",
+            "Currency: actueel genoeg?",
+            "Coverage: volledig genoeg?"
+          ],
+          "spreektekst": "Een bron is pas bruikbaar als je weet of je hem kunt vertrouwen. AAOCC geeft je vijf vragen. Authority: wie schreef het en is die persoon deskundig? Accuracy: klopt het en is het onderbouwd? Objectivity: heeft de bron een belang? Currency: is het actueel genoeg? En Coverage: is het volledig genoeg?"
+        },
+        {
+          "titel": "Een oordeel per vraag",
+          "punten": [
+            "+ op orde",
+            "? onzeker",
+            "– een probleem",
+            "Eén zin toelichting per criterium"
+          ],
+          "spreektekst": "Geef elk criterium een plus, een vraagteken of een min, met één zin toelichting."
+        },
+        {
+          "titel": "Een AI-bron controleren",
+          "punten": [
+            "1 · De bron bestaat echt",
+            "2 · Er staat in wat de AI zegt",
+            "Open de bron zelf"
+          ],
+          "spreektekst": "Een AI-tool verzint soms bronnen of citeert ze verkeerd. Controleer daarom twee dingen: de bron bestaat echt, en er staat in wat de AI zegt. Open de bron zelf."
+        },
+        {
+          "titel": "De bron in APA",
+          "punten": [
+            "Achternaam, A. (jaar). Titel. Uitgever of tijdschrift. Link."
+          ],
+          "spreektekst": "Daarna zet je de bron in APA, zodat de lezer kan zien waar je het vandaan hebt. De regels staan in de Publication manual (American Psychological Association, 2020)."
+        },
+        {
+          "titel": "Voorbeeld",
+          "punten": [
+            "Blog van een webshopverkoper",
+            "Authority: ?",
+            "Objectivity: –"
+          ],
+          "spreektekst": "Voorbeeld: je vindt een blog van een webshopverkoper die schrijft dat klanten dol zijn op snelle bezorging. Bij Authority zet je een vraagteken, want er staat geen auteur bij. Bij Objectivity zet je een min, want de verkoper heeft er zelf belang bij. Dat is genoeg reden om verder te zoeken."
+        },
+        {
+          "titel": "Nu jij",
+          "punten": [
+            "Pauzeer de video",
+            "Doe taak 4.1 op webshop X",
+            "Kijk daarna verder"
+          ],
+          "spreektekst": "Nu ben jij aan de beurt. Pauzeer de video en doe de oefening bij taak 4.1 op webshop X. Kijk daarna pas verder.",
+          "pauzeNa": 4
+        },
+        {
+          "titel": "Modelantwoord voor webshop X",
+          "punten": [
+            "Authority: +",
+            "Currency: ?"
+          ],
+          "spreektekst": "Het modelantwoord voor webshop X. Authority: plus. De auteurs zijn onderzoekers aan een universiteit en publiceren in een wetenschappelijk tijdschrift. Currency: vraagteken. De bron is van 2016; voor een markt die snel verandert is dat oud, dus zoek ook nieuwer onderzoek."
+        },
+        {
+          "titel": "Klaar als",
+          "punten": [],
+          "spreektekst": "Je bent klaar als je van één bron de vijf AAOCC-oordelen met een zin toelichting hebt, bij een AI-bron beide controles hebt gedaan, een besluit hebt genomen en de bron in APA hebt opgeschreven.",
+          "klaarAls": true
+        }
+      ]
+    },
+    "spel": {
+      "id": "bronnen-detective",
+      "titel": "Bronnen-detective",
+      "bestand": "spellen/bronnen-detective.json",
+      "minuten": 5
+    }
+  }
 }

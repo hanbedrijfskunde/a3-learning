@@ -1,0 +1,189 @@
+{
+  "formaat": "1.0",
+  "id": "bronnen-detective",
+  "type": "kaarten",
+  "titel": "Bronnen-detective",
+  "leerblok": 2,
+  "taak": "4.1",
+  "bron": "concept-auteur",
+  "intro": "Je krijgt zes bronkaarten bij de zoekvraag van webshop X. Onderzoek de gegevens, kies wat je met de bron doet en lees de feedback. Daarna zie je hoe AAOCC de bron beoordeelt. Een bron die je gebruikt, zet je in APA (American Psychological Association, 2020).",
+  "fictiefUitleg": "Alle bronnen in dit spel zijn verzonnen voor deze oefening. Zoek ze niet op: ze bestaan niet.",
+  "geenBewijs": "Wat je hier doet, komt niet in je dossier. Het is oefening.",
+  "kaarten": [
+    {
+      "id": "k1",
+      "fictief": true,
+      "titel": "De vijf drijfveren van klantbeleving in webwinkels",
+      "soort": "Onderzoeksrapport",
+      "auteur": "E. Winkelman",
+      "jaar": "2021",
+      "uitgever": "Nederlands Tijdschrift voor Webwinkelwetenschap",
+      "samenvatting": "Een AI-tool geeft dit rapport als antwoord op je zoekvraag over klanttevredenheid.",
+      "gegevens": [
+        { "label": "Gevonden via", "tekst": "Een AI-tool, zonder link." },
+        { "label": "Zoeken naar de titel", "tekst": "Google Scholar en de bibliotheekcatalogus geven geen resultaat." },
+        { "label": "Het tijdschrift", "tekst": "Je vindt het tijdschrift nergens, ook niet bij de uitgevers van vaktijdschriften." },
+        { "label": "De auteur", "tekst": "Zoeken op de naam geeft geen universiteit en geen andere publicaties." }
+      ],
+      "aaocc": {
+        "Authority": "– De auteur en het tijdschrift zijn nergens te vinden.",
+        "Accuracy": "– De inhoud is niet te controleren, want de bron lijkt niet te bestaan.",
+        "Objectivity": "? Onbekend, want er is niets te lezen.",
+        "Currency": "? Het jaar is niet te controleren.",
+        "Coverage": "? Niet te beoordelen."
+      },
+      "kernpunt": "Bij een bron van een AI-tool controleer je eerst of de bron bestaat.",
+      "opties": [
+        { "id": "gebruiken", "tekst": "Gebruiken", "feedback": "Dat is riskant. Een AI-tool verzint soms bronnen en hier wijst alles erop: geen link, geen tijdschrift, geen auteur. Een bron die je niet kunt openen, kun je ook niet in APA verantwoorden." },
+        { "id": "voorzichtig", "tekst": "Voorzichtig gebruiken", "feedback": "Voorzichtig zijn is een goede reflex, maar hier is niets om voorzichtig mee te zijn. De controle geeft al antwoord: de bron bestaat niet." },
+        { "id": "niet", "tekst": "Niet gebruiken", "passend": true, "feedback": "Dat past bij wat je hebt gevonden. Je hebt de bron zelf geprobeerd te openen en dat lukte niet. Vraag de AI-tool om een echte bron met een link, of zoek zelf verder." }
+      ]
+    },
+    {
+      "id": "k2",
+      "fictief": true,
+      "titel": "Snelle bezorging maakt klanten trouw",
+      "soort": "Whitepaper",
+      "auteur": "SnelPost",
+      "jaar": "2024",
+      "uitgever": "SnelPost, een bezorgdienst",
+      "samenvatting": "Een vragenlijst onder klanten van webwinkels laat zien dat snelle bezorging klanten tevreden en trouw maakt.",
+      "gegevens": [
+        { "label": "Wie betaalde het onderzoek", "tekst": "SnelPost zelf. De bezorgdienst verkoopt snelle bezorging aan webwinkels." },
+        { "label": "Methode", "tekst": "500 klanten, met vragen over bezorging alleen. Er staat een korte methodebeschrijving in." },
+        { "label": "Conclusie", "tekst": "Webwinkels die met SnelPost bezorgen, hebben tevredener klanten." },
+        { "label": "Openen", "tekst": "De bron is gratis te downloaden en het bestand opent zonder problemen." }
+      ],
+      "aaocc": {
+        "Authority": "+ Een bezorgdienst kent het onderwerp van binnenuit.",
+        "Accuracy": "? De methode is kort beschreven en de vragen gaan alleen over bezorging.",
+        "Objectivity": "– De schrijver verkoopt wat het rapport aanbeveelt.",
+        "Currency": "+ Van 2024.",
+        "Coverage": "? Het rapport kijkt naar één oorzaak van tevredenheid."
+      },
+      "kernpunt": "Wie iets te winnen heeft bij de conclusie, is niet neutraal.",
+      "opties": [
+        { "id": "gebruiken", "tekst": "Gebruiken", "feedback": "Dat gaat te snel. Het onderzoek is niet nep, maar de afzender heeft belang bij de uitkomst. Objectivity is een min. Zonder die kanttekening lijkt het alsof een neutrale bron dit zegt." },
+        { "id": "voorzichtig", "tekst": "Voorzichtig gebruiken", "passend": true, "feedback": "Dat is een verstandige keuze. Je kunt de cijfers gebruiken, maar noem erbij dat de bezorgdienst het onderzoek betaalde, en zoek een onafhankelijke bron die hetzelfde zegt." },
+        { "id": "niet", "tekst": "Niet gebruiken", "feedback": "Dat is streng. De gegevens zijn niet verzonnen; alleen de afzender heeft een belang. Als achtergrond, of met een tweede onafhankelijke bron erbij, is de bron bruikbaar." }
+      ]
+    },
+    {
+      "id": "k3",
+      "fictief": true,
+      "titel": "Betaalgedrag van kopers in webwinkels",
+      "soort": "Tijdschriftartikel",
+      "auteur": "L. Verbeek",
+      "jaar": "2009",
+      "uitgever": "Journal of Online Commerce Studies",
+      "samenvatting": "Een universiteitsonderzoek naar hoe kopers in webwinkels betalen en waarom ze een bestelling afbreken.",
+      "gegevens": [
+        { "label": "Het tijdschrift", "tekst": "Een wetenschappelijk tijdschrift met peer review, gevonden in de bibliotheekcatalogus." },
+        { "label": "De auteur", "tekst": "Verbonden aan een universiteit, met meer publicaties over online winkelen." },
+        { "label": "Steekproef", "tekst": "2.000 kopers, met een duidelijke methode." },
+        { "label": "Het jaar", "tekst": "2009, dus van vóór smartphones en de meeste betaalapps." }
+      ],
+      "aaocc": {
+        "Authority": "+ Universitaire auteur in een wetenschappelijk tijdschrift.",
+        "Accuracy": "+ De methode is beschreven en de steekproef is groot.",
+        "Objectivity": "+ Er is geen belanghebbende opdrachtgever.",
+        "Currency": "– Van 2009: de markt is sindsdien flink veranderd.",
+        "Coverage": "? Het gaat over betalen, jouw zoekvraag gaat over tevredenheid."
+      },
+      "kernpunt": "Een degelijke bron kan toch te oud zijn voor jouw vraag.",
+      "opties": [
+        { "id": "gebruiken", "tekst": "Gebruiken", "feedback": "Dat is te makkelijk. De bron is degelijk, maar uit 2009. Voor een markt die zo snel verandert is dat oud, en het onderwerp is betalen, niet tevredenheid." },
+        { "id": "voorzichtig", "tekst": "Voorzichtig gebruiken", "passend": true, "feedback": "Dat past. Gebruik de bron voor de achtergrond en zoek er een nieuwere bron bij. Zo laat je zien dat je het jaar hebt meegewogen." },
+        { "id": "niet", "tekst": "Niet gebruiken", "feedback": "Dat is te streng. Authority, Accuracy en Objectivity zijn in orde. Alleen Currency is een probleem, en dat los je op door ook nieuwer onderzoek te zoeken." }
+      ]
+    },
+    {
+      "id": "k4",
+      "fictief": true,
+      "titel": "Wat bepaalt de tevredenheid van klanten van webwinkels?",
+      "soort": "Tijdschriftartikel",
+      "auteur": "M. Hoogland en R. Bosma",
+      "jaar": "2022",
+      "uitgever": "Tijdschrift voor Consumentengedrag",
+      "samenvatting": "Een onderzoek onder 800 klanten van Nederlandse webwinkels naar wat hun tevredenheid bepaalt.",
+      "gegevens": [
+        { "label": "Het tijdschrift", "tekst": "Wetenschappelijk, met peer review. Het artikel heeft een werkende DOI." },
+        { "label": "De auteurs", "tekst": "Onderzoekers aan een hogeschool en een universiteit, met eerdere publicaties over dit onderwerp." },
+        { "label": "Methode en financiering", "tekst": "De vragenlijst staat in een bijlage. Het onderzoek is betaald uit een onderzoeksbeurs, niet door een webwinkel." },
+        { "label": "Bereik", "tekst": "Klanten van kleine en grote webwinkels, alleen in Nederland." }
+      ],
+      "aaocc": {
+        "Authority": "+ Onderzoekers met eerdere publicaties over het onderwerp.",
+        "Accuracy": "+ Methode en vragenlijst zijn openbaar.",
+        "Objectivity": "+ Betaald uit een beurs, niet door een webwinkel.",
+        "Currency": "+ Van 2022.",
+        "Coverage": "? Alleen Nederland, maar dat past bij webshop X."
+      },
+      "kernpunt": "Soms is een bron gewoon goed. Dan hoef je niet verder te zoeken.",
+      "opties": [
+        { "id": "gebruiken", "tekst": "Gebruiken", "passend": true, "feedback": "Dat past. Alle vijf de criteria zijn op orde. Open de bron zelf, schrijf hem in APA en gebruik hem voor je onderbouwing." },
+        { "id": "voorzichtig", "tekst": "Voorzichtig gebruiken", "feedback": "Voorzichtig zijn kan nooit kwaad, maar hier is geen zwak punt te noemen. Je kunt de bron met vertrouwen gebruiken. Noem hooguit dat het alleen om Nederland gaat." },
+        { "id": "niet", "tekst": "Niet gebruiken", "feedback": "Dat is jammer. Dit is het soort bron waar je naar zoekt: actueel, onafhankelijk en met een open methode. Zonder reden afwijzen kost je tijd." }
+      ]
+    },
+    {
+      "id": "k5",
+      "fictief": true,
+      "titel": "Zeven tips voor tevreden webshopklanten",
+      "soort": "Blogbericht",
+      "auteur": "Geen auteur vermeld",
+      "jaar": "2023",
+      "uitgever": "Website van een aanbieder van webshopsoftware",
+      "samenvatting": "Een lijst met zeven tips, die volgens het bericht bewezen werken.",
+      "gegevens": [
+        { "label": "De auteur", "tekst": "Er staat geen naam bij." },
+        { "label": "Bronnen", "tekst": "Het bericht noemt geen onderzoek en geeft geen links." },
+        { "label": "Wie zit erachter", "tekst": "Een bedrijf dat software voor webshops verkoopt, en bij elke tip staat een link naar dat product." },
+        { "label": "Inhoud", "tekst": "De tips zijn kort en algemeen, zonder cijfers." }
+      ],
+      "aaocc": {
+        "Authority": "– Geen auteur, dus niemand die je kunt aanspreken.",
+        "Accuracy": "? Er staat geen onderbouwing bij.",
+        "Objectivity": "– Bij elke tip staat een product te koop.",
+        "Currency": "+ Van 2023.",
+        "Coverage": "– Kort en algemeen."
+      },
+      "kernpunt": "Geen auteur en geen bronnen betekent dat je niets kunt controleren.",
+      "opties": [
+        { "id": "gebruiken", "tekst": "Gebruiken", "feedback": "Dat is niet verstandig. Je kunt niets controleren en de schrijver verkoopt wat hij aanbeveelt. Als onderbouwing van een onderzoeksvraag is dit te zwak." },
+        { "id": "voorzichtig", "tekst": "Voorzichtig gebruiken", "feedback": "Als inspiratie voor zoektermen kan het. Als bron in je onderbouwing houdt het niet stand, want er is geen auteur en er zijn geen bronnen om na te lopen." },
+        { "id": "niet", "tekst": "Niet gebruiken", "passend": true, "feedback": "Dat past voor een onderbouwing. Je kunt de tips nog wel lezen om zoektermen te bedenken en er dan een echte bron bij zoeken." }
+      ]
+    },
+    {
+      "id": "k6",
+      "fictief": true,
+      "titel": "Klanttevredenheid bij Nederlandse webwinkels in 2023",
+      "soort": "Branchrapport",
+      "auteur": "Nederlandse Branchevereniging voor Webwinkels",
+      "jaar": "2023",
+      "uitgever": "Nederlandse Branchevereniging voor Webwinkels",
+      "samenvatting": "Een jaarlijks rapport over hoe tevreden klanten zijn, gebaseerd op een vragenlijst onder de leden.",
+      "gegevens": [
+        { "label": "Methode", "tekst": "Vragenlijst onder 300 leden, met de vragen in een bijlage." },
+        { "label": "Bereik", "tekst": "Alleen grote webwinkels, met meer dan 50 medewerkers." },
+        { "label": "Doel", "tekst": "Laten zien hoe de sector ervoor staat, ook aan beleidsmakers." },
+        { "label": "Openen", "tekst": "Openbaar te downloaden, met een duidelijke herkomst." }
+      ],
+      "aaocc": {
+        "Authority": "+ Een brancheorganisatie kent de sector.",
+        "Accuracy": "+ De vragenlijst is openbaar.",
+        "Objectivity": "? De vereniging wil de sector graag positief laten zien.",
+        "Currency": "+ Van 2023.",
+        "Coverage": "– Alleen grote webwinkels."
+      },
+      "kernpunt": "Noem bij een goede bron ook de beperking ervan.",
+      "opties": [
+        { "id": "gebruiken", "tekst": "Gebruiken", "feedback": "Dat kan, maar noem de beperking. Het rapport gaat alleen over grote webwinkels en de vereniging heeft belang bij een positief beeld. Past webshop X bij dat bereik?" },
+        { "id": "voorzichtig", "tekst": "Voorzichtig gebruiken", "passend": true, "feedback": "Dat past. Gebruik het rapport en schrijf erbij dat het alleen grote webwinkels betreft en dat de vereniging een belang heeft. Zo weet de lezer hoe ver de bron reikt." },
+        { "id": "niet", "tekst": "Niet gebruiken", "feedback": "Dat is te streng. De methode is open en het rapport is actueel. De beperkingen zijn een reden om de bron te benoemen, niet om hem weg te laten." }
+      ]
+    }
+  ],
+  "slot": "Je hebt zes bronnen bekeken. Let op wat elke keer de doorslag gaf: een bron die niet bestaat, een afzender met een belang, een bron die te oud is, geen auteur, of een bron die gewoon goed is. Dit is dezelfde beoordeling die je in taak 4.1 op een eigen bron doet."
+}

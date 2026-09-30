@@ -602,5 +602,121 @@
       "uitleg": "Schrijf in één zin wat je van deze e-learning meeneemt naar je eigen A3. Op het dossier komt die zin naast je waarom-zin uit leerblok 1.",
       "bron": "concept-auteur"
     }
+  },
+  "media": {
+    "taak": "9.4",
+    "uitleg": {
+      "titel": "Drie modellen, één verhaal",
+      "bron": "concept-auteur",
+      "alineas": [
+        "Je hebt een user story, een value proposition canvas en de zes kapitalen ingevuld. Elk model beschrijft hetzelfde vraagstuk vanuit een andere kant. De user story zegt voor wie het is en welke waarde je wilt maken. Het canvas laat zien wat de klant wil en hoe je daarbij helpt (Osterwalder e.a., 2014). De zes kapitalen laten zien wat de organisatie erin stopt en wat eruit komt (International Integrated Reporting Council, 2021).",
+        "Een verband is een lijn tussen twee kaarten uit verschillende modellen. Je kiest hoort bij, leidt tot of gaat ten koste van, en schrijft één zin waarom. Er is meer dan één goed antwoord.",
+        "Elk kapitaal is input (het gaat erin), uitkomst plus (het groeit) of uitkomst min (het neemt af). Zoek minstens één verband dat ergens iets kost en bedenk welke stakeholder dat als eerste merkt.",
+        "Vraag daarna feedback met drie zinsdelen: ik zie, ik mis en ik vraag me af."
+      ],
+      "voorbeeld": "Voorbeeld: de terugkerende klant uit je user story komt terug in de klanttaak van je canvas. Dat is een verband van het type hoort bij. Schrijf erbij: de terugkerende klant voert de klanttaak uit.",
+      "modelantwoord": {
+        "taak": "9.4",
+        "velden": [
+          "v2",
+          "v3"
+        ]
+      }
+    },
+    "video": {
+      "id": "V4",
+      "titel": "Verbanden tussen user story, VPC en zes kapitalen, en feedback: ik zie, ik mis, ik vraag me af",
+      "concept": true,
+      "bron": "concept-auteur",
+      "bestand": "media/v4-verbanden.mp4",
+      "ondertitels": "media/v4-verbanden.vtt",
+      "dias": [
+        {
+          "titel": "Drie modellen, één verhaal",
+          "punten": [
+            "Leerblok 4 · Verbinden en reflecteren",
+            "Concept-video met computerstem"
+          ],
+          "spreektekst": "Dit is een conceptvideo met een computerstem. De docent kan later een eigen opname maken. In twee minuten leg je verbanden tussen je user story, je canvas en de zes kapitalen."
+        },
+        {
+          "titel": "Drie kanten van één vraagstuk",
+          "punten": [
+            "User story: voor wie en welke waarde",
+            "Canvas: wat de klant wil",
+            "Zes kapitalen: erin en eruit"
+          ],
+          "spreektekst": "Je hebt een user story, een value proposition canvas en de zes kapitalen ingevuld. Elk model beschrijft hetzelfde vraagstuk vanuit een andere kant. De user story zegt voor wie het is en welke waarde je wilt maken. Het canvas laat zien wat de klant wil en hoe je daarbij helpt (Osterwalder e.a., 2014). De zes kapitalen laten zien wat de organisatie erin stopt en wat eruit komt (International Integrated Reporting Council, 2021)."
+        },
+        {
+          "titel": "Een verband is een lijn",
+          "punten": [
+            "hoort bij",
+            "leidt tot",
+            "gaat ten koste van",
+            "Bij elk verband één zin waarom"
+          ],
+          "spreektekst": "Een verband is een lijn tussen twee kaarten uit verschillende modellen. Je kiest hoort bij, leidt tot of gaat ten koste van, en schrijft één zin waarom. Er is meer dan één goed antwoord."
+        },
+        {
+          "titel": "De zes kapitalen markeren",
+          "punten": [
+            "Input: het gaat erin",
+            "Uitkomst +: het groeit",
+            "Uitkomst –: het neemt af",
+            "Zoek een verband dat iets kost"
+          ],
+          "spreektekst": "Elk kapitaal is input (het gaat erin), uitkomst plus (het groeit) of uitkomst min (het neemt af). Zoek minstens één verband dat ergens iets kost en bedenk welke stakeholder dat als eerste merkt."
+        },
+        {
+          "titel": "Voorbeeld",
+          "punten": [
+            "User story: de terugkerende klant",
+            "Canvas: de klanttaak",
+            "Type: hoort bij"
+          ],
+          "spreektekst": "Voorbeeld: de terugkerende klant uit je user story komt terug in de klanttaak van je canvas. Dat is een verband van het type hoort bij. Schrijf erbij: de terugkerende klant voert de klanttaak uit."
+        },
+        {
+          "titel": "Feedback in drie zinsdelen",
+          "punten": [
+            "Ik zie",
+            "Ik mis",
+            "Ik vraag me af"
+          ],
+          "spreektekst": "Vraag daarna feedback met drie zinsdelen: ik zie, ik mis en ik vraag me af."
+        },
+        {
+          "titel": "Nu jij",
+          "punten": [
+            "Pauzeer de video",
+            "Doe taak 9.4 op webshop X",
+            "Trek minstens één lijn"
+          ],
+          "spreektekst": "Nu ben jij aan de beurt. Pauzeer de video en doe de oefening bij taak 9.4 op webshop X. Trek minstens één lijn en beantwoord de drie vragen. Kijk daarna pas verder.",
+          "pauzeNa": 4
+        },
+        {
+          "titel": "Modelantwoord voor webshop X",
+          "punten": [
+            "Sociaal en relationeel + financieel: uitkomst +",
+            "Menselijk kapitaal kan afnemen"
+          ],
+          "spreektekst": "Het modelantwoord voor webshop X. De waarde raakt het sociaal en relationeel kapitaal (de band met de klant) en het financiële kapitaal (herhaalaankopen). Beide komen eruit als uitkomst (+); het productiekapitaal van de bezorging gaat erin als input. Het menselijk kapitaal kan afnemen: persoonlijke aanbevelingen vragen extra werk van de medewerkers van de klantenservice."
+        },
+        {
+          "titel": "Klaar als",
+          "punten": [],
+          "spreektekst": "Je bent klaar als je minstens zes verbanden hebt getrokken met bij elk een zin waarom, elk kapitaal hebt gemarkeerd, een spanning met een stakeholder hebt benoemd en je synthese en de drie antwoorden hebt geschreven.",
+          "klaarAls": true
+        }
+      ]
+    },
+    "spel": {
+      "id": "waarde-simulator",
+      "titel": "Waarde-simulator",
+      "bestand": "spellen/waarde-simulator.json",
+      "minuten": 5
+    }
   }
 }

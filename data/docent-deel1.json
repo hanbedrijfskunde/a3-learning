@@ -276,6 +276,7 @@
    "minuten": 10,
    "taak": "4.1",
    "leerblok": 2,
+   "media": { "leerblok": 2 },
    "dia": "25–27",
    "materiaal": [
     "Slidedeck A3-introductie",

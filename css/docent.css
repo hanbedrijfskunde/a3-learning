@@ -58,3 +58,8 @@ body[data-weergave="afdrukken"] #afdruk { display:block; border-top:3px solid va
   .db-onderdeel { break-inside:avoid; }
   body { font-size:11pt; }
 }
+
+/* Video en spel bij een onderdeel (fase 12, DM-13): naast de stapkaart, ook voor projectie. */
+.sk-media { border:var(--rand) solid var(--zwart); padding:8px 24px; margin:.25rem 0; background:var(--wit); font-size:28px; line-height:1.25; }
+.sk-media .klein, .sk-media .sp-fictief, .sk-media .md-concept, .sk-media .md-knop { font-size:28px; }
+.sk-media .md-video { max-width:100%; }

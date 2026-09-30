@@ -212,6 +212,33 @@
     "na": "2.2"
   },
   "wissel": { "zichtbaarNa": "EV-02", "leerblok": 4, "taak": "6.2" },
+  "kijktips": {
+    "titel": "Kijktips van anderen",
+    "intro": "Twee filmpjes over de A3. Ze staan op YouTube en openen in een nieuw tabblad. Je hebt ze niet nodig om dit leerblok af te ronden.",
+    "bron": "lrd",
+    "items": [
+      {
+        "id": "bureau-tromp",
+        "rol": "Instap",
+        "titel": "Wat is de A3 verbetermethode?",
+        "verwijzing": "(Bureau Tromp, 2023)",
+        "url": "https://www.youtube.com/watch?v=hVYtuPjMeYg",
+        "duur": "4:38",
+        "taal": "Nederlands",
+        "waarom": "Loopt de stappen langs, met het SMART-doel, de grondoorzaak, borgen en vieren."
+      },
+      {
+        "id": "mit-ocw",
+        "rol": "Verdieping",
+        "titel": "Ses. 3-4: A3 thinking",
+        "verwijzing": "(MIT OpenCourseWare, 2014)",
+        "url": "https://www.youtube.com/watch?v=z1KloN7Ub0M",
+        "duur": "3:25 (fragment 0:44 tot 4:09)",
+        "taal": "Engels",
+        "waarom": "Laat de A3 zien als denkwijze, met PDCA en de linker- en rechterhelft."
+      }
+    ]
+  },
   "bewijsonderdelen": [
     {
       "id": "EV-01",

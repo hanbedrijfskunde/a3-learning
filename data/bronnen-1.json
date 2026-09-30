@@ -1,7 +1,22 @@
 {
   "formaat": "1.0",
   "leerblok": 1,
-  "bronnen": [],
+  "bronnen": [
+    {
+      "id": "bureau-tromp-2023",
+      "citatie": "Bureau Tromp, 2023",
+      "type": "video",
+      "apa": "Bureau Tromp. (2023, 9 februari). *Wat is de A3 verbetermethode?* [Video]. YouTube.",
+      "link": "https://www.youtube.com/watch?v=hVYtuPjMeYg"
+    },
+    {
+      "id": "mit-ocw-2014",
+      "citatie": "MIT OpenCourseWare, 2014",
+      "type": "video",
+      "apa": "MIT OpenCourseWare. (2014, 6 maart). *Ses. 3-4: A3 thinking* [Video]. YouTube.",
+      "link": "https://www.youtube.com/watch?v=z1KloN7Ub0M"
+    }
+  ],
   "wachtOpCitatie": [
     {
       "id": "anderson-krathwohl-2001",
@@ -26,14 +41,6 @@
       "apa": "Biggs, J. & Tang, C. (2011). *Teaching for quality learning at university* (4e ed.). Open University Press."
     },
     {
-      "id": "bureau-tromp-2023",
-      "citatie": "Bureau Tromp, 2023",
-      "type": "video",
-      "bedoeldVoor": "kijktip in leerblok 1 (FR-27, B60; fase 12)",
-      "apa": "Bureau Tromp. (2023, 9 februari). *Wat is de A3 verbetermethode?* [Video]. YouTube.",
-      "link": "https://www.youtube.com/watch?v=hVYtuPjMeYg"
-    },
-    {
       "id": "deci-ryan-2000",
       "citatie": "Deci & Ryan, 2000",
       "type": "artikel",
@@ -48,14 +55,6 @@
       "bedoeldVoor": "docentgids (ontwerpgrondslag, fase 14)",
       "apa": "Mislevy, R. J., Almond, R. G. & Lukas, J. F. (2003). *A brief introduction to evidence-centered design* (Research Report RR-03-16). Educational Testing Service.",
       "link": "https://doi.org/10.1002/j.2333-8504.2003.tb01908.x"
-    },
-    {
-      "id": "mit-ocw-2014",
-      "citatie": "MIT OpenCourseWare, 2014",
-      "type": "video",
-      "bedoeldVoor": "kijktip in leerblok 1 (FR-27, B60; fase 12)",
-      "apa": "MIT OpenCourseWare. (2014, 6 maart). *Ses. 3-4: A3 thinking* [Video]. YouTube.",
-      "link": "https://www.youtube.com/watch?v=z1KloN7Ub0M"
     },
     {
       "id": "mohd-saad-2013",

@@ -44,6 +44,7 @@ async function start() {
   const heeftWissel = Boolean(blok.wissel) || blok.taken.some((t) => t.toepassing.component === 'feedbacklog');
   const heeftWeergave = blok.taken.some((t) => t.toepassing.weergave);
   const heeftLb4Ui = blok.taken.some((t) => LB4_COMPONENTEN.includes(t.toepassing.component));
+  const heeftMedia = Boolean(blok.media || blok.kijktips); // fase 12: routekeuze tekst/video/spel (leerblok 2 en 4), kijktips (leerblok 1)
   await laadControles([blok.leerblok, blok.wissel?.leerblok]);
   // gewicht-alleen: wissel
   const [{ maakWissel, EV09_TAAK }, { bouwWisselPaneel }] = heeftWissel ? await Promise.all([import('./wissel.js'), import('./wissel-paneel.js')]) : [{}, {}];
@@ -51,6 +52,8 @@ async function start() {
   const { bouwWeergave } = heeftWeergave ? await import('./lb2-ui.js') : {};
   // gewicht-alleen: lb4ui
   const lb4Ui = heeftLb4Ui ? await import('./lb4-ui.js') : {};
+  // gewicht-alleen: media
+  const { bouwMediaSectie, bouwKijktips } = heeftMedia ? await import('./media.js') : {};
   const { opslag, geblokkeerd } = kiesOpslag();
   const store = maakStore(opslag);
   const context = () => wisselContext(store); // ontvangen wisselblokken voor de kopiecontrole (WS-7)
@@ -123,6 +126,7 @@ async function start() {
     const toonModel = (m) => {
       wis(modelGebied);
       if (m.modelZichtbaar) modelGebied.append(modelantwoordEl(m.modelantwoord, m.velden), oefVelden.modelExtra?.(m.modelantwoord));
+      document.dispatchEvent(new CustomEvent('a3-oefening', { detail: { taak: id, modelZichtbaar: m.modelZichtbaar } })); // de mediasectie toont het model in de tekstroute pas dan (TK-6)
     };
     const veldGebied = h('div', { class: 'oef-velden' },
       oefVelden.element,
@@ -336,6 +340,11 @@ async function start() {
       : h('p', {}, 'Je hebt nog geen vraagstuk ingevuld. ', h('a', { href: 'index.html' }, 'Vul het op de startpagina in'), ' of werk gewoon door.'),
     profiel.voorlopig ? h('p', { class: 'klein' }, 'Je werkt met een voorlopig vraagstuk: je bewijs krijgt het label voorlopig.') : null);
 
+  // Media (fase 12): leerblok 2 en 4 bieden drie routes met dezelfde „klaar als”; leerblok 1 toont de kijktips als gewone links.
+  const mediaSectie = blok.media ? bouwMediaSectie({ blok, store, met, modelZichtbaar: () => sessie.oefening(blok.media.taak).modelZichtbaar }) : null;
+  if (mediaSectie) document.addEventListener('a3-oefening', (e) => { if (e.detail.taak === blok.media.taak) mediaSectie.ververs(); });
+  const kijktips = blok.kijktips ? bouwKijktips({ kijktips: blok.kijktips, met }) : null;
+
   const inhoud = h('nav', { 'aria-label': 'Taken in dit leerblok', class: 'taken-nav' },
     h('ol', {}, blok.taken.map((t) => h('li', {}, h('a', { href: `#taak-${t.id}` }, `${t.id} ${t.titel}`))), h('li', {}, h('a', { href: '#afsluiten' }, 'Afsluiten'))));
 
@@ -344,7 +353,7 @@ async function start() {
     h('p', { class: 'meta' }, `Richttijd: ${blok.richttijd} min. Eindigt met: ${blok.eindigtMet}.`),
     aanbevolen ? h('p', { class: 'meta', id: 'aanbevolen' }, `Aanbevolen: ${aanbevolen.week}, ${aanbevolen.dag}.`) : null,
     geblokkeerd ? geblokkeerdMelding(store, config.versie) : null,
-    foutGebied, herinneringGebied, vorigeKeer, vraagstuk, inhoud,
+    foutGebied, herinneringGebied, vorigeKeer, vraagstuk, mediaSectie?.element, kijktips, inhoud,
     ...blok.taken.flatMap((t) => [taakArtikel(t), t.bewijsonderdeel === blok.wissel?.zichtbaarNa ? wisselSectie : null]), afsluiten,
   ].filter(Boolean));
   tekenAfsluiten();

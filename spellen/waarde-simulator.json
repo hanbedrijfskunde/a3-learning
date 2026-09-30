@@ -1,0 +1,113 @@
+{
+  "formaat": "1.0",
+  "id": "waarde-simulator",
+  "type": "simulatie",
+  "titel": "Waarde-simulator",
+  "leerblok": 4,
+  "taak": "9.4",
+  "fictief": true,
+  "bron": "concept-auteur",
+  "intro": "Webshop X (fictief) wil terugkerende klanten terugwinnen. Je neemt drie beslissingen. Bij elke beslissing kies je een optie, voorspel je eerst wat er met de zes kapitalen gebeurt (International Integrated Reporting Council, 2021) en zie je daarna het effect op korte, middellange en lange termijn.",
+  "fictiefUitleg": "Webshop X en alle cijfers en effecten zijn verzonnen voor deze oefening.",
+  "geenBewijs": "Wat je hier doet, komt niet in je dossier. Het is oefening.",
+  "voorspelVraag": "Wat gebeurt er op de lange termijn?",
+  "voorspelOpties": [
+    { "id": "geen", "tekst": "Geen effect" },
+    { "id": "input", "tekst": "Input (gaat erin)" },
+    { "id": "plus", "tekst": "Uitkomst plus (groeit)" },
+    { "id": "min", "tekst": "Uitkomst min (neemt af)" }
+  ],
+  "beslissingen": [
+    {
+      "id": "b1",
+      "fictief": true,
+      "titel": "Hoe komt de bestelling bij de klant?",
+      "situatie": "Bestellingen komen vaak later aan dan beloofd. Klanten geven daarom een lagere beoordeling.",
+      "opties": [
+        {
+          "id": "a",
+          "tekst": "Een eigen bezorgdienst opzetten",
+          "feedback": "Je krijgt de bezorging zelf in de hand, maar je betaalt eerst met geld en met het milieu. Kijk naar het verschil tussen de kolommen: wat nu kost, levert pas later op.",
+          "effect": {
+            "financieel": { "termijn": ["min", "min", "plus"], "toelichting": "Je investeert eerst in bussen en personeel. Pas later is bezorgen goedkoper dan het contract." },
+            "productie": { "termijn": ["input", "input", "input"], "toelichting": "Bussen en een depot gaan als input de organisatie in." },
+            "menselijk": { "termijn": ["input", "input", "plus"], "toelichting": "Je werft bezorgers. Na een paar jaar heeft het team ervaring." },
+            "sociaal en relationeel": { "termijn": ["geen", "plus", "plus"], "toelichting": "Klanten krijgen hun bestelling betrouwbaar, dus het vertrouwen groeit." },
+            "natuurlijk": { "termijn": ["min", "min", "min"], "toelichting": "Extra bussen rijden extra kilometers en stoten uit." }
+          }
+        },
+        {
+          "id": "b",
+          "tekst": "Bij de logistiek partner blijven en vaste bezorgtijden afspreken",
+          "feedback": "Dit is goedkoper en sneller te doen, maar je blijft afhankelijk van de partner. Klanten merken de verbetering pas als de partner zich aan de afspraak houdt.",
+          "effect": {
+            "financieel": { "termijn": ["geen", "plus", "plus"], "toelichting": "De kosten blijven laag en boetes bij te late levering besparen geld." },
+            "intellectueel": { "termijn": ["geen", "plus", "plus"], "toelichting": "Je krijgt bezorggegevens van de partner en leert wanneer het misgaat." },
+            "sociaal en relationeel": { "termijn": ["geen", "geen", "plus"], "toelichting": "Duidelijke afspraken helpen de klant, maar dat werkt pas als de partner ze nakomt." }
+          }
+        }
+      ]
+    },
+    {
+      "id": "b2",
+      "fictief": true,
+      "titel": "Hoe krijgen klanten persoonlijke aanbevelingen?",
+      "situatie": "Terugkerende klanten willen het gevoel hebben dat de webshop hen kent.",
+      "opties": [
+        {
+          "id": "a",
+          "tekst": "Medewerkers van de klantenservice bellen terugkerende klanten met aanbevelingen",
+          "feedback": "Het persoonlijke contact bouwt de band op, maar het kost mensen. Wie merkt dat als eerste? Denk aan de klantenservice als stakeholder.",
+          "effect": {
+            "financieel": { "termijn": ["min", "plus", "plus"], "toelichting": "Bellen kost eerst uren. Herhaalaankopen verdienen dat terug." },
+            "intellectueel": { "termijn": ["geen", "plus", "plus"], "toelichting": "Medewerkers leren wat klanten willen." },
+            "menselijk": { "termijn": ["min", "min", "min"], "toelichting": "Het extra werk drukt op de klantenservice en het werkplezier daalt." },
+            "sociaal en relationeel": { "termijn": ["plus", "plus", "plus"], "toelichting": "Klanten voelen zich gekend." }
+          }
+        },
+        {
+          "id": "b",
+          "tekst": "Een programma laten aanbevelingen doen",
+          "feedback": "Dit werkt zonder extra mensen, maar het effect op de relatie kan omslaan: wat eerst persoonlijk voelt, wordt later routine.",
+          "effect": {
+            "financieel": { "termijn": ["min", "plus", "plus"], "toelichting": "Software kost geld. Extra bestellingen verdienen dat terug." },
+            "intellectueel": { "termijn": ["input", "plus", "plus"], "toelichting": "Je stopt klantgegevens en programmeerwerk erin en leert welke aanbevelingen werken." },
+            "menselijk": { "termijn": ["geen", "plus", "plus"], "toelichting": "Er komt tijd vrij voor lastige vragen van klanten." },
+            "sociaal en relationeel": { "termijn": ["geen", "plus", "min"], "toelichting": "Eerst voelen klanten zich geholpen. Later ervaren ze de aanbevelingen als onpersoonlijk of opdringerig." }
+          }
+        }
+      ]
+    },
+    {
+      "id": "b3",
+      "fictief": true,
+      "titel": "Hoe ga je om met vragen en klachten van klanten?",
+      "situatie": "Klanten stellen vragen over hun bestelling en dienen klachten in. De klantenservice is overbelast.",
+      "opties": [
+        {
+          "id": "a",
+          "tekst": "De chat 24 uur per dag uitbesteden aan een bureau",
+          "feedback": "Klanten krijgen snel antwoord, maar de kennis over hun klachten blijft bij het bureau. Op lange termijn weet je zelf minder van je klanten.",
+          "effect": {
+            "financieel": { "termijn": ["min", "min", "geen"], "toelichting": "Het bureau kost elke maand geld." },
+            "intellectueel": { "termijn": ["geen", "min", "min"], "toelichting": "Kennis over klachten blijft bij het bureau, niet bij jou." },
+            "menselijk": { "termijn": ["geen", "min", "min"], "toelichting": "Je eigen team verliest ervaring met klachten." },
+            "sociaal en relationeel": { "termijn": ["plus", "plus", "min"], "toelichting": "Klanten krijgen snel antwoord. Later missen ze iemand die hun geschiedenis kent." }
+          }
+        },
+        {
+          "id": "b",
+          "tekst": "Het eigen team uitbreiden en trainen",
+          "feedback": "Dit kost eerst geld en tijd, maar de organisatie bouwt kennis op en houdt die. Het effect zie je pas na een paar maanden.",
+          "effect": {
+            "financieel": { "termijn": ["min", "min", "plus"], "toelichting": "Salarissen en training kosten geld. Minder klachten en herhaalaankopen leveren het later op." },
+            "intellectueel": { "termijn": ["input", "plus", "plus"], "toelichting": "De organisatie bouwt kennis over klachten op en houdt die." },
+            "menselijk": { "termijn": ["input", "plus", "plus"], "toelichting": "Je investeert in mensen, en zij groeien in hun vak." },
+            "sociaal en relationeel": { "termijn": ["geen", "plus", "plus"], "toelichting": "Klanten krijgen een vast gezicht." }
+          }
+        }
+      ]
+    }
+  ],
+  "slot": "Je hebt drie beslissingen genomen. Bij welke beslissing werd een kapitaal op korte termijn beter en op lange termijn slechter, of andersom? Welke stakeholder merkt dat als eerste? Dat is een spanning, en die zoek je in taak 9.4 op je eigen vraagstuk."
+}
