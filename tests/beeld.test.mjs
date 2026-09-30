@@ -87,6 +87,26 @@ test('Figuur BMC: taak 7.1 toont het business model canvas van Strategyzer (z.d.
   assert.match(lees('js/leerblok.js'), /bmc: \{ bouw: bmcFiguur, na: 0 \}/);
 });
 
+test('Figuur TOM-model: taak 8.1 toont een eigen weergave van de TOM³-indeling in stof, oefenen en toepassen; de vierde kolom verbindt de lagen (ADR B93)', () => {
+  const b = blok(3);
+  const t = b.taken.find((x) => x.id === '8.1');
+  for (const stap of [t.stof, t.oefening, t.toepassing]) assert.equal(stap.figuur, 'tom');
+  assert.equal(bouwTaakModel(t, b).stappen[3].figuur, 'tom');
+  assert.match(t.stof.alineas[0], /\(Westmoreland BV, z\.d\.\)/);
+  assert.match(t.stof.alineas[1], /van boven naar beneden/, 'de stof legt uit hoe je het raster leest');
+  assert.match(t.stof.alineas[2], /omhoog.*omlaag/s, 'de stof licht de lus van de vierde kolom toe');
+  assert.doesNotMatch(t.stof.alineas.join(' '), /Methode is hoe|De drie lagen zijn/, 'de figuur toont de lagen en kolommen; de stof definieert ze niet een voor een');
+  const dom = lees('js/dom.js');
+  assert.match(dom, /export function tomFiguur/);
+  assert.match(dom, /role: 'img',\s*'aria-label': 'Het TOM-model als raster/);
+  for (const naam of ['Strategisch', 'Tactisch', 'Operationeel', 'Methode', 'Mens', 'Machine', 'Informatie & Rapportage']) assert.ok(dom.includes(`['${naam}'`), naam);
+  assert.match(dom, /Eigen weergave van de TOM³-indeling naar ', met\('\(Westmoreland BV, z\.d\.\)'\)/);
+  const css = lees('css/site.css');
+  assert.match(css, /\.tom-lus \{ grid-column:5; grid-row:2 \/ 5;/, 'de pijlen lopen door alle drie de lagen');
+  assert.match(css, /\.tom-cel\.tom-ir \{ grid-column:5; \}/, 'de cellen van kolom 4 staan expliciet onder de pijlen');
+  assert.match(lees('js/leerblok.js'), /tom: \{ bouw: tomFiguur, na: 0 \}/);
+});
+
 test('SX-13: elke oefenvraag van de vier leerblokken heeft een hint; de hint staat achter een knop (details), niet op mouse-over', () => {
   let n = 0;
   for (const nr of [1, 2, 3, 4]) {

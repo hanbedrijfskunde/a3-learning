@@ -31,7 +31,7 @@ import { controleerSpel } from './spel-check.mjs';
 import { KAPITALEN, VPC_ONDERDELEN, SPANNING, bouwOefenKaarten, maakVerband } from '../js/verbanden.js';
 
 // De figuren die de stap stof of de oefening kan tonen (FIGUREN in js/leerblok.js).
-const FIGUUR_NAMEN = ['a3-vel', 'six-capitals', 'vpc', 'bmc'];
+const FIGUUR_NAMEN = ['a3-vel', 'six-capitals', 'vpc', 'bmc', 'tom'];
 const gevuld = (t) => typeof t === 'string' && t.trim() !== '';
 const lijstGevuld = (l) => Array.isArray(l) && l.length > 0;
 /** Een tekstveld is een tekst of een object { tekst }. */
