@@ -84,6 +84,30 @@ export function sixCapitalsFiguur({ met = (t) => t } = {}) {
           h('tbody', {}, KAPITALEN.map(([en, nl]) => h('tr', {}, h('td', { lang: 'en' }, en), h('td', {}, nl))))))));
 }
 
+/** De zes vakken van het VPC uit de figuur van Strategyzer, met de naam uit de stof van taak 6.1. */
+const VPC_VAKKEN = [
+  ['Klantprofiel (cirkel)', 'Customer Jobs', 'Klanttaken'], ['Klantprofiel (cirkel)', 'Pains', 'Pains'], ['Klantprofiel (cirkel)', 'Gains', 'Gains'],
+  ['Waardekaart (vierkant)', 'Products and Services', 'Producten en diensten'], ['Waardekaart (vierkant)', 'Pain Relievers', 'Pain relievers'],
+  ['Waardekaart (vierkant)', 'Gain Creators', 'Gain creators'],
+];
+
+/**
+ * Figuur: het value proposition canvas van Strategyzer (z.d.), alleen het canvas zelf (zonder kop, QR-code en logo), als citaat
+ * met bronvermelding (media/citaten.json, ADR B84 en B88). Lui geladen zoals het A3-vel (PF-4). Onder de figuur staat welk vak bij welke kant hoort.
+ */
+export function vpcFiguur({ met = (t) => t } = {}) {
+  return h('figure', { class: 'a3-vel citaat' },
+    h('img', {
+      src: 'media/citaten/strategyzer-zd-value-proposition-canvas.webp', width: 1200, height: 616, loading: 'lazy', decoding: 'async',
+      alt: 'Het value proposition canvas. Links een vierkant met een cadeau in het midden: de waardekaart, met de vakken Products and Services, Gain Creators en Pain Relievers. Rechts een cirkel met een hoofd in het midden: het klantprofiel, met de vakken Customer Jobs, Gains en Pains. Een lijn met twee pijlen verbindt het cadeau en het hoofd: daar moeten ze op elkaar passen.',
+    }),
+    h('figcaption', {},
+      h('p', {}, 'Figuur: rechts het klantprofiel, links de waardekaart. Er is een fit als de waardekaart past bij het klantprofiel. Overgenomen uit ', met('(Strategyzer, z.d.)'), ', het officiële sjabloon, via ', h('a', { href: 'https://www.strategyzer.com/library/the-value-proposition-canvas' }, 'Strategyzer'), '. De licentie van deze site geldt niet voor deze figuur.'),
+      h('details', { class: 'a3-koppeling' }, h('summary', {}, 'De vakken van het canvas in de stof'),
+        h('table', {}, h('thead', {}, h('tr', {}, ['Kant', 'In de figuur', 'In de stof'].map((k) => h('th', { scope: 'col' }, k)))),
+          h('tbody', {}, VPC_VAKKEN.map(([kant, en, nl]) => h('tr', {}, h('td', {}, kant), h('td', { lang: 'en' }, en), h('td', {}, nl))))))));
+}
+
 /** A3-vak 1 in vier delen (SX-12): gevulde delen in vlak, de rest alleen een rand; de stand ook als tekst (TG-4). */
 export function tekenA3Vak(el, stand) {
   wis(el);
