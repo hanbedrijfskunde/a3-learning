@@ -44,3 +44,33 @@ test('SX-13 (sabotage): een oefenvraag zonder hint of met een hint die het model
   assert.match(f, /oefenvraag drieC heeft geen hint/);
   assert.match(f, /de hint bij pastNiet verklapt het modelantwoord/);
 });
+
+test('ADR B85: elke hint zegt waar het antwoord staat; een bron bestaat in de bronnenlijst en een stofverwijzing naar een bestaande taak', () => {
+  const bronIds = new Set([1, 2, 3, 4].flatMap((n) => JSON.parse(lees(`data/bronnen-${n}.json`)).bronnen.map((b) => b.id)));
+  const taken = new Map([1, 2, 3, 4].flatMap((n) => blok(n).taken.map((t) => [t.id, n])));
+  let bronnen = 0;
+  for (const nr of [1, 2, 3, 4]) {
+    for (const t of blok(nr).taken) {
+      for (const v of t.oefening?.velden ?? t.toepassing.velden) {
+        assert.ok(v.hintBron?.length >= 1, `${t.id} ${v.id}`);
+        for (const w of v.hintBron) {
+          if (w.soort === 'bron') { assert.ok(bronIds.has(w.bron), `${t.id} ${v.id}: bron ${w.bron}`); bronnen += 1; }
+          if (w.soort === 'stof') assert.equal(taken.get(w.taak), w.leerblok ?? nr, `${t.id} ${v.id}: taak ${w.taak}`);
+          assert.doesNotMatch(JSON.stringify(w), /draaiboek/i, 'het draaiboek is een docentdocument');
+        }
+      }
+    }
+  }
+  assert.ok(bronnen >= 8, 'waar een bron het antwoord aantoonbaar bevat, staat hij erbij');
+  assert.match(lees('js/dom.js'), /h\('strong', \{\}, 'Waar staat het: '\)/);
+});
+
+test('ADR B85 (sabotage): een oefenvraag zonder vindplaats of met een onbekende taak is een fout', () => {
+  const b = blok(1);
+  const t = b.taken.find((x) => x.id === '1.1');
+  delete t.oefening.velden[0].hintBron;
+  t.oefening.velden[1].hintBron = [{ soort: 'stof', taak: '9.9' }];
+  const f = controleerFormaat(b, 'leerblok-1.json').fouten.join('\n');
+  assert.match(f, /oefenvraag drieC zegt niet waar het antwoord staat/);
+  assert.match(f, /taak 9\.9 staat niet in dit leerblok/);
+});

@@ -81,17 +81,17 @@
           {
             "id": "v1",
             "label": "Waar komt de gebruiker uit de user story terug in het VPC?",
-            "type": "lang", "hint": "Zoek in het klantprofiel van het canvas: bij welke onderdelen hoort de gebruiker?"
+            "type": "lang", "hint": "Zoek in het klantprofiel van het canvas: bij welke onderdelen hoort de gebruiker?", "hintBron": [{"soort": "stof", "taak": "9.4", "vindplaats": "uitleg onder de knop Tekst, voorbeeld"}, {"soort": "stof", "taak": "9.4", "vindplaats": "alinea 1"}]
           },
           {
             "id": "v2",
             "label": "Welke kapitalen raakt de waarde, en gaan ze erin of komen ze eruit?",
-            "type": "lang", "hint": "Kijk naar je waardecreatie. Welke kapitalen groeien, en welke gebruik je als input?"
+            "type": "lang", "hint": "Kijk naar je waardecreatie. Welke kapitalen groeien, en welke gebruik je als input?", "hintBron": [{"soort": "stof", "taak": "9.4", "vindplaats": "alinea 4"}, {"soort": "bron", "bron": "iirc-2021", "citatie": "International Integrated Reporting Council, 2021", "vindplaats": "figuur van het waardecreatieproces"}]
           },
           {
             "id": "v3",
             "label": "Welk kapitaal neemt af als de waarde wordt geleverd?",
-            "type": "lang", "hint": "Waarde leveren kost ook iets. Wie of wat moet er extra voor werken?"
+            "type": "lang", "hint": "Waarde leveren kost ook iets. Wie of wat moet er extra voor werken?", "hintBron": [{"soort": "stof", "taak": "9.4", "vindplaats": "alinea 2 en 4"}, {"soort": "bron", "bron": "iirc-2021", "citatie": "International Integrated Reporting Council, 2021", "vindplaats": "figuur van het waardecreatieproces"}]
           }
         ]
       },
@@ -314,17 +314,17 @@
           {
             "id": "zie",
             "label": "Ik zie…",
-            "type": "lang", "hint": "Beschrijf wat er staat, zonder oordeel. Begin met wat goed zichtbaar is."
+            "type": "lang", "hint": "Beschrijf wat er staat, zonder oordeel. Begin met wat goed zichtbaar is.", "hintBron": [{"soort": "stof", "taak": "6.2", "vindplaats": "alinea 1"}, {"soort": "werkboek", "vindplaats": "Werkboek week 5, opdracht 6.2"}]
           },
           {
             "id": "mis",
             "label": "Ik mis…",
-            "type": "lang", "hint": "Wat verwacht je dat er nog niet staat? Denk aan het format en de kapitalen."
+            "type": "lang", "hint": "Wat verwacht je dat er nog niet staat? Denk aan het format en de kapitalen.", "hintBron": [{"soort": "stof", "taak": "6.2", "vindplaats": "alinea 1"}, {"soort": "stof", "taak": "2.1", "vindplaats": "alinea 2 (de kapitalen)", "leerblok": 1}]
           },
           {
             "id": "vraag",
             "label": "Ik vraag me af…",
-            "type": "lang", "hint": "Stel een echte vraag waar de ander verder mee kan, geen verkapt advies."
+            "type": "lang", "hint": "Stel een echte vraag waar de ander verder mee kan, geen verkapt advies.", "hintBron": [{"soort": "stof", "taak": "6.2", "vindplaats": "alinea 1"}]
           }
         ]
       },
@@ -425,27 +425,27 @@
           {
             "id": "situatie",
             "label": "Situatie",
-            "type": "lang", "hint": "Waar en wanneer was het? Eén of twee zinnen is genoeg."
+            "type": "lang", "hint": "Waar en wanneer was het? Eén of twee zinnen is genoeg.", "hintBron": [{"soort": "stof", "taak": "6.3", "vindplaats": "alinea 1"}, {"soort": "eigen werk", "vindplaats": "je feedback uit taak 6.2 (de oefenronde)"}]
           },
           {
             "id": "taak",
             "label": "Taak",
-            "type": "lang", "hint": "Wat moest jij daar doen?"
+            "type": "lang", "hint": "Wat moest jij daar doen?", "hintBron": [{"soort": "stof", "taak": "6.3", "vindplaats": "alinea 1"}, {"soort": "stof", "taak": "6.2", "vindplaats": "alinea 1"}]
           },
           {
             "id": "actie",
             "label": "Actie",
-            "type": "lang", "hint": "Wat deed je precies? Schrijf in de ik-vorm en noem je eigen gedrag."
+            "type": "lang", "hint": "Wat deed je precies? Schrijf in de ik-vorm en noem je eigen gedrag.", "hintBron": [{"soort": "stof", "taak": "6.3", "vindplaats": "alinea 1"}, {"soort": "eigen werk", "vindplaats": "je eigen ik zie / ik mis / ik vraag me af uit taak 6.2"}]
           },
           {
             "id": "resultaat",
             "label": "Resultaat",
-            "type": "lang", "hint": "Wat was het effect bij de ander of bij het werk?"
+            "type": "lang", "hint": "Wat was het effect bij de ander of bij het werk?", "hintBron": [{"soort": "stof", "taak": "6.3", "vindplaats": "alinea 1"}, {"soort": "eigen werk", "vindplaats": "je feedbacklog bij taak 6.2 (actie en status)"}]
           },
           {
             "id": "reflectie",
             "label": "Reflectie",
-            "type": "lang", "hint": "Wat merkte je aan jezelf, en wat pak je voortaan anders aan?"
+            "type": "lang", "hint": "Wat merkte je aan jezelf, en wat pak je voortaan anders aan?", "hintBron": [{"soort": "stof", "taak": "6.3", "vindplaats": "alinea 1 en 2"}]
           }
         ]
       },

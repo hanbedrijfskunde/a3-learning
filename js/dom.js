@@ -18,6 +18,23 @@ export function h(tag, props = {}, ...kinderen) {
 
 export const wis = (el) => { while (el.firstChild) el.removeChild(el.firstChild); return el; };
 
+const regexVeilig = (t) => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+/**
+ * Zet de invulplekken van een format-zin als gemarkeerde stukken neer (DESIGN §5.3): „<gebruiker>” en, in het live
+ * voorbeeld, ook wat de student al invulde. Tekst blijft tekst (geen HTML).
+ * @param {string} tekst
+ * @param {string[]} [ingevuld] waarden van de student die in de zin staan
+ */
+export function metInvulplekken(tekst, ingevuld = []) {
+  const waarden = ingevuld.map((w) => String(w ?? '').trim()).filter((w) => w.length > 0).sort((a, b) => b.length - a.length);
+  const patroon = new RegExp(`(<[^>]+>${waarden.map((w) => `|${regexVeilig(w)}`).join('')})`, 'g');
+  return String(tekst).split(patroon).filter((s) => s !== '').map((s) => {
+    if (/^<[^>]+>$/.test(s)) return h('span', { class: 'invulplek invulplek-leeg' }, s);
+    if (waarden.includes(s)) return h('span', { class: 'invulplek invulplek-gevuld' }, s);
+    return s;
+  });
+}
+
 /** Hoe de blokken van het A3-sjabloon uit de figuur bij de acht vakken van het werkboek (1.1) horen. */
 const A3_KOPPELING = [
   ['Plan', 'Background', '1 · Aanleiding / achtergrond'], ['Plan', 'Current Condition', '2 · Huidige situatie'],
@@ -74,7 +91,22 @@ export function statusChip(status, tekst) {
  * mouse-over: werkt met tikken, toetsenbord en schermlezer, zonder script of polyfill (PR-1), en de student kiest zelf
  * wanneer de hint verschijnt (eerst zelf nadenken).
  */
-export const hintEl = (tekst) => (tekst ? h('details', { class: 'hint' }, h('summary', {}, 'Hint'), h('p', {}, tekst)) : null);
+/**
+ * Waar het antwoord staat (SX-13, ADR B85): de stof van een taak (link naar die stap), een bron uit de bronnenlijst met
+ * vindplaats (link naar de bronnenpagina), het werkboek, of het eigen werk van de student.
+ * @param {{soort: 'stof'|'bron'|'werkboek'|'eigen werk', taak?: string, leerblok?: number, bron?: string, citatie?: string, vindplaats?: string}} w
+ */
+function vindplaatsEl(w) {
+  if (w.soort === 'stof') {
+    const pagina = w.leerblok ? `leerblok-${w.leerblok}.html` : '';
+    return [h('a', { href: `${pagina}#taak-${w.taak}/stof` }, `stof van taak ${w.taak}`), w.vindplaats ? ` (${w.vindplaats})` : ''];
+  }
+  if (w.soort === 'bron') return [h('a', { class: 'bron-verwijzing', href: `bronnen.html#bron-${w.bron}` }, w.citatie), w.vindplaats ? `, ${w.vindplaats}` : ''];
+  return [w.vindplaats];
+}
+
+export const hintEl = (tekst, waar = []) => (tekst ? h('details', { class: 'hint' }, h('summary', {}, 'Hint'), h('p', {}, tekst),
+  waar.length ? h('p', { class: 'hint-waar' }, h('strong', {}, 'Waar staat het: '), waar.flatMap((w, i) => [i ? '; ' : '', ...vindplaatsEl(w)])) : null) : null);
 
 export function bouwVelden(velden, voorvoegsel, waarden, bijWijziging) {
   const rij = h('div', { class: 'velden' });
@@ -89,7 +121,7 @@ export function bouwVelden(velden, voorvoegsel, waarden, bijWijziging) {
         const input = h('input', { type: soort, id: oid, name: id, value: o, onchange: bijWijziging });
         return h('div', { class: 'optie' }, input, h('label', { for: oid }, o));
       });
-      rij.append(h('fieldset', { class: 'veld' }, h('legend', {}, v.label), hintEl(v.hint), opties));
+      rij.append(h('fieldset', { class: 'veld' }, h('legend', {}, v.label), hintEl(v.hint, v.hintBron), opties));
       const inputs = () => [...rij.querySelectorAll(`input[name="${id}"]`)];
       lezers[v.id] = () => {
         const gekozen = inputs().filter((i) => i.checked).map((i) => i.value);
@@ -105,7 +137,7 @@ export function bouwVelden(velden, voorvoegsel, waarden, bijWijziging) {
       } else {
         el = h('input', { type: 'text', id, oninput: bijWijziging, autocomplete: 'off', placeholder: v.zinstarter });
       }
-      rij.append(h('div', { class: 'veld' }, h('label', { for: id }, v.label), hintEl(v.hint), el));
+      rij.append(h('div', { class: 'veld' }, h('label', { for: id }, v.label), hintEl(v.hint, v.hintBron), el));
       lezers[v.id] = () => el.value;
       zetters[v.id] = (w) => { el.value = typeof w === 'string' ? w : ''; };
     }

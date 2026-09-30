@@ -39,17 +39,17 @@
           {
             "id": "begrippen",
             "label": "Kernbegrippen",
-            "type": "lang", "hint": "Haal de zelfstandige naamwoorden uit je zoekvraag. Welke twee of drie woorden dragen de vraag?"
+            "type": "lang", "hint": "Haal de zelfstandige naamwoorden uit je zoekvraag. Welke twee of drie woorden dragen de vraag?", "hintBron": [{"soort": "stof", "taak": "3.1", "vindplaats": "alinea 1"}, {"soort": "werkboek", "vindplaats": "Werkboek week 5, opdracht 3.1"}]
           },
           {
             "id": "synoniemen",
             "label": "Synoniemen en verwante termen",
-            "type": "lang", "hint": "Hoe zou iemand anders hetzelfde begrip noemen? Denk ook aan een breder woord."
+            "type": "lang", "hint": "Hoe zou iemand anders hetzelfde begrip noemen? Denk ook aan een breder woord.", "hintBron": [{"soort": "stof", "taak": "3.1", "vindplaats": "alinea 1"}, {"soort": "werkboek", "vindplaats": "Werkboek week 5, opdracht 3.1 (tabel)"}]
           },
           {
             "id": "engels",
             "label": "Engelse termen",
-            "type": "lang", "hint": "Veel onderzoek is Engelstalig. Hoe heet het begrip in vakliteratuur?"
+            "type": "lang", "hint": "Veel onderzoek is Engelstalig. Hoe heet het begrip in vakliteratuur?", "hintBron": [{"soort": "stof", "taak": "3.1", "vindplaats": "alinea 1"}, {"soort": "werkboek", "vindplaats": "Werkboek week 5, opdracht 3.1 (tabel)"}]
           }
         ]
       },
@@ -233,7 +233,7 @@
           {
             "id": "zoekstring",
             "label": "Zoekstring voor route A",
-            "type": "tekst", "hint": "Zet synoniemen met OR tussen haakjes en verbind de begrippen met AND. Een woordgroep zet je tussen aanhalingstekens."
+            "type": "tekst", "hint": "Zet synoniemen met OR tussen haakjes en verbind de begrippen met AND. Een woordgroep zet je tussen aanhalingstekens.", "hintBron": [{"soort": "stof", "taak": "3.2", "vindplaats": "alinea 3 en 1"}]
           }
         ]
       },
@@ -556,17 +556,17 @@
           {
             "id": "authority",
             "label": "Authority: oordeel en één zin toelichting",
-            "type": "lang", "hint": "Wie heeft het geschreven en waar is het verschenen? Kijk naar de functie van de auteur en het soort uitgave."
+            "type": "lang", "hint": "Wie heeft het geschreven en waar is het verschenen? Kijk naar de functie van de auteur en het soort uitgave.", "hintBron": [{"soort": "stof", "taak": "4.1", "vindplaats": "alinea 1"}, {"soort": "stof", "taak": "4.1", "vindplaats": "uitleg onder de knop Tekst, voorbeeld"}]
           },
           {
             "id": "currency",
             "label": "Currency: oordeel en één zin toelichting",
-            "type": "lang", "hint": "Van wanneer is de bron? Verandert het onderwerp snel?"
+            "type": "lang", "hint": "Van wanneer is de bron? Verandert het onderwerp snel?", "hintBron": [{"soort": "stof", "taak": "4.1", "vindplaats": "alinea 1"}, {"soort": "werkboek", "vindplaats": "Werkboek week 5, opdracht 4.1 (tabel)"}]
           },
           {
             "id": "apa",
             "label": "De bron in APA",
-            "type": "lang", "hint": "Volgorde: auteur, jaar, titel, tijdschrift met jaargang en nummer, pagina’s. Let op cursief en leestekens."
+            "type": "lang", "hint": "Volgorde: auteur, jaar, titel, tijdschrift met jaargang en nummer, pagina’s. Let op cursief en leestekens.", "hintBron": [{"soort": "stof", "taak": "4.1", "vindplaats": "alinea 3"}, {"soort": "werkboek", "vindplaats": "de bronnenpagina van deze site: daar staat elke bron in APA"}]
           }
         ]
       },
@@ -1431,7 +1431,7 @@
           {
             "id": "kant",
             "label": "Jouw kant",
-            "type": "keuze", "hint": "Er is geen goede kant. Kies de kant die je het best kunt onderbouwen.",
+            "type": "keuze", "hint": "Er is geen goede kant. Kies de kant die je het best kunt onderbouwen.", "hintBron": [{"soort": "eigen werk", "vindplaats": "je eigen ervaring met route B bij taak 3.2 en je beoordeling bij taak 4.1"}, {"soort": "stof", "taak": "4.2", "vindplaats": "alinea 1"}],
             "opties": [
               "voor",
               "tegen"
@@ -1440,7 +1440,7 @@
           {
             "id": "argument",
             "label": "Mijn sterkste argument",
-            "type": "lang", "hint": "Maak onderscheid tussen inspiratie zoeken en een bron gebruiken. Wat mag wel en wat niet?"
+            "type": "lang", "hint": "Maak onderscheid tussen inspiratie zoeken en een bron gebruiken. Wat mag wel en wat niet?", "hintBron": [{"soort": "stof", "taak": "3.2", "vindplaats": "alinea 4"}]
           }
         ]
       },

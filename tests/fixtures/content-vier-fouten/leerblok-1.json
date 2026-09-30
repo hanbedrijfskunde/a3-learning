@@ -60,22 +60,22 @@
           {
             "id": "gebruiker",
             "label": "Gebruiker",
-            "type": "tekst", "hint": "Denk eerst zelf na."
+            "type": "tekst", "hint": "Denk eerst zelf na.", "hintBron": [{"soort": "eigen werk", "vindplaats": "Je eigen aantekeningen"}]
           },
           {
             "id": "pain",
             "label": "Probleem / pain / gain",
-            "type": "lang", "hint": "Denk eerst zelf na.", "zinstarter": "Ik denk dat …"
+            "type": "lang", "hint": "Denk eerst zelf na.", "hintBron": [{"soort": "eigen werk", "vindplaats": "Je eigen aantekeningen"}], "zinstarter": "Ik denk dat …"
           },
           {
             "id": "waarde",
             "label": "Waardecreatie",
-            "type": "lang", "hint": "Denk eerst zelf na.", "zinstarter": "Ik denk dat …"
+            "type": "lang", "hint": "Denk eerst zelf na.", "hintBron": [{"soort": "eigen werk", "vindplaats": "Je eigen aantekeningen"}], "zinstarter": "Ik denk dat …"
           },
           {
             "id": "kapitalen",
             "label": "Welke kapitalen?",
-            "type": "meer", "hint": "Denk eerst zelf na.",
+            "type": "meer", "hint": "Denk eerst zelf na.", "hintBron": [{"soort": "eigen werk", "vindplaats": "Je eigen aantekeningen"}],
             "opties": [
               "financieel",
               "productie",
@@ -185,7 +185,7 @@
           {
             "id": "frame1",
             "label": "Frame van zoekvraag 1",
-            "type": "lijst", "hint": "Denk eerst zelf na.",
+            "type": "lijst", "hint": "Denk eerst zelf na.", "hintBron": [{"soort": "eigen werk", "vindplaats": "Je eigen aantekeningen"}],
             "opties": [
               "functioneel",
               "intern of extern",
@@ -195,12 +195,12 @@
           {
             "id": "zoekvraag1",
             "label": "Zoekvraag 1",
-            "type": "tekst", "hint": "Denk eerst zelf na."
+            "type": "tekst", "hint": "Denk eerst zelf na.", "hintBron": [{"soort": "eigen werk", "vindplaats": "Je eigen aantekeningen"}]
           },
           {
             "id": "frame2",
             "label": "Frame van zoekvraag 2",
-            "type": "lijst", "hint": "Denk eerst zelf na.",
+            "type": "lijst", "hint": "Denk eerst zelf na.", "hintBron": [{"soort": "eigen werk", "vindplaats": "Je eigen aantekeningen"}],
             "opties": [
               "functioneel",
               "intern of extern",
@@ -210,12 +210,12 @@
           {
             "id": "zoekvraag2",
             "label": "Zoekvraag 2",
-            "type": "tekst", "hint": "Denk eerst zelf na."
+            "type": "tekst", "hint": "Denk eerst zelf na.", "hintBron": [{"soort": "eigen werk", "vindplaats": "Je eigen aantekeningen"}]
           },
           {
             "id": "frame3",
             "label": "Frame van zoekvraag 3",
-            "type": "lijst", "hint": "Denk eerst zelf na.",
+            "type": "lijst", "hint": "Denk eerst zelf na.", "hintBron": [{"soort": "eigen werk", "vindplaats": "Je eigen aantekeningen"}],
             "opties": [
               "functioneel",
               "intern of extern",
@@ -225,12 +225,12 @@
           {
             "id": "zoekvraag3",
             "label": "Zoekvraag 3",
-            "type": "tekst", "hint": "Denk eerst zelf na."
+            "type": "tekst", "hint": "Denk eerst zelf na.", "hintBron": [{"soort": "eigen werk", "vindplaats": "Je eigen aantekeningen"}]
           },
           {
             "id": "model",
             "label": "Welk model kiest jullie team? (kies er één)",
-            "type": "keuze", "hint": "Denk eerst zelf na.",
+            "type": "keuze", "hint": "Denk eerst zelf na.", "hintBron": [{"soort": "eigen werk", "vindplaats": "Je eigen aantekeningen"}],
             "opties": [
               "7S",
               "Strategy Map",
@@ -241,12 +241,12 @@
           {
             "id": "verantwoording",
             "label": "Mijn verantwoording van de modelkeuze",
-            "type": "lang", "hint": "Denk eerst zelf na.", "zinstarter": "Ik denk dat …"
+            "type": "lang", "hint": "Denk eerst zelf na.", "hintBron": [{"soort": "eigen werk", "vindplaats": "Je eigen aantekeningen"}], "zinstarter": "Ik denk dat …"
           },
           {
             "id": "mis",
             "label": "Wat mis je als je maar één frame kiest?",
-            "type": "lang", "hint": "Denk eerst zelf na.", "zinstarter": "Ik denk dat …"
+            "type": "lang", "hint": "Denk eerst zelf na.", "hintBron": [{"soort": "eigen werk", "vindplaats": "Je eigen aantekeningen"}], "zinstarter": "Ik denk dat …"
           }
         ]
       },
@@ -377,17 +377,17 @@
           {
             "id": "drieC",
             "label": "De A3 moet voldoen aan 3xC. Welke drie?",
-            "type": "lang", "hint": "Denk eerst zelf na."
+            "type": "lang", "hint": "Denk eerst zelf na.", "hintBron": [{"soort": "eigen werk", "vindplaats": "Je eigen aantekeningen"}]
           },
           {
             "id": "pastNiet",
             "label": "Wat past er niet op één A3, volgens de uitleg? En wat zegt dat over je begrip?",
-            "type": "lang", "hint": "Denk eerst zelf na."
+            "type": "lang", "hint": "Denk eerst zelf na.", "hintBron": [{"soort": "eigen werk", "vindplaats": "Je eigen aantekeningen"}]
           },
           {
             "id": "yellowBelt",
             "label": "Wat weet ik nog van de A3 uit de Lean Yellow Belt-training?",
-            "type": "lang", "hint": "Denk eerst zelf na."
+            "type": "lang", "hint": "Denk eerst zelf na.", "hintBron": [{"soort": "eigen werk", "vindplaats": "Je eigen aantekeningen"}]
           }
         ]
       },
@@ -456,17 +456,17 @@
           {
             "id": "drieC",
             "label": "De A3 moet voldoen aan 3xC. Welke drie?",
-            "type": "lang", "hint": "Denk eerst zelf na."
+            "type": "lang", "hint": "Denk eerst zelf na.", "hintBron": [{"soort": "eigen werk", "vindplaats": "Je eigen aantekeningen"}]
           },
           {
             "id": "pastNiet",
             "label": "Wat past er niet op één A3, volgens de uitleg? En wat zegt dat over je begrip?",
-            "type": "lang", "hint": "Denk eerst zelf na."
+            "type": "lang", "hint": "Denk eerst zelf na.", "hintBron": [{"soort": "eigen werk", "vindplaats": "Je eigen aantekeningen"}]
           },
           {
             "id": "yellowBelt",
             "label": "Wat weet ik nog van de A3 uit de Lean Yellow Belt-training?",
-            "type": "lang", "hint": "Denk eerst zelf na."
+            "type": "lang", "hint": "Denk eerst zelf na.", "hintBron": [{"soort": "eigen werk", "vindplaats": "Je eigen aantekeningen"}]
           }
         ]
       },

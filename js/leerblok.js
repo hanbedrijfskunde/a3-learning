@@ -1,6 +1,6 @@
 // Leerblokpagina: bouwt de pagina uit data/leerblok-N.json met het vaste ritme van vier stappen per taak (TK-18, ADR B76).
 // Alleen DOM. Controles, opslag, oefenregels en de afgerond-regel zitten in sessie.js, weergave.js en afgerond.js.
-import { h, wis, statusChip, bouwVelden, tekenA3Vak, a3VelFiguur } from './dom.js';
+import { h, wis, statusChip, bouwVelden, tekenA3Vak, a3VelFiguur, metInvulplekken } from './dom.js';
 import { kiesOpslag, maakStore } from './store.js';
 import { maakSessie, volgendeStapOk } from './sessie.js';
 import { bouwTaakModel, isIngevuld } from './weergave.js';
@@ -140,7 +140,7 @@ async function start() {
     // stap 2: de stof
     const stof = h('div', { class: 'stof' },
       s2.stof.alineas.map((a) => h('p', {}, met(a))),
-      s2.stof.format ? h('p', { class: 'format' }, s2.stof.format) : null);
+      s2.stof.format ? h('p', { class: 'format' }, metInvulplekken(s2.stof.format)) : null);
     // Het format hoort bij de tweede alinea: zet het na de eerste alinea.
     if (s2.stof.format) stof.insertBefore(stof.lastChild, stof.children[1] ?? null);
     // Een figuur (taak 1.1: het A3-vel) staat direct na de alinea die hem beschrijft.
@@ -272,7 +272,11 @@ async function start() {
       // SX-5: de checklist vinkt mee na 600 ms zonder typen
       clearTimeout(checklistTimer);
       checklistTimer = setTimeout(() => { laatsteUitkomsten = b.uitkomsten; tekenChecklist(); }, CHECKLIST_NA_MS);
-      if (voorbeeld) voorbeeld.textContent = VOORBEELDEN[s4.livevoorbeeld](inhoud);
+      if (voorbeeld) {
+        // de invulplekken en wat de student er al in zette, gemarkeerd (DESIGN §5.3)
+        const eigen = Object.values(inhoud).filter((w) => typeof w === 'string').map((w) => w.trim().replace(/[?.!\s]+$/u, ''));
+        wis(voorbeeld).append(...metInvulplekken(VOORBEELDEN[s4.livevoorbeeld](inhoud), eigen));
+      }
       klaarKnop.hidden = !b.klaarMogelijk || sessie.isKlaar(id);
       opnieuwGebied.hidden = !sessie.kanOpnieuw(id);
       klaarWacht.hidden = b.klaarMogelijk;

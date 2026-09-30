@@ -153,6 +153,14 @@ export function controleerFormaat(inhoud, bestand) {
     for (const v of oefenVelden) {
       if (!v?.id || v.reeks) continue;
       if (!gevuld(v.hint)) { fout(wie, `oefenvraag ${v.id} heeft geen hint (SX-13)`); continue; }
+      // ADR B85: de hint zegt waar het antwoord staat (stof van een taak, een bron, het werkboek of het eigen werk)
+      if (!lijstGevuld(v.hintBron)) fout(wie, `oefenvraag ${v.id} zegt niet waar het antwoord staat (hintBron, ADR B85)`);
+      for (const w of v.hintBron ?? []) {
+        if (!['stof', 'bron', 'werkboek', 'eigen werk'].includes(w?.soort)) fout(wie, `hintBron bij ${v.id}: onbekende soort ${JSON.stringify(w?.soort)}`);
+        else if (w.soort === 'stof' && !w.leerblok && !taken.some((t) => t.id === w.taak)) fout(wie, `hintBron bij ${v.id}: taak ${w.taak} staat niet in dit leerblok`);
+        else if (w.soort === 'bron' && (!gevuld(w.bron) || !gevuld(w.citatie))) fout(wie, `hintBron bij ${v.id}: een bron heeft bron en citatie`);
+        else if (['werkboek', 'eigen werk'].includes(w.soort) && !gevuld(w.vindplaats)) fout(wie, `hintBron bij ${v.id}: vindplaats ontbreekt`);
+      }
       const h = v.hint.toLowerCase();
       for (let i = 0; i + 15 <= h.length; i += 5) if (modelVoorHint.includes(h.slice(i, i + 15))) { fout(wie, `de hint bij ${v.id} verklapt het modelantwoord (SX-13): „${h.slice(i, i + 15)}”`); break; }
     }

@@ -423,4 +423,10 @@ html { scroll-padding-bottom:5rem; }
 .hint > summary::-webkit-details-marker { display:none; }
 .hint > summary::before { content:"?"; display:inline-flex; align-items:center; justify-content:center; width:1.4rem; height:1.4rem; margin-right:.4rem; border:2px solid var(--zwart); border-radius:50%; font-size:.8125rem; text-decoration:none; }
 .hint[open] > summary::before { background:var(--zwart); color:var(--wit); }
-.hint > p { margin:.1rem 0 .4rem; padding:.4rem .6rem; border-left:6px solid var(--accent); background:var(--grijs); font-size:.9375rem; }
+.hint > p { margin:.1rem 0 0; padding:.4rem .6rem; border-left:6px solid var(--accent); background:var(--grijs); font-size:.9375rem; }
+.hint > .hint-waar { margin:0 0 .4rem; padding-top:0; font-size:.875rem; }
+
+/* ---- invulplekken in een format-zin (DESIGN §5.3): <gebruiker>, <pain/gain>, <waarde> ---- */
+.invulplek { background:var(--roze); box-shadow:inset 0 -3px 0 var(--accent); padding:0 .2em; -webkit-box-decoration-break:clone; box-decoration-break:clone; }
+.invulplek-leeg { font-weight:800; }
+.invulplek-gevuld { font-weight:700; }

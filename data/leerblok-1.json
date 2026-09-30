@@ -33,9 +33,9 @@
           "bron": "concept-auteur"
         },
         "velden": [
-          { "id": "drieC", "label": "De A3 moet voldoen aan 3xC. Welke drie?", "type": "lang", "hint": "Alle drie beginnen met een C. Denk aan wat een lezer met weinig tijd nodig heeft: hoeveel tekst, of alles erin staat, en of de vakken elkaar niet tegenspreken." },
-          { "id": "pastNiet", "label": "Wat past er niet op één A3, volgens de uitleg? En wat zegt dat over je begrip?", "type": "lang", "hint": "Lees de uitleg nog eens. Wat gebeurt er als een vak overloopt, en wat zegt dat over jou als schrijver?" },
-          { "id": "yellowBelt", "label": "Wat weet ik nog van de A3 uit de Lean Yellow Belt-training?", "type": "lang", "hint": "Er is geen goed of fout. Denk aan de training: welk probleem losten jullie op, en welke vakken herinner je je?" }
+          { "id": "drieC", "label": "De A3 moet voldoen aan 3xC. Welke drie?", "type": "lang", "hint": "Alle drie beginnen met een C. Denk aan wat een lezer met weinig tijd nodig heeft: hoeveel tekst, of alles erin staat, en of de vakken elkaar niet tegenspreken.", "hintBron": [{"soort": "stof", "taak": "2.1", "vindplaats": "uitleg onder de knop Tekst, alinea 1"}] },
+          { "id": "pastNiet", "label": "Wat past er niet op één A3, volgens de uitleg? En wat zegt dat over je begrip?", "type": "lang", "hint": "Lees de uitleg nog eens. Wat gebeurt er als een vak overloopt, en wat zegt dat over jou als schrijver?", "hintBron": [{"soort": "bron", "bron": "mit-ocw-2014", "citatie": "MIT OpenCourseWare, 2014", "vindplaats": "5:07–5:18"}] },
+          { "id": "yellowBelt", "label": "Wat weet ik nog van de A3 uit de Lean Yellow Belt-training?", "type": "lang", "hint": "Er is geen goed of fout. Denk aan de training: welk probleem losten jullie op, en welke vakken herinner je je?", "hintBron": [{"soort": "eigen werk", "vindplaats": "je eigen voorkennis uit de Lean Yellow Belt-training"}, {"soort": "stof", "taak": "1.1", "vindplaats": "alinea 1"}] }
         ]
       },
       "modelantwoord": {
@@ -107,10 +107,10 @@
           "bron": "concept-auteur"
         },
         "velden": [
-          { "id": "gebruiker", "label": "Gebruiker", "type": "tekst", "hint": "Wie merkt het probleem echt? Maak het zo concreet dat je die groep zou kunnen bellen." },
-          { "id": "pain", "label": "Probleem / pain / gain", "type": "lang", "hint": "Wat wil die gebruiker bereiken of kwijt? Maak het meetbaar, bijvoorbeeld met een cijfer of een tijd.", "zinstarter": "… (wat ze willen bereiken of kwijt willen)" },
-          { "id": "waarde", "label": "Waardecreatie", "type": "lang", "hint": "Wat levert de oplossing op, en voor wie? Kijk verder dan geld: welk van de zes kapitalen groeit?", "zinstarter": "… (wat het oplevert, meer dan geld)" },
-          { "id": "kapitalen", "label": "Welke kapitalen?", "type": "meer", "hint": "Kies de kapitalen die in je waardecreatie terugkomen. Minstens één is niet financieel.",
+          { "id": "gebruiker", "label": "Gebruiker", "type": "tekst", "hint": "Wie merkt het probleem echt? Maak het zo concreet dat je die groep zou kunnen bellen.", "hintBron": [{"soort": "stof", "taak": "2.1", "vindplaats": "alinea 1"}, {"soort": "werkboek", "vindplaats": "Werkboek week 5, opdracht 2.1 (casus)"}] },
+          { "id": "pain", "label": "Probleem / pain / gain", "type": "lang", "hint": "Wat wil die gebruiker bereiken of kwijt? Maak het meetbaar, bijvoorbeeld met een cijfer of een tijd.", "hintBron": [{"soort": "stof", "taak": "2.1", "vindplaats": "alinea 1"}, {"soort": "werkboek", "vindplaats": "Werkboek week 5, opdracht 2.1 (casus)"}], "zinstarter": "… (wat ze willen bereiken of kwijt willen)" },
+          { "id": "waarde", "label": "Waardecreatie", "type": "lang", "hint": "Wat levert de oplossing op, en voor wie? Kijk verder dan geld: welk van de zes kapitalen groeit?", "hintBron": [{"soort": "stof", "taak": "2.1", "vindplaats": "alinea 1 en 2"}], "zinstarter": "… (wat het oplevert, meer dan geld)" },
+          { "id": "kapitalen", "label": "Welke kapitalen?", "type": "meer", "hint": "Kies de kapitalen die in je waardecreatie terugkomen. Minstens één is niet financieel.", "hintBron": [{"soort": "stof", "taak": "2.1", "vindplaats": "alinea 2"}, {"soort": "bron", "bron": "iirc-2021", "citatie": "International Integrated Reporting Council, 2021", "vindplaats": "figuur van het waardecreatieproces"}],
             "opties": ["financieel", "productie", "intellectueel", "menselijk", "sociaal en relationeel", "natuurlijk"] }
         ],
         "livevoorbeeld": "onderzoeksvraag"
@@ -175,15 +175,15 @@
           "bron": "werkboek"
         },
         "velden": [
-          { "id": "frame1", "label": "Frame van zoekvraag 1", "type": "lijst", "hint": "Een frame is de bril waarmee je kijkt. Elke zoekvraag krijgt een andere bril.", "opties": ["functioneel", "intern of extern", "theoretisch of empirisch"] },
-          { "id": "zoekvraag1", "label": "Zoekvraag 1", "type": "tekst", "hint": "Past deze vraag bij het frame dat je koos? Een zoekvraag eindigt op een vraagteken." },
-          { "id": "frame2", "label": "Frame van zoekvraag 2", "type": "lijst", "hint": "Kies een ander frame dan bij zoekvraag 1.", "opties": ["functioneel", "intern of extern", "theoretisch of empirisch"] },
-          { "id": "zoekvraag2", "label": "Zoekvraag 2", "type": "tekst", "hint": "Welke vraag stel je als je door dit tweede frame kijkt?" },
-          { "id": "frame3", "label": "Frame van zoekvraag 3", "type": "lijst", "hint": "Het derde frame is het frame dat je nog niet gebruikte.", "opties": ["functioneel", "intern of extern", "theoretisch of empirisch"] },
-          { "id": "zoekvraag3", "label": "Zoekvraag 3", "type": "tekst", "hint": "Welke vraag stel je als je door dit derde frame kijkt?" },
-          { "id": "model", "label": "Welk model kiest jullie team? (kies er één)", "type": "keuze", "hint": "Welk model past bij de onderwerpen waar jullie vragen over gaan?", "opties": ["7S", "Strategy Map", "Six Capitals", "TOM-model"] },
-          { "id": "verantwoording", "label": "Mijn verantwoording van de modelkeuze", "type": "lang", "hint": "Noem wat het model laat zien en koppel dat aan je zoekvragen.", "zinstarter": "We kiezen dit model omdat ons vraagstuk …" },
-          { "id": "mis", "label": "Wat mis je als je maar één frame kiest?", "type": "lang", "hint": "Kies één frame en bedenk welke van je andere zoekvragen je dan nooit had gesteld.", "zinstarter": "Met één frame zie ik niet …" }
+          { "id": "frame1", "label": "Frame van zoekvraag 1", "type": "lijst", "hint": "Een frame is de bril waarmee je kijkt. Elke zoekvraag krijgt een andere bril.", "hintBron": [{"soort": "stof", "taak": "2.2", "vindplaats": "alinea 1"}], "opties": ["functioneel", "intern of extern", "theoretisch of empirisch"] },
+          { "id": "zoekvraag1", "label": "Zoekvraag 1", "type": "tekst", "hint": "Past deze vraag bij het frame dat je koos? Een zoekvraag eindigt op een vraagteken.", "hintBron": [{"soort": "stof", "taak": "2.2", "vindplaats": "alinea 3"}] },
+          { "id": "frame2", "label": "Frame van zoekvraag 2", "type": "lijst", "hint": "Kies een ander frame dan bij zoekvraag 1.", "hintBron": [{"soort": "stof", "taak": "2.2", "vindplaats": "alinea 1"}, {"soort": "stof", "taak": "2.1", "vindplaats": "uitleg onder de knop Tekst, alinea 3"}], "opties": ["functioneel", "intern of extern", "theoretisch of empirisch"] },
+          { "id": "zoekvraag2", "label": "Zoekvraag 2", "type": "tekst", "hint": "Welke vraag stel je als je door dit tweede frame kijkt?", "hintBron": [{"soort": "stof", "taak": "2.2", "vindplaats": "alinea 3"}] },
+          { "id": "frame3", "label": "Frame van zoekvraag 3", "type": "lijst", "hint": "Het derde frame is het frame dat je nog niet gebruikte.", "hintBron": [{"soort": "stof", "taak": "2.2", "vindplaats": "alinea 1"}, {"soort": "stof", "taak": "2.1", "vindplaats": "uitleg onder de knop Tekst, alinea 3"}], "opties": ["functioneel", "intern of extern", "theoretisch of empirisch"] },
+          { "id": "zoekvraag3", "label": "Zoekvraag 3", "type": "tekst", "hint": "Welke vraag stel je als je door dit derde frame kijkt?", "hintBron": [{"soort": "stof", "taak": "2.2", "vindplaats": "alinea 3"}] },
+          { "id": "model", "label": "Welk model kiest jullie team? (kies er één)", "type": "keuze", "hint": "Welk model past bij de onderwerpen waar jullie vragen over gaan?", "hintBron": [{"soort": "stof", "taak": "2.2", "vindplaats": "alinea 2"}, {"soort": "werkboek", "vindplaats": "Werkboek week 5, opdracht 2.2"}], "opties": ["7S", "Strategy Map", "Six Capitals", "TOM-model"] },
+          { "id": "verantwoording", "label": "Mijn verantwoording van de modelkeuze", "type": "lang", "hint": "Noem wat het model laat zien en koppel dat aan je zoekvragen.", "hintBron": [{"soort": "stof", "taak": "2.2", "vindplaats": "alinea 2"}], "zinstarter": "We kiezen dit model omdat ons vraagstuk …" },
+          { "id": "mis", "label": "Wat mis je als je maar één frame kiest?", "type": "lang", "hint": "Kies één frame en bedenk welke van je andere zoekvragen je dan nooit had gesteld.", "hintBron": [{"soort": "stof", "taak": "2.1", "vindplaats": "uitleg onder de knop Tekst, alinea 3"}, {"soort": "werkboek", "vindplaats": "Werkboek week 5, opdracht 2.2 (Waarom)"}], "zinstarter": "Met één frame zie ik niet …" }
         ]
       },
       "controles": [
