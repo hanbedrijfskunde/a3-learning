@@ -24,7 +24,8 @@
         "figuur": "a3-vel",
         "alineas": [
           "Een A3 is één vel met acht vakken. Daarop beschrijf je een vraagstuk, van aanleiding tot vervolgstappen. De linkerhelft is het plan. Daar staat waarom, hoe het nu is, waar je heen wilt en wat de oorzaak is. Op de rechterhelft voer je het plan uit, controleer je het effect en stuur je bij. Zo volgt het vel de cirkel plan, do, check, act (Schwagerman & Ulmer, 2013). Vandaag begin je aan vak 1.",
-          "Een A3 moet voldoen aan 3xC. Dat zijn drie eisen die met een C beginnen. Weet je ze niet meer? Bedenk ze dan eerst zelf en kijk daarna naar het modelantwoord."
+          "Een A3 moet voldoen aan 3xC: concreet, compleet en consistent. Concreet betekent kort en ter zake, zodat de lezer tijd bespaart. Compleet betekent dat alle vakken samen het hele verhaal vertellen. Consistent betekent dat de vakken op elkaar aansluiten.",
+          "Alles moet op één vel passen. Dat dwingt je om samen te vatten (MIT OpenCourseWare, 2014). Past iets niet, dan schrijf je te veel op of begrijp je het probleem nog niet goed genoeg."
         ]
       },
       "oefening": {
@@ -33,8 +34,8 @@
           "bron": "concept-auteur"
         },
         "velden": [
-          { "id": "drieC", "label": "De A3 moet voldoen aan 3xC. Welke drie?", "type": "lang", "hint": "Alle drie beginnen met een C. Wat heeft een lezer met weinig tijd nodig? Denk aan de hoeveelheid tekst, of alles erin staat en of de vakken elkaar tegenspreken.", "hintBron": [{"soort": "stof", "taak": "2.1", "vindplaats": "uitleg onder de knop Tekst, alinea 1"}] },
-          { "id": "pastNiet", "label": "Wat past er niet op één A3, volgens de uitleg? En wat zegt dat over je begrip?", "type": "lang", "hint": "Lees de uitleg nog eens. Wat gebeurt er als een vak overloopt, en wat zegt dat over jou als schrijver?", "hintBron": [{"soort": "bron", "bron": "mit-ocw-2014", "citatie": "MIT OpenCourseWare, 2014", "vindplaats": "5:07–5:18"}] },
+          { "id": "drieC", "label": "De A3 moet voldoen aan 3xC. Welke drie?", "type": "lang", "hint": "Alle drie beginnen met een C. Wat heeft een lezer met weinig tijd nodig? Denk aan de hoeveelheid tekst, of alles erin staat en of de vakken elkaar tegenspreken.", "hintBron": [{"soort": "stof", "taak": "1.1", "vindplaats": "alinea 2"}] },
+          { "id": "pastNiet", "label": "Wat past er niet op één A3, volgens de uitleg? En wat zegt dat over je begrip?", "type": "lang", "hint": "Lees de uitleg nog eens. Wat gebeurt er als een vak overloopt, en wat zegt dat over jou als schrijver?", "hintBron": [{"soort": "stof", "taak": "1.1", "vindplaats": "alinea 3"}, {"soort": "bron", "bron": "mit-ocw-2014", "citatie": "MIT OpenCourseWare, 2014", "vindplaats": "5:07–5:18"}] },
           { "id": "yellowBelt", "label": "Wat weet ik nog van de A3 uit de Lean Yellow Belt-training?", "type": "lang", "hint": "Er is geen goed of fout. Denk aan de training: welk probleem losten jullie op, en welke vakken herinner je je?", "hintBron": [{"soort": "eigen werk", "vindplaats": "je eigen voorkennis uit de Lean Yellow Belt-training"}, {"soort": "stof", "taak": "1.1", "vindplaats": "alinea 1"}] }
         ]
       },

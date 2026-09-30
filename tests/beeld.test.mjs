@@ -86,3 +86,25 @@ test('ADR B85 (sabotage): een oefenvraag zonder vindplaats of met een onbekende 
   assert.match(f, /oefenvraag drieC zegt niet waar het antwoord staat/);
   assert.match(f, /taak 9\.9 staat niet in dit leerblok/);
 });
+
+test('ADR B85 (sabotage): een hint mag niet vooruit verwijzen naar stof die de student nog niet heeft gezien', () => {
+  const b = blok(1);
+  b.taken.find((x) => x.id === '1.1').oefening.velden[0].hintBron = [{ soort: 'stof', taak: '2.1', vindplaats: 'alinea 1' }];
+  assert.match(controleerFormaat(b, 'leerblok-1.json').fouten.join('\n'), /verwijst vooruit naar taak 2\.1/);
+  const c = blok(1);
+  c.taken[0].oefening.velden[0].hintBron = [{ soort: 'stof', taak: '5.1', leerblok: 3 }];
+  assert.match(controleerFormaat(c, 'leerblok-1.json').fouten.join('\n'), /verwijst vooruit naar leerblok 3/);
+});
+
+test('TK-19: een vraag gaat altijd over stof die ervoor is behandeld; alleen een bron of het werkboek is niet genoeg (sabotage)', () => {
+  for (const nr of [1, 2, 3, 4]) {
+    for (const t of blok(nr).taken) {
+      for (const v of t.oefening?.velden ?? t.toepassing.velden) {
+        assert.ok(v.hintBron.some((w) => w.soort === 'stof' || w.soort === 'eigen werk'), `${t.id} ${v.id}`);
+      }
+    }
+  }
+  const b = blok(1);
+  b.taken[0].oefening.velden[1].hintBron = [{ soort: 'bron', bron: 'mit-ocw-2014', citatie: 'MIT OpenCourseWare, 2014', vindplaats: '5:07' }];
+  assert.match(controleerFormaat(b, 'leerblok-1.json').fouten.join('\n'), /gaat niet over stof die ervoor is behandeld \(TK-19\)/);
+});

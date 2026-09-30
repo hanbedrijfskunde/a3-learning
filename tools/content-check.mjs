@@ -155,9 +155,15 @@ export function controleerFormaat(inhoud, bestand) {
       if (!gevuld(v.hint)) { fout(wie, `oefenvraag ${v.id} heeft geen hint (SX-13)`); continue; }
       // ADR B85: de hint zegt waar het antwoord staat (stof van een taak, een bron, het werkboek of het eigen werk)
       if (!lijstGevuld(v.hintBron)) fout(wie, `oefenvraag ${v.id} zegt niet waar het antwoord staat (hintBron, ADR B85)`);
+      // TK-19: een vraag gaat altijd over stof die ervoor is behandeld. Minstens één vindplaats is de stof van deze of een
+      // eerdere taak, of eigen werk; een bron of het werkboek alleen is niet genoeg.
+      else if (!v.hintBron.some((w) => w?.soort === 'stof' || w?.soort === 'eigen werk')) fout(wie, `oefenvraag ${v.id} gaat niet over stof die ervoor is behandeld (TK-19)`);
       for (const w of v.hintBron ?? []) {
         if (!['stof', 'bron', 'werkboek', 'eigen werk'].includes(w?.soort)) fout(wie, `hintBron bij ${v.id}: onbekende soort ${JSON.stringify(w?.soort)}`);
         else if (w.soort === 'stof' && !w.leerblok && !taken.some((t) => t.id === w.taak)) fout(wie, `hintBron bij ${v.id}: taak ${w.taak} staat niet in dit leerblok`);
+        // De student moet de stof al gezien hebben: dezelfde taak, een eerdere taak of een eerder leerblok (nooit vooruit).
+        else if (w.soort === 'stof' && w.leerblok && w.leerblok > inhoud.leerblok) fout(wie, `hintBron bij ${v.id}: verwijst vooruit naar leerblok ${w.leerblok}`);
+        else if (w.soort === 'stof' && !w.leerblok && taken.findIndex((t) => t.id === w.taak) > taken.findIndex((t) => t.id === taak.id)) fout(wie, `hintBron bij ${v.id}: verwijst vooruit naar taak ${w.taak}, die de student nog niet heeft gezien`);
         else if (w.soort === 'bron' && (!gevuld(w.bron) || !gevuld(w.citatie))) fout(wie, `hintBron bij ${v.id}: een bron heeft bron en citatie`);
         else if (['werkboek', 'eigen werk'].includes(w.soort) && !gevuld(w.vindplaats)) fout(wie, `hintBron bij ${v.id}: vindplaats ontbreekt`);
       }
