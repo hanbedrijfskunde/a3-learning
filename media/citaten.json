@@ -1,0 +1,16 @@
+{
+  "formaat": "1.0",
+  "uitleg": "Figuren van derden die de site als citaat toont (art. 15a Auteurswet): met bronvermelding, ter toelichting en in de omvang die daarvoor nodig is. Alleen bestanden in dit register mogen in media/citaten/ staan (LI-1, ADR B84). De CC BY-SA-licentie van de site geldt niet voor deze figuren.",
+  "citaten": [
+    {
+      "bestand": "media/citaten/schwagerman-ulmer-2013-figuur-1.png",
+      "bron": "schwagerman-ulmer-2013",
+      "vindplaats": "figuur 1 (A3 template showing PDCA overlay)",
+      "gebruikt": "leerblok 1, taak 1.1, stap stof",
+      "breedte": 1202,
+      "hoogte": 892,
+      "via": "https://www.semanticscholar.org/paper/The-A3-Lean-Management-and-Leadership-Thought-Schwagerman/c2db12278e49858626968aa7d02410dc1f337ed5/figure/0",
+      "grondslag": "citaat met bronvermelding (art. 15a Auteurswet), keuze van de auteur"
+    }
+  ]
+}

@@ -20,7 +20,7 @@
         "bron": "concept-auteur", "criteria": [{"tekst": "je de drie C's kunt noemen", "controles": []}, {"tekst": "weet wat er niet op één A3 past", "controles": []}, {"tekst": "hebt opgeschreven wat je nog van de A3 wist", "controles": []}, {"tekst": "de aanleiding van je eigen vraagstuk hebt vastgelegd", "controles": ["aanleiding-woorden"]}]},
       "stof": {
         "bron": "concept-auteur",
-        "opmerking": "De acht vakken en de Lean Yellow Belt komen uit werkboek 1.1; de zin over een praatplaat, de uitleg van 3xC en de indeling naar PDCA (eigen figuur naar het idee van Schwagerman & Ulmer, 2013) zijn door de bouwer geschreven.",
+        "opmerking": "De acht vakken en de Lean Yellow Belt komen uit werkboek 1.1; de zin over een praatplaat, de uitleg van 3xC en de indeling naar PDCA zijn door de bouwer geschreven; de figuur is figuur 1 uit Schwagerman & Ulmer (2013), als citaat (media/citaten.json).",
         "figuur": "a3-vel",
         "alineas": [
           "Een A3 is één vel waarop je een vraagstuk van aanleiding tot vervolgstappen beschrijft, in acht vakken. De linkerhelft is het plan: waarom, hoe het nu is, waar je heen wilt en wat de oorzaak is. De rechterhelft voert het plan uit, controleert het effect en stuurt bij. Zo volgt het vel de cirkel plan, do, check, act (Schwagerman & Ulmer, 2013). Vandaag begin je aan vak 1.",

@@ -18,30 +18,30 @@ export function h(tag, props = {}, ...kinderen) {
 
 export const wis = (el) => { while (el.firstChild) el.removeChild(el.firstChild); return el; };
 
-/** De acht vakken van de A3 (werkboek 1.1), met de vraag die elk vak beantwoordt, gegroepeerd naar PDCA. */
-const A3_VEL = [
-  { fase: 'Plan', pijl: '→', vakken: [[1, 'Aanleiding / achtergrond', 'Waarom dit vraagstuk?'], [2, 'Huidige situatie', 'Hoe is het nu?'], [3, 'Doelen', 'Waar wil je heen?'], [4, 'Analyse', 'Wat is de oorzaak?']] },
-  { fase: 'Do', pijl: '↓', vakken: [[5, 'Toekomstige situatie', 'Hoe wordt het?'], [6, 'Implementatie', 'Wie doet wat, wanneer?']] },
-  { fase: 'Check', pijl: '↓', vakken: [[7, 'Borging en evaluatie', 'Werkt het, en blijft het zo?']] },
-  { fase: 'Act', pijl: '↩ terug naar Plan', vakken: [[8, 'Next steps', 'Wat is de volgende stap?']] },
+/** Hoe de blokken van het A3-sjabloon uit de figuur bij de acht vakken van het werkboek (1.1) horen. */
+const A3_KOPPELING = [
+  ['Plan', 'Background', '1 · Aanleiding / achtergrond'], ['Plan', 'Current Condition', '2 · Huidige situatie'],
+  ['Plan', 'Goal', '3 · Doelen'], ['Plan', 'Root Cause Analysis', '4 · Analyse'],
+  ['Do', 'Countermeasures', '5 · Toekomstige situatie en 6 · Implementatie'],
+  ['Check', 'Effect Confirmation', '7 · Borging en evaluatie'], ['Act', 'Follow-Up Actions', '8 · Next steps'],
 ];
 
 /**
- * Figuur: één A3-vel met de acht vakken en de cirkel plan, do, check, act eroverheen. Eigen weergave (HTML, geen beeld van
- * derden, LI-1) naar het idee van Schwagerman & Ulmer (2013). `hier` is het vak waar de student begint.
+ * Figuur: het A3-sjabloon met PDCA uit Schwagerman & Ulmer (2013), als citaat met bronvermelding (media/citaten.json,
+ * ADR B84). Lui geladen: het beeld staat in de stap stof en telt niet mee voor de eerste lading (PF-4). Onder de figuur
+ * staat welk Engels blok bij welk vak van het werkboek hoort.
  */
-export function a3VelFiguur({ hier = 1, met = (t) => t } = {}) {
-  const groep = (g) => h('div', { class: `a3v-groep a3v-${g.fase.toLowerCase()}` },
-    h('p', { class: 'a3v-fase' }, h('span', {}, g.fase), h('span', { class: 'a3v-pijl', 'aria-hidden': 'true' }, ` ${g.pijl}`)),
-    h('ol', { class: 'a3v-vakken', start: g.vakken[0][0] }, g.vakken.map(([nr, naam, vraag]) => h('li', { class: `a3v-vak${nr === hier ? ' a3v-hier' : ''}` },
-      h('span', { class: 'a3v-nr', 'aria-hidden': 'true' }, String(nr)),
-      h('span', { class: 'a3v-naam' }, naam), h('span', { class: 'a3v-vraag' }, vraag),
-      nr === hier ? h('span', { class: 'a3v-label' }, 'Hier begin je') : null))));
-  return h('figure', { class: 'a3-vel' },
-    h('div', { class: 'a3v-blad' },
-      h('div', { class: 'a3v-links' }, groep(A3_VEL[0])),
-      h('div', { class: 'a3v-rechts' }, A3_VEL.slice(1).map(groep))),
-    h('figcaption', {}, 'Eén A3-vel: links het plan (vak 1 tot en met 4), rechts uitvoeren (do, vak 5 en 6), controleren (check, vak 7) en bijsturen (act, vak 8). Daarna begint de cirkel opnieuw. Eigen weergave naar het idee van ', met('(Schwagerman & Ulmer, 2013)'), '.'));
+export function a3VelFiguur({ met = (t) => t } = {}) {
+  return h('figure', { class: 'a3-vel citaat' },
+    h('img', {
+      src: 'media/citaten/schwagerman-ulmer-2013-figuur-1.png', width: 1202, height: 892, loading: 'lazy', decoding: 'async',
+      alt: 'Een A3-sjabloon. Links vier blokken onder elkaar: Background, Current Condition, Goal en Root Cause Analysis, samen Plan. Rechts drie blokken: Countermeasures (Do), Effect Confirmation (Check) en Follow-Up Actions (Act). Pijlen lopen van Plan naar Do, omlaag naar Check en Act, en terug naar Plan.',
+    }),
+    h('figcaption', {},
+      h('p', {}, 'Figuur: het A3-sjabloon met de cirkel plan, do, check, act. Overgenomen uit ', met('(Schwagerman & Ulmer, 2013)'), ', figuur 1, via ', h('a', { href: 'https://www.semanticscholar.org/paper/The-A3-Lean-Management-and-Leadership-Thought-Schwagerman/c2db12278e49858626968aa7d02410dc1f337ed5/figure/0' }, 'Semantic Scholar'), '. De licentie van deze site geldt niet voor deze figuur.'),
+      h('details', { class: 'a3-koppeling' }, h('summary', {}, 'Zo horen de blokken bij de acht vakken van het werkboek'),
+        h('table', {}, h('thead', {}, h('tr', {}, ['PDCA', 'Blok in de figuur', 'Vak in het werkboek'].map((k) => h('th', { scope: 'col' }, k)))),
+          h('tbody', {}, A3_KOPPELING.map(([f, en, nl]) => h('tr', {}, h('td', {}, f), h('td', { lang: 'en' }, en), h('td', {}, nl))))))));
 }
 
 /** A3-vak 1 in vier delen (SX-12): gevulde delen in vlak, de rest alleen een rand; de stand ook als tekst (TG-4). */

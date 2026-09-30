@@ -10,18 +10,16 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const lees = (p) => readFileSync(resolve(root, p), 'utf8');
 const blok = (n) => JSON.parse(lees(`data/leerblok-${n}.json`));
 
-test('Figuur A3-vel: taak 1.1 toont de acht vakken als één vel met plan, do, check, act; eigen weergave met bron (LI-1, BR-4)', () => {
+test('Figuur A3-vel: taak 1.1 toont figuur 1 van Schwagerman & Ulmer (2013) als citaat met bron, alt-tekst en de koppeling naar de acht vakken (ADR B84)', () => {
   const t = blok(1).taken.find((x) => x.id === '1.1');
   assert.equal(t.stof.figuur, 'a3-vel');
   assert.match(t.stof.alineas[0], /\(Schwagerman & Ulmer, 2013\)/);
   const dom = lees('js/dom.js');
-  for (const [nr, naam] of [[1, 'Aanleiding / achtergrond'], [2, 'Huidige situatie'], [3, 'Doelen'], [4, 'Analyse'], [5, 'Toekomstige situatie'], [6, 'Implementatie'], [7, 'Borging en evaluatie'], [8, 'Next steps']]) {
-    assert.ok(dom.includes(`[${nr}, '${naam}'`), `vak ${nr}`);
-  }
-  for (const f of ['Plan', 'Do', 'Check', 'Act']) assert.ok(dom.includes(`fase: '${f}'`), f);
-  assert.match(dom, /h\('figure', \{ class: 'a3-vel' \}/);
-  assert.match(dom, /h\('figcaption'/);
-  assert.doesNotMatch(lees('js/leerblok.js') + dom, /<img|\.png|\.jpe?g/, 'geen afbeelding van derden');
+  assert.match(dom, /src: 'media\/citaten\/schwagerman-ulmer-2013-figuur-1\.png'/);
+  assert.match(dom, /loading: 'lazy'/, 'telt niet mee voor de eerste lading (PF-4)');
+  assert.match(dom, /alt: 'Een A3-sjabloon\./);
+  assert.match(dom, /met\('\(Schwagerman & Ulmer, 2013\)'\), ', figuur 1, via '/, 'bronvermelding in het bijschrift');
+  for (const vak of ['1 · Aanleiding / achtergrond', '4 · Analyse', '7 · Borging en evaluatie', '8 · Next steps']) assert.ok(dom.includes(vak), vak);
 });
 
 test('SX-13: elke oefenvraag van de vier leerblokken heeft een hint; de hint staat achter een knop (details), niet op mouse-over', () => {

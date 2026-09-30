@@ -144,7 +144,7 @@ async function start() {
     // Het format hoort bij de tweede alinea: zet het na de eerste alinea.
     if (s2.stof.format) stof.insertBefore(stof.lastChild, stof.children[1] ?? null);
     // Een figuur (taak 1.1: het A3-vel) staat direct na de alinea die hem beschrijft.
-    if (s2.stof.figuur === 'a3-vel') stof.insertBefore(a3VelFiguur({ hier: 1, met }), stof.children[1] ?? null);
+    if (s2.stof.figuur === 'a3-vel') stof.insertBefore(a3VelFiguur({ met }), stof.children[1] ?? null);
     // De routekeuze tekst, video of spel staat in de stap stof van de taak waar de media bij horen (MD-2, ADR B79).
     const stap2 = stap(s2, stof, mediaPlek && blok.media.taak === id ? mediaPlek : null);
 

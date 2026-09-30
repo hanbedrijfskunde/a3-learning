@@ -26,6 +26,9 @@ function bestanden() {
   }
 }
 const TOEGESTAAN = new Set(['.html', '.css', '.js', '.mjs', '.json', '.md', '.vtt', '.mp4', '.yml', '.nojekyll', '.gitignore', '']);
+// Uitzondering (ADR B84): een figuur van derden als citaat, alleen in media/citaten/ en alleen als hij in het register staat.
+const citaten = JSON.parse(readFileSync(resolve(root, 'media/citaten.json'), 'utf8')).citaten;
+const isCitaat = (f) => f.startsWith('media/citaten/') && citaten.some((c) => c.bestand === f);
 const VERBODEN_NAAM = /brightspace|phoneventure|\bcopy\b|\bkopie\b|slides?[-_ ]|\.pptx?$|\.docx?$|\.odt$|\.pdf$|\.zip$|\.(png|jpe?g|gif|webp|svg)$/i;
 
 test('LI-1: de repository bevat alleen eigen bestandstypen (geen pdf, office-bestand, archief of afbeelding van derden)', () => {
@@ -33,12 +36,13 @@ test('LI-1: de repository bevat alleen eigen bestandstypen (geen pdf, office-bes
   assert.ok(lijst.length > 50, 'er zijn bestanden gevonden');
   for (const f of lijst) {
     const ext = f.endsWith('LICENSE') ? '' : extname(f) || (f.split('/').pop().startsWith('.') ? f.split('/').pop() : '');
+    if (isCitaat(f)) continue;
     assert.ok(TOEGESTAAN.has(ext), `${f}: bestandstype ${ext} is niet toegestaan`);
   }
 });
 
 test('LI-1: geen bestandsnaam wijst op Brightspace-materiaal, PhoneVentures, slides of een opgeslagen pagina van derden', () => {
-  for (const f of bestanden()) assert.doesNotMatch(f.split('/').pop(), VERBODEN_NAAM, `${f}: verdachte naam`);
+  for (const f of bestanden()) if (!isCitaat(f)) assert.doesNotMatch(f.split('/').pop(), VERBODEN_NAAM, `${f}: verdachte naam`);
 });
 
 test('LI-1: elke video is een eigen video (metadata met stem en bron) en elk videobestand heeft ondertitels', () => {
@@ -66,4 +70,18 @@ test('LI-1: de controle vindt een verboden bestand (sabotage op de patronen)', (
     assert.match(naam, VERBODEN_NAAM, `${naam} moet worden afgekeurd`);
   }
   for (const naam of ['leerblok-1.json', 'v1-user-story.mp4', 'docentgids.html']) assert.doesNotMatch(naam, VERBODEN_NAAM);
+});
+
+test('LI-1 en ADR B84: een citaat van derden staat in het register, verwijst naar een bron uit de bronnenlijst en bestaat; niets anders staat in media/citaten/', () => {
+  const bronIds = new Set(readdirSync(resolve(root, 'data')).filter((n) => /^bronnen-\d\.json$/.test(n))
+    .flatMap((n) => JSON.parse(readFileSync(resolve(root, 'data', n), 'utf8')).bronnen.map((b) => b.id)));
+  assert.ok(citaten.length >= 1);
+  for (const c of citaten) {
+    assert.ok(bronIds.has(c.bron), `${c.bestand}: bron ${c.bron} staat in de bronnenlijst`);
+    assert.ok(statSync(resolve(root, c.bestand)).size < 150_000, `${c.bestand}: klein genoeg`);
+    assert.ok(c.vindplaats && c.gebruikt, `${c.bestand}: vindplaats en gebruik`);
+  }
+  for (const f of readdirSync(resolve(root, 'media/citaten'))) assert.ok(isCitaat(`media/citaten/${f}`), `media/citaten/${f} staat niet in het register`);
+  assert.equal(isCitaat('media/citaten/logo.png'), false, 'sabotage: een onbekend beeld is geen citaat');
+  assert.equal(isCitaat('img/schwagerman-ulmer-2013-figuur-1.png'), false, 'sabotage: buiten media/citaten telt niet');
 });
