@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dossierschema 1.0 · A3 e-learning</title>
+<link rel="icon" href="data:,">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'">
+<link rel="stylesheet" href="../css/site.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="stylesheet" href="gids.css">
+</head>
+<body>
+<a class="skip" href="#inhoud">Naar de inhoud</a>
+<nav aria-label="Hoofdmenu"><a href="../index.html">Start</a> <a href="../verificatie.html">Verificatie</a> <a href="docentgids.html">Docentgids</a></nav>
+<main id="inhoud" tabindex="-1" class="gids">
+<h1>Dossierschema 1.0</h1>
+<p class="meta">Voor wie een dossierbestand wil lezen of nalopen. Het schema wordt bewaakt door <code>js/schema.js</code> en de tests van de site.</p>
+
+<h2>Het bestand</h2>
+<p>Een export heet <code>bewijsdossier-alias-datum.json</code> en is één JSON-object met de velden <code>formaat</code> (altijd <code>a3-bewijsdossier</code>), <code>schema</code> (<code>1.0</code>), <code>elearning</code> (versie van de site), <code>geexporteerd</code> (tijdstip), <code>alias</code>, <code>teamnummer</code>, <code>vraagstuk</code>, <code>waaromZin</code>, <code>voorlopig</code>, <code>records</code> en <code>controlesom</code>. Daarnaast kan het <code>terugblik</code>, <code>a3Zin</code>, <code>a3Kopieerlog</code> en <code>verdiepingGedaan</code> bevatten. Die vier zijn geen bewijs. Alias en teamnummer staan alleen op deze bovenlaag.</p>
+<p>Elk element van <code>records</code> heeft de vorm <code>{ "record": …, "eerdereVersies": aantal }</code>: het nieuwste bewijsrecord en het aantal eerdere versies.</p>
+
+<h2>Het bewijsrecord: 13 velden</h2>
+<table>
+<thead><tr><th scope="col">Veld</th><th scope="col">Waarde</th><th scope="col">Betekenis</th></tr></thead>
+<tbody>
+<tr><th scope="row"><code>schema</code></th><td><code>"1.0"</code></td><td>Versie van dit schema.</td></tr>
+<tr><th scope="row"><code>id</code></th><td>vorm <code>EV-01</code></td><td>Het bewijsonderdeel.</td></tr>
+<tr><th scope="row"><code>taak</code></th><td>vorm <code>2.1</code></td><td>Het taaknummer uit het werkboek.</td></tr>
+<tr><th scope="row"><code>leerblok</code></th><td>geheel getal 1 tot en met 4</td><td>Het leerblok van de taak.</td></tr>
+<tr><th scope="row"><code>luk</code></th><td>lijst met getallen 1 tot en met 5</td><td>De leeruitkomsten waar het onderdeel aan bijdraagt; minstens één.</td></tr>
+<tr><th scope="row"><code>bc</code></th><td>lijst met <code>BC1</code>, <code>BC2</code>, …</td><td>De beoordelingscriteria; minstens één. <code>luk</code> en <code>bc</code> komen uit de taakdefinitie, nooit uit invoer van de student.</td></tr>
+<tr><th scope="row"><code>inhoud</code></th><td>object</td><td>Wat de student invulde. Bevat nooit een sleutel <code>alias</code>, <code>naam</code>, <code>teamnummer</code> of <code>controles</code>.</td></tr>
+<tr><th scope="row"><code>controles</code></th><td>lijst van <code>{ id, resultaat }</code></td><td>Uitkomst per controle; <code>resultaat</code> is <code>ok</code>, <code>let op</code> of <code>mist</code>. Verder niets per controle.</td></tr>
+<tr><th scope="row"><code>status</code></th><td><code>compleet</code>, <code>bijna</code> of <code>nog niet</code></td><td>De status van het onderdeel, bepaald uit de controles.</td></tr>
+<tr><th scope="row"><code>voorlopig</code></th><td>waar of onwaar</td><td>Waar als de student bij het opslaan nog geen scherp vraagstuk had.</td></tr>
+<tr><th scope="row"><code>versie</code></th><td>geheel getal vanaf 1</td><td>Het versienummer van dit onderdeel. Het aantal eerdere versies in <code>eerdereVersies</code> is dit nummer min 1.</td></tr>
+<tr><th scope="row"><code>bijgewerkt</code></th><td>tijdstip met tijdzone, zoals <code>2026-09-30T14:02:11+02:00</code></td><td>Wanneer deze versie is opgeslagen.</td></tr>
+<tr><th scope="row"><code>elearning</code></th><td>versienummer, zoals <code>0.1.0</code></td><td>Met welke versie van de site het record is gemaakt.</td></tr>
+</tbody>
+</table>
+<p>Een record met een veld te weinig, een veld te veel of een waarde buiten deze lijst is ongeldig.</p>
+
+<h2>De controlesom</h2>
+<p>Het veld <code>controlesom</code> is <code>{ "algoritme": "SHA-256", "waarde": …, "over": … }</code>. De waarde is 64 hexadecimale tekens: de SHA-256 over alle velden behalve <code>controlesom</code> zelf, in canonieke vorm (sleutels alfabetisch gesorteerd). De verificatiepagina rekent de som opnieuw uit. Een verschil betekent dat het bestand na export is gewijzigd. De som is geen handtekening: wie de som opnieuw uitrekent, kan een bestand ongemerkt aanpassen.</p>
+</main>
+<footer>
+<p>Naamsvermelding: HAN Bedrijfskunde, C-cluster. Licentie: <a href="../LICENSE">CC BY-SA 4.0</a>.</p>
+</footer>
+</body>
+</html>

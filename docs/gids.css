@@ -1,0 +1,17 @@
+/* Opmaak van de documentatiepagina's (DL-1, DL-2, DL-4): tekstpagina's, ook bedoeld voor A4. Alleen tokens uit site.css. */
+.gids { max-width: 44rem; margin: 0 auto; padding: 1rem; }
+.gids h1 { margin-top: 0; }
+.gids h2 { font-size: 1.15rem; margin: 1.1rem 0 .3rem; }
+.gids p, .gids li { margin: .3rem 0; }
+.gids code { background: var(--grijs); padding: 0 .25rem; }
+.gids table { border-collapse: collapse; width: 100%; margin: .5rem 0; }
+.gids th, .gids td { border: 2px solid var(--zwart); padding: .2rem .4rem; text-align: left; vertical-align: top; }
+.gids th { background: var(--grijs); }
+.gids pre { background: var(--grijs); border: 2px solid var(--zwart); padding: .5rem; overflow-x: auto; font-size: .8rem; }
+@media print {
+  .gids { max-width: none; padding: 0; }
+  .gids { font-size: 11pt; line-height: 1.35; }
+  .gids h1 { font-size: 17pt; }
+  .gids h2 { font-size: 12.5pt; }
+  .gids pre { white-space: pre-wrap; overflow: visible; }
+}

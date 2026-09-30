@@ -6,6 +6,7 @@ import { h, wis } from '../dom.js';
 import { maakKlok, klokTekst, rondeFasen, rondeFase } from './klok.js';
 import { stapkaartModel, docentkaartModel, programmaModel, draaiboekModel, terugblikKaarten } from './kaarten.js';
 import { modusUitAdres, docentAdres } from './kies.js';
+import { werkboekModel } from './werkboek.js';
 import { bouwVideo, bouwSpelPaneel } from '../media.js'; // fase 12: video en spel vanaf de stapkaart (DM-13, alleen eigen bestanden)
 
 /** De delen met docentvelden (zelfde formaat): deel 1 uit fase 9, deel 2 uit fase 10 (DM-18). */
@@ -37,6 +38,18 @@ function draaiboekEl(m) {
       r.kaart.modelantwoorden?.length ? [kop('Modelantwoord'), h('dd', {}, r.kaart.modelantwoorden.map((a) => h('p', {}, a.label ? `${a.label} ` : '', h('strong', {}, a.antwoord))))] : null,
       r.kaart.veelgemaakteFouten?.length ? [kop('Veelgemaakte fouten'), h('dd', {}, lijst(r.kaart.veelgemaakteFouten))] : null));
   return h('div', {}, h('h2', {}, `Draaiboek · ${m.titel} (${m.duurMinuten} min)`), m.rijen.map(rij), m.afsluiting ? h('p', {}, h('strong', {}, m.afsluiting)) : null);
+}
+
+function werkboekEl(m) {
+  const taak = (t) => h('article', { class: 'wb-taak' },
+    h('h3', {}, `Taak ${t.nummer} · ${t.titel}`),
+    h('p', { class: 'meta' }, [t.vorm, t.tijd].filter(Boolean).join(' · ')),
+    h('dl', {},
+      t.waarom ? [h('dt', {}, 'Waarom'), h('dd', {}, t.waarom)] : null,
+      t.opdracht ? [h('dt', {}, 'Opdracht'), h('dd', {}, t.opdracht)] : null,
+      h('dt', {}, 'Klaar als'), h('dd', {}, t.klaarAls)),
+    h('div', { class: 'wb-schrijfruimte', 'aria-hidden': 'true' }));
+  return h('div', {}, h('h2', {}, `Werkboek · ${m.titel}`), m.taken.map(taak));
 }
 
 async function startDocentmodus(main) {
@@ -198,13 +211,21 @@ async function startDocentmodus(main) {
   }
 
   let metModel = false;
+  let afdrukSoort = 'draaiboek';
   function tekenAfdrukken() {
-    paneel.append(h('h2', {}, 'Draaiboek afdrukken'),
+    paneel.append(h('h2', {}, 'Afdrukken'),
       h('p', { class: 'meta' }, 'Het draaiboek komt uit dezelfde bestanden als het scherm: alle onderdelen met tijden, opdrachten en rondloopvragen.'),
       h('div', { class: 'optie' }, h('input', { type: 'checkbox', id: 'met-model', checked: metModel, onchange: (e) => { metModel = e.target.checked; vulAfdruk(); } }), h('label', { for: 'met-model' }, 'Met modelantwoorden en veelgemaakte fouten')),
-      h('div', { class: 'knoppen' }, knop(`Druk het draaiboek van deel ${huidig} af`, () => { vulAfdruk(); window.print(); }, { class: 'knop knop-accent' })));
+      h('p', { class: 'meta' }, 'Het werkboek heeft dezelfde taaknummers en „klaar als”-regels als de leerblokpagina’s en laat ruimte om op te schrijven.'),
+      h('div', { class: 'knoppen' },
+        knop(`Druk het draaiboek van deel ${huidig} af`, () => { afdrukSoort = 'draaiboek'; vulAfdruk(); window.print(); }, { class: 'knop knop-accent', 'data-afdruk': 'draaiboek' }),
+        knop(`Druk het werkboek van deel ${huidig} af`, () => { afdrukSoort = 'werkboek'; vulAfdruk(); window.print(); }, { class: 'knop knop-accent', 'data-afdruk': 'werkboek' })));
   }
-  function vulAfdruk() { wis(afdruk); afdruk.append(draaiboekEl(draaiboekModel(deel(), blokken, { metModel }))); }
+  function vulAfdruk() {
+    wis(afdruk);
+    afdruk.dataset.soort = afdrukSoort;
+    afdruk.append(afdrukSoort === 'werkboek' ? werkboekEl(werkboekModel(deel(), blokken)) : draaiboekEl(draaiboekModel(deel(), blokken, { metModel })));
+  }
 
   function tekenMedia(o) {
     if (weergave !== 'stapkaart' || !o.media) { mediaVoor = null; wis(mediaGebied); mediaGebied.hidden = true; return; }
@@ -252,5 +273,6 @@ else {
     h('div', { class: 'knoppen' },
       h('button', { type: 'button', class: 'knop knop-accent', onclick: () => { history.replaceState(null, '', docentAdres(location.pathname.split('/').pop() || 'docent.html')); startDocentmodus(main); } }, 'Ik ben docent: open de docentmodus'),
       h('a', { class: 'knop', href: 'index.html' }, 'Ik ben student: naar de start')),
-    h('p', { class: 'meta' }, 'Een docentmodus die je direct wilt openen: docent.html?modus=docent.'));
+    h('p', { class: 'meta' }, 'Een docentmodus die je direct wilt openen: docent.html?modus=docent.'),
+    h('p', {}, 'Voor het eerst? Lees de ', h('a', { href: 'docs/docentgids.html' }, 'docentgids van twee pagina’s'), '.'));
 }

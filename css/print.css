@@ -1,1 +1,15 @@
-@media print { nav, #pilot-banner { display:none; } .kaart { box-shadow:none; } }
+/* Afdruk op A4 (DM-11, DM-12, DS-7): werkboek, draaiboek en dossier. Alleen tokens uit site.css; geen kleur nodig. */
+@page { size: A4; margin: 15mm; }
+@media print {
+  html, body { background: var(--wit); color: var(--zwart); }
+  body { font-size: 11pt; line-height: 1.35; }
+  nav, .skip, #pilot-banner { display: none; }
+  main { padding: 0; margin: 0; max-width: none; }
+  .kaart { box-shadow: none; }
+  h1, h2, h3, h4 { break-after: avoid; }
+  table, figure, .db-onderdeel, .wb-taak { break-inside: avoid; }
+  p, li, dd, td, th, h1, h2, h3 { overflow-wrap: anywhere; }
+  table { width: 100%; table-layout: fixed; }
+  img, svg, video { max-width: 100%; }
+  a { color: inherit; text-decoration: none; }
+}

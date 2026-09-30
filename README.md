@@ -2,7 +2,11 @@
 
 Statische e-learning voor HBO Bedrijfskunde (HAN): vier leerblokken waarin studenten de A3 oefenen op het eigen vraagstuk en automatisch een bewijsdossier opbouwen. Geen backend: alles blijft in de browser van de student. Gepubliceerd op <https://hanbedrijfskunde.github.io/a3-learning/>.
 
-Voor docenten: zie de **docentgids** (komt in `docent.html` en in dit bestand zodra fase 14 klaar is).
+Documentatie (open in de browser, ook afdrukbaar op A4):
+
+- [Docentgids](docs/docentgids.html) voor de docent (DL-1), twee A4.
+- [Introductie voor studenten](docs/studentintroductie.html) (DL-2), één A4.
+- [Beschrijving van dossierschema 1.0](docs/dossierschema-1.0.html) (DL-4).
 
 ## Licentie
 

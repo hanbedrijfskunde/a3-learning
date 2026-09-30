@@ -208,7 +208,7 @@
         "bron": "werkboek"
       },
       "waarom": {
-        "tekst": "Een goede bron vind je zelden met je eerste zoekopdracht. Je vergelijkt twee routes: de databank, waar jij de zoekstring bepaalt, en een AI-tool, waar de prompt bepaalt wat je krijgt. Wat beter werkt, ontdek je alleen door het te doen.",
+        "tekst": "Een goede bron vind je zelden met je eerste zoekopdracht. Je vergelijkt twee routes: de databank, waar jij de zoekstring bepaalt, en een AI-tool, waar de prompt (de opdracht die je aan de tool geeft) bepaalt wat je krijgt. Wat beter werkt, ontdek je alleen door het te doen.",
         "bron": "concept-auteur"
       },
       "klaarAls": {

@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Docentgids · A3 e-learning</title>
+<link rel="icon" href="data:,">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'">
+<link rel="stylesheet" href="../css/site.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="stylesheet" href="gids.css">
+</head>
+<body>
+<a class="skip" href="#inhoud">Naar de inhoud</a>
+<nav aria-label="Hoofdmenu"><a href="../index.html">Start</a> <a href="../docent.html">Docentmodus</a> <a href="../verificatie.html">Verificatie</a></nav>
+<main id="inhoud" tabindex="-1" class="gids">
+<h1>Docentgids</h1>
+<p class="meta">Voor de docent die deel 1 of deel 2 van de A3-start leidt. Twee A4; druk af met de afdrukfunctie van je browser.</p>
+
+<h2>1. De docentmodus in het lokaal</h2>
+<p>Open <a href="../docent.html?modus=docent">docent.html?modus=docent</a> en kies deel 1 of deel 2. Er is geen account en er wordt niets van studenten bewaard.</p>
+<ul>
+<li><strong>Klok.</strong> Start, Pauze en Reset (Reset vraagt een tweede klik). „Volgende onderdeel” zet de klok op het volgende onderdeel. Bovenaan staat hoeveel ruimte of achterstand je hebt.</li>
+<li><strong>Stapkaart.</strong> Dit is het scherm voor de projector: taak, opdracht, „klaar als”, tijd, materiaal, dia en laptop open of dicht. Bij vier onderdelen staan ook een video en een spel, die je met één knop start.</li>
+<li><strong>Docentkaart.</strong> Alleen voor jezelf: wat je doet, de kernboodschap, rondloopvragen en wat je doet als het anders loopt. Modelantwoorden en veelgemaakte fouten staan pas op de pagina nadat je erom vraagt.</li>
+<li><strong>Onderdelen verschuiven.</strong> Onder Programma sla je een onderdeel over, verschuif je het naar een ander gepland onderdeel of maak je het 1 minuut korter of langer. De klok rekent zelf opnieuw.</li>
+<li><strong>Afdrukken.</strong> Onder Afdrukken staat het draaiboek van het deel (met of zonder modelantwoorden) en het werkboek van het deel, met dezelfde taaknummers en „klaar als”-regels als de site.</li>
+</ul>
+
+<h2>2. Wat het bewijs is en wat niet</h2>
+<p>Het bewijs is een dossier van taken die de student heeft geoefend en toegepast op het eigen vraagstuk, met een tijdstip en de eerdere versies. De site geeft per onderdeel de status Compleet, Bijna of Nog niet.</p>
+<p>Het is geen oordeel over de kwaliteit en het vervangt de beroepsproducten niet. Het is ook niet fraudebestendig: er is geen server en geen handtekening. De tijdstempel van inlevering is die van Brightspace. De beoordeling van de beroepsproducten blijft bij jou.</p>
+
+<h2>3. Dossiers inlezen</h2>
+<p>Studenten leveren hun dossierbestand (.json) in via Brightspace. Open <a href="../verificatie.html">Verificatie</a> en kies één of meer bestanden. De controlesom (SHA-256) wordt in je eigen browser opnieuw uitgerekend; er wordt niets geüpload. Je krijgt een tabel met per student de status per bewijsonderdeel en per leeruitkomst, met de studenten met de meeste ontbrekende onderdelen bovenaan. Een bestand dat na export is aangepast krijgt de melding „gewijzigd na export”. Neem de statussen daarvan niet zonder meer over en vraag ernaar in het gesprek. Het schema van het bestand staat in de <a href="dossierschema-1.0.html">beschrijving van schema 1.0</a>.</p>
+
+<h2>4. De steekproef</h2>
+<p>Kies in het coachgesprek één onderdeel uit het dossier en vraag naar de versiegeschiedenis: „laat zien hoe je vraag is ontstaan.” Een student die het werk zelf deed kan de stappen en de eerdere versies toelichten. Bewijs telt alleen op het eigen vraagstuk. Een student die tekst van een AI-assistent in de velden plakte, laat met de versiegeschiedenis wel zien dát de tekst er kwam, niet dat de student erachter staat; het gesprek is de controle.</p>
+
+<h2>5. Een modelantwoord aanpassen</h2>
+<p>Alle teksten, modelantwoorden, koppelingen met leeruitkomsten en controleparameters staan in bestanden in de map <code>data</code> van de repository <a href="https://github.com/hanbedrijfskunde/a3-learning">hanbedrijfskunde/a3-learning</a>. Een modelantwoord staat in <code>data/leerblok-N.json</code> bij de taak, onder <code>modelantwoord</code>.</p>
+<ol>
+<li>Open het bestand op GitHub en kies het potlood om te bewerken.</li>
+<li>Pas alleen de tekst tussen de aanhalingstekens aan; laat de sleutels en de aanhalingstekens staan.</li>
+<li>Sla de wijziging op. De controles draaien vanzelf en de site wordt alleen bijgewerkt als ze slagen. Bij een fout meldt GitHub welk bestand en welke regel.</li>
+</ol>
+<p>Er hoeft geen code te worden bewerkt. Je aanpassing staat na enkele minuten op de site, ook op de stapkaart en de docentkaart.</p>
+</main>
+<footer>
+<p>Naamsvermelding: HAN Bedrijfskunde, C-cluster. Licentie: <a href="../LICENSE">CC BY-SA 4.0</a>.</p>
+</footer>
+</body>
+</html>

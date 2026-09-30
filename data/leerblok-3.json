@@ -48,7 +48,7 @@
       "titel": "Vul het canvas in met het vraagstuk centraal",
       "vorm": "Team",
       "richttijd": {"tekst":"20 min","minuten":20,"bron":"werkboek"},
-      "waarom": {"tekst":"Het canvas laat zien wat de klant wil bereiken, wat hem hindert en wat hij zoekt. Zo kijk je vanuit de klant naar je vraagstuk en zie je welke pain of gain erbij hoort.","bron":"concept-auteur"},
+      "waarom": {"tekst":"Het canvas laat zien wat de klant wil bereiken, wat hem hindert en wat hij zoekt. Zo kijk je vanuit de klant naar je vraagstuk en zie je welke pain (wat hem hindert) of gain (wat hij zoekt) erbij hoort.","bron":"concept-auteur"},
       "klaarAls": {"tekst":"je bij het klantprofiel de klanttaken, pains en gains hebt ingevuld, bij de waardekaart wat de organisatie nu biedt, en van de pain of gain die bij je vraagstuk hoort hebt gezegd of het een feit of een aanname is.","bron":"concept-auteur"},
       "stof": {
         "bron": "concept-auteur",
@@ -205,7 +205,7 @@
       "stof": {
         "bron": "concept-auteur",
         "opmerking": "Uitleg en de vinkjes voor de vier producten door de bouwer geschreven (LB-10).",
-        "alineas": ["Schrijf de onderzoeksvraag opnieuw in het format van leerblok 1. De gebruiker staat op je stakeholdermap en pain, gain en waarde kloppen met je VPC.","Wat de opdrachtgever zegt, is één waarneming vanuit één frame. Zeg daarom of je vraag een feit of een aanname is en controleer hem met gegevens en met andere betrokkenen.","Loop per product de checklist langs en vink „foto gemaakt” aan: die foto heb je nodig voor de gallery walk."]
+        "alineas": ["Schrijf de onderzoeksvraag opnieuw in het format van leerblok 1. De gebruiker staat op je stakeholdermap en pain, gain en waarde kloppen met je VPC.","Wat de opdrachtgever zegt, is één waarneming vanuit één frame (een invalshoek). Zeg daarom of je vraag een feit of een aanname is en controleer hem met gegevens en met andere betrokkenen.","Loop per product de checklist langs en vink „foto gemaakt” aan: die foto heb je nodig voor de gallery walk."]
       },
       "oefening": {
         "opdracht": {"tekst":"Casus webshop X: schrijf voor de terugkerende klanten een onderzoeksvraag in het format en zeg of hij een feit of een aanname is.","bron":"concept-auteur"},

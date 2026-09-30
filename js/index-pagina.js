@@ -61,6 +61,7 @@ async function start() {
   const start1 = h('section', { id: 'start', 'aria-labelledby': 'start-kop' },
     h('h2', { id: 'start-kop' }, vel.titel),
     h('p', {}, vel.intro),
+    h('p', { class: 'klein' }, 'Nieuw hier? Lees de ', h('a', { href: 'docs/studentintroductie.html' }, 'introductie van één pagina'), '.'),
     geblokkeerd ? h('p', { class: 'fout', role: 'alert' }, 'Je browser blokkeert opslag: wat je invult blijft alleen staan zolang deze pagina open is.') : null,
     h('form', { class: 'kaart', onsubmit: (e) => e.preventDefault() },
       velden,
