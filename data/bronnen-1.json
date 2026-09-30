@@ -1,0 +1,122 @@
+{
+  "formaat": "1.0",
+  "leerblok": 1,
+  "bronnen": [],
+  "wachtOpCitatie": [
+    {
+      "id": "anderson-krathwohl-2001",
+      "citatie": "Anderson & Krathwohl, 2001",
+      "type": "boek",
+      "bedoeldVoor": "docentgids (ontwerpgrondslag, fase 14)",
+      "apa": "Anderson, L. W. & Krathwohl, D. R. (Red.). (2001). *A taxonomy for learning, teaching, and assessing: A revision of Bloom's taxonomy of educational objectives*. Longman."
+    },
+    {
+      "id": "atlassian-zd",
+      "citatie": "Atlassian, z.d.",
+      "type": "web",
+      "bedoeldVoor": "leerblok 1 (user story en probleemkadering)",
+      "apa": "Atlassian. (z.d.). *Problem framing*. Atlassian Team Playbook.",
+      "link": "https://www.atlassian.com/team-playbook/plays/problem-framing"
+    },
+    {
+      "id": "biggs-tang-2011",
+      "citatie": "Biggs & Tang, 2011",
+      "type": "boek",
+      "bedoeldVoor": "docentgids (ontwerpgrondslag, fase 14)",
+      "apa": "Biggs, J. & Tang, C. (2011). *Teaching for quality learning at university* (4e ed.). Open University Press."
+    },
+    {
+      "id": "bureau-tromp-2023",
+      "citatie": "Bureau Tromp, 2023",
+      "type": "video",
+      "bedoeldVoor": "kijktip in leerblok 1 (FR-27, B60; fase 12)",
+      "apa": "Bureau Tromp. (2023, 9 februari). *Wat is de A3 verbetermethode?* [Video]. YouTube.",
+      "link": "https://www.youtube.com/watch?v=hVYtuPjMeYg"
+    },
+    {
+      "id": "deci-ryan-2000",
+      "citatie": "Deci & Ryan, 2000",
+      "type": "artikel",
+      "bedoeldVoor": "docentgids (ontwerpgrondslag, fase 14)",
+      "apa": "Deci, E. L. & Ryan, R. M. (2000). The \"what\" and \"why\" of goal pursuits: Human needs and the self-determination of behavior. *Psychological Inquiry, 11*(4), 227–268.",
+      "link": "https://doi.org/10.1207/S15327965PLI1104_01"
+    },
+    {
+      "id": "iirc-2021",
+      "citatie": "International Integrated Reporting Council, 2021",
+      "type": "web",
+      "bedoeldVoor": "leerblok 4 (zes kapitalen)",
+      "apa": "International Integrated Reporting Council. (2021). *International <IR> framework*. IFRS Foundation.",
+      "link": "https://www.ifrs.org/issued-standards/integrated-reporting/"
+    },
+    {
+      "id": "mislevy-2003",
+      "citatie": "Mislevy e.a., 2003",
+      "type": "rapport",
+      "bedoeldVoor": "docentgids (ontwerpgrondslag, fase 14)",
+      "apa": "Mislevy, R. J., Almond, R. G. & Lukas, J. F. (2003). *A brief introduction to evidence-centered design* (Research Report RR-03-16). Educational Testing Service.",
+      "link": "https://doi.org/10.1002/j.2333-8504.2003.tb01908.x"
+    },
+    {
+      "id": "mit-ocw-2014",
+      "citatie": "MIT OpenCourseWare, 2014",
+      "type": "video",
+      "bedoeldVoor": "kijktip in leerblok 1 (FR-27, B60; fase 12)",
+      "apa": "MIT OpenCourseWare. (2014, 6 maart). *Ses. 3-4: A3 thinking* [Video]. YouTube.",
+      "link": "https://www.youtube.com/watch?v=z1KloN7Ub0M"
+    },
+    {
+      "id": "mohd-saad-2013",
+      "citatie": "Mohd Saad e.a., 2013",
+      "type": "hoofdstuk",
+      "bedoeldVoor": "leerblok 1 (de A3 als denkwijze)",
+      "apa": "Mohd Saad, N., Al-Ashaab, A., Shehab, E. & Maksimovic, M. (2013). A3 thinking approach to support problem solving in lean product and process development. In J. Stjepandić, G. Rock & C. Bil (Red.), *Concurrent engineering approaches for sustainable product development in a multi-disciplinary environment* (pp. 871–882). Springer.",
+      "link": "https://doi.org/10.1007/978-1-4471-4426-7_74"
+    },
+    {
+      "id": "osterwalder-2014",
+      "citatie": "Osterwalder e.a., 2014",
+      "type": "boek",
+      "bedoeldVoor": "leerblok 3 (value proposition canvas)",
+      "apa": "Osterwalder, A., Pigneur, Y., Bernarda, G. & Smith, A. (2014). *Value proposition design: How to create products and services customers want*. Wiley."
+    },
+    {
+      "id": "pink-2009",
+      "citatie": "Pink, 2009",
+      "type": "boek",
+      "bedoeldVoor": "docentgids (ontwerpgrondslag, fase 14)",
+      "apa": "Pink, D. H. (2009). *Drive: The surprising truth about what motivates us*. Riverhead Books."
+    },
+    {
+      "id": "rodrigues-2020",
+      "citatie": "Rodrigues e.a., 2020",
+      "type": "artikel",
+      "bedoeldVoor": "release 3 (quick win); nog niet in deze versie van de e-learning",
+      "apa": "Rodrigues, J., Sá, J. C., Silva, F. J. G., Ferreira, L. P., Jimenez, G. & Santos, G. (2020). A rapid improvement process through \"quick-win\" lean tools: A case study. *Systems, 8*(4), Artikel 55.",
+      "link": "https://doi.org/10.3390/systems8040055"
+    },
+    {
+      "id": "schwagerman-ulmer-2013",
+      "citatie": "Schwagerman & Ulmer, 2013",
+      "type": "artikel",
+      "bedoeldVoor": "leerblok 1 (de A3 als denkwijze)",
+      "apa": "Schwagerman, W. C., III & Ulmer, J. M. (2013). The A3 lean management and leadership thought process. *The Journal of Technology, Management, and Applied Engineering, 29*(4)."
+    },
+    {
+      "id": "strategyzer-zd",
+      "citatie": "Strategyzer, z.d.",
+      "type": "sjabloon",
+      "bedoeldVoor": "leerblok 3 (value proposition canvas; niet ingebed, B34)",
+      "apa": "Strategyzer AG. (z.d.). *The value proposition canvas* [Sjabloon, versie 2.1]. Strategyzer.",
+      "link": "https://www.strategyzer.com"
+    },
+    {
+      "id": "westmoreland-zd",
+      "citatie": "Westmoreland BV, z.d.",
+      "type": "ongepubliceerd",
+      "organisatie": "Westmoreland BV",
+      "bedoeldVoor": "leerblok 3 (TOM-model; B46, B48)",
+      "apa": "Westmoreland BV. (z.d.). *Architectuur- en implementatieblauwdruk van het TOM³-model: Van strategische alignering naar operationele borging* [Ongepubliceerd document]. Westmoreland BV."
+    }
+  ]
+}

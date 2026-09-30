@@ -9,8 +9,13 @@ import { VOORBEELDEN } from './checks/index.js';
 import { maakWissel, wisselContext, EV09_TAAK } from './wissel.js';
 import { bouwWisselPaneel } from './wissel-paneel.js';
 import { geblokkeerdMelding, toonBewaarHerinnering } from './dossier-dom.js'; // fase 3: DS-2, DS-12
+import { bouwWeergave, metVerwijzingen } from './lb2-ui.js';
+import { laadBronnen, maakIndex } from './bronnen.js';
 
 const laad = async (pad) => (await fetch(new URL(pad, import.meta.url))).json();
+/** citatie → bron voor de in-tekstverwijzingen (BR-4); lukt het laden niet, dan blijven het gewone tekst. */
+const laadBronIndex = () => laadBronnen((u) => fetch(new URL(`../${u}`, import.meta.url)))
+  .then((bestanden) => maakIndex(bestanden.flatMap((b) => b.bronnen ?? []))).catch(() => new Map());
 const BEWAAR_NA_MS = 500; // bewaren na de laatste toetsaanslag; de controles zelf lopen direct
 
 /** Het modelantwoord als lijst van veld en antwoord. */
@@ -26,9 +31,10 @@ function modelantwoordEl(model, velden) {
 
 async function start() {
   const nummer = document.body.dataset.leerblok;
-  const [blok, config, overzicht] = await Promise.all([
-    laad(`../data/leerblok-${nummer}.json`), laad('../data/config.json'), laad('../data/leerblokken.json'),
+  const [blok, config, overzicht, bronIndex] = await Promise.all([
+    laad(`../data/leerblok-${nummer}.json`), laad('../data/config.json'), laad('../data/leerblokken.json'), laadBronIndex(),
   ]);
+  const met = (tekst) => metVerwijzingen(tekst, bronIndex);
   const { opslag, geblokkeerd } = kiesOpslag();
   const store = maakStore(opslag);
   const context = () => wisselContext(store); // ontvangen wisselblokken voor de kopiecontrole (WS-7)
@@ -88,8 +94,8 @@ async function start() {
 
     // stap 1: waarom, richttijd, klaar als (TK-2)
     const stap1 = stap(s1,
-      h('p', { class: 'waarom' }, h('strong', {}, 'Waarom'), ' ', s1.waarom.tekst),
-      h('p', { class: 'klaar' }, h('strong', {}, 'Klaar als'), ' ', s1.klaarAls.tekst));
+      h('p', { class: 'waarom' }, h('strong', {}, 'Waarom'), ' ', met(s1.waarom.tekst)),
+      h('p', { class: 'klaar' }, h('strong', {}, 'Klaar als'), ' ', met(s1.klaarAls.tekst)));
 
     // stap 2: stof en de oefenversie (TK-3, TK-5, TK-6, TK-7)
     const oefVelden = bouwVelden(s2.oefening.velden, `oef-${id}`, sessie.oefening(id).invoer, () => {
@@ -119,10 +125,10 @@ async function start() {
     }
     const oefening = h('div', { class: 'oefening', id: `oefening-${id}` },
       h('h4', {}, taak.bewijsonderdeel && blok.oefencasus ? `Oefenen op de oefencasus (${blok.oefencasus})` : 'Oefenen'),
-      s2.oefening.opdracht ? h('p', {}, s2.oefening.opdracht.tekst) : null,
+      s2.oefening.opdracht ? h('p', {}, met(s2.oefening.opdracht.tekst)) : null,
       veldGebied, overslaanGebied);
     const stof = h('div', { class: 'stof' },
-      s2.stof.alineas.map((a) => h('p', {}, a)),
+      s2.stof.alineas.map((a) => h('p', {}, met(a))),
       s2.stof.format ? h('p', { class: 'format' }, s2.stof.format) : null);
     // Het format hoort bij de tweede alinea: zet het na de eerste alinea.
     if (s2.stof.format) stof.insertBefore(stof.lastChild, stof.children[1] ?? null);
@@ -173,12 +179,17 @@ async function start() {
       const w = wisselPaneel(sessie, { metTeamactie: true, bijWijziging: bijToepassing });
       return { element: w.element, lees: () => w.wissel.leesInhoud(), zet: () => w.ververs() };
     };
-    const toe = taak.toepassing.component === 'feedbacklog' ? feedbacklog() : bouwVelden(s3.velden, `toe-${id}`, sessie.leesToepassing(id), bijToepassing);
+    // Een taak met `toepassing.weergave` (leerblok 2: tabel, route, promptgenerator, bronlog) legt de velden anders neer.
+    const gewoneVelden = () => (taak.toepassing.weergave
+      ? bouwWeergave(s3.velden, `toe-${id}`, sessie.leesToepassing(id), bijToepassing, taak.toepassing.weergave,
+        { taakId: id, store, leesToepassing: (t) => sessie.leesToepassing(t) })
+      : bouwVelden(s3.velden, `toe-${id}`, sessie.leesToepassing(id), bijToepassing));
+    const toe = taak.toepassing.component === 'feedbacklog' ? feedbacklog() : gewoneVelden();
     stapVeld.addEventListener('input', bijToepassing);
     stapVeld.value = sessie.leesToepassing(id).volgendeStap ?? '';
 
     const stap3 = stap(s3,
-      s3.opdracht ? h('p', {}, s3.opdracht.tekst) : null,
+      s3.opdracht ? h('p', {}, met(s3.opdracht.tekst)) : null,
       voorbeeld ? h('div', {}, h('p', { class: 'klein' }, 'Zo klinkt je vraag nu:'), voorbeeld) : null,
       toe.element, uitkomst);
 

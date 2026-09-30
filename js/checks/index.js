@@ -3,11 +3,13 @@
 // Nieuwe leerblokken (fase 6, 10, 11) voegen hun fabrieken toe in FABRIEKEN.
 import { veldGevuld, keuzeUitLijst, eindigtOp, minWoorden, minZinnen } from './core.js';
 import { FABRIEKEN as LB1, VOORBEELDEN as VOORBEELDEN_LB1 } from './lb1.js';
+import { FABRIEKEN as LB2 } from './lb2.js';
 import { FABRIEKEN as LB4 } from './lb4.js';
 
 export const FABRIEKEN = Object.freeze({
   veldGevuld, keuzeUitLijst, eindigtOp, minWoorden, minZinnen,
   ...LB1,
+  ...LB2,
   ...LB4,
 });
 

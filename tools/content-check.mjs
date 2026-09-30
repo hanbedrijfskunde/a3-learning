@@ -1,5 +1,5 @@
 // Contentcontrole: valideert data/leerblok-*.json, data/leerblokken.json en data/luk.json (QA-3, BW-12, TK-2, TK-13, QA-1, BW-13).
-// Bronnen (BR-5) volgen in fase 6.
+// Bronnen (BR-1, BR-3, BR-5): data/bronnen.json en data/bronnen-N.json, zie js/bronnen.js voor het formaat.
 //
 // Gebruik: node tools/content-check.mjs [datamap]   (standaard: data/)
 // Fouten laten het commando falen (exit 1). Waarschuwingen niet: teksten met "bron": "concept-auteur" zijn door de
@@ -22,6 +22,8 @@ import { readdirSync, readFileSync, existsSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { bouwControle } from '../js/checks/index.js';
+import { apaJaar } from '../js/checks/lb2.js';
+import { CITATIE_RE, eersteVolgordefout } from '../js/bronnen.js';
 
 const gevuld = (t) => typeof t === 'string' && t.trim() !== '';
 const lijstGevuld = (l) => Array.isArray(l) && l.length > 0;
@@ -256,6 +258,111 @@ export function controleerLuk(inhoud, bestand = 'luk.json', blokken = []) {
   return fouten;
 }
 
+export const BRONTYPEN = Object.freeze(['boek', 'artikel', 'hoofdstuk', 'rapport', 'web', 'video', 'sjabloon', 'ongepubliceerd']);
+
+/** Verzamelt alle tekstwaarden van een JSON-waarde met het pad erheen; `opmerking` (aantekening van de bouwer) telt niet mee. */
+function tekstenMetPad(waarde, pad = [], uit = []) {
+  if (typeof waarde === 'string') uit.push({ pad: pad.join('.'), tekst: waarde });
+  else if (Array.isArray(waarde)) waarde.forEach((w, i) => tekstenMetPad(w, [...pad, i], uit));
+  else if (isObject(waarde)) for (const [k, w] of Object.entries(waarde)) if (k !== 'opmerking') tekstenMetPad(w, [...pad, k], uit);
+  return uit;
+}
+
+/**
+ * Controleert de bronnen (BR-1, BR-3, BR-5) en geeft { fouten, waarschuwingen, bestanden }.
+ *   BR-5  elke in-tekstverwijzing (Auteur, jaar) in de contentbestanden heeft een bronregel, en elke bronregel wordt geciteerd
+ *   BR-1  elk bronbestand staat in het manifest en in alfabetische volgorde; elke bron heeft een APA-regel met het jaar van de citatie
+ *   BR-3  een niet-openbare bron is „ongepubliceerd document" met de organisatie; een fictieve bron is als fictief gemarkeerd (MD-15)
+ * Bronnen in `wachtOpCitatie` (uit het LRD, nog nergens geciteerd) geven een waarschuwing; wordt zo'n bron wel geciteerd,
+ * dan is dat een fout: verplaats hem naar `bronnen`.
+ */
+export function controleerBronnen(map) {
+  const fouten = [];
+  const waarschuwingen = [];
+  const lees = (naam) => {
+    try { return JSON.parse(readFileSync(resolve(map, naam), 'utf8')); }
+    catch (e) { fouten.push(`${naam}: geen geldige JSON (${e.message})`); return null; }
+  };
+  const alle = existsSync(map) ? readdirSync(map).filter((n) => n.endsWith('.json')).sort() : [];
+  const bronNamen = alle.filter((n) => /^bronnen-\d\.json$/.test(n));
+
+  // manifest: de bronnenpagina en de leerblokpagina's laden alleen wat erin staat
+  if (bronNamen.length > 0 || alle.includes('bronnen.json')) {
+    const manifest = alle.includes('bronnen.json') ? lees('bronnen.json') : null;
+    if (!alle.includes('bronnen.json')) fouten.push('bronnen.json ontbreekt (lijst van de bronbestanden)');
+    else if (manifest) {
+      const lijst = Array.isArray(manifest.bestanden) ? manifest.bestanden : [];
+      for (const n of bronNamen) if (!lijst.includes(n)) fouten.push(`bronnen.json: ${n} staat niet in bestanden; de bronnenpagina zou hem missen (BR-1)`);
+      for (const n of lijst) if (!bronNamen.includes(n)) fouten.push(`bronnen.json: ${n} bestaat niet in de datamap`);
+    }
+  }
+
+  const bronnen = [];
+  const wachtend = [];
+  const ids = new Set();
+  const citaties = new Set();
+  for (const naam of bronNamen) {
+    const inhoud = lees(naam);
+    if (!inhoud) continue;
+    const fout = (t) => fouten.push(`${naam}: ${t}`);
+    if (inhoud.formaat !== '1.0') fout('formaat moet "1.0" zijn');
+    if (!naam.includes(`bronnen-${inhoud.leerblok}.`)) fout(`leerblok ${inhoud.leerblok} past niet bij de bestandsnaam`);
+    for (const veld of ['bronnen', 'wachtOpCitatie']) {
+      if (!Array.isArray(inhoud[veld])) { fout(`${veld} moet een lijst zijn`); continue; }
+      for (const b of inhoud[veld]) {
+        const wie = `bron ${b?.id ?? '(zonder id)'}: `;
+        if (!/^[a-z0-9-]+$/.test(b?.id ?? '')) fout(`${wie}id bestaat uit kleine letters, cijfers en streepjes`);
+        if (ids.has(b?.id)) fout(`${wie}id komt twee keer voor`);
+        ids.add(b?.id);
+        const m = /^(.+), (\d{4}[a-z]?|z\.d\.)$/.exec(b?.citatie ?? '');
+        if (!m) fout(`${wie}citatie heeft de vorm "Auteur, 2019" of "Auteur, z.d."`);
+        else if (citaties.has(b.citatie)) fout(`${wie}citatie ${b.citatie} komt twee keer voor`);
+        citaties.add(b?.citatie);
+        if (!gevuld(b?.apa)) fout(`${wie}mist een APA-vermelding`);
+        else if (m && apaJaar(b.apa) !== m[2].replace(/[a-z]$/, '')) fout(`${wie}het jaar in de APA-regel (${apaJaar(b.apa) ?? 'geen'}) is niet dat van de citatie (${m[2]})`);
+        if (!BRONTYPEN.includes(b?.type)) fout(`${wie}type ${JSON.stringify(b?.type)}; kies uit ${BRONTYPEN.join(', ')}`);
+        if (b?.link !== undefined && !(typeof b.link === 'string' && b.link.startsWith('https://'))) fout(`${wie}link begint met https://`);
+        if (b?.type === 'ongepubliceerd') {
+          if (!gevuld(b.organisatie) || !String(b.apa).includes(b.organisatie)) fout(`${wie}een ongepubliceerde bron noemt de organisatie in de APA-regel (BR-3)`);
+          if (!/ongepubliceerd document/i.test(b.apa ?? '')) fout(`${wie}een ongepubliceerde bron heet „ongepubliceerd document" (BR-3)`);
+          if (b.link) fout(`${wie}een ongepubliceerde bron heeft geen link`);
+        }
+        if (b?.fictief === true) {
+          if (!/fictie/i.test(b.apa ?? '')) fout(`${wie}een fictieve bron is in de APA-regel als fictief gemarkeerd (MD-15)`);
+          if (b.link) fout(`${wie}een fictieve bron heeft geen link`);
+          if (veld === 'wachtOpCitatie') fout(`${wie}een fictieve bron hoort in bronnen, niet in wachtOpCitatie`);
+        } else if (b?.fictief !== undefined) fout(`${wie}fictief is true of ontbreekt`);
+        (veld === 'bronnen' ? bronnen : wachtend).push({ ...b, bestand: naam });
+      }
+    }
+    const volgorde = eersteVolgordefout(inhoud.bronnen ?? []);
+    if (volgorde) fout(`bronnen staan niet alfabetisch: ${volgorde[1].citatie} hoort vóór ${volgorde[0].citatie} (BR-1)`);
+  }
+
+  // BR-5: verwijzingen en bronregels tegen elkaar
+  const geciteerd = new Map(); // citatie → eerste plek
+  for (const naam of alle.filter((n) => !/^bronnen(-\d)?\.json$/.test(n))) {
+    const inhoud = lees(naam);
+    if (!inhoud) continue;
+    for (const { pad, tekst } of tekstenMetPad(inhoud)) {
+      for (const m of tekst.matchAll(CITATIE_RE)) {
+        const sleutel = `${m[1]}, ${m[2]}`;
+        if (!geciteerd.has(sleutel)) geciteerd.set(sleutel, `${naam}: ${pad}`);
+      }
+    }
+  }
+  const inBronnen = new Set(bronnen.map((b) => b.citatie));
+  const inWacht = new Set(wachtend.map((b) => b.citatie));
+  for (const [sleutel, plek] of geciteerd) {
+    if (inBronnen.has(sleutel)) continue;
+    if (inWacht.has(sleutel)) fouten.push(`${plek}: verwijzing (${sleutel}) staat in wachtOpCitatie; verplaats de bronregel naar bronnen`);
+    else fouten.push(`${plek}: verwijzing (${sleutel}) heeft geen bronregel (BR-5)`);
+  }
+  for (const b of bronnen) if (!geciteerd.has(b.citatie)) fouten.push(`${b.bestand}: bronregel ${b.id} (${b.citatie}) wordt nergens geciteerd (BR-5)`);
+  if (wachtend.length > 0) waarschuwingen.push(`bronnen: ${wachtend.length} bronnen uit het LRD wachten nog op een citatie in de content (${wachtend.map((b) => b.id).join(', ')})`);
+  return { fouten, waarschuwingen, bestanden: bronNamen.length };
+}
+
 /** Controleert alle leerblokbestanden in een map. */
 export function controleerMap(map) {
   const namen = existsSync(map) ? readdirSync(map).filter((n) => /^leerblok-\d\.json$/.test(n)).sort() : [];
@@ -283,17 +390,20 @@ export function controleerMap(map) {
     const luk = lees('luk.json');
     if (luk) fouten.push(...controleerLuk(luk, 'luk.json', blokken));
   }
-  return { bestanden: namen.length, fouten, waarschuwingen };
+  const bronnen = controleerBronnen(map);
+  fouten.push(...bronnen.fouten);
+  waarschuwingen.push(...bronnen.waarschuwingen);
+  return { bestanden: namen.length, bronbestanden: bronnen.bestanden, fouten, waarschuwingen };
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
   const map = process.argv[2] ? resolve(process.argv[2]) : resolve(root, 'data');
-  const { bestanden, fouten, waarschuwingen } = controleerMap(map);
+  const { bestanden, bronbestanden, fouten, waarschuwingen } = controleerMap(map);
   for (const w of waarschuwingen) console.warn(`WAARSCHUWING ${w}`);
   if (fouten.length) {
     console.error('content-check faalt:\n' + fouten.join('\n'));
     process.exit(1);
   }
-  console.log(`content-check: ok (${bestanden} leerblokbestanden, ${waarschuwingen.length} waarschuwingen)`);
+  console.log(`content-check: ok (${bestanden} leerblokbestanden, ${bronbestanden} bronbestanden, ${waarschuwingen.length} waarschuwingen)`);
 }
