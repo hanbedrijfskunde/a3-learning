@@ -7,21 +7,19 @@
 //   oefening                                   meta `oefening:<taak>`   { invoer, overgeslagen, pogingen }; nooit in een record
 //   klaar                                      meta `klaar:<taak>`      { op }
 //   verdieping                                 meta `verdieping:<leerblok>` { tekst, gedaan }; geen invloed op de status (TK-14)
-//   volgende stap van het leerblok             meta `afsluiting:<leerblok>` { volgendeStap }
+//   volgende stap van het leerblok             meta `afsluiting:<leerblok>` { volgendeStap, a3Zin }  (a3Zin: „wat ik hiermee aan mijn A3 heb”, TK-11)
 import { voerUit, tellers } from './checks/core.js';
-import { bouwControles } from './checks/index.js';
+import { bouwControles } from './checks/register.js';
 import { bepaalStatus, STATUS_TEKST } from './status.js';
 import { maakRecord } from './schema.js';
 import { isIngevuld, oefenModel, bouwAfsluitModel } from './weergave.js';
 import { leesProfiel } from './profiel.js';
+import { leesRecords } from './afgerond.js';
+
+export { leesRecords };
 
 /** BW-6: melding bij status Compleet. */
 export const COMPLEET_MELDING = 'Aanwezig en consistent. Of het goed is, bespreek je met je coach.';
-
-/** Leest de nieuwste records van de gegeven id's (id → record of undefined). */
-export function leesRecords(store, ids) {
-  return Object.fromEntries(ids.map((id) => [id, store.get(id)]));
-}
 
 const gelijk = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 
@@ -156,15 +154,47 @@ export function maakSessie({ store, blok, elearning, nu = () => new Date(), cont
   // ---- afsluiten (TK-15…TK-17)
 
   const evIds = blok.bewijsonderdelen.map((b) => b.id);
-  const leesVolgendeStap = () => store.getMeta(`afsluiting:${blok.leerblok}`)?.volgendeStap ?? '';
-  const bewaarVolgendeStap = (tekst) => store.setMeta(`afsluiting:${blok.leerblok}`, { volgendeStap: String(tekst ?? '') });
+  const afsluiting = () => store.getMeta(`afsluiting:${blok.leerblok}`) ?? {};
+  const leesVolgendeStap = () => afsluiting().volgendeStap ?? '';
+  const bewaarVolgendeStap = (tekst) => store.setMeta(`afsluiting:${blok.leerblok}`, { ...afsluiting(), volgendeStap: String(tekst ?? '') });
+  /** TK-11: aan het eind van leerblok 4 de zin „wat ik hiermee aan mijn A3 heb”; de dossierpagina toont hem naast de waarom-zin. */
+  const leesA3Zin = () => afsluiting().a3Zin ?? '';
+  const bewaarA3Zin = (tekst) => store.setMeta(`afsluiting:${blok.leerblok}`, { ...afsluiting(), a3Zin: String(tekst ?? '').trim() });
   const afsluitModel = (volgende) => ({ ...bouwAfsluitModel(blok, leesRecords(store, evIds), volgende), volgendeStap: leesVolgendeStap() });
 
+  // ---- voorlopig vraagstuk: opnieuw doen (ST-4, ST-5)
+
+  /** Heeft dit bewijsonderdeel een nieuwste versie met het label voorlopig (ST-3)? Dan kan de student het opnieuw doen. */
+  const kanOpnieuw = (taakId) => {
+    const ev = bewijs.get(taakId);
+    return Boolean(ev && store.get(ev.id)?.voorlopig === true);
+  };
+  /**
+   * „Opnieuw doen”, één klik (ST-4): het toepassingsveld wordt leeg. Er komt een nieuwe, lege versie van het record; de voorlopige
+   * versie blijft staan naast de nieuwe (ST-5, RC-6) en het label volgt het profiel: is het vraagstuk inmiddels scherp gemaakt,
+   * dan is de nieuwe versie niet voorlopig. De „klaar”-markering van de taak vervalt.
+   */
+  function opnieuwDoen(taakId) {
+    const t = taak(taakId);
+    const ev = bewijs.get(taakId);
+    if (!ev || !kanOpnieuw(taakId)) return { ok: false, fout: 'Alleen een voorlopig bewijsonderdeel kun je opnieuw doen.' };
+    const b = beoordeel(taakId, {});
+    const record = store.save(maakRecord({
+      taakdef: { id: ev.id, taak: t.id, leerblok: blok.leerblok, luk: t.luk, bc: t.bc },
+      inhoud: {}, controles: b.uitkomsten, status: b.status, versie: 1, bijgewerkt: nu().toISOString(), elearning, voorlopig: leesProfiel(store).voorlopig,
+    }));
+    store.verwijderMeta(`klaar:${taakId}`);
+    // Onthoud welke versie is vervangen, zodat het dossier oud en nieuw naast elkaar toont (ST-5).
+    const markeringen = store.getMeta('opnieuw') ?? {};
+    store.setMeta('opnieuw', { ...markeringen, [ev.id]: { oudeVersie: record.versie - 1, op: record.bijgewerkt } });
+    return { ok: true, record };
+  }
+
   return {
-    taak, leesToepassing, beoordeel, bewaar,
+    taak, leesToepassing, beoordeel, bewaar, kanOpnieuw, opnieuwDoen,
     oefening, zetOefening, herhaalOefening, zetOverslaan,
     isKlaar, markeerKlaar,
     leesVerdieping, zetVerdieping,
-    leesVolgendeStap, bewaarVolgendeStap, afsluitModel,
+    leesVolgendeStap, bewaarVolgendeStap, leesA3Zin, bewaarA3Zin, afsluitModel,
   };
 }

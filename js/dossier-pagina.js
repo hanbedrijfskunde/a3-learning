@@ -4,8 +4,13 @@ import { h, wis, statusChip } from './dom.js';
 import { kiesOpslag, maakStore } from './store.js';
 import {
   maakDossier, controleerDossier, importeerDossier, bouwMijnStand, bouwDekking, bouwLeeruitkomsten, bouwAfdruk, veldLabels, bouwFeedbackOverzicht,
+  zwaksteOnderdeel, bouwTweeZinnen, bouwVersieVergelijking, leesVerdiepingGedaan,
 } from './dossier.js';
-import { leesRecords } from './sessie.js';
+import { leesProfiel } from './profiel.js';
+import { waardeTekst } from './weergave.js';
+import { maakA3Tekst } from './a3tekst.js';
+import { leesKopieLog, logKopie } from './a3log.js';
+import { leesRecords } from './afgerond.js';
 import { exportKnop, geblokkeerdMelding, toonBewaarHerinnering } from './dossier-dom.js';
 
 const laad = async (pad) => (await fetch(new URL(pad, import.meta.url))).json();
@@ -33,10 +38,14 @@ async function start() {
 
   function tekenStand() {
     wis(standGebied);
+    const stand = bouwMijnStand(luk, records());
+    const zwakste = zwaksteOnderdeel(stand);
     standGebied.append(
       h('h2', { id: 'mijn-stand-kop' }, 'Mijn stand'),
       h('p', { class: 'klein' }, 'Per bewijsonderdeel alleen de status, zonder inhoud. Laat dit scherm gerust aan je coach zien.'),
-      h('ul', { class: 'dos-stand' }, bouwMijnStand(luk, records()).map((c) => h('li', { class: `dos-tegel dos-tegel-${c.status.replace(' ', '-')}` },
+      h('p', { class: 'zwakste', id: 'zwakste-onderdeel' }, h('strong', {}, 'Zwakste onderdeel: '),
+        zwakste ? [`${zwakste.id} · ${zwakste.titel} (`, statusChip(zwakste.status, zwakste.heeftRecord ? zwakste.statusTekst : 'Nog niet'), ')'] : 'geen: alle bewijsonderdelen zijn compleet.'),
+      h('ul', { class: 'dos-stand' }, stand.map((c) => h('li', { class: `dos-tegel dos-tegel-${c.status.replace(' ', '-')}` },
         h('span', { class: 'dos-tegel-id' }, c.id),
         h('span', { class: 'dos-tegel-titel' }, c.titel),
         h('span', { class: 'dos-tegel-status' }, c.heeftRecord ? c.statusTekst : 'Nog niet', c.voorlopig ? ' (voorlopig)' : '')))));
@@ -83,6 +92,95 @@ async function start() {
         h('h4', {}, 'Teamactie'),
         f.teamactie ? h('p', { id: 'fb-teamactie' }, `${f.teamactie.tekst} (${f.teamactie.status})`) : h('p', { class: 'klein' }, 'Nog geen teamactie.'))));
   }
+
+  // ---------------------------------------------------------------- twee zinnen naast elkaar (TK-11) en verdieping gedaan (TK-14)
+
+  const zinnenGebied = h('section', { id: 'twee-zinnen', class: 'kaart', 'aria-labelledby': 'twee-zinnen-kop' });
+  function tekenZinnen() {
+    wis(zinnenGebied);
+    const z = bouwTweeZinnen(store);
+    const gedaan = leesVerdiepingGedaan(store);
+    zinnenGebied.append(
+      h('h2', { id: 'twee-zinnen-kop' }, 'Waarom je begon en wat het je opleverde'),
+      h('div', { class: 'fb-kolommen' },
+        h('div', { id: 'zin-waarom' }, h('h3', {}, 'Waarom (leerblok 1)'), h('p', {}, z.waarom || 'Je hebt nog geen waarom-zin ingevuld op de startpagina.')),
+        h('div', { id: 'zin-nut' }, h('h3', {}, 'Wat ik hiermee aan mijn A3 heb (leerblok 4)'), h('p', {}, z.nut || 'Die zin schrijf je aan het eind van leerblok 4.'))),
+      h('p', { class: 'klein', id: 'verdieping-gedaan' }, gedaan.length ? `Verdieping gedaan: leerblok ${gedaan.join(', ')}. Dat heeft geen invloed op je status.` : 'Je hebt nog geen verdieping als gedaan gemarkeerd. Verdieping is optioneel.'));
+  }
+
+  // ---------------------------------------------------------------- kopieer naar A3 vak 1 (LB-16, LB-17, VB-8)
+
+  const a3Gebied = h('section', { id: 'a3-vak1', class: 'kaart', 'aria-labelledby': 'a3-kop' });
+  const a3Melding = h('p', { role: 'status', class: 'klein', id: 'a3-melding' });
+  const kopieer = async (tekst) => {
+    try {
+      await navigator.clipboard.writeText(tekst);
+    } catch (e) {
+      const ta = h('textarea', { 'aria-hidden': 'true', tabindex: '-1', style: 'position:fixed;left:-9999px' });
+      ta.value = tekst;
+      document.body.append(ta);
+      ta.select();
+      const gelukt = document.execCommand?.('copy');
+      ta.remove();
+      if (!gelukt) throw e;
+    }
+  };
+  function tekenA3() {
+    wis(a3Gebied);
+    const blok = maakA3Tekst({ records: leesRecords(store, ['EV-01', 'EV-02', 'EV-08', 'EV-11']), profiel: leesProfiel(store) });
+    a3Gebied.append(
+      h('h2', { id: 'a3-kop' }, 'Kopieer naar A3 vak 1'),
+      h('p', {}, 'Eén klik zet je onderzoeksvraag, zoekvragen, de plaatsing van je vraagstuk en je waarom-zin (en de verbanden uit leerblok 4, als je ze hebt) als tekst op het klembord. Plak ze in vak 1 van de A3 van je team. Er gaat niets over het netwerk.'),
+      h('pre', { class: 'a3-blok', id: 'a3-tekst', tabindex: '0', 'aria-label': 'Voorbeeld van het tekstblok voor vak 1' }, blok.tekst),
+      h('div', { class: 'knoppen' }, h('button', { type: 'button', class: 'knop knop-accent', 'data-actie': 'kopieer-a3', onclick: async () => {
+        try {
+          await kopieer(blok.tekst);
+          logKopie(store);
+          a3Melding.textContent = `Gekopieerd: ${blok.delen.length} onderdelen staan op je klembord.`;
+        } catch (e) {
+          a3Melding.textContent = 'Kopiëren is niet gelukt. Selecteer de tekst hierboven en kopieer hem zelf (Ctrl+C).';
+        }
+        tekenA3Log();
+      } }, 'Kopieer naar A3 vak 1')),
+      a3Melding,
+      h('div', { id: 'a3-log' }));
+    tekenA3Log();
+  }
+  function tekenA3Log() {
+    const gebied = a3Gebied.querySelector('#a3-log');
+    if (!gebied) return;
+    wis(gebied);
+    const log = leesKopieLog(store);
+    gebied.append(h('h3', {}, 'Wanneer je kopieerde'),
+      log.length ? h('ul', { class: 'dos-lijst' }, log.map((d) => h('li', {}, new Date(d).toLocaleString('nl-NL')))) : h('p', { class: 'klein' }, 'Je hebt nog niet gekopieerd.'));
+  }
+
+  // ---------------------------------------------------------------- voorlopig en opnieuw gedaan: oud en nieuw naast elkaar (ST-3, ST-5)
+
+  const versieGebied = h('section', { id: 'versies' });
+  async function tekenVersies() {
+    const p = leesProfiel(store);
+    const paren = bouwVersieVergelijking(store);
+    const voorlopigeIds = alleIds.filter((id) => records()[id]?.voorlopig === true);
+    wis(versieGebied);
+    if (!p.voorlopig && paren.length === 0 && voorlopigeIds.length === 0) return;
+    versieGebied.append(h('h2', { id: 'versies-kop' }, 'Voorlopig vraagstuk en opnieuw gedaan'));
+    if (p.voorlopig || voorlopigeIds.length) {
+      versieGebied.append(h('p', { id: 'voorlopig-label' }, `Je werkt met een voorlopig vraagstuk: je bewijs krijgt het label voorlopig${voorlopigeIds.length ? ` (nu: ${voorlopigeIds.join(', ')})` : ''}. Bij elk onderdeel in het leerblok staat een knop Opnieuw doen zodra je vraagstuk scherp is.`));
+    }
+    if (paren.length === 0) return;
+    const nummers = [...new Set(paren.map((x) => x.nieuw.leerblok))];
+    const labels = veldLabels(await Promise.all(nummers.map((n) => laadOptioneel(`../data/leerblok-${n}.json`))));
+    const kolom = (titel, r) => h('div', { class: 'kaart', 'data-versie': r.versie },
+      h('h4', {}, `${titel} (versie ${r.versie}${r.voorlopig ? ', voorlopig' : ''})`),
+      h('p', { class: 'klein' }, `Bijgewerkt: ${new Date(r.bijgewerkt).toLocaleString('nl-NL')} · status ${STATUS_LABEL(r.status)}`),
+      Object.keys(r.inhoud).length === 0 ? h('p', { class: 'klein' }, 'Leeg: dit onderdeel is opnieuw begonnen.')
+        : h('dl', { class: 'dos-velden' }, Object.entries(r.inhoud).flatMap(([k, w]) => [h('dt', {}, labels[r.id]?.[k] ?? k), h('dd', {}, waardeTekst(w))])));
+    for (const { id, oud, nieuw } of paren) {
+      versieGebied.append(h('div', { class: 'versie-paar', 'data-ev': id }, h('h3', {}, id), h('div', { class: 'versie-kolommen' }, kolom('Oude versie', oud), kolom('Nieuwe versie', nieuw))));
+    }
+  }
+  const STATUS_LABEL = (st) => ({ compleet: 'Compleet', bijna: 'Bijna', 'nog niet': 'Nog niet' })[st] ?? st;
 
   // ---------------------------------------------------------------- export (DS-5, DS-6) en afdrukbaar (DS-7)
 
@@ -164,7 +262,8 @@ async function start() {
   }
 
   function tekenAlles() {
-    tekenStand(); tekenLuks(); tekenFeedback(); tekenDekking();
+    tekenStand(); tekenLuks(); tekenFeedback(); tekenDekking(); tekenZinnen(); tekenA3();
+    tekenVersies();
     toonBewaarHerinnering(herinneringGebied, store, config.versie);
   }
   tekenAlles();
@@ -173,7 +272,7 @@ async function start() {
     h1,
     h('p', {}, 'Hier zie je waar je staat, bewaar je je werk en zet je het terug. Je dossier is wat je inlevert en wat je docent nakijkt.'),
     geblokkeerd ? geblokkeerdMelding(store, config.versie) : null,
-    herinneringGebied, standGebied, luks, feedbackGebied, dekkingGebied, exportGebied, importGebied, afdruk,
+    herinneringGebied, standGebied, luks, zinnenGebied, a3Gebied, versieGebied, feedbackGebied, dekkingGebied, exportGebied, importGebied, afdruk,
   ].filter(Boolean));
 }
 

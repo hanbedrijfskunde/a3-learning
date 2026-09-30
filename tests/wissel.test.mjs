@@ -377,12 +377,12 @@ test('ST-7: leerblok 1 noemt de Wissel pas zichtbaar na de eerste versie van EV-
   assert.match(js, /hidden: true/);
 });
 
-test('data: leerblok-4.json bevat alleen taak 6.2 met EV-09, met de vier controles en de component feedbacklog', () => {
-  assert.deepEqual(blok4.taken.map((x) => x.id), ['6.2']);
-  assert.deepEqual(blok4.bewijsonderdelen.map((x) => x.id), ['EV-09']);
-  assert.equal(blok4.taken[0].toepassing.component, 'feedbacklog');
-  assert.deepEqual(blok4.taken[0].luk, [5]);
-  assert.equal(bouwControles(blok4.taken[0].controles, blok4.taken[0].toepassing.velden).length, 4);
+test('data: taak 6.2 in leerblok-4.json heeft EV-09, de vier controles en de component feedbacklog', () => {
+  const t = blok4.taken.find((x) => x.id === '6.2');
+  assert.equal(t.bewijsonderdeel, 'EV-09');
+  assert.equal(t.toepassing.component, 'feedbacklog');
+  assert.deepEqual(t.luk, [5]);
+  assert.equal(bouwControles(t.controles, t.toepassing.velden).length, 4);
 });
 
 test('EV-01 en EV-02 hebben elk één kopiecontrole van soort B in de data', () => {

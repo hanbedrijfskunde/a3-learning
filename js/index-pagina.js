@@ -5,7 +5,7 @@ import { h, wis, statusChip, maakWisAlles } from './dom.js';
 import { kiesOpslag, maakStore } from './store.js';
 import { leesProfiel, bewaarProfiel, beoordeelProfiel } from './profiel.js';
 import { bouwIndexModel } from './weergave.js';
-import { leesRecords } from './sessie.js';
+import { leesRecords } from './afgerond.js';
 
 const laad = async (pad) => (await fetch(new URL(pad, import.meta.url))).json();
 

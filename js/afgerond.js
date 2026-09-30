@@ -25,3 +25,8 @@ export function isAfgerond(ids, records = {}) {
   });
   return { afgerond: onderdelen.length > 0 && onderdelen.every((o) => o.telt), onderdelen };
 }
+
+/** Leest de nieuwste records van de gegeven id's (id → record of undefined). */
+export function leesRecords(store, ids) {
+  return Object.fromEntries(ids.map((id) => [id, store.get(id)]));
+}

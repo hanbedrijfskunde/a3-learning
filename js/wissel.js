@@ -11,17 +11,18 @@
 //   A3-WISSELBLOK                A3-FEEDBACK
 //   Onderzoeksvraag: …           Ik zie: …
 //   Zoekvraag 1 (frame): …       Ik mis: …
-//                                Ik vraag me af: …
+//   Verband 1: … — …             Ik vraag me af: …      (Verband: alleen als EV-11 er is, WS-2)
 import { stelVraagSamen } from './checks/lb1.js';
+import { verbandenUit, verbandRegel } from './verbandregel.js';
+import { wisselContext, META_BLOKKEN, ROL_ANDER_TEAM } from './context.js';
 
 export const ROLLEN = Object.freeze(['teamgenoot', 'medestudent', 'coach']); // WS-3
-export const ROL_ANDER_TEAM = 'ander team'; // WS-6
+export { ROL_ANDER_TEAM };
 export const ACTIE_STATUSSEN = Object.freeze(['open', 'bezig', 'gedaan']);
 export const HERINNER_NA_DAGEN = 7; // WS-11
 export const EV09_TAAK = '6.2';
 export const WISSELBLOK_KOP = 'A3-WISSELBLOK';
 export const FEEDBACK_KOP = 'A3-FEEDBACK';
-const META_BLOKKEN = 'wissel:blokken';
 const DAG_MS = 24 * 60 * 60 * 1000;
 
 /** WS-10: de privacytekst bij de Wissel noemt het klembord als kanaal (≤ 60 woorden). */
@@ -45,11 +46,11 @@ function verberg(tekst, alias) {
 // ---------------------------------------------------------------- wisselblok (WS-1, WS-3)
 
 /**
- * Bouwt het wisselblok uit EV-01 en EV-02: de onderzoeksvraag en de zoekvragen, zonder alias (WS-1).
- * De vraag staat er alleen in als alle drie de delen zijn ingevuld.
- * @param {{'EV-01'?: object, 'EV-02'?: object}} records nieuwste records
+ * Bouwt het wisselblok uit EV-01, EV-02 en EV-11: de onderzoeksvraag, de zoekvragen en (in leerblok 4) de lijst van verbanden,
+ * zonder alias (WS-1, WS-2). De vraag staat er alleen in als alle drie de delen zijn ingevuld.
+ * @param {{'EV-01'?: object, 'EV-02'?: object, 'EV-11'?: object}} records nieuwste records
  * @param {{alias?: string}} [opties]
- * @returns {{tekst: string, vraag: string, zoekvragen: {frame: string, tekst: string}[], leeg: boolean}}
+ * @returns {{tekst: string, vraag: string, zoekvragen: {frame: string, tekst: string}[], verbanden: string[], leeg: boolean}}
  */
 export function maakWisselblok(records = {}, { alias = '' } = {}) {
   const e1 = records['EV-01']?.inhoud ?? {};
@@ -58,33 +59,39 @@ export function maakWisselblok(records = {}, { alias = '' } = {}) {
   const zoekvragen = [1, 2, 3]
     .map((n) => ({ frame: plat(e2[`frame${n}`]), tekst: plat(e2[`zoekvraag${n}`]) }))
     .filter((z) => z.tekst !== '');
+  const verbanden = verbandenUit(records['EV-11']?.inhoud).map(verbandRegel).filter(gevuld);
   const regels = [WISSELBLOK_KOP];
   if (vraag) regels.push(`Onderzoeksvraag: ${vraag}`);
   zoekvragen.forEach((z, i) => regels.push(`Zoekvraag ${i + 1}${z.frame ? ` (${z.frame})` : ''}: ${z.tekst}`));
+  verbanden.forEach((v, i) => regels.push(`Verband ${i + 1}: ${v}`));
   const tekst = verberg(regels.join('\n'), alias);
   return {
     tekst,
     vraag: verberg(vraag, alias),
     zoekvragen: zoekvragen.map((z) => ({ frame: z.frame, tekst: verberg(z.tekst, alias) })),
-    leeg: !vraag && zoekvragen.length === 0,
+    verbanden: verbanden.map((v) => verberg(v, alias)),
+    leeg: !vraag && zoekvragen.length === 0 && verbanden.length === 0,
   };
 }
 
-/** Leest een geplakt wisselblok. Geeft { geldig, blok?, fout? }; `blok` is { vraag, zoekvragen: [{frame, tekst}] }. */
+/** Leest een geplakt wisselblok. Geeft { geldig, blok?, fout? }; `blok` is { vraag, zoekvragen: [{frame, tekst}], verbanden?: [regel] }. */
 export function leesWisselblok(tekst) {
   const regels = String(tekst ?? '').split(/\r?\n/).map(plat);
   const kop = regels.findIndex((r) => r.toUpperCase().startsWith(WISSELBLOK_KOP));
   if (kop === -1) return { geldig: false, fout: `Dit lijkt geen wisselblok: de tekst begint niet met ${WISSELBLOK_KOP}. Plak de hele tekst zoals je wisselpartner hem kopieerde.` };
   let vraag = '';
   const zoekvragen = [];
+  const verbanden = [];
   for (const r of regels.slice(kop + 1)) {
     const v = r.match(/^Onderzoeksvraag\s*:\s*(.+)$/i);
     if (v) { vraag = v[1]; continue; }
+    const vb = r.match(/^Verband\s*\d*\s*:\s*(.+)$/i);
+    if (vb) { verbanden.push(plat(vb[1])); continue; }
     const z = r.match(/^Zoekvraag\s*\d*\s*(?:\(([^)]*)\))?\s*:\s*(.+)$/i);
     if (z) zoekvragen.push({ frame: plat(z[1]), tekst: plat(z[2]) });
   }
-  if (!vraag && zoekvragen.length === 0) return { geldig: false, fout: 'In dit wisselblok staat geen onderzoeksvraag en geen zoekvraag.' };
-  return { geldig: true, blok: { vraag, zoekvragen } };
+  if (!vraag && zoekvragen.length === 0 && verbanden.length === 0) return { geldig: false, fout: 'In dit wisselblok staat geen onderzoeksvraag, geen zoekvraag en geen verband.' };
+  return { geldig: true, blok: verbanden.length ? { vraag, zoekvragen, verbanden } : { vraag, zoekvragen } };
 }
 
 /**
@@ -92,10 +99,11 @@ export function leesWisselblok(tekst) {
  * Alleen witruimte telt niet mee. Zoekvragen tellen als gelijk als alle eigen zoekvragen, in willekeurige volgorde,
  * dezelfde zijn als die in het wisselblok.
  * @param {{blok: {vraag: string, zoekvragen: {tekst: string}[]}}[]} ontvangen
- * @param {{vraag?: string, zoekvragen?: string[]}} eigen
- * @returns {('onderzoeksvraag'|'zoekvragen')[]}
+ * De verbanden (EV-11) tellen als gelijk als alle eigen verbandregels, in willekeurige volgorde, dezelfde zijn als die in het wisselblok.
+ * @param {{vraag?: string, zoekvragen?: string[], verbanden?: string[]}} eigen
+ * @returns {('onderzoeksvraag'|'zoekvragen'|'verbanden')[]}
  */
-export function gelijkAanWissel(ontvangen, { vraag = '', zoekvragen = [] } = {}) {
+export function gelijkAanWissel(ontvangen, { vraag = '', zoekvragen = [], verbanden = [] } = {}) {
   const uit = [];
   const blokken = (ontvangen ?? []).map((o) => o?.blok).filter(isObject);
   const eigenVraag = plat(vraag);
@@ -106,6 +114,12 @@ export function gelijkAanWissel(ontvangen, { vraag = '', zoekvragen = [] } = {})
     return hunne.length === eigen.length && eigen.every((z) => hunne.includes(z));
   };
   if (eigen.length > 0 && blokken.some(gelijk)) uit.push('zoekvragen');
+  const eigenVerbanden = verbanden.map(plat).filter(Boolean);
+  const gelijkVerbanden = (b) => {
+    const hunne = (b.verbanden ?? []).map(plat);
+    return hunne.length === eigenVerbanden.length && eigenVerbanden.every((v) => hunne.includes(v));
+  };
+  if (eigenVerbanden.length > 0 && blokken.some(gelijkVerbanden)) uit.push('verbanden');
   return uit;
 }
 
@@ -153,13 +167,7 @@ export const herinneringTekst = (h) => `Je actie „${plat(h.actie)}” staat al
 /** Herinneringen uit de opslag, voor pagina's die de Wissel zelf niet tonen. */
 export const herinneringenUitStore = (store, nu = () => new Date()) => herinneringen(store.get('EV-09')?.inhoud, nu());
 
-/** Context voor de controles: ontvangen wisselblokken en de eigen records waarmee ze worden vergeleken (WS-7). */
-export function wisselContext(store) {
-  return {
-    wissel: { ontvangen: store.getMeta(META_BLOKKEN) ?? [] },
-    eigen: Object.fromEntries(['EV-01', 'EV-02', 'EV-11'].map((id) => [id, store.get(id)])),
-  };
-}
+export { wisselContext };
 
 // ---------------------------------------------------------------- de Wissel
 
@@ -183,7 +191,7 @@ export function maakWissel({ store, sessie, nu = () => new Date() }) {
   const volgendId = (regels) => `r${1 + Math.max(0, ...regels.map((r) => Number(String(r.id).slice(1)) || 0))}`;
 
   const blokken = () => store.getMeta(META_BLOKKEN) ?? [];
-  const mijnWisselblok = (alias = '') => maakWisselblok({ 'EV-01': store.get('EV-01'), 'EV-02': store.get('EV-02') }, { alias });
+  const mijnWisselblok = (alias = '') => maakWisselblok({ 'EV-01': store.get('EV-01'), 'EV-02': store.get('EV-02'), 'EV-11': store.get('EV-11') }, { alias });
 
   /** WS-3: het wisselblok van een wisselpartner met een van de drie rollen. */
   function plakWisselblok(tekst, rol) {

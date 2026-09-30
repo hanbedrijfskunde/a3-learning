@@ -7,10 +7,289 @@
   "oefencasus": "Webshop X",
   "taken": [
     {
+      "id": "9.4",
+      "titel": "Ontdek de verbanden tussen je modellen",
+      "vorm": "Alleen",
+      "richttijd": {
+        "tekst": "20 min",
+        "minuten": 20,
+        "bron": "lrd"
+      },
+      "waarom": {
+        "tekst": "Je hebt een user story, een value proposition canvas en de zes kapitalen ingevuld. Ze beschrijven hetzelfde vraagstuk vanuit een andere kant. Als je zelf ontdekt hoe ze samenhangen, kun je op je A3 één verhaal vertellen in plaats van drie losse plaatjes.",
+        "bron": "concept-auteur"
+      },
+      "klaarAls": {
+        "tekst": "je minstens zes verbanden hebt getrokken met bij elk een zin waarom, elk kapitaal hebt gemarkeerd, een spanning met een stakeholder hebt benoemd en je synthese en de drie antwoorden hebt geschreven.",
+        "bron": "concept-auteur"
+      },
+      "stof": {
+        "bron": "concept-auteur",
+        "opmerking": "Taak 9.4 staat niet in het werkboek. De uitleg is door de bouwer geschreven uit LRD 6.9 en wacht op akkoord van de auteur.",
+        "alineas": [
+          "Drie modellen beschrijven jouw vraagstuk elk vanuit een andere kant. De user story zegt voor wie het is, welk probleem er speelt en welke waarde je wilt maken. Het value proposition canvas (Osterwalder e.a., 2014) zet links een klantprofiel met klanttaken, pains en gains en rechts een waardekaart met producten en diensten, pain relievers en gain creators. De zes kapitalen uit het waardecreatiemodel van het IIRC (International Integrated Reporting Council, 2021) laten zien dat dezelfde kapitalen een organisatie in gaan als input en er als uitkomst weer uit komen, positief of negatief, op korte, middellange en lange termijn.",
+          "Een verband is een lijn tussen twee kaarten uit verschillende kolommen. Je kiest een van drie typen. „Hoort bij” gebruik je als twee kaarten over hetzelfde gaan of als de ene om de andere vraagt; in je zin schrijf je welke van de twee het is. „Leidt tot” gebruik je als de ene kaart de andere veroorzaakt. „Gaat ten koste van” gebruik je als wat je oplevert ergens anders iets kost. Bij elk verband schrijf je één zin waarom.",
+          "Alleen ontdekken werkt voor beginners minder goed dan ontdekken met begeleiding (Mayer, 2004). Daarom begin je met een oefencasus en zie je het voorbeeld pas nadat je zelf een lijn hebt getrokken. Kaarten zonder lijn komen terug als vraag. De site zegt nooit welk verband je mist.",
+          "Elk kapitaal markeer je als input (het gaat de organisatie in), uitkomst (+) (het groeit) of uitkomst (−) (het neemt af). Minstens één verband „gaat ten koste van” koppel je aan een stakeholder uit je lijst van leerblok 3: wie merkt dat als eerste? Sluit af met een synthese van hoogstens vijf zinnen waarin je kaarten uit minstens twee modellen noemt, en beantwoord bij elk model kort wat het niet laat zien."
+        ]
+      },
+      "oefening": {
+        "opdracht": {
+          "tekst": "Casus webshop X: terugkerende klanten bestellen minder vaak en geven hun laatste aankoop minder dan een 8. Beantwoord de drie vragen en trek in de kaart minstens één lijn. Pas daarna verschijnt een modelvoorbeeld.",
+          "bron": "concept-auteur"
+        },
+        "component": "verbanden",
+        "modelNa": "lijn",
+        "kaarten": {
+          "us": [
+            "Terugkerende klanten van webshop X",
+            "Ze bestellen minder vaak en beoordelen hun laatste aankoop met minder dan een 8",
+            "Een aankoopervaring die minstens een 8 krijgt, zodat de klantrelatie herstelt"
+          ],
+          "vpc": [
+            {
+              "onderdeel": "klanttaak",
+              "tekst": "Snel en zonder gedoe iets bestellen"
+            },
+            {
+              "onderdeel": "pain",
+              "tekst": "Bestellingen komen later aan dan beloofd"
+            },
+            {
+              "onderdeel": "gain",
+              "tekst": "Het gevoel dat de webshop hen kent"
+            },
+            {
+              "onderdeel": "pain reliever",
+              "tekst": "Een bezorgtijd die per bestelling zichtbaar en gegarandeerd is"
+            },
+            {
+              "onderdeel": "gain creator",
+              "tekst": "Aanbevelingen op basis van eerdere aankopen"
+            }
+          ],
+          "gekozen": [
+            "sociaal en relationeel",
+            "financieel"
+          ],
+          "stakeholders": [
+            "Klantenservice",
+            "Logistiek partner",
+            "Marketing"
+          ]
+        },
+        "velden": [
+          {
+            "id": "v1",
+            "label": "Waar komt de gebruiker uit de user story terug in het VPC?",
+            "type": "lang"
+          },
+          {
+            "id": "v2",
+            "label": "Welke kapitalen raakt de waarde, en gaan ze erin of komen ze eruit?",
+            "type": "lang"
+          },
+          {
+            "id": "v3",
+            "label": "Welk kapitaal neemt af als de waarde wordt geleverd?",
+            "type": "lang"
+          }
+        ]
+      },
+      "modelantwoord": {
+        "bron": "concept-auteur",
+        "opmerking": "Voorbeeld door de bouwer geschreven bij webshop X. De verbanden zijn hypotheses en geen enig juist antwoord (LRD 6.9).",
+        "velden": {
+          "v1": "De terugkerende klant is degene die de klanttaak uitvoert: snel en zonder gedoe bestellen. De klant staat ook bij de pain en de gain van het klantprofiel.",
+          "v2": "De waarde raakt het sociaal en relationeel kapitaal (de band met de klant) en het financiële kapitaal (herhaalaankopen). Beide komen eruit als uitkomst (+); het productiekapitaal van de bezorging gaat erin als input.",
+          "v3": "Het menselijk kapitaal kan afnemen: persoonlijke aanbevelingen vragen extra werk van de medewerkers van de klantenservice."
+        },
+        "verbanden": [
+          {
+            "van": "us:gebruiker",
+            "naar": "vpc:b1",
+            "type": "hoort bij",
+            "zin": "De terugkerende klant is degene die de klanttaak uitvoert."
+          },
+          {
+            "van": "us:pain",
+            "naar": "vpc:b2",
+            "type": "hoort bij",
+            "zin": "De te late bezorging is de pain die de lagere beoordeling verklaart."
+          },
+          {
+            "van": "us:waarde",
+            "naar": "vpc:b4",
+            "type": "hoort bij",
+            "zin": "De waarde ontstaat pas als de bezorgtijd betrouwbaar wordt."
+          },
+          {
+            "van": "vpc:b5",
+            "naar": "kap:sociaal en relationeel",
+            "type": "leidt tot",
+            "zin": "Aanbevelingen laten klanten voelen dat de webshop hen kent."
+          },
+          {
+            "van": "vpc:b4",
+            "naar": "kap:financieel",
+            "type": "leidt tot",
+            "zin": "Minder klachten en retouren besparen kosten en leveren herhaalaankopen op."
+          },
+          {
+            "van": "vpc:b5",
+            "naar": "kap:menselijk",
+            "type": "gaat ten koste van",
+            "zin": "Persoonlijke aanbevelingen vragen extra werk van de klantenservice.",
+            "stakeholder": "Klantenservice"
+          }
+        ]
+      },
+      "toepassing": {
+        "opdracht": {
+          "tekst": "Trek lijnen tussen de kaarten van je eigen vraagstuk en schrijf bij elke lijn één zin waarom. Markeer elk kapitaal, benoem een spanning met een stakeholder uit leerblok 3 en schrijf je synthese en de drie antwoorden.",
+          "bron": "concept-auteur"
+        },
+        "component": "verbanden",
+        "velden": [
+          {
+            "id": "verbanden",
+            "label": "Verbanden: lijnen tussen kaarten met type en zin",
+            "type": "lang"
+          },
+          {
+            "id": "markering",
+            "label": "Markering van de zes kapitalen (input, uitkomst plus of min)",
+            "type": "lang"
+          },
+          {
+            "id": "synthese",
+            "label": "Synthese in hoogstens vijf zinnen",
+            "type": "lang"
+          },
+          {
+            "id": "syntheseKaarten",
+            "label": "Kaarten die in je synthese staan",
+            "type": "lang"
+          },
+          {
+            "id": "nietZien1",
+            "label": "Wat laat de user story niet zien?",
+            "type": "lang"
+          },
+          {
+            "id": "nietZien2",
+            "label": "Wat laat het value proposition canvas niet zien?",
+            "type": "lang"
+          },
+          {
+            "id": "nietZien3",
+            "label": "Wat laten de zes kapitalen niet zien?",
+            "type": "lang"
+          }
+        ]
+      },
+      "controles": [
+        {
+          "id": "verbanden-aanwezig",
+          "soort": "A",
+          "type": "verbandenAanwezig",
+          "veld": "verbanden"
+        },
+        {
+          "id": "verbanden-zinnen",
+          "soort": "A",
+          "type": "verbandZinnen",
+          "veld": "verbanden"
+        },
+        {
+          "id": "verbanden-aantal",
+          "soort": "C",
+          "type": "verbandenAantal",
+          "veld": "verbanden",
+          "min": 6
+        },
+        {
+          "id": "verband-typen",
+          "soort": "C",
+          "type": "verbandTypen",
+          "veld": "verbanden",
+          "min": 2
+        },
+        {
+          "id": "kapitalen-gemarkeerd",
+          "soort": "A",
+          "type": "kapitalenGemarkeerd",
+          "veld": "markering"
+        },
+        {
+          "id": "synthese-alinea",
+          "soort": "A",
+          "type": "syntheseAlinea",
+          "veld": "synthese",
+          "max": 5
+        },
+        {
+          "id": "synthese-kaarten",
+          "soort": "B",
+          "type": "syntheseKaarten",
+          "veld": "syntheseKaarten",
+          "min": 2
+        },
+        {
+          "id": "niet-zien",
+          "soort": "A",
+          "type": "nietZienAntwoorden",
+          "velden": [
+            "nietZien1",
+            "nietZien2",
+            "nietZien3"
+          ]
+        },
+        {
+          "id": "user-story-verbonden",
+          "soort": "B",
+          "type": "userStoryVerbonden",
+          "veld": "verbanden"
+        },
+        {
+          "id": "kapitalen-uit-ev01",
+          "soort": "B",
+          "type": "kapitalenUitEv01Verbonden",
+          "veld": "verbanden",
+          "bron": "EV-01"
+        },
+        {
+          "id": "spanning-stakeholder",
+          "soort": "B",
+          "type": "spanningMetStakeholder",
+          "veld": "verbanden",
+          "bron": "EV-06"
+        },
+        {
+          "id": "niet-tekst-wisselpartner",
+          "soort": "B",
+          "type": "nietGelijkAanWissel",
+          "onderdeel": "verbanden",
+          "veld": "verbanden"
+        }
+      ],
+      "bewijsonderdeel": "EV-11",
+      "luk": [
+        1
+      ],
+      "bc": [
+        "BC1"
+      ]
+    },
+    {
       "id": "6.2",
       "titel": "Gallery walk: oefenronde en de Wissel",
       "vorm": "Team",
-      "richttijd": { "tekst": "10 min", "minuten": 10, "bron": "werkboek" },
+      "richttijd": {
+        "tekst": "10 min",
+        "minuten": 10,
+        "bron": "werkboek"
+      },
       "waarom": {
         "tekst": "Op dag 3 doen jullie een gallery walk met alle vier de overzichten. Nu oefen je hoe het werkt, en je krijgt feedback die je meteen gebruikt bij vel 2.",
         "bron": "werkboek"
@@ -34,9 +313,21 @@
           "bron": "concept-auteur"
         },
         "velden": [
-          { "id": "zie", "label": "Ik zie…", "type": "lang" },
-          { "id": "mis", "label": "Ik mis…", "type": "lang" },
-          { "id": "vraag", "label": "Ik vraag me af…", "type": "lang" }
+          {
+            "id": "zie",
+            "label": "Ik zie…",
+            "type": "lang"
+          },
+          {
+            "id": "mis",
+            "label": "Ik mis…",
+            "type": "lang"
+          },
+          {
+            "id": "vraag",
+            "label": "Ik vraag me af…",
+            "type": "lang"
+          }
         ]
       },
       "modelantwoord": {
@@ -55,27 +346,238 @@
         },
         "component": "feedbacklog",
         "velden": [
-          { "id": "regels", "label": "Feedbacklog: regels met ik zie, ik mis, ik vraag me af, rol, actie en status", "type": "lang" },
-          { "id": "teamactie", "label": "Teamactie na de post-its van andere teams", "type": "lang" }
+          {
+            "id": "regels",
+            "label": "Feedbacklog: regels met ik zie, ik mis, ik vraag me af, rol, actie en status",
+            "type": "lang"
+          },
+          {
+            "id": "teamactie",
+            "label": "Teamactie na de post-its van andere teams",
+            "type": "lang"
+          }
         ]
       },
       "controles": [
-        { "id": "feedback-gegeven", "soort": "A", "type": "feedbackGegeven", "veld": "regels" },
-        { "id": "zie-mis-vraag", "soort": "A", "type": "zieMisVraag", "veld": "regels" },
-        { "id": "actie-met-status", "soort": "A", "type": "actieMetStatus", "veld": "regels" },
-        { "id": "eigen-niet-kopie-wissel", "soort": "B", "type": "eigenNietGelijkAanWissel", "velden": ["regels"] }
+        {
+          "id": "feedback-gegeven",
+          "soort": "A",
+          "type": "feedbackGegeven",
+          "veld": "regels"
+        },
+        {
+          "id": "zie-mis-vraag",
+          "soort": "A",
+          "type": "zieMisVraag",
+          "veld": "regels"
+        },
+        {
+          "id": "actie-met-status",
+          "soort": "A",
+          "type": "actieMetStatus",
+          "veld": "regels"
+        },
+        {
+          "id": "eigen-niet-kopie-wissel",
+          "soort": "B",
+          "type": "eigenNietGelijkAanWissel",
+          "velden": [
+            "regels"
+          ]
+        }
       ],
       "bewijsonderdeel": "EV-09",
-      "luk": [5],
-      "bc": ["BC5"]
+      "luk": [
+        5
+      ],
+      "bc": [
+        "BC5"
+      ]
+    },
+    {
+      "id": "6.3",
+      "titel": "STARR-reflectie op je eigen handelen",
+      "vorm": "Alleen",
+      "richttijd": {
+        "tekst": "15 min",
+        "minuten": 15,
+        "bron": "concept-auteur"
+      },
+      "waarom": {
+        "tekst": "Feedback helpt pas als je ook ziet wat jij zelf deed. Met STARR beschrijf je een moment en je eigen aandeel, zodat je kunt zeggen wat je een volgende keer anders doet. Dat laat je ook zien in je portfolio.",
+        "bron": "concept-auteur"
+      },
+      "klaarAls": {
+        "tekst": "alle vijf de delen van je STARR zijn ingevuld, je een eigen gedragskeuze hebt gekozen en je volgende stap is opgeschreven.",
+        "bron": "concept-auteur"
+      },
+      "stof": {
+        "bron": "concept-auteur",
+        "opmerking": "De STARR-reflectie staat niet in het werkboek. De uitleg is door de bouwer geschreven uit LRD 6.1 (EV-10) en wacht op akkoord van de auteur.",
+        "alineas": [
+          "STARR staat voor situatie, taak, actie, resultaat en reflectie. Situatie: waar en wanneer speelde het? Taak: wat moest jij doen? Actie: wat deed jij, in de ik-vorm en zo concreet dat een ander het kan zien? Resultaat: wat gebeurde er daardoor? Reflectie: wat leer je over je eigen handelen en wat doe je een volgende keer anders?",
+          "Kies bij de reflectie een gedragskeuze uit de lijst die jouw actie het best beschrijft. Je kunt je STARR koppelen aan een regel uit je feedbacklog van taak 6.2; dat is niet verplicht. Sluit af met een volgende stap: één ding dat je de volgende keer anders doet."
+        ]
+      },
+      "oefening": {
+        "opdracht": {
+          "tekst": "Schrijf een STARR over een moment uit de oefenronde van de gallery walk: je gaf feedback op de onderzoeksvraag van webshop X uit taak 6.2.",
+          "bron": "concept-auteur"
+        },
+        "velden": [
+          {
+            "id": "situatie",
+            "label": "Situatie",
+            "type": "lang"
+          },
+          {
+            "id": "taak",
+            "label": "Taak",
+            "type": "lang"
+          },
+          {
+            "id": "actie",
+            "label": "Actie",
+            "type": "lang"
+          },
+          {
+            "id": "resultaat",
+            "label": "Resultaat",
+            "type": "lang"
+          },
+          {
+            "id": "reflectie",
+            "label": "Reflectie",
+            "type": "lang"
+          }
+        ]
+      },
+      "modelantwoord": {
+        "bron": "concept-auteur",
+        "opmerking": "Voorbeeld door de bouwer geschreven bij de oefenronde van taak 6.2.",
+        "velden": {
+          "situatie": "Tijdens de oefenronde van de gallery walk gaf ik feedback op de onderzoeksvraag van een collega over webshop X.",
+          "taak": "Ik moest met ik zie, ik mis en ik vraag me af feedback geven waar hij direct iets mee kon.",
+          "actie": "Ik schreef eerst op wat er stond, zonder oordeel. Daarna zei ik dat ik een tweede kapitaal miste en vroeg ik waarom hij een 8 als grens koos.",
+          "resultaat": "Mijn collega voegde de medewerkers als tweede kapitaal toe en schreef op hoe hij de daling bij terugkerende klanten wilde aantonen.",
+          "reflectie": "Ik merkte dat mijn feedback beter aankwam toen ik eerst beschreef en daarna vroeg. De volgende keer vraag ik eerst wat de ander zelf mist, voordat ik mijn eigen punt maak."
+        }
+      },
+      "toepassing": {
+        "opdracht": {
+          "tekst": "Schrijf een STARR over een moment uit dit leerblok, de e-learning of de gallery walk waarop jij feedback vroeg, gaf of kreeg. Kies het gedrag dat jouw actie het best beschrijft, koppel eventueel een regel uit je feedbacklog en schrijf je volgende stap.",
+          "bron": "concept-auteur"
+        },
+        "component": "starr",
+        "velden": [
+          {
+            "id": "situatie",
+            "label": "Situatie",
+            "type": "lang"
+          },
+          {
+            "id": "taak",
+            "label": "Taak",
+            "type": "lang"
+          },
+          {
+            "id": "actie",
+            "label": "Actie",
+            "type": "lang"
+          },
+          {
+            "id": "resultaat",
+            "label": "Resultaat",
+            "type": "lang"
+          },
+          {
+            "id": "reflectie",
+            "label": "Reflectie",
+            "type": "lang"
+          },
+          {
+            "id": "gedrag",
+            "label": "Welk gedrag van jou stond centraal?",
+            "type": "lijst",
+            "opties": [
+              "Ik vroeg zelf om feedback",
+              "Ik luisterde zonder mijn werk te verdedigen",
+              "Ik stelde een vraag om de feedback te begrijpen",
+              "Ik schreef er meteen een concrete actie bij",
+              "Ik gaf feedback als beschrijving en niet als oordeel",
+              "Ik legde de feedback naast me neer zonder er iets mee te doen"
+            ]
+          },
+          {
+            "id": "feedbackregel",
+            "label": "Optioneel: aan welke feedbackregel uit taak 6.2 hangt deze STARR?",
+            "type": "tekst"
+          },
+          {
+            "id": "volgende",
+            "label": "Mijn volgende stap",
+            "type": "tekst"
+          }
+        ]
+      },
+      "controles": [
+        {
+          "id": "starr-delen",
+          "soort": "A",
+          "type": "starrDelen",
+          "velden": [
+            "situatie",
+            "taak",
+            "actie",
+            "resultaat",
+            "reflectie"
+          ]
+        },
+        {
+          "id": "gedrag-gekozen",
+          "soort": "A",
+          "type": "keuzeUitLijst",
+          "veld": "gedrag",
+          "label": "het gedrag dat jouw actie het best beschrijft"
+        },
+        {
+          "id": "volgende-stap",
+          "soort": "A",
+          "type": "volgendeStapReflectie",
+          "veld": "volgende"
+        },
+        {
+          "id": "feedbackregel-bestaat",
+          "soort": "B",
+          "type": "feedbackKoppeling",
+          "veld": "feedbackregel",
+          "bron": "EV-09"
+        }
+      ],
+      "bewijsonderdeel": "EV-10",
+      "luk": [
+        5
+      ],
+      "bc": [
+        "BC5"
+      ]
     }
   ],
   "verdieping": {
-    "tekst": "Kies een actie uit je feedbacklog die nog niet op gedaan staat en schrijf op wat je vandaag doet om haar een stap verder te brengen.",
-    "bron": "concept-auteur",
-    "na": "6.2"
+    "tekst": "Schrijf terug op de feedback die je kreeg: wat neem je niet over, en waarom? Of: welk kapitaal neemt af als de waarde uit je user story voor iedereen geleverd wordt?",
+    "bron": "lrd",
+    "na": "6.3"
   },
   "bewijsonderdelen": [
+    {
+      "id": "EV-11",
+      "taak": "9.4",
+      "titel": "Verbanden tussen modellen",
+      "lukOnderdelen": [
+        "LUK 1 · Selecteert relevante theorieën en modellen en voegt ze samen",
+        "LUK 2 · Oog voor meervoudige waardecreatie"
+      ]
+    },
     {
       "id": "EV-09",
       "taak": "6.2",
@@ -84,6 +586,21 @@
         "LUK 5 · Haalt feedback op en reflecteert erop",
         "LUK 5 · Formuleert ontwikkelpunten en werkt er aantoonbaar aan"
       ]
+    },
+    {
+      "id": "EV-10",
+      "taak": "6.3",
+      "titel": "Reflectie (STARR)",
+      "lukOnderdelen": [
+        "LUK 5 · Haalt feedback op en reflecteert erop"
+      ]
     }
-  ]
+  ],
+  "afsluiting": {
+    "a3Zin": {
+      "vraag": "Wat heb ik hiermee aan mijn A3?",
+      "uitleg": "Schrijf in één zin wat je van deze e-learning meeneemt naar je eigen A3. Op het dossier komt die zin naast je waarom-zin uit leerblok 1.",
+      "bron": "concept-auteur"
+    }
+  }
 }

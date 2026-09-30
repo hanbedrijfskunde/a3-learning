@@ -1,4 +1,9 @@
 {
   "formaat": "1.0",
-  "bestanden": ["bronnen-1.json", "bronnen-2.json", "bronnen-3.json"]
+  "bestanden": [
+    "bronnen-1.json",
+    "bronnen-2.json",
+    "bronnen-3.json",
+    "bronnen-4.json"
+  ]
 }

@@ -1,45 +1,11 @@
-// Register van controles: zet de controle-declaraties uit data/leerblok-N.json om in functies (QA-1).
-// Een declaratie is { id, soort, type, veld?, velden?, label?, ...parameters }. `type` is de naam van een fabriek.
-// Nieuwe leerblokken (fase 6, 10, 11) voegen hun fabrieken toe in FABRIEKEN.
-import { veldGevuld, keuzeUitLijst, eindigtOp, minWoorden, minZinnen } from './core.js';
-import { FABRIEKEN as LB1, VOORBEELDEN as VOORBEELDEN_LB1 } from './lb1.js';
-import { FABRIEKEN as LB2 } from './lb2.js';
-import { FABRIEKEN as LB3 } from './lb3.js';
-import { FABRIEKEN as LB4 } from './lb4.js';
+// Alle controlefabrieken bij elkaar, voor tests en tools (content-check). Een pagina gebruikt dit niet: die laadt per leerblok
+// alleen wat ze nodig heeft (`laadControles` in register.js, PF-4, ADR B69).
+import { registreer } from './register.js';
+import * as LB1 from './lb1.js';
+import * as LB2 from './lb2.js';
+import * as LB3 from './lb3.js';
+import * as LB4 from './lb4.js';
 
-export const FABRIEKEN = Object.freeze({
-  veldGevuld, keuzeUitLijst, eindigtOp, minWoorden, minZinnen,
-  ...LB1,
-  ...LB2,
-  ...LB3,
-  ...LB4,
-});
+for (const m of [LB1, LB2, LB3, LB4]) registreer(m);
 
-/** Bouwers voor het live voorbeeld van een toepassing (LB-2), op naam. */
-export const VOORBEELDEN = Object.freeze({ ...VOORBEELDEN_LB1 });
-
-/**
- * Bouwt één controle uit een declaratie. Heeft de declaratie geen `toegestaan` maar wel een `veld` met `opties`
- * in `velden`, dan zijn die opties de toegestane keuzes: de lijst staat dan maar op één plek in het bestand.
- * De uitvoer wordt gecontroleerd op het contract: de soort in het resultaat moet de soort in de declaratie zijn.
- * @param {object} decl
- * @param {object[]} [velden] veldbeschrijvingen van de taak (toepassing.velden)
- * @returns {(invoer: object, context?: object) => {id: string, soort: string, resultaat: string, melding: string}}
- */
-export function bouwControle(decl, velden = []) {
-  const fabriek = FABRIEKEN[decl?.type];
-  if (!fabriek) throw new Error(`Controle ${decl?.id ?? '(zonder id)'}: onbekend type ${decl?.type}`);
-  const { type, ...params } = decl;
-  const veld = velden.find((v) => v.id === decl.veld);
-  if (params.toegestaan === undefined && Array.isArray(veld?.opties)) params.toegestaan = veld.opties;
-  const controle = fabriek(params);
-  return (invoer, context) => {
-    const r = controle(invoer, context);
-    if (r.id !== decl.id || r.soort !== decl.soort) {
-      throw new Error(`Controle ${decl.id} geeft ${r.soort} terwijl de data ${decl.soort} zegt.`);
-    }
-    return r;
-  };
-}
-
-export const bouwControles = (decls, velden = []) => decls.map((d) => bouwControle(d, velden));
+export * from './register.js';

@@ -175,6 +175,43 @@ body.dos-afdrukmodus main > :not(#dos-afdruk) { display:none; }
 .fb-lijst { list-style:none; padding:0; margin:0; }
 .fb-regel { border:2px solid var(--zwart); padding:.4rem .6rem; margin:.5rem 0; }
 
+/* ---- leerblok 4: verbanden-kaart (VB-1…VB-10), STARR (LB-15), voorlopig en opnieuw doen (ST-4, ST-5), A3-blok (LB-16) ---- */
+.vb-bord { margin:.75rem 0; }
+.vb-kolommen { position:relative; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:2.5rem; }
+.vb-kolom > * { position:relative; z-index:1; }
+.vb-kolom h5 { margin:.25rem 0 .5rem; font-size:.95rem; }
+.vb-lijst { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:.6rem; }
+.vb-kaartje { display:block; width:100%; text-align:left; font:inherit; font-size:.8125rem; line-height:1.3; cursor:pointer; color:var(--zwart); background:var(--wit); border:3px solid var(--zwart); padding:.35rem .5rem; }
+.vb-kaartje:hover { background:var(--grijs); }
+.vb-kaartje[aria-pressed="true"] { background:var(--zwart); color:var(--wit); }
+.vb-kaartje.vb-verbonden { box-shadow:inset 0 -6px 0 var(--groen); }
+.vb-kop, .vb-gekozen { display:block; font-weight:700; }
+.vb-gekozen { font-size:.75rem; }
+.vb-tekst { display:-webkit-box; -webkit-line-clamp:3; line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+.vb-lijnen { position:absolute; left:0; top:0; width:100%; height:100%; pointer-events:none; overflow:visible; z-index:0; }
+.vb-lijn { fill:none; stroke:var(--zwart); stroke-width:2.5; }
+.vb-lijn-koste { stroke:var(--accent); stroke-dasharray:7 5; stroke-width:3; }
+.vb-pijl { fill:var(--zwart); }
+.vb-form { border:3px solid var(--accent); padding:.5rem .75rem; margin:.75rem 0; }
+.vb-form-kop { font-weight:700; margin:.25rem 0; }
+.vb-tekst-lijst, .vb-open, .vb-model { padding-left:1.25rem; }
+.vb-tekst-lijst li, .vb-open li { margin:.35rem 0; }
+.vb-weg { font-size:.8125rem; padding:.1rem .6rem; box-shadow:2px 2px 0 var(--zwart); }
+.vb-markering { display:grid; grid-template-columns:repeat(auto-fit,minmax(13rem,1fr)); gap:.25rem .75rem; }
+.vb-markeer legend { font-size:.95rem; }
+.vb-chips { display:flex; flex-wrap:wrap; gap:.4rem; margin:.5rem 0; }
+.vb-chip { font:inherit; font-size:.8125rem; cursor:pointer; color:var(--zwart); background:var(--grijs); border:2px solid var(--zwart); border-radius:1rem; padding:.15rem .7rem; min-height:2.75rem; }
+.vb-chip:hover { background:var(--wit); }
+.starr .veld { margin:.5rem 0; }
+.voorlopig-opnieuw { border:3px dashed var(--zwart); padding:.5rem .75rem; margin:.75rem 0; }
+.versie-kolommen { display:grid; grid-template-columns:repeat(auto-fit,minmax(16rem,1fr)); gap:1rem; }
+.a3-blok { white-space:pre-wrap; background:var(--grijs); border:2px solid var(--zwart); padding:.5rem .75rem; max-height:16rem; overflow:auto; }
+.zwakste { border-left:8px solid var(--accent); }
+@media (max-width:40rem) {
+  .vb-kolommen { gap:1rem; }
+  .vb-kaartje { font-size:.75rem; padding:.3rem .35rem; }
+}
+
 /* ---- toegankelijkheid en kleine schermen (fase 8: TG-2, TG-5, PF-1) ---- */
 .skip { position:absolute; left:-9999px; top:0; background:var(--zwart); color:var(--wit); padding:.5rem 1rem; font-weight:700; z-index:10; }
 .skip:focus { left:0; }

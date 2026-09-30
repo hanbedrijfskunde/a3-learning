@@ -12,16 +12,10 @@
 //            hint?                                 bij afgeleidVan: eigen tekst onder de spiegeltabel }
 import { h, wis, bouwVelden } from './dom.js';
 import { bouwPrompt, verbodenWoorden } from './checks/lb2.js';
-import { splitsMetVerwijzingen } from './bronnen.js';
 import { rasterEl, zoekvragenEl } from './lb3-ui.js';
 import { stakeholderRijen, reeks } from './raster.js';
 
-/** Een tekst met in-tekstverwijzingen als links naar de bronregel op de bronnenpagina (BR-4). */
-export function metVerwijzingen(tekst, index) {
-  return splitsMetVerwijzingen(tekst, index).map((d) => (d.href
-    ? h('a', { class: 'bron-verwijzing', href: d.href }, d.tekst)
-    : d.tekst));
-}
+export { metVerwijzingen } from './verwijzing.js';
 
 // Een taak die zijn waarden deelt met een andere taak (3.1 → 3.2): één plek per taak op de pagina.
 const delen = new Map();

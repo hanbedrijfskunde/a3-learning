@@ -13,6 +13,7 @@ import {
   slechtsteStatus, bouwMijnStand, bouwDekking, bouwLeeruitkomsten, bouwAfdruk, bouwVerificatie, veldLabels,
 } from '../js/dossier.js';
 import { controleerLuk, controleerMap } from '../tools/content-check.mjs';
+import '../js/checks/index.js'; // registreert alle controlefabrieken (PF-4: pagina's laden ze per leerblok)
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const lees = (pad) => JSON.parse(readFileSync(resolve(root, pad), 'utf8'));

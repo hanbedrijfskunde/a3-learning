@@ -476,7 +476,7 @@ test('LB-11/BR-3: de TOM³-uitleg noemt de bron als (Westmoreland BV, z.d.); die
 test('10.9: content-check op de echte data is groen met bronnen-3 en meldt geen enkele bron in bronnen-3 als wees', () => {
   const r = controleerMap(resolve(root, 'data'));
   assert.deepEqual(r.fouten, []);
-  assert.equal(r.bronbestanden, 3);
+  assert.equal(r.bronbestanden, 4); // sinds fase 11 met bronnen-4
   assert.ok(!r.waarschuwingen.some((w) => /osterwalder|strategyzer|westmoreland/i.test(w) && /wachten nog/.test(w)));
 });
 

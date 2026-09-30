@@ -6,6 +6,8 @@
 //   { formaat: 'a3-bewijsdossier', schema: '1.0', elearning, geexporteerd, alias, teamnummer, vraagstuk, waaromZin, voorlopig,
 //     records: [ { record: <nieuwste versie>, eerdereVersies: <aantal> } ],
 //     terugblik: [ { leerblok, pauzeDagen, status: 'gedaan'|'overgeslagen' } ]   (TP-8; geen bewijs, geen record)
+//     a3Zin: „wat ik hiermee aan mijn A3 heb” (TK-11); a3Kopieerlog: [ISO-datum] (LB-17);
+//     verdiepingGedaan: [leerblok] (TK-14: alleen dát een verdieping is gedaan, nooit de tekst)   (alle drie optioneel, geen bewijs)
 //     controlesom: { algoritme: 'SHA-256', waarde: <64 hex>, over: <uitleg> } }
 // De controlesom loopt over alle velden behalve `controlesom` zelf, in canonieke vorm (gesorteerde sleutels).
 // Hij laat zien dat een bestand na export is gewijzigd; hij is geen handtekening: wie de som opnieuw uitrekent
@@ -14,16 +16,24 @@ import { PREFIX } from './store.js';
 import { SCHEMA_VERSIE, valideer } from './schema.js';
 import { STATUS_TEKST } from './status.js';
 import { leesProfiel, bewaarProfiel, PROFIEL_VELDEN } from './profiel.js';
-import { ROL_ANDER_TEAM } from './wissel.js';
+import { ROL_ANDER_TEAM } from './context.js';
 import { waardeTekst } from './weergave.js';
 import { leesTerugblikLog, importeerTerugblikLog } from './terugblik.js';
 import { expandeerVelden } from './blok.js';
+import { META_KOPIEER_LOG, leesKopieLog } from './a3log.js';
 
 export const FORMAAT = 'a3-bewijsdossier';
 export const ALGORITME = 'SHA-256';
 export const WIJZIGINGEN_PER_HERINNERING = 10;
 
 const isObject = (x) => x !== null && typeof x === 'object' && !Array.isArray(x);
+
+// ------------------------------------------------------------------ hulp voor de afsluiting van leerblok 4 (TK-11, TK-14)
+
+/** De zin „wat ik hiermee aan mijn A3 heb” uit het afsluitscherm van leerblok 4 (TK-11). */
+export const leesA3Zin = (store) => String(store.getMeta('afsluiting:4')?.a3Zin ?? '');
+/** Leerblokken waarvan de student „verdieping gedaan” aanvinkte (TK-14: alleen dat, niet de tekst en zonder invloed op de status). */
+export const leesVerdiepingGedaan = (store) => [1, 2, 3, 4].filter((n) => store.getMeta(`verdieping:${n}`)?.gedaan === true);
 
 // ------------------------------------------------------------------ controlesom (DS-6)
 
@@ -69,6 +79,9 @@ export async function maakDossier(store, { elearning, nu = () => new Date() }) {
       return { record, eerdereVersies: record.versie - 1 };
     }),
     terugblik: leesTerugblikLog(store),
+    a3Zin: leesA3Zin(store),
+    a3Kopieerlog: leesKopieLog(store),
+    verdiepingGedaan: leesVerdiepingGedaan(store),
   };
   dossier.controlesom = {
     algoritme: ALGORITME,
@@ -189,6 +202,17 @@ export function importeerDossier({ store, opslag }, dossier) {
   if (PROFIEL_VELDEN.every((v) => huidig[v] === '') && dossier.voorlopig === true) nieuw.voorlopig = true;
   bewaarProfiel(store, nieuw);
   uit.terugblik = importeerTerugblikLog(store, dossier.terugblik);
+  // Optionele velden van fase 11: alleen aanvullen, nooit iets van de huidige opslag overschrijven.
+  if (typeof dossier.a3Zin === 'string' && dossier.a3Zin.trim() !== '' && leesA3Zin(store) === '') {
+    store.setMeta('afsluiting:4', { ...(store.getMeta('afsluiting:4') ?? {}), a3Zin: dossier.a3Zin.trim() });
+    uit.profiel.push('a3Zin');
+  }
+  const log = leesKopieLog(store);
+  const extra = (Array.isArray(dossier.a3Kopieerlog) ? dossier.a3Kopieerlog : []).filter((d) => typeof d === 'string' && !Number.isNaN(Date.parse(d)) && !log.includes(d));
+  if (extra.length) store.setMeta(META_KOPIEER_LOG, [...log, ...extra].sort());
+  for (const n of Array.isArray(dossier.verdiepingGedaan) ? dossier.verdiepingGedaan : []) {
+    if ([1, 2, 3, 4].includes(n) && store.getMeta(`verdieping:${n}`)?.gedaan !== true) store.setMeta(`verdieping:${n}`, { tekst: '', ...(store.getMeta(`verdieping:${n}`) ?? {}), gedaan: true });
+  }
   sluitHerinneringAf(store);
   return uit;
 }
@@ -369,4 +393,43 @@ export function bouwFeedbackOverzicht(record) {
     teamactie: actie,
     leeg: regels.length === 0 && !actie,
   };
+}
+
+// ------------------------------------------------------------------ zwakste onderdeel, twee zinnen, oude en nieuwe versie (TK-11, TK-12, ST-5)
+
+const RANG = { 'nog niet': 0, bijna: 1, compleet: 2 };
+
+/**
+ * Het zwakste bewijsonderdeel van „Mijn stand” (TK-12): het onderdeel met de laagste status; bij gelijke status eerst een
+ * onderdeel zonder record, dan de volgorde van luk.json. Is alles Compleet, dan is er geen zwakste onderdeel (`null`).
+ * @param {{id: string, titel: string, status: string, statusTekst: string, heeftRecord: boolean}[]} mijnStand resultaat van bouwMijnStand
+ */
+export function zwaksteOnderdeel(mijnStand) {
+  const kandidaten = mijnStand.map((c, i) => ({ c, i })).filter(({ c }) => c.status !== 'compleet');
+  if (kandidaten.length === 0) return null;
+  const { c } = kandidaten.sort((a, b) => RANG[a.c.status] - RANG[b.c.status] || Number(a.c.heeftRecord) - Number(b.c.heeftRecord) || a.i - b.i)[0];
+  return { id: c.id, titel: c.titel, status: c.status, statusTekst: c.statusTekst, heeftRecord: c.heeftRecord };
+}
+
+/**
+ * De twee zinnen naast elkaar (TK-11): de waarom-zin uit leerblok 1 en „wat ik hiermee aan mijn A3 heb” uit leerblok 4.
+ * Een zin die er nog niet is, is een lege tekst.
+ */
+export function bouwTweeZinnen(store) {
+  return { waarom: leesProfiel(store).waaromZin, nut: leesA3Zin(store) };
+}
+
+/**
+ * De onderdelen die opnieuw zijn gedaan, met de voorlopige versie naast de nieuwe (ST-5). Leest de markering die
+ * `opnieuwDoen` in de sessie zet en de versies uit de opslag.
+ * @returns {{id: string, oud: object, nieuw: object}[]}
+ */
+export function bouwVersieVergelijking(store) {
+  const markeringen = store.getMeta('opnieuw') ?? {};
+  return Object.keys(markeringen).sort().map((id) => {
+    const versies = store.versions(id);
+    const oud = versies.find((r) => r.versie === markeringen[id].oudeVersie);
+    const nieuw = versies[versies.length - 1];
+    return oud && nieuw && nieuw.versie > oud.versie ? { id, oud, nieuw } : null;
+  }).filter(Boolean);
 }

@@ -7,6 +7,7 @@ import { maakStore, geheugenOpslag } from '../js/store.js';
 import { maakSessie, COMPLEET_MELDING, leesRecords, volgendeStapOk } from '../js/sessie.js';
 import { bewaarProfiel } from '../js/profiel.js';
 import { valideer } from '../js/schema.js';
+import '../js/checks/index.js'; // registreert alle controlefabrieken (PF-4: pagina's laden ze per leerblok)
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const blok = JSON.parse(readFileSync(resolve(root, 'data/leerblok-1.json'), 'utf8'));

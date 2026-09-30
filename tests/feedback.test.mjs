@@ -9,6 +9,7 @@ import { maakSessie } from '../js/sessie.js';
 import { maakWissel, ROL_ANDER_TEAM } from '../js/wissel.js';
 import { maakDossier, bouwFeedbackOverzicht, bouwAfdruk, veldLabels } from '../js/dossier.js';
 import { waardeTekst } from '../js/weergave.js';
+import '../js/checks/index.js'; // registreert alle controlefabrieken (PF-4: pagina's laden ze per leerblok)
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const lees = (p) => JSON.parse(readFileSync(resolve(root, p), 'utf8'));

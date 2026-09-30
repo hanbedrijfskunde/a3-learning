@@ -25,6 +25,7 @@ import { bouwControle } from '../js/checks/index.js';
 import { apaJaar } from '../js/checks/lb2.js';
 import { CITATIE_RE, eersteVolgordefout } from '../js/bronnen.js';
 import { normaliseerBlok } from '../js/blok.js';
+import { KAPITALEN, VPC_ONDERDELEN, SPANNING, bouwOefenKaarten, maakVerband } from '../js/verbanden.js';
 
 const gevuld = (t) => typeof t === 'string' && t.trim() !== '';
 const lijstGevuld = (l) => Array.isArray(l) && l.length > 0;
@@ -61,6 +62,8 @@ export function controleerLeerblok(inhoud, bestand) {
 }
 
 export const BRONNEN = Object.freeze(['werkboek', 'concept-auteur', 'draaiboek', 'lrd']);
+/** Toepassingen met een eigen scherm (js/leerblok.js): de Wissel, de verbanden-kaart en het STARR-sjabloon. */
+export const COMPONENTEN = Object.freeze(['feedbacklog', 'verbanden', 'starr']);
 export const VELDTYPEN = Object.freeze(['tekst', 'lang', 'keuze', 'lijst', 'meer']);
 const MET_OPTIES = ['keuze', 'lijst', 'meer'];
 
@@ -147,6 +150,10 @@ export function controleerFormaat(inhoud, bestand) {
       }
     }
 
+    if (taak.toepassing?.component !== undefined && !COMPONENTEN.includes(taak.toepassing.component)) fout(wie, `toepassing.component ${JSON.stringify(taak.toepassing.component)} is onbekend; kies uit ${COMPONENTEN.join(', ')}`);
+    if (taak.oefening?.component !== undefined && taak.oefening.component !== 'verbanden') fout(wie, `oefening.component ${JSON.stringify(taak.oefening.component)} is onbekend; kies verbanden`);
+    if (taak.oefening?.component === 'verbanden') controleerVerbandenOefening(taak, wie, fout);
+
     if (Array.isArray(taak.controles)) {
       const controleIds = new Set();
       for (const c of taak.controles) {
@@ -172,6 +179,12 @@ export function controleerFormaat(inhoud, bestand) {
     if (Array.isArray(taak.bc) && !taak.bc.every((b) => /^BC\d+$/.test(b))) fout(wie, 'bc heeft de vorm BC1');
   }
 
+  // TK-11: de zin „wat ik hiermee aan mijn A3 heb” aan het eind van leerblok 4 (afsluiting.a3Zin).
+  if (inhoud?.afsluiting !== undefined) {
+    if (!gevuld(inhoud.afsluiting?.a3Zin?.vraag)) fout('', 'afsluiting.a3Zin mist een vraag (TK-11)');
+    else bronTekst('', 'afsluiting.a3Zin', inhoud.afsluiting.a3Zin, { tekst: false });
+  }
+
   // TK-13: één optionele verdiepingstaak per leerblok, zichtbaar na „klaar" bij een taak van dit leerblok.
   if (!isObject(inhoud?.verdieping) || !gevuld(inhoud.verdieping.tekst)) fout('', 'mist een verdieping (TK-13)');
   else {
@@ -187,6 +200,30 @@ export function controleerFormaat(inhoud, bestand) {
     }
   }
   return { fouten, waarschuwingen };
+}
+
+/**
+ * De oefencasus van taak 9.4 (VB-2): drie open vragen, de kaarten van de casus, `modelNa: "lijn"` (het modelvoorbeeld komt
+ * pas na een eigen poging) en een modelvoorbeeld waarvan elk verband op de kaarten van de casus past.
+ */
+function controleerVerbandenOefening(taak, wie, fout) {
+  const o = taak.oefening;
+  if (o.modelNa !== 'lijn') fout(wie, 'de oefening met verbanden heeft modelNa "lijn" nodig: het modelvoorbeeld komt pas na een getrokken lijn (VB-2)');
+  if (!Array.isArray(o.velden) || o.velden.length !== 3) fout(wie, `de oefening met verbanden heeft precies 3 open vragen (VB-2), niet ${Array.isArray(o.velden) ? o.velden.length : 0}`);
+  const k = o.kaarten;
+  if (!isObject(k) || !Array.isArray(k.us) || k.us.length !== 3 || !k.us.every(gevuld)) { fout(wie, 'oefening.kaarten.us moet drie teksten hebben (gebruiker, pain of gain, waarde)'); return; }
+  if (!Array.isArray(k.vpc) || k.vpc.length < 1 || k.vpc.length > 5 || !k.vpc.every((c) => gevuld(c?.tekst) && VPC_ONDERDELEN.includes(c?.onderdeel))) { fout(wie, `oefening.kaarten.vpc moet 1 tot en met 5 kaarten hebben met een onderdeel uit ${VPC_ONDERDELEN.join(', ')}`); return; }
+  if (!Array.isArray(k.gekozen) || !k.gekozen.every((g) => KAPITALEN.includes(g))) fout(wie, 'oefening.kaarten.gekozen bevat een kapitaal dat niet bestaat');
+  const kaarten = bouwOefenKaarten(k).kaarten;
+  const model = taak.modelantwoord?.verbanden;
+  if (!Array.isArray(model) || model.length === 0) { fout(wie, 'het modelantwoord van de verbanden-oefening mist verbanden'); return; }
+  const gemaakt = [];
+  for (const v of model) {
+    const r = maakVerband(v, kaarten, gemaakt);
+    if (!r.ok) fout(wie, `modelverband ${v?.van} → ${v?.naar} klopt niet: ${r.fout}`);
+    else gemaakt.push(r.verband);
+    if (v?.type === SPANNING && !(k.stakeholders ?? []).includes(v.stakeholder)) fout(wie, `een modelverband ${SPANNING} noemt een stakeholder die niet in oefening.kaarten.stakeholders staat`);
+  }
 }
 
 /** Controleert data/leerblokken.json: de vier leerblokken van de startpagina (LB-1) en de startinvoer (ST-1, ST-2). */

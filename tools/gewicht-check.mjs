@@ -1,13 +1,24 @@
-// Gewichtscontrole (PF-4): per pagina de bytes van de eerste lading zonder video: de pagina zelf, de stylesheets,
-// alle scripts (ook de modules die ze importeren) en de JSON-bestanden die die scripts ophalen. Ongecomprimeerd, dus
-// strenger dan wat GitHub Pages verstuurt. Grens: 300 kB (300.000 bytes). Tweede controle: 0 afbeeldingen, scripts,
-// stylesheets of lettertypen van een ander domein.
+// Gewichtscontrole (PF-4): per pagina de grootte van de eerste lading zonder video: de pagina zelf, de stylesheets, alle
+// scripts (ook de modules die ze importeren) en de JSON-bestanden die die scripts ophalen.
+// Twee grenzen (ADR B69):
+//   GRENS       300 kB gecomprimeerd (gzip, elk bestand apart, zoals GitHub Pages ze levert): wat de student echt binnenhaalt
+//   GRENS_BRON  400 kB ongecomprimeerd: begrenst het parseerwerk en voorkomt dat de gzip-marge wordt opgegeten door herhaling
+// Tweede controle: 0 afbeeldingen, scripts, stylesheets of lettertypen van een ander domein.
+//
+// Dynamische imports tellen alleen mee voor de pagina's die ze echt laden (ADR B69):
+//   // gewicht-alleen: <voorwaarde>   vlak boven de import: de import telt alleen mee als de eigen leerblokdata aan de voorwaarde
+//                                     voldoet (wissel, weergave of lb4ui; dezelfde voorwaarden als in js/leerblok.js)
+//   import(`./lb${n}.js`)             een sjabloon in het pad telt de modules van het eigen leerblok en van het leerblok van de
+//                                     Wissel (modulesVoor in js/checks/register.js); een pagina zonder leerblok telt ze allemaal
 // Gebruik: node tools/gewicht-check.mjs
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
+import { gzipSync } from 'node:zlib';
+import { modulesVoor } from '../js/checks/register.js';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-export const GRENS = 300_000;
+export const GRENS = 300_000; // gzip
+export const GRENS_BRON = 400_000; // ongecomprimeerd
 
 const lees = (p) => readFileSync(p, 'utf8');
 const externe = (u) => /^(https?:)?\/\//i.test(u);
@@ -25,9 +36,15 @@ export function paginaBestanden(root, paginaNaam) {
   const eigenBlok = () => (nummer && existsSync(resolve(datamap, `leerblok-${nummer}.json`)) ? JSON.parse(lees(resolve(datamap, `leerblok-${nummer}.json`))) : {});
   // Voorwaarden voor `// gewicht-alleen:`; dezelfde als waarmee de pagina de module laadt (js/leerblok.js).
   const voldoet = (naam) => {
-    if (naam === 'wissel') { const b = eigenBlok(); return Boolean(b.wissel) || (b.taken ?? []).some((t) => t.toepassing?.component === 'feedbacklog'); }
+    const b = eigenBlok();
+    if (naam === 'wissel') return Boolean(b.wissel) || (b.taken ?? []).some((t) => t.toepassing?.component === 'feedbacklog');
+    if (naam === 'weergave') return (b.taken ?? []).some((t) => t.toepassing?.weergave);
+    if (naam === 'lb4ui') return (b.taken ?? []).some((t) => ['verbanden', 'starr'].includes(t.toepassing?.component));
     throw new Error(`gewicht-check: onbekende voorwaarde ${naam}`);
   };
+  // Controlemodules die de pagina laadt: die van het eigen leerblok en van het leerblok van de Wissel (js/leerblok.js,
+  // MODULES_PER_LEERBLOK in js/checks/register.js).
+  const controleBlokken = () => (nummer ? modulesVoor([Number(nummer), eigenBlok().wissel?.leerblok]) : [1, 2, 3, 4]);
   const dataBestanden = (naam) => (existsSync(datamap) ? readdirSync(datamap) : []).filter((n) => n.endsWith('.json') && naam.test(n));
   while (wachtrij.length) {
     const f = wachtrij.pop();
@@ -35,6 +52,9 @@ export function paginaBestanden(root, paginaNaam) {
     set.add(f);
     if (!f.endsWith('.js')) continue;
     const bron = lees(f);
+    for (const m of bron.matchAll(/\bimport\s*\(\s*`(\.[^`]*\$\{[^}]+\}[^`]*\.js)`/g)) {
+      for (const n of controleBlokken()) wachtrij.push(resolve(dirname(f), m[1].replace(/\$\{[^}]+\}/g, String(n))));
+    }
     for (const m of bron.matchAll(/(?:\bfrom\s*|\bimport\s*\(?\s*)['"](\.[^'"]+\.js)['"]/g)) {
       // Een dynamische import met vlak erboven `// gewicht-alleen: <voorwaarde>` telt alleen mee voor pagina's die aan de
       // voorwaarde voldoen (PF-4); alle andere imports, ook dynamische, tellen altijd mee.
@@ -65,7 +85,10 @@ export function paginaBestanden(root, paginaNaam) {
 export function gewichten(root) {
   return readdirSync(root).filter((n) => n.endsWith('.html')).sort().map((pagina) => {
     const bestanden = paginaBestanden(root, pagina);
-    return { pagina, bytes: bestanden.reduce((t, f) => t + statSync(f).size, 0), bestanden: bestanden.length };
+    return {
+      pagina, bytes: bestanden.reduce((t, f) => t + statSync(f).size, 0), bestanden: bestanden.length,
+      gzip: bestanden.reduce((t, f) => t + gzipSync(readFileSync(f)).length, 0),
+    };
   });
 }
 
@@ -89,9 +112,9 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
   let fout = false;
   for (const g of gewichten(root)) {
-    const te = g.bytes > GRENS;
+    const te = g.gzip > GRENS || g.bytes > GRENS_BRON;
     fout ||= te;
-    console.log(`${te ? 'FOUT' : 'ok  '} ${g.pagina.padEnd(18)} ${(g.bytes / 1000).toFixed(1)} kB in ${g.bestanden} bestanden`);
+    console.log(`${te ? 'FOUT' : 'ok  '} ${g.pagina.padEnd(18)} gzip ${(g.gzip / 1000).toFixed(1)} kB (grens ${GRENS / 1000}), bron ${(g.bytes / 1000).toFixed(1)} kB (grens ${GRENS_BRON / 1000}), ${g.bestanden} bestanden`);
   }
   for (const e of externeBronnen(root)) { fout = true; console.log(`FOUT extern: ${e}`); }
   process.exit(fout ? 1 : 0);

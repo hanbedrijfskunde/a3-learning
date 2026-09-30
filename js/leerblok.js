@@ -5,10 +5,10 @@ import { kiesOpslag, maakStore } from './store.js';
 import { maakSessie, volgendeStapOk } from './sessie.js';
 import { bouwTaakModel, isIngevuld } from './weergave.js';
 import { leesProfiel } from './profiel.js';
-import { VOORBEELDEN } from './checks/index.js';
-import { maakWissel, wisselContext, EV09_TAAK } from './wissel.js';
+import { VOORBEELDEN, laadControles } from './checks/register.js';
+import { wisselContext } from './context.js';
 import { geblokkeerdMelding, toonBewaarHerinnering } from './dossier-dom.js'; // fase 3: DS-2, DS-12
-import { bouwWeergave, metVerwijzingen } from './lb2-ui.js';
+import { metVerwijzingen } from './verwijzing.js';
 import { laadBronnen, maakIndex } from './bronnen.js';
 import { vorigeKeerSectie } from './terugblik-pagina.js'; // fase 7: TP-11
 import { normaliseerBlok } from './blok.js';
@@ -18,6 +18,7 @@ const laadBlok = async (pad) => normaliseerBlok(await laad(pad)); // reeksen vel
 /** citatie → bron voor de in-tekstverwijzingen (BR-4); lukt het laden niet, dan blijven het gewone tekst. */
 const laadBronIndex = () => laadBronnen((u) => fetch(new URL(`../${u}`, import.meta.url)))
   .then((bestanden) => maakIndex(bestanden.flatMap((b) => b.bronnen ?? []))).catch(() => new Map());
+const LB4_COMPONENTEN = ['verbanden', 'starr']; // taken met een eigen scherm in lb4-ui.js
 const BEWAAR_NA_MS = 500; // bewaren na de laatste toetsaanslag; de controles zelf lopen direct
 
 /** Het modelantwoord als lijst van veld en antwoord. */
@@ -37,10 +38,19 @@ async function start() {
     laadBlok(`../data/leerblok-${nummer}.json`), laad('../data/config.json'), laad('../data/leerblokken.json'), laadBronIndex(),
   ]);
   const met = (tekst) => metVerwijzingen(tekst, bronIndex);
-  // De Wissel-schermen (wissel-paneel.js) zijn alleen nodig bij leerblok 1 en 4; de andere pagina's laden ze niet (PF-4).
+  // PF-4 (ADR B69): elke pagina laadt alleen wat haar leerblok nodig heeft. De controlefabrieken van dit leerblok en van het
+  // leerblok van de Wissel, de Wissel zelf (alleen leerblok 1 en 4), de weergavegroepen (leerblok 2 en 3) en de verbanden-kaart
+  // en het STARR-sjabloon (leerblok 4) komen dynamisch binnen, elk met de voorwaarde die tools/gewicht-check.mjs leest.
   const heeftWissel = Boolean(blok.wissel) || blok.taken.some((t) => t.toepassing.component === 'feedbacklog');
+  const heeftWeergave = blok.taken.some((t) => t.toepassing.weergave);
+  const heeftLb4Ui = blok.taken.some((t) => LB4_COMPONENTEN.includes(t.toepassing.component));
+  await laadControles([blok.leerblok, blok.wissel?.leerblok]);
   // gewicht-alleen: wissel
-  const { bouwWisselPaneel } = heeftWissel ? await import('./wissel-paneel.js') : {};
+  const [{ maakWissel, EV09_TAAK }, { bouwWisselPaneel }] = heeftWissel ? await Promise.all([import('./wissel.js'), import('./wissel-paneel.js')]) : [{}, {}];
+  // gewicht-alleen: weergave
+  const { bouwWeergave } = heeftWeergave ? await import('./lb2-ui.js') : {};
+  // gewicht-alleen: lb4ui
+  const lb4Ui = heeftLb4Ui ? await import('./lb4-ui.js') : {};
   const { opslag, geblokkeerd } = kiesOpslag();
   const store = maakStore(opslag);
   const context = () => wisselContext(store); // ontvangen wisselblokken voor de kopiecontrole (WS-7)
@@ -104,13 +114,15 @@ async function start() {
       h('p', { class: 'klaar' }, h('strong', {}, 'Klaar als'), ' ', met(s1.klaarAls.tekst)));
 
     // stap 2: stof en de oefenversie (TK-3, TK-5, TK-6, TK-7)
-    const oefVelden = bouwVelden(s2.oefening.velden, `oef-${id}`, sessie.oefening(id).invoer, () => {
-      toonModel(sessie.zetOefening(id, oefVelden.lees()));
-    });
+    const bijOefening = () => toonModel(sessie.zetOefening(id, oefVelden.lees()));
+    // Een oefening met component `verbanden` (taak 9.4) heeft een eigen kaart en toont het modelvoorbeeld pas na een getrokken lijn (VB-2).
+    const oefVelden = taak.oefening.component === 'verbanden'
+      ? lb4Ui.bouwVerbandenOefening({ taak, velden: s2.oefening.velden, waarden: sessie.oefening(id).invoer, bijWijziging: bijOefening })
+      : bouwVelden(s2.oefening.velden, `oef-${id}`, sessie.oefening(id).invoer, bijOefening);
     const modelGebied = h('div', { class: 'model', 'aria-live': 'polite' });
     const toonModel = (m) => {
       wis(modelGebied);
-      if (m.modelZichtbaar) modelGebied.append(modelantwoordEl(m.modelantwoord, m.velden));
+      if (m.modelZichtbaar) modelGebied.append(modelantwoordEl(m.modelantwoord, m.velden), oefVelden.modelExtra?.(m.modelantwoord));
     };
     const veldGebied = h('div', { class: 'oef-velden' },
       oefVelden.element,
@@ -174,6 +186,7 @@ async function start() {
       }
       if (voorbeeld) voorbeeld.textContent = VOORBEELDEN[s3.livevoorbeeld](inhoud);
       klaarKnop.hidden = !b.klaarMogelijk || sessie.isKlaar(id);
+      opnieuwGebied.hidden = !sessie.kanOpnieuw(id);
       stap4Wacht.hidden = b.klaarMogelijk;
       stap4Inhoud.hidden = !b.klaarMogelijk;
       const zin = stapVeld.value.trim();
@@ -190,14 +203,31 @@ async function start() {
       ? bouwWeergave(s3.velden, `toe-${id}`, sessie.leesToepassing(id), bijToepassing, taak.toepassing.weergave,
         { taakId: id, store, leesToepassing: (t) => sessie.leesToepassing(t) })
       : bouwVelden(s3.velden, `toe-${id}`, sessie.leesToepassing(id), bijToepassing));
-    const toe = taak.toepassing.component === 'feedbacklog' ? feedbacklog() : gewoneVelden();
+    // Leerblok 4: de verbanden-kaart (9.4) en het STARR-sjabloon (6.3) hebben een eigen scherm in lb4-ui.js.
+    const lb4Scherm = (bouw) => bouw({ velden: s3.velden, waarden: sessie.leesToepassing(id), bijWijziging: bijToepassing, store, voorvoegsel: `toe-${id}` });
+    const toe = { feedbacklog, verbanden: () => lb4Scherm(lb4Ui.bouwVerbandenToepassing), starr: () => lb4Scherm(lb4Ui.bouwStarr) }[taak.toepassing.component]?.() ?? gewoneVelden();
     stapVeld.addEventListener('input', bijToepassing);
     stapVeld.value = sessie.leesToepassing(id).volgendeStap ?? '';
 
+    // Voorlopig vraagstuk (ST-3, ST-4): een voorlopig bewijsonderdeel kan met één klik opnieuw, de oude versie blijft in het dossier (ST-5).
+    const opnieuwMelding = h('p', { class: 'klein', role: 'status' });
+    const opnieuwGebied = h('div', { class: 'voorlopig-opnieuw', id: `opnieuw-${id}`, hidden: true },
+      h('p', {}, 'Dit bewijs heeft het label voorlopig, omdat je vraagstuk nog niet scherp was. Is je vraagstuk nu afgebakend? Werk het dan eerst bij op de startpagina en doe dit onderdeel opnieuw. Het veld wordt leeg; je voorlopige versie blijft bewaard en staat naast de nieuwe in je dossier.'),
+      h('button', { type: 'button', class: 'knop', 'data-actie': 'opnieuw-doen', onclick: () => {
+        const r = sessie.opnieuwDoen(id);
+        if (!r.ok) { opnieuwMelding.textContent = r.fout; return; }
+        toe.zet({});
+        stapVeld.value = '';
+        opnieuwMelding.textContent = leesProfiel(store).voorlopig
+          ? 'Het veld is leeg. Let op: je vraagstuk staat nog op voorlopig, dus ook de nieuwe versie krijgt dat label.'
+          : 'Het veld is leeg. De voorlopige versie blijft bewaard.';
+        toonResultaat(); tekenKlaar(); tekenAfsluiten();
+      } }, 'Opnieuw doen'),
+      opnieuwMelding);
     const stap3 = stap(s3,
       s3.opdracht ? h('p', {}, met(s3.opdracht.tekst)) : null,
       voorbeeld ? h('div', {}, h('p', { class: 'klein' }, 'Zo klinkt je vraag nu:'), voorbeeld) : null,
-      toe.element, uitkomst);
+      toe.element, uitkomst, opnieuwGebied);
 
     // stap 4: klaar en volgende stap (TK-8, TK-9, TK-10)
     const stapHint = h('p', { class: 'klein', role: 'status' });
@@ -261,9 +291,17 @@ async function start() {
         `${o.id} · ${o.titel}: `, statusChip(o.status, o.statusTekst), o.voorlopig ? ' (voorlopig)' : ''))),
       h('p', { class: 'afgerond-tekst', role: 'status' }, m.afgerondTekst));
   }
+  // TK-11: „wat ik hiermee aan mijn A3 heb”, aan het eind van leerblok 4; de dossierpagina toont de zin naast de waarom-zin.
+  const a3Vraag = blok.afsluiting?.a3Zin;
+  const a3Veld = h('textarea', { id: 'afsluit-a3-zin', rows: 2 });
+  a3Veld.value = sessie.leesA3Zin();
+  let atimer;
+  a3Veld.addEventListener('input', () => { clearTimeout(atimer); atimer = setTimeout(() => sessie.bewaarA3Zin(a3Veld.value), BEWAAR_NA_MS); });
+  if (a3Vraag) window.addEventListener('pagehide', () => sessie.bewaarA3Zin(a3Veld.value));
   const afsluiten = h('section', { class: 'kaart', id: 'afsluiten', 'aria-labelledby': 'afsluiten-kop' },
     h('h2', { id: 'afsluiten-kop' }, `Afsluiten van leerblok ${blok.leerblok}`),
     afsluitStatus,
+    a3Vraag ? h('div', { class: 'veld' }, h('label', { for: 'afsluit-a3-zin' }, a3Vraag.vraag), h('p', { class: 'klein' }, a3Vraag.uitleg), a3Veld) : null,
     h('div', { class: 'veld' }, h('label', { for: 'afsluit-volgende-stap' }, m0Vraag()), volgendeStapVeld),
     h('p', { class: 'bewaarmelding' }, sessie.afsluitModel(volgende).bewaarmelding, ' ', h('a', { href: 'dossier.html' }, 'Naar het dossier')),
     h('p', {}, h('a', { class: 'knop knop-link', id: 'door', href: volgende.href }, `Door naar: ${volgende.titel}`)));

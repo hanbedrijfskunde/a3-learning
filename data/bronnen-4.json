@@ -1,0 +1,14 @@
+{
+  "formaat": "1.0",
+  "leerblok": 4,
+  "bronnen": [
+    {
+      "id": "iirc-2021",
+      "citatie": "International Integrated Reporting Council, 2021",
+      "type": "web",
+      "apa": "International Integrated Reporting Council. (2021). *International <IR> framework*. IFRS Foundation.",
+      "link": "https://www.ifrs.org/issued-standards/integrated-reporting/"
+    }
+  ],
+  "wachtOpCitatie": []
+}

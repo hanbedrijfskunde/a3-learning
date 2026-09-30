@@ -3,6 +3,7 @@
 // bouwt er alleen elementen van.
 import { STATUS_TEKST } from './status.js';
 import { isAfgerond } from './afgerond.js';
+import { verbandRegel } from './verbandregel.js';
 
 /** De vijf stappen van elke taak, in vaste volgorde (TK-18). */
 export const STAPPEN = Object.freeze(['Waarom', 'Stof en oefenen', 'Toepassen', 'Klaar en volgende stap', 'Verdieping (optioneel)']);
@@ -18,6 +19,9 @@ const heeftWaarde = (w) => (Array.isArray(w) ? w.length > 0 : typeof w === 'stri
 export function waardeTekst(w) {
   if (w === undefined || w === null) return '';
   if (Array.isArray(w)) return w.map(waardeTekst).filter((t) => t !== '').join('; ');
+  if (typeof w === 'object' && w.van && w.naar && w.type) return verbandRegel(w); // een verband uit EV-11
+  if (typeof w === 'object' && typeof w.id === 'string' && w.id.includes(':') && w.tekst) return w.tekst; // een kaart als chip in de synthese
+  if (typeof w === 'object' && w.kapitaal && w.waarde) return `${w.kapitaal}: ${w.waarde}`; // een markering uit EV-11
   if (typeof w === 'object') return Object.entries(w).map(([k, v]) => [k, waardeTekst(v)]).filter(([, t]) => t !== '').map(([k, t]) => `${k}: ${t}`).join(', ');
   return String(w);
 }
@@ -32,11 +36,14 @@ export const oefenVelden = (taak) => taak.oefening?.velden ?? taak.toepassing.ve
 export const verdiepingBijTaak = (blok, taakId) => (blok.verdieping?.na === taakId ? blok.verdieping : null);
 
 /**
- * Het modelantwoord is pas zichtbaar als de student in minstens één veld iets heeft ingevuld (TK-6).
+ * Het modelantwoord is pas zichtbaar als de student in minstens één veld iets heeft ingevuld (TK-6); bij `modelNa: 'lijn'` (taak 9.4)
+ * pas na minstens één getrokken lijn in de verbanden-kaart (VB-2).
  * Wie de oefening overslaat, krijgt het modelantwoord niet: die stap is dan niet gedaan.
  */
-export function modelZichtbaar(velden, invoer = {}, overgeslagen = false) {
+export function modelZichtbaar(velden, invoer = {}, overgeslagen = false, modelNa = 'veld') {
   if (overgeslagen) return false;
+  // Taak 9.4 (VB-2): het modelvoorbeeld komt pas na minstens één getrokken lijn, niet al na een ingevuld antwoord.
+  if (modelNa === 'lijn') return Array.isArray(invoer.verbanden) && invoer.verbanden.length > 0;
   return velden.some((v) => heeftWaarde(invoer[v.id]));
 }
 
@@ -45,7 +52,7 @@ export function oefenModel(taak, staat = {}) {
   const velden = oefenVelden(taak);
   const invoer = staat.invoer ?? {};
   const overgeslagen = staat.overgeslagen === true;
-  const zichtbaar = modelZichtbaar(velden, invoer, overgeslagen);
+  const zichtbaar = modelZichtbaar(velden, invoer, overgeslagen, taak.oefening?.modelNa);
   return {
     opdracht: taak.oefening?.opdracht ?? null,
     velden,
