@@ -88,3 +88,25 @@ De controlesom loopt over alle velden behalve `controlesom`, in canonieke vorm (
 **Pauze en bandbreedte.** `pauzeInDagen(records, { leerblok, nu })` = nu min de laatste `bijgewerkt` van de records van het vorige leerblok (anders van een eerder leerblok; zonder werk `null`). `bandbreedte(dagen)`: < 2 uur `kort`, < 2 dagen `middel`, < 14 dagen `volledig`, daarna `lang`; een grens hoort bij de hogere band, `null` geeft `volledig` (ADR B65). **Opslag:** invoer in meta `terugblik:<leerblok>`, log in meta `terugblik:log` (`[{ leerblok, pauzeDagen, status: 'gedaan'|'overgeslagen' }]`); nooit een bewijsrecord (TP-5). Het log staat als `terugblik` in de export van het dossier (schema blijft 1.0; optioneel veld) en wordt bij import aangevuld waar de opslag niets heeft. `dossierControle` geeft `{ aanwezig, ontbrekend, importAanbod }`. Het aanbevolen week en dag per leerblok staat in `data/leerblokken.json` (`aanbevolen: { week, dag }`), alleen als tekst.
 
 `dossier.js` exporteert daarnaast `bouwFeedbackOverzicht(record)` (EV-09 gesplitst in individueel, post-its van andere teams en teamactie) voor `dossier.html`; `weergave.js` exporteert `waardeTekst`.
+
+## Docentmodus, deel 1 (fase 9)
+
+`docent.html?modus=docent` (of de knop „Ik ben docent” op `docent.html`); geen account, niets van studenten bewaard (PR-3) en geen verbindingen (PR-4: CSP `connect-src 'self'`, geen WebSocket of BroadcastChannel; `tests/docent.test.mjs` controleert dat statisch). Bestanden: `js/docent/klok.js` (klok, herberekening, gallery-walkfasen; geen DOM, tijdbron `nu` injecteerbaar), `js/docent/kaarten.js` (stapkaart, docentkaart, programma, draaiboek, terugblik-kaarten; geen DOM), `js/docent/kies.js` (modus uit het adres), `js/docent/pagina.js` (DOM), `css/docent.css`. Bewaard wordt alleen `a3d:begintijden` (localStorage, rooster) en `a3d:klok:<deel>` (sessionStorage, zodat herladen de klok niet wist). De data laadt pas na de keuze: `docent-deel1.json`, de `leerblok-N.json` die de onderdelen noemen, en `terugblik.json`.
+
+**Formaat `data/docent-deel1.json`** (formaat `"1.0"`, gevalideerd door `controleerDocent` in `tools/content-check.mjs`; `docent-deel2.json` in fase 10 gebruikt hetzelfde formaat en wordt in `DELEN` in `pagina.js` aangemeld):
+
+```
+{ "formaat": "1.0", "deel": 1, "titel", "duurMinuten": 90, "afsluiting", "bron",
+  "onderdelen": [ { "id": "d1-01", "titel", "minuten": 5,       // som van de minuten = duurMinuten
+      "soort"?: "pauze",                                          // een pauze heeft alleen id, titel en minuten
+      "taak": "2.1" | null, "leerblok": 1 | null,                 // met taak: klaar-als en modelantwoord komen uit leerblok-N.json (DM-2)
+      "opdracht": { "tekst", "bron" },                            // kort, projecteerbaar
+      "klaarAls"?: { "tekst", "bron" },                           // alleen zonder taak
+      "materiaal": [..], "laptop": "open" | "dicht", "dia": "17 (vóór 16)" | null,
+      "watDocentDoet", "kernboodschap", "rondloopvragen": [..], "alsHetAndersLoopt": [..],   // docentkaart (DM-7)
+      "veelgemaakteFouten": [..],                                 // verborgen tot de docent ze opent, net als het modelantwoord (DM-8)
+      "ronde"?: { "rondes": 2, "minutenPerRonde": 4, "lezenMinuten": 2 },   // gallery walk (DM-6)
+      "bron": "draaiboek" | "concept-auteur" | "lrd" | "werkboek" } ] }
+```
+
+Een onderdeel met taak heeft minstens één rondloopvraag. Elke tekst die op een beoordeling of toetsantwoord lijkt (`DOCENT_VERBODEN` in `content-check`) faalt (DM-17). Klok: `maakKlok({ onderdelen, duurMinuten, nu })` met `start`, `pauze`, `reset`, `volgende`, `overslaan(id)`, `verschuif(id, ±1)`, `pasAan(id, minuten)`, `toestand()`, `exporteer()`/`herstel()`. `resterend` is de som van de nog te doen onderdelen (het actieve telt nooit negatief); `marge` is de duur van het deel min verstreken min resterend. Stapkaart: alle tekst 28 px of groter bij 1280 × 720 (`tests/docent.test.mjs`, contrast in `tools/contrast-check.mjs`, dat nu ook `css/docent.css` leest).

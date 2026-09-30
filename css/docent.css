@@ -1,0 +1,60 @@
+/* Docentmodus (fase 9). Kleuren alleen als token uit site.css (tests/toegankelijk.test.mjs, contrast-check.mjs).
+   De stapkaart is bedoeld voor projectie: alle tekst erin is minstens 28 px (DM-16, tests/docent.test.mjs). */
+body[data-weergave] header { padding:.25rem 1rem; }
+body[data-weergave] main { max-width:80rem; padding:.5rem 1rem; }
+body[data-weergave] h1 { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); }
+body[data-weergave] .knop { padding:.15rem .7rem; }
+body[data-weergave] .knoppen { margin:.25rem 0; gap:.5rem; }
+body[data-weergave] .weergaven { margin:.25rem 0; }
+.balk { border:var(--rand) solid var(--zwart); box-shadow:3px 3px 0 var(--zwart); padding:.15rem 1rem; margin:.25rem 0; background:var(--wit); }
+.balk { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:0 1.5rem; }
+.balk-rij { display:flex; flex-wrap:wrap; gap:0 2rem; align-items:baseline; }
+.balk-tijd { margin:.15rem 0; }
+.klok-groot { font:700 1.75rem/1 var(--fm); }
+.klok-tekst { font:700 1.1rem/1 var(--fm); }
+.balk .knoppen { margin:.25rem 0; }
+.weergaven { display:flex; flex-wrap:wrap; gap:.5rem; margin:.5rem 0; }
+.knop[aria-pressed="true"] { background:var(--zwart); color:var(--wit); }
+.knop:disabled { color:var(--grijs-tekst); background:var(--grijs); cursor:not-allowed; box-shadow:none; }
+.knop:disabled:hover { background:var(--grijs); }
+
+.stapkaart { border:var(--rand) solid var(--zwart); box-shadow:var(--schaduw); padding:8px 24px; margin:.25rem 0; background:var(--wit); color:var(--zwart); font-size:28px; line-height:1.25; }
+.stapkaart p, .stapkaart h2 { margin:.2em 0; font-size:28px; }
+.stapkaart .sk-kop { display:flex; flex-wrap:wrap; gap:0 24px; align-items:baseline; }
+.stapkaart .sk-taak { background:var(--zwart); color:var(--wit); padding:0 .5em; font-weight:700; }
+.stapkaart .sk-tijd { font-weight:700; }
+.stapkaart .sk-status { color:var(--grijs-tekst); }
+.stapkaart .sk-rij { display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:0 24px; border-bottom:4px solid var(--accent); }
+.stapkaart .sk-titel { font-size:28px; }
+.stapkaart .sk-aftel { margin-left:auto; }
+.stapkaart .sk-onder { display:flex; flex-wrap:wrap; gap:0 24px; align-items:baseline; }
+.stapkaart .sk-aftel { font:700 40px/1.1 var(--fm); }
+.stapkaart .sk-aftel.over { color:var(--fout); }
+.stapkaart .sk-ronde { font-weight:700; }
+.stapkaart .sk-opdracht { font-size:36px; font-weight:700; line-height:1.2; margin:.3em 0; }
+.stapkaart .sk-laptop { display:inline-block; border:3px solid var(--zwart); padding:0 .5em; font-weight:700; }
+.stapkaart .sk-laptop-dicht { background:var(--zwart); color:var(--wit); }
+
+.docentkaart { border:var(--rand) solid var(--zwart); box-shadow:var(--schaduw); padding:.5rem 1.25rem 1rem; margin:.5rem 0; background:var(--wit); font-size:1.125rem; }
+.docentkaart h3 { margin:1rem 0 .25rem; font-size:1.125rem; }
+.niet-projecteren { background:var(--roze); color:var(--zwart); border:2px solid var(--zwart); padding:.25rem .75rem; font-weight:700; }
+.programma { border-collapse:collapse; width:100%; margin:.75rem 0; }
+.programma th, .programma td { border:2px solid var(--zwart); padding:.35rem .5rem; text-align:left; vertical-align:middle; }
+.programma th { background:var(--zwart); color:var(--wit); }
+.programma .rij-actief { background:var(--roze); }
+.programma .rij-gedaan, .programma .rij-overgeslagen { color:var(--grijs-tekst); }
+.programma .aanpassen .knop { padding:.1rem .5rem; margin:.1rem .25rem .1rem 0; }
+input[type="time"] { font:inherit; border:3px solid var(--zwart); padding:.3rem .5rem; background:var(--wit); color:var(--zwart); }
+.terugblik-kaart h4 { margin:.75rem 0 .25rem; }
+
+#afdruk { display:none; }
+body[data-weergave="afdrukken"] #afdruk { display:block; border-top:3px solid var(--zwart); margin-top:1rem; }
+.db-onderdeel { border-top:2px solid var(--zwart); margin-top:1rem; }
+.db-onderdeel dt { font-weight:700; margin-top:.4rem; }
+.db-onderdeel dd { margin:0; }
+@media print {
+  header, footer, .skip, .balk, .weergaven, #paneel, #pilot-banner, h1 { display:none !important; }
+  #afdruk { display:block !important; border:0; margin:0; }
+  .db-onderdeel { break-inside:avoid; }
+  body { font-size:11pt; }
+}

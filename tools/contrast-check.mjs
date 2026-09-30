@@ -2,7 +2,7 @@
 // paar de contrastratio uit (WCAG 2.1). Geen afhankelijkheden; ook te draaien als `node tools/contrast-check.mjs`.
 // Regels met alleen `color` gelden op de oppervlakken van de site (wit en grijs); regels met `color` en `background`
 // gelden voor dat paar. Een regel met alleen `background` erft zijn tekstkleur en staat in EXTRA_PAREN.
-import { readFileSync, readdirSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -66,6 +66,8 @@ export function controleerContrast(root) {
   const css = readFileSync(resolve(root, 'css/site.css'), 'utf8');
   const tokens = tokensUit(css);
   let lijst = paren(css, tokens);
+  // Overige stylesheets van de site die de tokens van site.css gebruiken (docentmodus, fase 9).
+  if (existsSync(resolve(root, 'css/docent.css'))) lijst = lijst.concat(paren(readFileSync(resolve(root, 'css/docent.css'), 'utf8'), tokens).map((p) => ({ ...p, selector: `docent.css: ${p.selector}` })));
   for (const f of readdirSync(root).filter((n) => n.endsWith('.html'))) {
     for (const s of readFileSync(resolve(root, f), 'utf8').matchAll(/<style>([\s\S]*?)<\/style>/g)) {
       lijst = lijst.concat(paren(s[1], tokens).map((p) => ({ ...p, selector: `${f}: ${p.selector}` })));

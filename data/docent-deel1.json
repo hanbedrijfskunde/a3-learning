@@ -1,0 +1,331 @@
+{
+ "formaat": "1.0",
+ "deel": 1,
+ "titel": "Deel 1 · A3 en onderzoeksvaardigheden",
+ "duurMinuten": 90,
+ "afsluiting": "Einde deel 1. De PO-docent begint met de coaching.",
+ "bron": "draaiboek",
+ "onderdelen": [
+  {
+   "id": "d1-01",
+   "titel": "Opening en dagprogramma",
+   "minuten": 5,
+   "taak": null,
+   "leerblok": null,
+   "dia": "1–2",
+   "materiaal": [
+    "Slidedeck A3-introductie",
+    "Timer op het scherm"
+   ],
+   "laptop": "dicht",
+   "opdracht": {
+    "tekst": "Gisteren pitchten jullie voor een opdrachtgever. Vanaf vandaag werken jullie voor een echte. Dagprogramma: deel 1 (90 min) A3 en onderzoeksvaardigheden, daarna coaching door de PO-docent, deel 2 (145 min) het vraagstuk plaatsen.",
+    "bron": "concept-auteur"
+   },
+   "klaarAls": {
+    "tekst": "je weet wat we vandaag doen en wat er van je gevraagd wordt.",
+    "bron": "concept-auteur"
+   },
+   "watDocentDoet": "Blik terug op dinsdag: \"Gisteren pitchten jullie voor een opdrachtgever. Vanaf vandaag werken jullie voor een echte.\" Laat het dagprogramma zien.",
+   "kernboodschap": "Vanaf vandaag werken de teams voor hun echte opdrachtgever.",
+   "rondloopvragen": [],
+   "alsHetAndersLoopt": [
+    "Loopt de start uit: laat het dagprogramma staan en ga door; de tijd is voor de opdrachten."
+   ],
+   "veelgemaakteFouten": [],
+   "bron": "draaiboek"
+  },
+  {
+   "id": "d1-02",
+   "titel": "De A3-methode, het filmpje en de drie C's",
+   "minuten": 15,
+   "taak": "1.1",
+   "leerblok": 1,
+   "dia": "3, 4, 7, 8, 9, 6",
+   "materiaal": [
+    "Slidedeck A3-introductie",
+    "Filmpje Bureau Tromp: Wat is de A3 verbetermethode (4:38)",
+    "Lege A3-template (W5-Template A3_leeg.xlsx)"
+   ],
+   "laptop": "open",
+   "opdracht": {
+    "tekst": "Kijk het filmpje. Beantwoord dan de drie vragen van 1.1: welke drie C's, wat past er niet op één A3, en wat weet je nog van de Lean Yellow Belt?",
+    "bron": "concept-auteur"
+   },
+   "watDocentDoet": "Filmpje Bureau Tromp (4:38). Daarna A3-denken (dia 4): één A3 als praatplaatje, 3xC. Laat de lege template (7) en het voorbeeld (8) zien en eindig bij vak 1 (9) met de hulpvragen (6). Bespreek na dia 4 kort de drie vragen van taak 1.1.",
+   "kernboodschap": "De A3 is iteratief: jullie bespreken hem elke week met de opdrachtgever en werken hem steeds bij.",
+   "rondloopvragen": [
+    "Wat weten jullie nog van de A3 uit de Lean Yellow Belt-training?"
+   ],
+   "alsHetAndersLoopt": [
+    "Weinig voorkennis: laat studenten zeggen wat ze wel van de A3 weten; bij de derde vraag is er geen vast antwoord."
+   ],
+   "veelgemaakteFouten": [
+    "De drie C's door elkaar halen met andere woorden die met een C beginnen.",
+    "Opschrijven wat er wel op een A3 past in plaats van wat er niet op past."
+   ],
+   "bron": "draaiboek"
+  },
+  {
+   "id": "d1-03",
+   "titel": "Praktijkgericht onderzoek en de vijf stappen van zoeken",
+   "minuten": 10,
+   "taak": null,
+   "leerblok": null,
+   "dia": "10–15",
+   "materiaal": [
+    "Slidedeck A3-introductie"
+   ],
+   "laptop": "dicht",
+   "opdracht": {
+    "tekst": "Kies met je team een tool om bronnen te bundelen, bijvoorbeeld NotebookLM.",
+    "bron": "concept-auteur"
+   },
+   "klaarAls": {
+    "tekst": "je team heeft een tool gekozen om bronnen te bundelen.",
+    "bron": "concept-auteur"
+   },
+   "watDocentDoet": "Praktijkgericht tegenover wetenschappelijk onderzoek (dia 10–12): praktijkonderzoek bestudeert één geval om een diagnose te stellen en een verbeterplan te maken. Vijf stappen van zoeken (13). Laat elk team een tool kiezen (14). Leg framing uit met het verzuimvoorbeeld (15).",
+   "kernboodschap": "Welke data je nodig hebt, weet je pas na de literatuur.",
+   "rondloopvragen": [
+    "Waar halen jullie bij je opdrachtgever data vandaan?"
+   ],
+   "alsHetAndersLoopt": [
+    "Te weinig tijd in deel 1: sla dia 12 en 14 over."
+   ],
+   "veelgemaakteFouten": [],
+   "bron": "draaiboek"
+  },
+  {
+   "id": "d1-04",
+   "titel": "Onderzoeksvraag als user story",
+   "minuten": 10,
+   "taak": "2.1",
+   "leerblok": 1,
+   "dia": "17 (vóór 16)",
+   "materiaal": [
+    "Slidedeck A3-introductie (dia 17 vóór 16)",
+    "Format en voorbeeld webshop X"
+   ],
+   "laptop": "open",
+   "opdracht": {
+    "tekst": "Maak de vraag over webshop X concreet en schrijf hem als onderzoeksvraag in het format: Wat is de beste oplossing voor <gebruiker> om <probleem / pain / gain>, zodat <waardecreatie volgens de six capitals>?",
+    "bron": "concept-auteur"
+   },
+   "watDocentDoet": "Brug naar week 4: daar formuleerden studenten het probleem. Nu formuleren ze de vraag die ze uiteindelijk met onderzoek beantwoorden. Laat eerst de vraag concreet maken met context (17). Introduceer dan het user-story-format en het voorbeeld van webshop X.",
+   "kernboodschap": "De onderzoeksvraag is de vraag die je uiteindelijk met onderzoek beantwoordt: gebruiker, probleem en waarde, in het format.",
+   "rondloopvragen": [
+    "Zijn alle drie de delen concreet?",
+    "Gaat de waarde verder dan alleen geld?"
+   ],
+   "alsHetAndersLoopt": [
+    "Een team heeft geen helder vraagstuk: laat het team met het voorbeeld van de duurzaamheidsrapportage werken en meld het bij de PO-docent."
+   ],
+   "veelgemaakteFouten": [
+    "De waardecreatie alleen als geld formuleren.",
+    "Een oplossing in de vraag stoppen in plaats van een probleem."
+   ],
+   "bron": "concept-auteur"
+  },
+  {
+   "id": "d1-05",
+   "titel": "Zoekvragen vanuit drie frames",
+   "minuten": 10,
+   "taak": "2.2",
+   "leerblok": 1,
+   "dia": "16, 18",
+   "materiaal": [
+    "Slidedeck A3-introductie"
+   ],
+   "laptop": "open",
+   "opdracht": {
+    "tekst": "Deel de onderzoeksvraag op in drie zoekvragen, elk vanuit een ander frame, en kies één model: 7S, Strategy Map of Six Capitals.",
+    "bron": "concept-auteur"
+   },
+   "watDocentDoet": "Een onderzoeksvraag beantwoord je niet in één keer: je deelt hem op in zoekvragen die elk vanuit een ander frame kijken. Frames zijn functioneel (HR, financieel, logistiek, marketing), intern of extern, theoretisch of empirisch. Zet de timer en loop rond.",
+   "kernboodschap": "Elke zoekvraag kijkt vanuit een ander frame.",
+   "rondloopvragen": [
+    "Welk perspectief ontbreekt nog?"
+   ],
+   "alsHetAndersLoopt": [
+    "Een team is vroeg klaar: laat het al een eerste bron zoeken voor een van de zoekvragen."
+   ],
+   "veelgemaakteFouten": [
+    "Alle drie de zoekvragen vanuit hetzelfde frame stellen."
+   ],
+   "bron": "draaiboek"
+  },
+  {
+   "id": "d1-06",
+   "titel": "Nabespreking frames",
+   "minuten": 5,
+   "taak": "2.2",
+   "leerblok": 1,
+   "dia": "16",
+   "materiaal": [
+    "Slidedeck A3-introductie"
+   ],
+   "laptop": "dicht",
+   "opdracht": {
+    "tekst": "Noem je frames en zoekvragen. Wat mis je als je maar één frame kiest? Welk model hielp jullie?",
+    "bron": "concept-auteur"
+   },
+   "watDocentDoet": "Laat twee of drie teams hun frames en zoekvragen noemen. Er is geen beste frame.",
+   "kernboodschap": "Er is geen beste frame; wie maar één frame kiest, mist de rest.",
+   "rondloopvragen": [
+    "Wat mis je als je maar één frame kiest?",
+    "Welk model hielp jullie?"
+   ],
+   "alsHetAndersLoopt": [
+    "Weinig tijd: laat één team noemen en vraag de rest alleen wat ze missen."
+   ],
+   "veelgemaakteFouten": [],
+   "bron": "draaiboek"
+  },
+  {
+   "id": "d1-07",
+   "titel": "Zoektermen",
+   "minuten": 5,
+   "taak": "3.1",
+   "leerblok": 2,
+   "dia": "19–20",
+   "materiaal": [
+    "Slidedeck A3-introductie"
+   ],
+   "laptop": "open",
+   "opdracht": {
+    "tekst": "Haal bij één van je zoekvragen de kernbegrippen eruit en zoek synoniemen en Engelse termen.",
+    "bron": "concept-auteur"
+   },
+   "watDocentDoet": "Laat het schema zien (19). Studenten bepalen de zoektermen bij één van hun zoekvragen (20).",
+   "kernboodschap": "Goede zoektermen komen uit de kernbegrippen van je zoekvraag, met synoniemen en Engelse termen.",
+   "rondloopvragen": [
+    "Welke kernbegrippen zitten in jullie zoekvraag?"
+   ],
+   "alsHetAndersLoopt": [
+    "Weinig tijd: laat teams alleen de kernbegrippen bepalen."
+   ],
+   "veelgemaakteFouten": [
+    "Alleen de woorden uit de zoekvraag overnemen, zonder synoniemen of Engelse termen."
+   ],
+   "bron": "concept-auteur"
+  },
+  {
+   "id": "d1-08",
+   "titel": "Zoekwedstrijd, route A of B",
+   "minuten": 10,
+   "taak": "3.2",
+   "leerblok": 2,
+   "dia": "21–23",
+   "materiaal": [
+    "Slidedeck A3-introductie",
+    "HANQuest, Google Scholar en een AI-tool",
+    "Prompt voor route B (werkboek)"
+   ],
+   "laptop": "open",
+   "opdracht": {
+    "tekst": "Wie vindt als eerste een goede bron? Route A: databank, met een zoekstring met minstens één operator. Route B: AI-tool, met de prompt uit het werkboek. Een bron telt pas als je hem zelf hebt geopend.",
+    "bron": "concept-auteur"
+   },
+   "watDocentDoet": "Zoekstrategie kort: aanhalingstekens, maskeren, trunceren, AND/OR/NOT (21). Start de wedstrijd (22). Elk team splitst zich: één groepje zoekt in een databank (route A), het andere laat een AI-tool zoeken (route B). Nabespreken: welke route was sneller, welke gaf betere bronnen, en gaf de AI bronnen die niet bestaan? Tip (23): zoek ook via de LibGuide Bedrijfskunde. Waarschuw voor verzonnen bronnen en voor vertrouwelijke gegevens.",
+   "kernboodschap": "Een bron telt pas als het team hem zelf heeft geopend en hij antwoord geeft op de zoekvraag. Geen namen of vertrouwelijke gegevens van de opdrachtgever in een prompt.",
+   "rondloopvragen": [
+    "Heeft het team de bron echt geopend?",
+    "Kloppen auteur, jaar en titel?",
+    "Staat erin wat de AI zegt?"
+   ],
+   "alsHetAndersLoopt": [
+    "Weinig tijd: doe de wedstrijd in 5 minuten, de eerste bron telt. Laat route B dan alleen Perplexity gebruiken; Deep Research is in 5 minuten niet klaar."
+   ],
+   "veelgemaakteFouten": [
+    "Een bron meetellen die het team niet zelf heeft geopend.",
+    "Een verzonnen of verkeerd geciteerde AI-bron overnemen."
+   ],
+   "bron": "draaiboek"
+  },
+  {
+   "id": "d1-09",
+   "titel": "Stelling over AI",
+   "minuten": 5,
+   "taak": "4.2",
+   "leerblok": 2,
+   "dia": "24",
+   "materiaal": [
+    "Slidedeck A3-introductie",
+    "Links en rechts in het lokaal vrij"
+   ],
+   "laptop": "dicht",
+   "opdracht": {
+    "tekst": "Stelling: \"Je kunt prima AI gebruiken om inspiratiemateriaal te vinden.\" Voor: ga links staan. Tegen: ga rechts staan. Geef een argument.",
+    "bron": "concept-auteur"
+   },
+   "watDocentDoet": "Laat beide kanten argumenten geven en gebruik wat de teams net bij route B zagen. Conclusie: AI is goed om je te oriënteren en ideeën te vinden; een bron wordt het pas als je hem zelf hebt gevonden, geopend en beoordeeld (4.1).",
+   "kernboodschap": "Een bron wordt het pas als je hem zelf hebt gevonden, geopend en beoordeeld.",
+   "rondloopvragen": [
+    "Wat zag je net bij route B dat je argument ondersteunt?"
+   ],
+   "alsHetAndersLoopt": [
+    "Dia 24 noemt nog Wikipedia: zeg de nieuwe stelling hardop of pas de dia aan."
+   ],
+   "veelgemaakteFouten": [],
+   "bron": "draaiboek"
+  },
+  {
+   "id": "d1-10",
+   "titel": "Bronnen beoordelen",
+   "minuten": 10,
+   "taak": "4.1",
+   "leerblok": 2,
+   "dia": "25–27",
+   "materiaal": [
+    "Slidedeck A3-introductie",
+    "De bron uit de wedstrijd"
+   ],
+   "laptop": "open",
+   "opdracht": {
+    "tekst": "Beoordeel de bron uit de wedstrijd met de AAOCC-criteria: gebruiken of verder zoeken?",
+    "bron": "concept-auteur"
+   },
+   "watDocentDoet": "AAOCC-criteria (25). Opdracht (26). Loop rond en check of teams echt beoordelen en niet alleen afvinken. Sluit af met APA (27).",
+   "kernboodschap": "Beoordelen is meer dan afvinken: je onderbouwt per criterium.",
+   "rondloopvragen": [
+    "Beoordelen jullie echt, of vinken jullie alleen af?"
+   ],
+   "alsHetAndersLoopt": [
+    "Weinig tijd: beoordeel één bron met alle vijf de criteria en laat APA voor het leerblok."
+   ],
+   "veelgemaakteFouten": [
+    "Alle criteria met een plus afvinken zonder toelichting."
+   ],
+   "bron": "draaiboek"
+  },
+  {
+   "id": "d1-11",
+   "titel": "Betrouwbaarheid en validiteit",
+   "minuten": 5,
+   "taak": null,
+   "leerblok": null,
+   "dia": "28–31",
+   "materiaal": [
+    "Slidedeck A3-introductie"
+   ],
+   "laptop": "dicht",
+   "opdracht": {
+    "tekst": "Luister en vraag: wat betekent dit voor wat je opdrachtgever je vertelt?",
+    "bron": "concept-auteur"
+   },
+   "klaarAls": {
+    "tekst": "je weet dat wat de opdrachtgever zegt één waarneming vanuit één frame is.",
+    "bron": "concept-auteur"
+   },
+   "watDocentDoet": "Gebruik de schietschijf. Blijf niet hangen bij de begrippen (28–29), maar ga naar de vertaling naar het project (30). Brug naar deel 2 (31).",
+   "kernboodschap": "Wat de opdrachtgever zegt, is één waarneming vanuit één frame.",
+   "rondloopvragen": [],
+   "alsHetAndersLoopt": [
+    "Te weinig tijd: behandel dia 28–29 niet en houd alleen dia 30 aan."
+   ],
+   "veelgemaakteFouten": [],
+   "bron": "draaiboek"
+  }
+ ]
+}

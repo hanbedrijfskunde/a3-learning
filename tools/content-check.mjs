@@ -246,6 +246,69 @@ export function controleerTerugblik(inhoud, bestand = 'terugblik.json') {
 
 export const DEKKINGEN = Object.freeze(['gedekt', 'deels', 'buiten scope']);
 
+/** Woorden die in de docentmodus niet horen: beoordelingsdetails en toetsantwoorden (DM-17). */
+export const DOCENT_VERBODEN = /beoordelingscriteri|beoordelingsdetail|beoordelingsformulier|beoordelingsmodel|rubric|toetsantwoord|toetsvra|tentamen|cijfer|slagingsdrempel|\bBC[1-9]\b|\bLUK\s?[1-9]\b/i;
+const alleTeksten = (w, uit = []) => {
+  if (typeof w === 'string') uit.push(w);
+  else if (Array.isArray(w)) w.forEach((x) => alleTeksten(x, uit));
+  else if (w && typeof w === 'object') Object.values(w).forEach((x) => alleTeksten(x, uit));
+  return uit;
+};
+
+/**
+ * Controleert data/docent-deelN.json (DM-3, DM-7, DM-17, DM-18; formaat in README). Taken en klaar-als komen uit de
+ * leerblokbestanden (DM-2): het docentbestand mag ze niet herhalen. `blokken` is de lijst geladen leerblokken.
+ * @returns {{fouten: string[], waarschuwingen: string[]}}
+ */
+export function controleerDocent(inhoud, blokken = [], bestand = 'docent-deel1.json') {
+  const fouten = [];
+  const waarschuwingen = [];
+  const fout = (t) => fouten.push(`${bestand}: ${t}`);
+  if (inhoud?.formaat !== '1.0') fout('formaat moet "1.0" zijn');
+  if (!Number.isInteger(inhoud?.deel) || inhoud.deel < 1) fout('deel moet een geheel getal zijn');
+  if (!gevuld(inhoud?.titel)) fout('mist een titel');
+  const onderdelen = Array.isArray(inhoud?.onderdelen) ? inhoud.onderdelen : [];
+  if (onderdelen.length === 0) fout('geen onderdelen');
+  if (!(typeof inhoud?.duurMinuten === 'number' && inhoud.duurMinuten > 0)) fout('duurMinuten moet een getal boven 0 zijn');
+  else if (onderdelen.reduce((som, o) => som + (typeof o?.minuten === 'number' ? o.minuten : 0), 0) !== inhoud.duurMinuten) fout(`de minuten van de onderdelen tellen op tot ${onderdelen.reduce((som, o) => som + (o?.minuten ?? 0), 0)}, niet tot duurMinuten (${inhoud.duurMinuten})`);
+  if (inhoud?.deel === 1 && onderdelen.length !== 11) fout(`deel 1 heeft 11 onderdelen (DM-18), niet ${onderdelen.length}`);
+  const ids = new Set();
+  for (const o of onderdelen) {
+    const wie = `onderdeel ${o?.id ?? '(zonder id)'}: `;
+    if (!gevuld(o?.id) || ids.has(o.id)) fout(`${wie}id ontbreekt of komt dubbel voor`);
+    ids.add(o?.id);
+    if (!gevuld(o?.titel)) fout(`${wie}mist een titel`);
+    if (!(Number.isInteger(o?.minuten) && o.minuten > 0)) fout(`${wie}minuten moet een geheel getal boven 0 zijn`);
+    if (o?.soort === 'pauze') continue; // een pauze heeft alleen id, titel en minuten
+    if (o?.taak !== null && !gevuld(o?.taak)) fout(`${wie}taak is een taaknummer of null`);
+    if (o?.taak) {
+      const blok = blokken.find((b) => b.leerblok === o.leerblok);
+      if (!blok) fout(`${wie}leerblok ${JSON.stringify(o.leerblok)} is niet geladen of onbekend`);
+      else if (!blok.taken?.some((t) => t.id === o.taak)) fout(`${wie}taak ${o.taak} staat niet in leerblok ${o.leerblok}`);
+      for (const dubbel of ['klaarAls', 'modelantwoord']) if (dubbel in o) fout(`${wie}${dubbel} hoort in het leerblokbestand, niet hier (DM-2)`);
+    } else if (!gevuld(tekstVan(o?.klaarAls))) fout(`${wie}zonder taak is een eigen klaarAls nodig`);
+    if (!gevuld(tekstVan(o?.opdracht))) fout(`${wie}mist een opdracht`);
+    if (!lijstGevuld(o?.materiaal) || !o.materiaal.every(gevuld)) fout(`${wie}mist materiaal`);
+    if (!['open', 'dicht'].includes(o?.laptop)) fout(`${wie}laptop is "open" of "dicht"`);
+    if (o?.dia !== null && !gevuld(o?.dia)) fout(`${wie}dia is een tekst of null`);
+    for (const veld of ['watDocentDoet', 'kernboodschap']) if (!gevuld(o?.[veld])) fout(`${wie}mist ${veld} (DM-7)`);
+    if (!Array.isArray(o?.rondloopvragen) || !o.rondloopvragen.every(gevuld)) fout(`${wie}rondloopvragen moet een lijst zijn (DM-7)`);
+    else if (o.taak && o.rondloopvragen.length === 0) fout(`${wie}een onderdeel met taak heeft minstens één rondloopvraag (DM-7)`);
+    if (!lijstGevuld(o?.alsHetAndersLoopt) || !o.alsHetAndersLoopt.every(gevuld)) fout(`${wie}mist alsHetAndersLoopt (DM-7)`);
+    if (!Array.isArray(o?.veelgemaakteFouten) || !o.veelgemaakteFouten.every(gevuld)) fout(`${wie}veelgemaakteFouten moet een lijst zijn`);
+    if (!BRONNEN.includes(o?.bron)) fout(`${wie}bron ${JSON.stringify(o?.bron)}; kies uit ${BRONNEN.join(', ')}`);
+    else if (o.bron === 'concept-auteur') waarschuwingen.push(`${bestand}: ${wie}deels een concept van de bouwer (bron concept-auteur), wacht op akkoord van de auteur`);
+    if (o?.ronde !== undefined && !['rondes', 'minutenPerRonde', 'lezenMinuten'].every((k) => typeof o.ronde[k] === 'number' && o.ronde[k] > 0)) fout(`${wie}ronde heeft rondes, minutenPerRonde en lezenMinuten (DM-6)`);
+  }
+  const conceptOpdrachten = onderdelen.filter((o) => o?.opdracht?.bron === 'concept-auteur').length;
+  if (conceptOpdrachten) waarschuwingen.push(`${bestand}: ${conceptOpdrachten} opdrachten op de stapkaart zijn een korte formulering van de bouwer (bron concept-auteur), wacht op akkoord van de auteur`);
+  for (const t of alleTeksten(inhoud)) {
+    const m = DOCENT_VERBODEN.exec(t);
+    if (m) fout(`de docentmodus bevat beoordelingsinformatie (DM-17): "${m[0]}" in "${t.slice(0, 60)}"`);
+  }
+  return { fouten, waarschuwingen };
+}
+
 /**
  * Controleert data/luk.json: de dekkingstabel van blueprint §4.3 met de 11 bewijsonderdelen (BW-13, fase 3).
  * Zijn de leerblokbestanden meegegeven, dan moeten hun bewijsonderdelen erbij passen (titel, lukOnderdelen en luk).
@@ -428,6 +491,10 @@ export function controleerMap(map) {
   if (existsSync(resolve(map, 'terugblik.json'))) {
     const t = lees('terugblik.json');
     if (t) { const r = controleerTerugblik(t); fouten.push(...r.fouten); waarschuwingen.push(...r.waarschuwingen); }
+  }
+  for (const naam of existsSync(map) ? readdirSync(map).filter((n) => /^docent-deel\d\.json$/.test(n)).sort() : []) {
+    const d = lees(naam);
+    if (d) { const r = controleerDocent(d, blokken, naam); fouten.push(...r.fouten); waarschuwingen.push(...r.waarschuwingen); }
   }
   const bronnen = controleerBronnen(map);
   fouten.push(...bronnen.fouten);
