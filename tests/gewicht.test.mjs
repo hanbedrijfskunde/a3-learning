@@ -125,3 +125,14 @@ test('PF-4: het register laadt controlemodules niet statisch, en de gewichtscont
   const g = gewichten(root).find((x) => x.pagina === 'leerblok-1.html');
   assert.ok(g.gzip > 0 && g.gzip < g.bytes / 2, 'gzip is kleiner dan de helft van de bronbytes');
 });
+
+test('PF-4: een dynamische import met „gewicht-alleen: naklik” telt nooit mee in de eerste lading (spel, kopieer naar A3; ADR B81)', () => {
+  const d = mkdtempSync(resolve(tmpdir(), 'gewicht-'));
+  mkdirSync(resolve(d, 'js'));
+  writeFileSync(resolve(d, 'index.html'), '<!doctype html><script type="module" src="js/a.js"></script>');
+  writeFileSync(resolve(d, 'js/zwaar.js'), `export const x = "${'y'.repeat(60_000)}";`);
+  writeFileSync(resolve(d, 'js/a.js'), "knop.onclick = async () => {\n  // gewicht-alleen: naklik\n  await import('./zwaar.js');\n};");
+  assert.ok(gewichten(d)[0].bytes < 10_000, 'na een klik geladen: telt niet mee');
+  writeFileSync(resolve(d, 'js/a.js'), "knop.onclick = async () => {\n  await import('./zwaar.js');\n};");
+  assert.ok(gewichten(d)[0].bytes > 50_000, 'zonder de aanduiding telt de import wel mee');
+});

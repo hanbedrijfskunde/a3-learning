@@ -18,6 +18,17 @@ export function h(tag, props = {}, ...kinderen) {
 
 export const wis = (el) => { while (el.firstChild) el.removeChild(el.firstChild); return el; };
 
+/** A3-vak 1 in vier delen (SX-12): gevulde delen in vlak, de rest alleen een rand; de stand ook als tekst (TG-4). */
+export function tekenA3Vak(el, stand) {
+  wis(el);
+  el.append(
+    h('ol', { class: 'a3-delen' }, stand.delen.map((d) => h('li', { class: `a3-deel${d.gevuld ? ' a3-gevuld' : ''}${d.nieuw ? ' a3-nieuw' : ''}` },
+      h('span', { class: 'a3-nr' }, String(d.leerblok)), h('span', { class: 'a3-label' }, d.label),
+      h('span', { class: 'sr-only' }, d.gevuld ? ' (staat)' : ' (nog leeg)')))),
+    h('p', { class: 'a3-onderschrift' }, stand.tekst));
+  return el;
+}
+
 /** Een status als tekst met kleur erbij; nooit alleen kleur (BW-3, TG-4). */
 export function statusChip(status, tekst) {
   return h('span', { class: `status status-${status.replace(' ', '-')}` }, tekst);

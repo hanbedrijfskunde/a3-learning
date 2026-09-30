@@ -8,6 +8,7 @@ import {
 } from './dossier.js';
 import { leesProfiel } from './profiel.js';
 import { STATUS_TEKST } from './status.js';
+import { kopieer } from './klembord.js';
 import { waardeTekst } from './weergave.js';
 import { maakA3Tekst } from './a3tekst.js';
 import { leesKopieLog, logKopie } from './a3log.js';
@@ -26,6 +27,7 @@ async function start() {
   const { opslag, geblokkeerd } = kiesOpslag();
   const store = maakStore(opslag);
   const alleIds = luk.bewijsonderdelen.map((b) => b.id);
+  const titels = Object.fromEntries(luk.bewijsonderdelen.map((b) => [b.id, b.titel])); // SX-3: de student ziet titels, geen codes
   const records = () => leesRecords(store, alleIds);
 
   const herinneringGebied = h('div', { id: 'bewaarherinnering' });
@@ -43,11 +45,10 @@ async function start() {
     const zwakste = zwaksteOnderdeel(stand);
     standGebied.append(
       h('h2', { id: 'mijn-stand-kop' }, 'Mijn stand'),
-      h('p', { class: 'klein' }, 'Per bewijsonderdeel alleen de status, zonder inhoud. Laat dit scherm gerust aan je coach zien.'),
+      h('p', { class: 'klein' }, 'Per resultaat alleen de status, zonder inhoud. Laat dit scherm gerust aan je coach zien.'),
       h('p', { class: 'zwakste', id: 'zwakste-onderdeel' }, h('strong', {}, 'Zwakste onderdeel: '),
-        zwakste ? [`${zwakste.id} · ${zwakste.titel} (`, statusChip(zwakste.status, zwakste.heeftRecord ? zwakste.statusTekst : STATUS_TEKST['nog niet']), ')'] : 'geen: alle bewijsonderdelen zijn compleet.'),
+        zwakste ? [`${zwakste.titel} (`, statusChip(zwakste.status, zwakste.heeftRecord ? zwakste.statusTekst : STATUS_TEKST['nog niet']), ')'] : 'geen: alles is compleet.'),
       h('ul', { class: 'dos-stand' }, stand.map((c) => h('li', { class: `dos-tegel dos-tegel-${c.status.replace(' ', '-')}` },
-        h('span', { class: 'dos-tegel-id' }, c.id),
         h('span', { class: 'dos-tegel-titel' }, c.titel),
         h('span', { class: 'dos-tegel-status' }, c.heeftRecord ? c.statusTekst : STATUS_TEKST['nog niet'], c.voorlopig ? ' (voorlopig)' : '')))));
   }
@@ -59,14 +60,14 @@ async function start() {
     const rijen = bouwDekking(luk, records());
     dekkingGebied.append(
       h('h2', { id: 'dekking-kop' }, 'Wat de e-learning van de leeruitkomsten dekt'),
-      h('p', {}, 'Gedekt: er is een bewijsonderdeel voor. Deels: de e-learning oefent een stap ervan. Buiten scope: valt niet in deze e-learning. De status is de jouwe; er is geen score.'),
+      h('p', {}, 'Gedekt: er is een resultaat voor. Deels: de e-learning oefent een stap ervan. Buiten scope: valt niet in deze e-learning. De status is de jouwe; er is geen score.'),
       h('div', { class: 'dos-tabelwrap' }, h('table', { class: 'dos-tabel', id: 'dekkingstabel' },
         h('caption', { class: 'dos-caption' }, `${rijen.length} onderdelen van de leeruitkomsten`),
         h('thead', {}, h('tr', {}, ['Onderdeel van de leeruitkomst', 'Dekking', 'Bewijs en jouw status'].map((k) => h('th', { scope: 'col' }, k)))),
         h('tbody', {}, rijen.map((r) => h('tr', { 'data-dekking': r.dekking },
           h('th', { scope: 'row' }, r.label),
           h('td', {}, r.dekking, r.toelichting ? h('span', { class: 'klein' }, ` (${r.toelichting})`) : null),
-          h('td', {}, r.bewijs.length === 0 ? '–' : h('ul', { class: 'dos-lijst' }, r.bewijs.map((c) => h('li', {}, `${c.id} · `, cel(c)))))))))));
+          h('td', {}, r.bewijs.length === 0 ? '–' : h('ul', { class: 'dos-lijst' }, r.bewijs.map((c) => h('li', {}, `${c.titel ?? c.id} · `, cel(c)))))))))));
   }
 
   // ---------------------------------------------------------------- feedback uit de Wissel (WS-6): individueel naast andere teams
@@ -80,7 +81,7 @@ async function start() {
     wis(feedbackGebied);
     const f = bouwFeedbackOverzicht(records()['EV-09']);
     const lijst = (regels, leegTekst) => (regels.length ? h('ul', { class: 'fb-lijst' }, regels.map(regelEl)) : h('p', { class: 'klein' }, leegTekst));
-    feedbackGebied.append(h('h2', { id: 'feedback-kop' }, 'Feedback uit de Wissel (EV-09)'));
+    feedbackGebied.append(h('h2', { id: 'feedback-kop' }, 'Feedback uit de Wissel'));
     if (f.leeg) { feedbackGebied.append(h('p', { class: 'klein' }, 'Nog geen feedback vastgelegd. Dat doe je in leerblok 4.')); return; }
     feedbackGebied.append(h('div', { class: 'fb-kolommen' },
       h('div', { class: 'kaart', id: 'fb-individueel' },
@@ -113,19 +114,6 @@ async function start() {
 
   const a3Gebied = h('section', { id: 'a3-vak1', class: 'kaart', 'aria-labelledby': 'a3-kop' });
   const a3Melding = h('p', { role: 'status', class: 'klein', id: 'a3-melding' });
-  const kopieer = async (tekst) => {
-    try {
-      await navigator.clipboard.writeText(tekst);
-    } catch (e) {
-      const ta = h('textarea', { 'aria-hidden': 'true', tabindex: '-1', style: 'position:fixed;left:-9999px' });
-      ta.value = tekst;
-      document.body.append(ta);
-      ta.select();
-      const gelukt = document.execCommand?.('copy');
-      ta.remove();
-      if (!gelukt) throw e;
-    }
-  };
   function tekenA3() {
     wis(a3Gebied);
     const blok = maakA3Tekst({ records: leesRecords(store, ['EV-01', 'EV-02', 'EV-08', 'EV-11']), profiel: leesProfiel(store) });
@@ -167,7 +155,7 @@ async function start() {
     if (!p.voorlopig && paren.length === 0 && voorlopigeIds.length === 0) return;
     versieGebied.append(h('h2', { id: 'versies-kop' }, 'Voorlopig vraagstuk en opnieuw gedaan'));
     if (p.voorlopig || voorlopigeIds.length) {
-      versieGebied.append(h('p', { id: 'voorlopig-label' }, `Je werkt met een voorlopig vraagstuk: je bewijs krijgt het label voorlopig${voorlopigeIds.length ? ` (nu: ${voorlopigeIds.join(', ')})` : ''}. Bij elk onderdeel in het leerblok staat een knop Opnieuw doen zodra je vraagstuk scherp is.`));
+      versieGebied.append(h('p', { id: 'voorlopig-label' }, `Je werkt met een voorlopig vraagstuk: je bewijs krijgt het label voorlopig${voorlopigeIds.length ? ` (nu: ${voorlopigeIds.map((id) => titels[id] ?? id).join(', ')})` : ''}. Bij elk onderdeel in het leerblok staat een knop Opnieuw doen zodra je vraagstuk scherp is.`));
     }
     if (paren.length === 0) return;
     const nummers = [...new Set(paren.map((x) => x.nieuw.leerblok))];
@@ -178,7 +166,7 @@ async function start() {
       Object.keys(r.inhoud).length === 0 ? h('p', { class: 'klein' }, 'Leeg: dit onderdeel is opnieuw begonnen.')
         : h('dl', { class: 'dos-velden' }, Object.entries(r.inhoud).flatMap(([k, w]) => [h('dt', {}, labels[r.id]?.[k] ?? k), h('dd', {}, waardeTekst(w))])));
     for (const { id, oud, nieuw } of paren) {
-      versieGebied.append(h('div', { class: 'versie-paar', 'data-ev': id }, h('h3', {}, id), h('div', { class: 'versie-kolommen' }, kolom('Oude versie', oud), kolom('Nieuwe versie', nieuw))));
+      versieGebied.append(h('div', { class: 'versie-paar', 'data-ev': id }, h('h3', {}, titels[id] ?? id), h('div', { class: 'versie-kolommen' }, kolom('Oude versie', oud), kolom('Nieuwe versie', nieuw))));
     }
   }
   const STATUS_LABEL = (st) => STATUS_TEKST[st] ?? st;
@@ -214,7 +202,7 @@ async function start() {
 
   const exportGebied = h('section', { id: 'exporteren', class: 'kaart', 'aria-labelledby': 'export-kop' },
     h('h2', { id: 'export-kop' }, 'Dossier bewaren'),
-    h('p', {}, 'Het bestand bevat je bewijsonderdelen (de nieuwste versie en hoeveel eerdere versies er waren), je alias, je teamnummer en de versie van de e-learning, met een controlesom. Het gaat nergens naartoe: de browser slaat het op je eigen apparaat op.'),
+    h('p', {}, 'Het bestand bevat je resultaten (de nieuwste versie en hoeveel eerdere versies er waren), je alias, je teamnummer en de versie van de e-learning, met een controlesom. Het gaat nergens naartoe: de browser slaat het op je eigen apparaat op.'),
     h('div', { class: 'knoppen' }, exportKnop(store, config.versie),
       h('button', { type: 'button', class: 'knop', 'data-actie': 'afdruk-tonen', onclick: () => toonAfdruk(true) }, 'Afdrukbare pagina’s per leeruitkomst')));
 
@@ -238,7 +226,7 @@ async function start() {
       return;
     }
     const r = importeerDossier({ store, opslag }, u.dossier);
-    importUitkomst.append(h('p', { class: 'compleet' }, `Ingelezen: ${r.overgenomen.length} bewijsonderdelen overgenomen, ${r.gelijk.length} al gelijk, ${r.behouden.length} behouden omdat je huidige versie nieuwer is.`),
+    importUitkomst.append(h('p', { class: 'compleet' }, `Ingelezen: ${r.overgenomen.length} resultaten overgenomen, ${r.gelijk.length} al gelijk, ${r.behouden.length} behouden omdat je huidige versie nieuwer is.`),
       r.profiel.length ? h('p', { class: 'klein' }, 'Ook overgenomen uit je profiel: alias, teamnummer of vraagstuk waar je nog niets had ingevuld.') : "");
     tekenAlles();
   }
@@ -249,7 +237,7 @@ async function start() {
   } });
   const importGebied = h('section', { id: 'importeren', class: 'kaart', 'aria-labelledby': 'import-kop' },
     h('h2', { id: 'import-kop' }, 'Dossier terugzetten'),
-    h('p', {}, 'Een eerder geëxporteerd dossier lees je hier weer in, bijvoorbeeld in een andere browser. Bij een bewijsonderdeel dat je hier al hebt, wint de nieuwste versie. Wat je in een oefening of als „klaar” hebt ingevuld zit niet in het dossier en komt niet terug.'),
+    h('p', {}, 'Een eerder geëxporteerd dossier lees je hier weer in, bijvoorbeeld in een andere browser. Bij een resultaat dat je hier al hebt, wint de nieuwste versie. Wat je in een oefening of als „klaar” hebt ingevuld zit niet in het dossier en komt niet terug.'),
     h('label', { for: 'import-bestand' }, 'Kies je dossierbestand (.json)'), bestandVeld, importUitkomst);
 
   // ---------------------------------------------------------------- pagina
@@ -259,7 +247,7 @@ async function start() {
     wis(luks);
     luks.append(h('h2', { id: 'luks-kop' }, 'Per leeruitkomst'),
       h('ul', { class: 'dos-lijst' }, bouwLeeruitkomsten(luk, records()).map((l) => h('li', { 'data-luk': l.luk },
-        `Leeruitkomst ${l.luk}: `, statusChip(l.status, l.statusTekst), ` (${l.aantalCompleet} van ${l.totaal} bewijsonderdelen compleet${l.ontbreekt.length ? `; ontbreekt: ${l.ontbreekt.join(', ')}` : ''})`))));
+        `Leeruitkomst ${l.luk}: `, statusChip(l.status, l.statusTekst), ` (${l.aantalCompleet} van ${l.totaal} compleet${l.ontbreekt.length ? `; ontbreekt: ${l.ontbreekt.map((id) => titels[id] ?? id).join(', ')}` : ''})`))));
   }
 
   function tekenAlles() {

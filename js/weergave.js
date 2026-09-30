@@ -5,8 +5,10 @@ import { STATUS_TEKST } from './status.js';
 import { isAfgerond } from './afgerond.js';
 import { verbandRegel } from './verbandregel.js';
 
-/** De vijf stappen van elke taak, in vaste volgorde (TK-18). */
-export const STAPPEN = Object.freeze(['Waarom', 'Stof en oefenen', 'Toepassen', 'Klaar en volgende stap', 'Verdieping (optioneel)']);
+/** De vier stappen van elke taak, in vaste volgorde (TK-18, ADR B76). „Klaar" en de volgende stap sluiten Toepassen af;
+ *  de verdieping komt na „klaar" en is geen stap. */
+export { STAP_NAMEN as STAPPEN } from './voortgang.js';
+import { STAP_NAMEN as STAPPEN } from './voortgang.js';
 
 export const BEWAARMELDING = 'Bewaar je dossier: je werk staat alleen in deze browser. Ga naar het dossier om het te bewaren.';
 
@@ -65,8 +67,9 @@ export function oefenModel(taak, staat = {}) {
 }
 
 /**
- * Model van één taak met de vijf stappen in vaste volgorde (TK-18) en, bij stap 1, werkboeknummer, waarom,
- * richttijd en „klaar als" (TK-2). De oefenversie (stap 2) en het toepassen (stap 3) zijn twee aparte delen (TK-3).
+ * Model van één taak met de vier stappen in vaste volgorde (TK-18) en, bij stap 1, werkboeknummer, waarom,
+ * richttijd en „klaar als" (TK-2). De oefenversie (stap 3) en het toepassen (stap 4) zijn twee aparte delen (TK-3).
+ * De verdieping (TK-13) staat apart: ze verschijnt na „klaar" en telt niet als stap.
  */
 export function bouwTaakModel(taak, blok) {
   const verdieping = verdiepingBijTaak(blok, taak.id);
@@ -80,11 +83,12 @@ export function bouwTaakModel(taak, blok) {
     bewijsonderdeel: taak.bewijsonderdeel ?? null,
     stappen: [
       { nr: 1, naam: STAPPEN[0], nummer: taak.id, waarom: taak.waarom, richttijd: taak.richttijd, klaarAls: taak.klaarAls },
-      { nr: 2, naam: STAPPEN[1], stof: taak.stof, oefening: { opdracht: taak.oefening?.opdracht ?? null, velden: oefenVelden(taak) } },
-      { nr: 3, naam: STAPPEN[2], opdracht: taak.toepassing.opdracht, velden: taak.toepassing.velden, livevoorbeeld: taak.toepassing.livevoorbeeld ?? null },
-      { nr: 4, naam: STAPPEN[3], klaarAls: taak.klaarAls, volgendeStapVraag: 'Mijn volgende stap is …' },
-      { nr: 5, naam: STAPPEN[4], verdieping },
+      { nr: 2, naam: STAPPEN[1], stof: taak.stof },
+      { nr: 3, naam: STAPPEN[2], oefening: { opdracht: taak.oefening?.opdracht ?? null, velden: oefenVelden(taak) } },
+      { nr: 4, naam: STAPPEN[3], opdracht: taak.toepassing.opdracht, velden: taak.toepassing.velden, livevoorbeeld: taak.toepassing.livevoorbeeld ?? null,
+        klaarAls: taak.klaarAls, volgendeStapVraag: 'Mijn volgende stap is …' },
     ],
+    verdieping,
   };
 }
 

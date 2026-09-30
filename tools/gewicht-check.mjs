@@ -7,7 +7,8 @@
 //
 // Dynamische imports tellen alleen mee voor de pagina's die ze echt laden (ADR B69):
 //   // gewicht-alleen: <voorwaarde>   vlak boven de import: de import telt alleen mee als de eigen leerblokdata aan de voorwaarde
-//                                     voldoet (wissel, weergave, lb4ui of media; dezelfde voorwaarden als in js/leerblok.js)
+//                                     voldoet (wissel, weergave, lb4ui of media; dezelfde voorwaarden als in js/leerblok.js);
+//                                     `naklik` telt nooit mee: die module laadt pas na een klik (spel, kopieer naar A3)
 //   import(`./lb${n}.js`)             een sjabloon in het pad telt de modules van het eigen leerblok en van het leerblok van de
 //                                     Wissel (modulesVoor in js/checks/register.js); een pagina zonder leerblok telt ze allemaal
 // Gebruik: node tools/gewicht-check.mjs
@@ -40,6 +41,7 @@ export function paginaBestanden(root, paginaNaam) {
     if (naam === 'wissel') return Boolean(b.wissel) || (b.taken ?? []).some((t) => t.toepassing?.component === 'feedbacklog');
     if (naam === 'weergave') return (b.taken ?? []).some((t) => t.toepassing?.weergave);
     if (naam === 'media') return Boolean(b.media || b.kijktips);
+    if (naam === 'naklik') return false; // laadt pas na een klik van de student: geen eerste lading (ADR B81)
     if (naam === 'lb4ui') return (b.taken ?? []).some((t) => ['verbanden', 'starr'].includes(t.toepassing?.component));
     throw new Error(`gewicht-check: onbekende voorwaarde ${naam}`);
   };

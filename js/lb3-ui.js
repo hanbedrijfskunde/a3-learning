@@ -51,7 +51,7 @@ export function zoekvragenEl(store) {
   const regels = [1, 2, 3].map((n) => [n, typeof inhoud[`zoekvraag${n}`] === 'string' ? inhoud[`zoekvraag${n}`].trim() : '']).filter(([, t]) => t !== '');
   return h('div', { class: 'zoekvragen-hint' },
     regels.length === 0
-      ? h('p', { class: 'klein' }, 'Je hebt in leerblok 1 nog geen zoekvragen geschreven (EV-02). Kies bij een aanname toch alvast een zoekvraag; schrijf ze later in leerblok 1.')
+      ? h('p', { class: 'klein' }, 'Je hebt in leerblok 1 nog geen zoekvragen geschreven. Kies bij een aanname toch alvast een zoekvraag; schrijf ze later in leerblok 1.')
       : [h('p', { class: 'klein' }, 'Jouw zoekvragen uit leerblok 1, om een aanname aan te koppelen:'),
         h('ul', { class: 'klein' }, regels.map(([n, t]) => h('li', {}, `zoekvraag ${n}: ${t}`)))]);
 }

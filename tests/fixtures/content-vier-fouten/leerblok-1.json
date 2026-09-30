@@ -21,8 +21,7 @@
       },
       "klaarAls": {
         "tekst": "alle drie de delen concreet zijn en de waarde verder gaat dan alleen geld.",
-        "bron": "werkboek"
-      },
+        "bron": "werkboek", "criteria": [{"tekst": "alle drie de delen concreet zijn en de waarde verder gaat dan alleen geld.", "controles": []}]},
       "stof": {
         "bron": "werkboek",
         "opmerking": "Het format staat in werkboek 2.1, het voorbeeld (organisatie Y) in het kader bij 0:30 van het draaiboek. De uitleg van de termen (QA-5) is door de bouwer geschreven.",
@@ -360,8 +359,7 @@
       },
       "klaarAls": {
         "tekst": "je de drie C's kunt noemen, weet wat er niet op één A3 past, hebt opgeschreven wat je nog van de A3 wist en de aanleiding van je eigen vraagstuk hebt vastgelegd.",
-        "bron": "werkboek"
-      },
+        "bron": "werkboek", "criteria": [{"tekst": "je de drie C's kunt noemen, weet wat er niet op één A3 past, hebt opgeschreven wat je nog van de A3 wist en de aanleiding van je eigen vraagstuk hebt vastgelegd.", "controles": []}]},
       "stof": {
         "bron": "werkboek",
         "opmerking": "De acht vakken en de Lean Yellow Belt komen uit werkboek 1.1; de zin over een praatplaat en de uitleg van 3xC staan er niet en zijn door de bouwer geschreven.",
@@ -440,8 +438,7 @@
       },
       "klaarAls": {
         "tekst": "je de drie C's kunt noemen, weet wat er niet op één A3 past, hebt opgeschreven wat je nog van de A3 wist en de aanleiding van je eigen vraagstuk hebt vastgelegd.",
-        "bron": "werkboek"
-      },
+        "bron": "werkboek", "criteria": [{"tekst": "je de drie C's kunt noemen, weet wat er niet op één A3 past, hebt opgeschreven wat je nog van de A3 wist en de aanleiding van je eigen vraagstuk hebt vastgelegd.", "controles": []}]},
       "stof": {
         "bron": "werkboek",
         "opmerking": "De acht vakken en de Lean Yellow Belt komen uit werkboek 1.1; de zin over een praatplaat en de uitleg van 3xC staan er niet en zijn door de bouwer geschreven.",

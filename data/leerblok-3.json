@@ -3,7 +3,7 @@
   "leerblok": 3,
   "titel": "Het vraagstuk plaatsen",
   "richttijd": 45,
-  "eindigtMet": "Plaatsing met conclusie en onderzoeksvraag (EV-06, EV-07, EV-08)",
+  "eindigtMet": "Plaatsing met conclusie en onderzoeksvraag",
   "oefencasus": "Webshop X",
   "taken": [
     {
@@ -12,7 +12,7 @@
       "vorm": "Team",
       "richttijd": {"tekst":"20 min","minuten":20,"bron":"werkboek"},
       "waarom": {"tekst":"Je plaatst het vraagstuk ten opzichte van de mensen en partijen die ermee te maken hebben. Gebruik invloed en belang uit THEO SM week 3.","bron":"werkboek"},
-      "klaarAls": {"tekst":"de map op vel 1 staat, het vraagstuk in het midden staat en bij elke stakeholder de relatie met het vraagstuk staat.","bron":"werkboek"},
+      "klaarAls": {"tekst":"de map op vel 1 staat, het vraagstuk in het midden staat en bij elke stakeholder de relatie met het vraagstuk staat.","bron":"werkboek","criteria":[{"tekst":"de map op vel 1 staat","controles":[]},{"tekst":"het vraagstuk in het midden staat","controles":["vraagstuk-woorden"]},{"tekst":"bij elke stakeholder de relatie met het vraagstuk staat","controles":["stakeholders-aantal","stakeholder-velden"]}]},
       "stof": {
         "bron": "concept-auteur",
         "opmerking": "Uitleg door de bouwer geschreven; het werkboek geeft alleen de opdracht en de tabel.",
@@ -49,7 +49,7 @@
       "vorm": "Team",
       "richttijd": {"tekst":"20 min","minuten":20,"bron":"werkboek"},
       "waarom": {"tekst":"Het canvas laat zien wat de klant wil bereiken, wat hem hindert en wat hij zoekt. Zo kijk je vanuit de klant naar je vraagstuk en zie je welke pain (wat hem hindert) of gain (wat hij zoekt) erbij hoort.","bron":"concept-auteur"},
-      "klaarAls": {"tekst":"je bij het klantprofiel de klanttaken, pains en gains hebt ingevuld, bij de waardekaart wat de organisatie nu biedt, en van de pain of gain die bij je vraagstuk hoort hebt gezegd of het een feit of een aanname is.","bron":"concept-auteur"},
+      "klaarAls": {"tekst":"je bij het klantprofiel de klanttaken, pains en gains hebt ingevuld, bij de waardekaart wat de organisatie nu biedt, en van de pain of gain die bij je vraagstuk hoort hebt gezegd of het een feit of een aanname is.","bron":"concept-auteur","criteria":[{"tekst":"de klanttaken, pains en gains hebt ingevuld","controles":["klanttaak-ingevuld","pain-woorden","gain-woorden"]},{"tekst":"wat de organisatie nu biedt","controles":["aanbod-ingevuld"]},{"tekst":"of het een feit of een aanname is","controles":["pain-soort"]}]},
       "stof": {
         "bron": "concept-auteur",
         "opmerking": "Eigen samenvatting van de bouwer met de bronnen uit het LRD (LB-12).",
@@ -88,7 +88,7 @@
       "vorm": "Team",
       "richttijd": {"tekst":"20 min","minuten":20,"bron":"werkboek"},
       "waarom": {"tekst":"Het business model canvas laat zien hoe de organisatie waarde maakt. Door je vraagstuk erop te markeren zie je welke onderdelen van het bedrijf het raakt.","bron":"concept-auteur"},
-      "klaarAls": {"tekst":"je hebt aangevinkt welke bouwstenen worden geraakt, bij elke geraakte bouwsteen hebt opgeschreven wat er nu is en wat de rol van het vraagstuk is, en hebt gezegd welke bouwsteen het hardst wordt geraakt en welke andere kapitalen het vraagstuk raakt.","bron":"concept-auteur"},
+      "klaarAls": {"tekst":"je hebt aangevinkt welke bouwstenen worden geraakt, bij elke geraakte bouwsteen hebt opgeschreven wat er nu is en wat de rol van het vraagstuk is, en hebt gezegd welke bouwsteen het hardst wordt geraakt en welke andere kapitalen het vraagstuk raakt.","bron":"concept-auteur","criteria":[{"tekst":"je hebt aangevinkt welke bouwstenen worden geraakt","controles":["geraakt-gekozen"]},{"tekst":"wat er nu is en wat de rol van het vraagstuk is","controles":["rol-ingevuld"]},{"tekst":"welke bouwsteen het hardst wordt geraakt","controles":["hardst-gekozen","hardst-waarom"]},{"tekst":"welke andere kapitalen het vraagstuk raakt","controles":["kapitaal-niet-financieel"]}]},
       "stof": {
         "bron": "concept-auteur",
         "opmerking": "Uitleg door de bouwer geschreven; het werkboek geeft alleen de opdracht.",
@@ -126,7 +126,7 @@
       "vorm": "Team",
       "richttijd": {"tekst":"20 min","minuten":20,"bron":"werkboek"},
       "waarom": {"tekst":"Met het TOM-model zie je op welk niveau van de organisatie het vraagstuk speelt: strategisch, tactisch of operationeel.","bron":"werkboek"},
-      "klaarAls": {"tekst":"je bij de cellen waar het vraagstuk iets raakt hebt opgeschreven hoe, je hebt gekozen op welk niveau het vraagstuk vooral speelt en je in het register minstens drie kernbeweringen over VPC, BMC en TOM-model als feit of aanname hebt gelabeld.","bron":"concept-auteur"},
+      "klaarAls": {"tekst":"je bij de cellen waar het vraagstuk iets raakt hebt opgeschreven hoe, je hebt gekozen op welk niveau het vraagstuk vooral speelt en je in het register minstens drie kernbeweringen over VPC, BMC en TOM-model als feit of aanname hebt gelabeld.","bron":"concept-auteur","criteria":[{"tekst":"bij de cellen waar het vraagstuk iets raakt hebt opgeschreven hoe","controles":["tom-cellen"]},{"tekst":"hebt gekozen op welk niveau het vraagstuk vooral speelt","controles":["niveau-gekozen","niveau-waarom"]},{"tekst":"minstens drie kernbeweringen over VPC, BMC en TOM-model als feit of aanname hebt gelabeld","controles":["beweringen-gelabeld"]}]},
       "stof": {
         "bron": "concept-auteur",
         "opmerking": "Eigen samenvatting van de TOM³-indeling (LI-3, BR-3): geen zinnen uit het ongepubliceerde buildplan van Westmoreland BV (open punt A-1).",
@@ -165,7 +165,7 @@
       "vorm": "Team",
       "richttijd": {"tekst":"15 min","minuten":15,"bron":"werkboek"},
       "waarom": {"tekst":"Met de vier overzichten kun je zeggen waar je vraagstuk zit: ten opzichte van de mensen eromheen, de klant en de organisatie. Die eerste conclusies sturen je onderzoeksvraag.","bron":"concept-auteur"},
-      "klaarAls": {"tekst":"je bij de stakeholders, de klant en de organisatie een conclusie hebt geschreven die minstens één stakeholder uit je lijst noemt, en je in één zin hebt opgeschreven waar je vraagstuk zit.","bron":"concept-auteur"},
+      "klaarAls": {"tekst":"je bij de stakeholders, de klant en de organisatie een conclusie hebt geschreven die minstens één stakeholder uit je lijst noemt, en je in één zin hebt opgeschreven waar je vraagstuk zit.","bron":"concept-auteur","criteria":[{"tekst":"bij de stakeholders, de klant en de organisatie een conclusie hebt geschreven","controles":["concl-stakeholders","concl-klant","concl-organisatie"]},{"tekst":"die minstens één stakeholder uit je lijst noemt","controles":[]},{"tekst":"in één zin hebt opgeschreven waar je vraagstuk zit","controles":["conclusie-ingevuld"]}]},
       "stof": {
         "bron": "concept-auteur",
         "opmerking": "Uitleg door de bouwer geschreven; het werkboek geeft alleen de invulplekken.",
@@ -201,7 +201,7 @@
       "vorm": "Team",
       "richttijd": {"tekst":"10 min","minuten":10,"bron":"werkboek"},
       "waarom": {"tekst":"Je onderzoeksvraag was een eerste versie. Met wat je nu over stakeholders, klant en organisatie weet, maak je hem scherper voor de opdrachtgever.","bron":"concept-auteur"},
-      "klaarAls": {"tekst":"je een herziene onderzoeksvraag in het format hebt geschreven, hebt gezegd of het een feit of een aanname is, hebt gecontroleerd of pain, gain en waarde kloppen met je VPC, en van elk van de vier producten een foto hebt gemaakt.","bron":"concept-auteur"},
+      "klaarAls": {"tekst":"je een herziene onderzoeksvraag in het format hebt geschreven, hebt gezegd of het een feit of een aanname is, hebt gecontroleerd of pain, gain en waarde kloppen met je VPC, en van elk van de vier producten een foto hebt gemaakt.","bron":"concept-auteur","criteria":[{"tekst":"een herziene onderzoeksvraag in het format hebt geschreven","controles":["vraag-woorden","vraag-vraagteken"]},{"tekst":"hebt gezegd of het een feit of een aanname is","controles":["vraag-soort"]},{"tekst":"hebt gecontroleerd of pain, gain en waarde kloppen met je VPC","controles":["vpc-vergeleken"]},{"tekst":"van elk van de vier producten een foto hebt gemaakt","controles":["foto-vinkjes"]}]},
       "stof": {
         "bron": "concept-auteur",
         "opmerking": "Uitleg en de vinkjes voor de vier producten door de bouwer geschreven (LB-10).",

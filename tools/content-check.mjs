@@ -155,6 +155,19 @@ export function controleerFormaat(inhoud, bestand) {
       }
     }
 
+    // SX-5: de „klaar als" als checklist. Elk criterium is een letterlijk stuk van de regel (TK-2) en verwijst alleen naar
+    // controles van deze taak; zonder controles vinkt de student het zelf af.
+    if (isObject(taak.klaarAls)) {
+      const crit = taak.klaarAls.criteria;
+      const ids = new Set((taak.controles ?? []).map((c) => c.id));
+      if (!lijstGevuld(crit)) fout(wie, 'klaarAls mist criteria voor de checklist (SX-5)');
+      else for (const c of crit) {
+        if (!gevuld(c?.tekst) || !String(taak.klaarAls.tekst ?? '').includes(c.tekst)) fout(wie, `criterium „${c?.tekst}” staat niet letterlijk in de klaar als-regel (SX-5, TK-2)`);
+        if (!Array.isArray(c?.controles)) fout(wie, `criterium „${c?.tekst}” mist een lijst controles (SX-5)`);
+        else for (const id of c.controles) if (!ids.has(id)) fout(wie, `criterium „${c.tekst}” verwijst naar onbekende controle ${id} (SX-5)`);
+      }
+    }
+
     // SX-11: elk lang tekstvak van de toepassing heeft een zinstarter als placeholder, en die zinstarter zegt het
     // modelantwoord niet voor. Velden die een component vult (lijnen, markeringen, feedbackregels) tellen niet mee.
     const modelTekst = JSON.stringify(taak.modelantwoord ?? '').toLowerCase();

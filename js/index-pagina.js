@@ -1,11 +1,12 @@
 // Startpagina: startinvoer (ST-1), privacytekst (ST-2), de vier leerblokken (LB-1, TK-1) en „Wis alles" (ST-6).
 // Alleen DOM; de regels zitten in profiel.js en weergave.js. Toont bewust niets van de Wissel, verdieping,
 // „Mijn stand" of „kopieer naar A3" (ST-7).
-import { h, wis, statusChip, maakWisAlles } from './dom.js';
+import { h, wis, maakWisAlles, tekenA3Vak } from './dom.js';
 import { kiesOpslag, maakStore } from './store.js';
 import { leesProfiel, bewaarProfiel, beoordeelProfiel, zichtbareMeldingen } from './profiel.js';
 import { bouwIndexModel } from './weergave.js';
-import { leesRecords } from './afgerond.js';
+import { leesRecords, onderdeelTelt } from './afgerond.js';
+import { a3Stand } from './voortgang.js';
 
 const laad = async (pad) => (await fetch(new URL(pad, import.meta.url))).json();
 
@@ -17,21 +18,32 @@ async function start() {
   const alleIds = overzicht.leerblokken.flatMap((b) => b.bewijsonderdelen);
 
   const blokken = h('section', { id: 'blokken', 'aria-labelledby': 'blokken-kop' });
+  // SX-12: wat de student aan A3-vak 1 heeft opgebouwd, bovenaan; geen percentage (BW-4).
+  const a3 = h('section', { id: 'mijn-a3', 'aria-labelledby': 'mijn-a3-kop' });
   const teken = () => {
+    const model = bouwIndexModel(overzicht, leesRecords(store, alleIds));
+    const records = leesRecords(store, alleIds);
+    wis(a3);
+    // Pas als er werk is (ST-7: bij een eerste bezoek alleen alias, vraagstuk, waarom-zin en de vier leerblokken).
+    a3.hidden = !Object.values(records).some(Boolean);
+    a3.append(h('h2', { id: 'mijn-a3-kop' }, 'Zo staat je A3-vak 1'),
+      tekenA3Vak(h('div', { class: 'a3-vak' }), a3Stand(Object.fromEntries(model.map((b) => [b.nummer, b.afgerond])))));
     wis(blokken);
     blokken.append(
       h('h2', { id: 'blokken-kop' }, 'De vier leerblokken'),
       h('p', {}, 'Een aanbevolen volgorde, zonder slot: je kunt elk leerblok direct openen.'),
     );
     const lijst = h('ol', { class: 'leerblokken' });
-    for (const b of bouwIndexModel(overzicht, leesRecords(store, alleIds))) {
-      lijst.append(h('li', { class: 'kaart leerblok' },
-        h('h3', {}, h('a', { href: b.href }, `Leerblok ${b.nummer} · ${b.titel}`)),
-        h('p', { class: 'meta' }, `Richttijd: ${b.richttijdTekst}`),
-        b.aanbevolen ? h('p', { class: 'meta', 'data-aanbevolen': b.nummer }, `Aanbevolen: ${b.aanbevolen}`) : null,
-        h('p', {}, `Eindigt met: ${b.afgerondBewijs}`),
-        h('p', {}, statusChip(b.afgerond ? 'compleet' : 'nog niet', b.afgerondTekst),
-          ' ', b.onderdelen.map((o) => h('span', { class: 'onderdeel' }, `${o.id}: ${o.statusTekst}${o.voorlopig ? ' (voorlopig)' : ''} `)))));
+    for (const b of model) {
+      // Eén segment per resultaat van het leerblok; gevuld als het meetelt voor afronden (TK-16). Status als tekst erbij (TG-4).
+      const gevuld = b.onderdelen.filter((o) => onderdeelTelt(records[o.id])).length;
+      const meta = b.afgerond ? 'Afgerond' : gevuld === 0 ? 'Te doen' : `${gevuld} van ${b.onderdelen.length}`;
+      lijst.append(h('li', {}, h('a', { class: 'kaart kaart-tik leerblok', href: b.href },
+        h('span', { class: 'leerblok-kop' }, `Leerblok ${b.nummer} · ${b.titel}`),
+        h('span', { class: 'segmenten', role: 'img', 'aria-label': `${meta}: ${gevuld} van ${b.onderdelen.length} resultaten` },
+          b.onderdelen.map((o, i) => h('span', { class: `segment segment-${i < gevuld ? 'voltooid' : 'open'}` }))),
+        h('span', { class: 'meta' }, `${meta} · ${b.richttijdTekst.replace(/^(\d+) min/, '± $1 min')}${b.aanbevolen ? ` · aanbevolen: ${b.aanbevolen}` : ''}`),
+        h('span', { class: 'leerblok-oplevert' }, `Na dit blok heb je: ${b.afgerondBewijs.charAt(0).toLowerCase()}${b.afgerondBewijs.slice(1)}`))));
     }
     blokken.append(lijst);
   };
@@ -91,7 +103,7 @@ async function start() {
 
   const h1 = main.querySelector('h1');
   wis(main);
-  main.append(h1, start1, blokken, gegevens);
+  main.append(h1, a3, start1, blokken, gegevens);
   teken();
 }
 

@@ -3,7 +3,7 @@
   "leerblok": 1,
   "titel": "De A3 en je vraag",
   "richttijd": 45,
-  "eindigtMet": "Onderzoeksvraag met zoekvragen en modelkeuze (EV-01, EV-02)",
+  "eindigtMet": "Onderzoeksvraag met zoekvragen en modelkeuze",
   "oefencasus": "Webshop X",
   "taken": [
     {
@@ -17,8 +17,7 @@
       },
       "klaarAls": {
         "tekst": "je de drie C's kunt noemen, weet wat er niet op één A3 past, hebt opgeschreven wat je nog van de A3 wist en de aanleiding van je eigen vraagstuk hebt vastgelegd.",
-        "bron": "concept-auteur"
-      },
+        "bron": "concept-auteur", "criteria": [{"tekst": "je de drie C's kunt noemen", "controles": []}, {"tekst": "weet wat er niet op één A3 past", "controles": []}, {"tekst": "hebt opgeschreven wat je nog van de A3 wist", "controles": []}, {"tekst": "de aanleiding van je eigen vraagstuk hebt vastgelegd", "controles": ["aanleiding-woorden"]}]},
       "stof": {
         "bron": "concept-auteur",
         "opmerking": "De acht vakken en de Lean Yellow Belt komen uit werkboek 1.1; de zin over een praatplaat en de uitleg van 3xC staan er niet en zijn door de bouwer geschreven.",
@@ -74,8 +73,7 @@
       },
       "klaarAls": {
         "tekst": "alle drie de delen concreet zijn en de waarde verder gaat dan alleen geld.",
-        "bron": "werkboek"
-      },
+        "bron": "werkboek", "criteria": [{"tekst": "alle drie de delen concreet zijn", "controles": ["gebruiker-woorden", "pain-woorden", "waarde-woorden"]}, {"tekst": "de waarde verder gaat dan alleen geld", "controles": ["kapitaal-niet-financieel"]}]},
       "stof": {
         "bron": "concept-auteur",
         "opmerking": "Het format staat in werkboek 2.1, het voorbeeld (organisatie Y) in het kader bij 0:30 van het draaiboek. De uitleg van de termen (QA-5) is door de bouwer geschreven.",
@@ -139,8 +137,7 @@
       },
       "klaarAls": {
         "tekst": "je drie zoekvragen hebt, elk vanuit een ander frame, één model hebt gekozen met een zin waarom, en hebt opgeschreven wat je mist als je maar één frame kiest.",
-        "bron": "concept-auteur"
-      },
+        "bron": "concept-auteur", "criteria": [{"tekst": "je drie zoekvragen hebt", "controles": ["zoekvraag-1-vraagteken", "zoekvraag-2-vraagteken", "zoekvraag-3-vraagteken"]}, {"tekst": "elk vanuit een ander frame", "controles": ["frame-1", "frame-2", "frame-3", "frames-verschillend"]}, {"tekst": "één model hebt gekozen met een zin waarom", "controles": ["model-een", "verantwoording-zin"]}, {"tekst": "hebt opgeschreven wat je mist als je maar één frame kiest", "controles": ["mis-ingevuld"]}]},
       "stof": {
         "bron": "concept-auteur",
         "opmerking": "De frames en de modellen zijn letterlijk uit werkboek 2.2; de uitleg van het woord frame is door de bouwer geschreven.",

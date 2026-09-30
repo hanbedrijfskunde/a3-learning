@@ -53,7 +53,7 @@ export async function vorigeKeerSectie({ store, opslag, overzicht, leerblok, nu 
       return;
     }
     const r = importeerDossier({ store, opslag }, u.dossier);
-    store.setMeta(IMPORT_MELDING, `Ingelezen: ${r.overgenomen.length} bewijsonderdelen overgenomen, ${r.gelijk.length} al gelijk, ${r.behouden.length} behouden omdat je huidige versie nieuwer is.`);
+    store.setMeta(IMPORT_MELDING, `Ingelezen: ${r.overgenomen.length} resultaten overgenomen, ${r.gelijk.length} al gelijk, ${r.behouden.length} behouden omdat je huidige versie nieuwer is.`);
     naImport();
   }
   function tekenDossier() {
@@ -63,13 +63,13 @@ export async function vorigeKeerSectie({ store, opslag, overzicht, leerblok, nu 
     const melding = store.getMeta(IMPORT_MELDING);
     if (melding) { dossierGebied.append(h('p', { class: 'compleet', role: 'status' }, melding)); store.verwijderMeta(IMPORT_MELDING); }
     if (!c.importAanbod) {
-      dossierGebied.append(h('p', {}, `Je dossier is aanwezig: alle ${c.verwacht} bewijsonderdelen van eerdere leerblokken staan in deze browser.`));
+      dossierGebied.append(h('p', {}, `Je dossier is aanwezig: alle ${c.verwacht} resultaten van eerdere leerblokken staan in deze browser.`));
       return;
     }
     dossierGebied.append(
       h('p', { class: c.aanwezig ? '' : 'fout', role: c.aanwezig ? undefined : 'alert' },
-        c.aanwezig ? 'In deze browser ontbreken bewijsonderdelen van eerdere leerblokken:' : 'Er staat geen dossier in deze browser. Heb je eerder gewerkt en je dossier bewaard? Lees het hier weer in. Onderdelen die ontbreken:'),
-      h('ul', { class: 'tb-ontbrekend' }, c.ontbrekend.map((o) => h('li', { 'data-ev': o.id }, `${o.id} · ${o.titel} (leerblok ${o.leerblok})`))),
+        c.aanwezig ? 'In deze browser ontbreken resultaten van eerdere leerblokken:' : 'Er staat geen dossier in deze browser. Heb je eerder gewerkt en je dossier bewaard? Lees het hier weer in. Onderdelen die ontbreken:'),
+      h('ul', { class: 'tb-ontbrekend' }, c.ontbrekend.map((o) => h('li', { 'data-ev': o.id }, `${o.titel} (leerblok ${o.leerblok})`))),
       h('div', { class: 'veld' },
         h('label', { for: 'tb-import-bestand' }, 'Kies je dossierbestand (.json)'),
         h('input', { type: 'file', id: 'tb-import-bestand', accept: '.json,application/json', onchange: async (e) => {
@@ -113,7 +113,7 @@ export async function vorigeKeerSectie({ store, opslag, overzicht, leerblok, nu 
       k.samenvatting ? h('div', { class: 'tb-samenvatting' }, h('h5', {}, `Samenvatting van leerblok ${m.vorig}`), h('p', {}, k.samenvatting)) : null,
       h('h5', {}, `Jouw bewijsstukken uit leerblok ${m.vorig}`),
       k.eigenBewijs.map((b) => h('div', { class: 'tb-bewijs', 'data-ev': b.id },
-        h('strong', {}, `${b.id} · ${b.titel}`),
+        h('strong', {}, b.titel),
         b.velden.length
           ? h('dl', { class: 'dos-velden' }, b.velden.flatMap((v) => [h('dt', {}, v.label), h('dd', {}, v.waarde)]))
           : h('p', { class: 'klein' }, b.heeftRecord ? 'Dit bewijsstuk is nog leeg.' : 'Hier heb je in deze browser nog niets van.')))));

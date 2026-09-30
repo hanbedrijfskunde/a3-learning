@@ -54,7 +54,7 @@ test('PF-5: elk leerblok toont zijn richttijd van 45 min (4 leerblokken); de tij
   const overzicht = JSON.parse(lees('data/leerblokken.json'));
   assert.equal(overzicht.leerblokken.length, 4);
   for (const b of overzicht.leerblokken) assert.equal(b.richttijd, 45, `leerblok ${b.nummer}`);
-  assert.match(lees('js/leerblok.js'), /Richttijd: \$\{blok\.richttijd\} min/);
+  assert.match(lees('js/leerblok.js'), /± \$\{blok\.richttijd\} min/); // DESIGN §8: „± 45 min”, geen woord „richttijd”
   assert.ok(!existsSync(resolve(root, 'js/leerblok-stub.js')), 'leerblok 3 gebruikt sinds fase 10 leerblok.js');
 });
 

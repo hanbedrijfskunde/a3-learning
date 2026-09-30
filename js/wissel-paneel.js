@@ -121,7 +121,7 @@ export function bouwWisselPaneel({ wissel, alias = '', metTeamactie = false, bij
   }
   function tekenStatus() {
     wis(statusRegel);
-    if (leesStatus) { const s = leesStatus(); statusRegel.append('Status van dit bewijsonderdeel (EV-09): ', statusChip(s.status, s.statusTekst)); }
+    if (leesStatus) { const s = leesStatus(); statusRegel.append('Status van je feedback: ', statusChip(s.status, s.statusTekst)); }
   }
   function regelEl(r) {
     const van = r.richting === 'ontvangen' ? `Ontvangen van je ${r.rol}` : `Gegeven aan je ${r.rol}`;

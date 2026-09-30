@@ -107,6 +107,7 @@ export function bouwVideo({ video, met = (t) => t }) {
 export async function laadSpel({ spel, met = (t) => t }) {
   const [data, { bouwSpel }] = await Promise.all([
     fetch(spel.bestand).then((r) => { if (!r.ok) throw new Error(`${spel.bestand}: ${r.status}`); return r.json(); }),
+    // gewicht-alleen: naklik
     import('./spel.js'),
   ]);
   return bouwSpel({ spel: data, met });

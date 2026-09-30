@@ -3,7 +3,7 @@
   "leerblok": 4,
   "titel": "Verbinden en reflecteren",
   "richttijd": 45,
-  "eindigtMet": "Synthese met feedback en reflectie, en het dossier (EV-11, EV-09, EV-10)",
+  "eindigtMet": "Synthese met feedback en reflectie, en het dossier",
   "oefencasus": "Webshop X",
   "taken": [
     {
@@ -21,8 +21,7 @@
       },
       "klaarAls": {
         "tekst": "je minstens zes verbanden hebt getrokken met bij elk een zin waarom, elk kapitaal hebt gemarkeerd, een spanning met een stakeholder hebt benoemd en je synthese en de drie antwoorden hebt geschreven.",
-        "bron": "concept-auteur"
-      },
+        "bron": "concept-auteur", "criteria": [{"tekst": "minstens zes verbanden hebt getrokken met bij elk een zin waarom", "controles": ["verbanden-aanwezig", "verbanden-zinnen", "verbanden-aantal"]}, {"tekst": "elk kapitaal hebt gemarkeerd", "controles": ["kapitalen-gemarkeerd"]}, {"tekst": "een spanning met een stakeholder hebt benoemd", "controles": ["spanning-stakeholder"]}, {"tekst": "je synthese en de drie antwoorden hebt geschreven", "controles": ["synthese-alinea", "niet-zien"]}]},
       "stof": {
         "bron": "concept-auteur",
         "opmerking": "Taak 9.4 staat niet in het werkboek. De uitleg is door de bouwer geschreven uit LRD 6.9 en wacht op akkoord van de auteur.",
@@ -296,8 +295,7 @@
       },
       "klaarAls": {
         "tekst": "je feedback hebt gekregen én gegeven, en hebt opgeschreven wat je met de ontvangen feedback doet.",
-        "bron": "concept-auteur"
-      },
+        "bron": "concept-auteur", "criteria": [{"tekst": "je feedback hebt gekregen én gegeven", "controles": ["feedback-gegeven", "zie-mis-vraag"]}, {"tekst": "hebt opgeschreven wat je met de ontvangen feedback doet", "controles": ["actie-met-status"]}]},
       "stof": {
         "bron": "concept-auteur",
         "opmerking": "De drie zinsdelen (ik zie, ik mis, ik vraag me af) staan in werkboek 6.2; de uitleg van de Wissel via het klembord is door de bouwer geschreven.",
@@ -409,11 +407,10 @@
       },
       "klaarAls": {
         "tekst": "alle vijf de delen van je STARR zijn ingevuld, je een eigen gedragskeuze hebt gekozen en je volgende stap is opgeschreven.",
-        "bron": "concept-auteur"
-      },
+        "bron": "concept-auteur", "criteria": [{"tekst": "alle vijf de delen van je STARR zijn ingevuld", "controles": ["starr-delen"]}, {"tekst": "je een eigen gedragskeuze hebt gekozen", "controles": ["gedrag-gekozen"]}, {"tekst": "je volgende stap is opgeschreven", "controles": ["volgende-stap"]}]},
       "stof": {
         "bron": "concept-auteur",
-        "opmerking": "De STARR-reflectie staat niet in het werkboek. De uitleg is door de bouwer geschreven uit LRD 6.1 (EV-10) en wacht op akkoord van de auteur.",
+        "opmerking": "De STARR-reflectie staat niet in het werkboek. De uitleg is door de bouwer geschreven uit LRD 6.1 en wacht op akkoord van de auteur.",
         "alineas": [
           "STARR staat voor situatie, taak, actie, resultaat en reflectie. Situatie: waar en wanneer speelde het? Taak: wat moest jij doen? Actie: wat deed jij, in de ik-vorm en zo concreet dat een ander het kan zien? Resultaat: wat gebeurde er daardoor? Reflectie: wat leer je over je eigen handelen en wat doe je een volgende keer anders?",
           "Kies bij de reflectie een gedragskeuze uit de lijst die jouw actie het best beschrijft. Je kunt je STARR koppelen aan een regel uit je feedbacklog van taak 6.2; dat is niet verplicht. Sluit af met een volgende stap: één ding dat je de volgende keer anders doet."

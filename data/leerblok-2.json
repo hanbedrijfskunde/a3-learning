@@ -3,7 +3,7 @@
   "leerblok": 2,
   "titel": "Zoeken en beoordelen",
   "richttijd": 45,
-  "eindigtMet": "Een beoordeelde bron in APA (EV-03, EV-04, EV-05)",
+  "eindigtMet": "Een beoordeelde bron in APA",
   "oefencasus": "Webshop X",
   "taken": [
     {
@@ -21,8 +21,7 @@
       },
       "klaarAls": {
         "tekst": "je van één zoekvraag uit 2.2 de kernbegrippen hebt gehaald en bij elk begrip minstens één synoniem en één Engelse term hebt opgeschreven.",
-        "bron": "concept-auteur"
-      },
+        "bron": "concept-auteur", "criteria": [{"tekst": "je van één zoekvraag uit 2.2 de kernbegrippen hebt gehaald", "controles": []}, {"tekst": "bij elk begrip minstens één synoniem en één Engelse term hebt opgeschreven", "controles": ["termen-per-begrip"]}]},
       "stof": {
         "bron": "concept-auteur",
         "opmerking": "Het werkboek geeft bij 3.1 alleen de opdracht en de tabel; de uitleg over kernbegrippen en de verwijzing naar Mayer (2004) zijn door de bouwer geschreven.",
@@ -213,8 +212,7 @@
       },
       "klaarAls": {
         "tekst": "je met route A een zoekstring met minstens één zoekoperator hebt, of met route B een prompt zonder namen uit je „niet noemen”-lijst, en één gevonden bron hebt opgeschreven die je zelf hebt geopend.",
-        "bron": "concept-auteur"
-      },
+        "bron": "concept-auteur", "criteria": [{"tekst": "met route A een zoekstring met minstens één zoekoperator hebt, of met route B een prompt zonder namen uit je „niet noemen”-lijst", "controles": ["route-gekozen", "zoekstring-operator", "tool-gekozen", "prompt-zonder-verboden"]}, {"tekst": "één gevonden bron hebt opgeschreven die je zelf hebt geopend", "controles": ["bron-gevonden"]}]},
       "stof": {
         "bron": "concept-auteur",
         "opmerking": "De teksten over route A en route B en de waarschuwing komen letterlijk uit werkboek 3.2. Het voorbeeld van een zoekstring en de verwijzing naar Hattie en Timperley (2007) zijn door de bouwer geschreven.",
@@ -538,8 +536,7 @@
       },
       "klaarAls": {
         "tekst": "je van één bron de vijf AAOCC-oordelen met een zin toelichting hebt, bij een AI-bron beide controles hebt gedaan, een besluit hebt genomen en de bron in APA hebt opgeschreven.",
-        "bron": "concept-auteur"
-      },
+        "bron": "concept-auteur", "criteria": [{"tekst": "de vijf AAOCC-oordelen met een zin toelichting hebt", "controles": ["bron-oordelen", "bron-toelichting"]}, {"tekst": "bij een AI-bron beide controles hebt gedaan", "controles": ["bron-verificatie"]}, {"tekst": "een besluit hebt genomen", "controles": ["bron-besluit"]}, {"tekst": "de bron in APA hebt opgeschreven", "controles": ["bron-apa"]}]},
       "stof": {
         "bron": "concept-auteur",
         "opmerking": "De vijf criteria met hun vragen, de oordelen (+, ?, –) en de twee AI-controles komen uit werkboek 4.1. De uitleg van APA en de verwijzingen naar de Publication manual en naar Roediger en Karpicke (2006) zijn door de bouwer geschreven.",
@@ -1417,8 +1414,7 @@
       },
       "klaarAls": {
         "tekst": "je een kant hebt gekozen en in minstens twee zinnen hebt uitgelegd waarom.",
-        "bron": "concept-auteur"
-      },
+        "bron": "concept-auteur", "criteria": [{"tekst": "je een kant hebt gekozen", "controles": ["kant-een"]}, {"tekst": "in minstens twee zinnen hebt uitgelegd waarom", "controles": ["argument-zinnen"]}]},
       "stof": {
         "bron": "concept-auteur",
         "opmerking": "Het werkboek geeft bij 4.2 alleen de stelling, de keuze en het veld voor het argument; de uitleg is door de bouwer geschreven.",

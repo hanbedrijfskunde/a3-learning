@@ -1,6 +1,6 @@
-// Leerblokpagina: bouwt de pagina uit data/leerblok-N.json met het vaste ritme van vijf stappen per taak (TK-18).
+// Leerblokpagina: bouwt de pagina uit data/leerblok-N.json met het vaste ritme van vier stappen per taak (TK-18, ADR B76).
 // Alleen DOM. Controles, opslag, oefenregels en de afgerond-regel zitten in sessie.js, weergave.js en afgerond.js.
-import { h, wis, statusChip, bouwVelden } from './dom.js';
+import { h, wis, statusChip, bouwVelden, tekenA3Vak } from './dom.js';
 import { kiesOpslag, maakStore } from './store.js';
 import { maakSessie, volgendeStapOk } from './sessie.js';
 import { bouwTaakModel, isIngevuld } from './weergave.js';
@@ -12,6 +12,8 @@ import { metVerwijzingen } from './verwijzing.js';
 import { laadBronnen, maakIndex } from './bronnen.js';
 import { vorigeKeerSectie } from './terugblik-pagina.js'; // fase 7: TP-11
 import { normaliseerBlok } from './blok.js';
+import { klaarAlsLijst, stapStand, segmentLabel, a3Stand } from './voortgang.js'; // fase 17: SX-4, SX-5, SX-12
+import { isAfgerond, leesRecords } from './afgerond.js';
 
 const laad = async (pad) => (await fetch(new URL(pad, import.meta.url))).json();
 const laadBlok = async (pad) => normaliseerBlok(await laad(pad)); // reeksen velden uitschrijven
@@ -20,6 +22,8 @@ const laadBronIndex = () => laadBronnen((u) => fetch(new URL(`../${u}`, import.m
   .then((bestanden) => maakIndex(bestanden.flatMap((b) => b.bronnen ?? []))).catch(() => new Map());
 const LB4_COMPONENTEN = ['verbanden', 'starr']; // taken met een eigen scherm in lb4-ui.js
 const BEWAAR_NA_MS = 500; // bewaren na de laatste toetsaanslag; de controles zelf lopen direct
+const CHECKLIST_NA_MS = 600; // de „klaar als"-checklist vinkt mee na 600 ms zonder typen (SX-5)
+const BEVESTIG_MS = 1500; // kort bevestigingsmoment na „klaar" (DESIGN §7.1), geen modaal venster
 
 /** Het modelantwoord als lijst van veld en antwoord. */
 function modelantwoordEl(model, velden) {
@@ -72,6 +76,14 @@ async function start() {
   wis(main);
 
   const taken = new Map(); // id → { leesInhoud, toon }
+  const bevestiging = h('p', { class: 'bevestig', role: 'status', hidden: true });
+  let bevestigTimer;
+  function bevestig(tekst) {
+    bevestiging.textContent = tekst;
+    bevestiging.hidden = false;
+    clearTimeout(bevestigTimer);
+    bevestigTimer = setTimeout(() => { bevestiging.hidden = true; }, BEVESTIG_MS);
+  }
   const foutGebied = h('p', { class: 'fout', role: 'alert', hidden: true });
   const afsluitStatus = h('div', { id: 'afsluit-status' });
   const herinneringGebied = h('div', { id: 'bewaarherinnering' }); // DS-2: na elke 10 wijzigingen
@@ -104,24 +116,33 @@ async function start() {
 
   // ---------------------------------------------------------------- een taak
 
-  function taakArtikel(taak) {
+  function taakArtikel(taak, taakNr) {
     const id = taak.id;
     const model = bouwTaakModel(taak, blok);
-    const [s1, s2, s3, s4, s5] = model.stappen;
-    const stap = (s, ...kinderen) => h('section', { class: 'stap', 'data-stap': s.nr, id: `stap-${id}-${s.nr}` },
-      h('h3', {}, `${s.nr} · ${s.naam}`), kinderen);
+    const [s1, s2, s3, s4] = model.stappen;
+    const stapKop = (s) => h('h3', { id: `stapkop-${id}-${s.nr}`, tabindex: '-1' }, `${s.nr} · ${s.naam}`);
+    const stap = (s, ...kinderen) => h('section', { class: 'stap', 'data-stap': s.nr, id: `stap-${id}-${s.nr}`, 'aria-labelledby': `stapkop-${id}-${s.nr}` },
+      stapKop(s), kinderen);
 
     // stap 1: waarom, richttijd, klaar als (TK-2)
     const stap1 = stap(s1,
       h('p', { class: 'waarom' }, h('strong', {}, 'Waarom'), ' ', met(s1.waarom.tekst)),
       h('p', { class: 'klaar' }, h('strong', {}, 'Klaar als'), ' ', met(s1.klaarAls.tekst)));
 
-    // stap 2: stof en de oefenversie (TK-3, TK-5, TK-6, TK-7)
-    const bijOefening = () => toonModel(sessie.zetOefening(id, oefVelden.lees()));
+    // stap 2: de stof
+    const stof = h('div', { class: 'stof' },
+      s2.stof.alineas.map((a) => h('p', {}, met(a))),
+      s2.stof.format ? h('p', { class: 'format' }, s2.stof.format) : null);
+    // Het format hoort bij de tweede alinea: zet het na de eerste alinea.
+    if (s2.stof.format) stof.insertBefore(stof.lastChild, stof.children[1] ?? null);
+    const stap2 = stap(s2, stof);
+
+    // stap 3: de oefenversie (TK-3, TK-5, TK-6, TK-7)
+    const bijOefening = () => { toonModel(sessie.zetOefening(id, oefVelden.lees())); tekenVoortgang(); };
     // Een oefening met component `verbanden` (taak 9.4) heeft een eigen kaart en toont het modelvoorbeeld pas na een getrokken lijn (VB-2).
     const oefVelden = taak.oefening.component === 'verbanden'
-      ? lb4Ui.bouwVerbandenOefening({ taak, velden: s2.oefening.velden, waarden: sessie.oefening(id).invoer, bijWijziging: bijOefening })
-      : bouwVelden(s2.oefening.velden, `oef-${id}`, sessie.oefening(id).invoer, bijOefening);
+      ? lb4Ui.bouwVerbandenOefening({ taak, velden: s3.oefening.velden, waarden: sessie.oefening(id).invoer, bijWijziging: bijOefening })
+      : bouwVelden(s3.oefening.velden, `oef-${id}`, sessie.oefening(id).invoer, bijOefening);
     const modelGebied = h('div', { class: 'model', 'aria-live': 'polite' });
     const toonModel = (m) => {
       wis(modelGebied);
@@ -135,6 +156,7 @@ async function start() {
         h('button', { type: 'button', class: 'knop', 'data-actie': 'opnieuw', onclick: () => {
           oefVelden.zet({});
           toonModel(sessie.herhaalOefening(id));
+          tekenVoortgang();
         } }, 'Opnieuw oefenen'),
         h('button', { type: 'button', class: 'knop', 'data-actie': 'overslaan', onclick: () => tekenOverslaan(sessie.zetOverslaan(id, true)) }, 'Ik ken dit al')),
       modelGebied);
@@ -145,31 +167,47 @@ async function start() {
       veldGebied.hidden = m.overgeslagen;
       overslaanGebied.hidden = !m.overgeslagen;
       if (!m.overgeslagen) toonModel(m);
+      tekenVoortgang();
     }
     const oefening = h('div', { class: 'oefening', id: `oefening-${id}` },
-      h('h4', {}, taak.bewijsonderdeel && blok.oefencasus ? `Oefenen op de oefencasus (${blok.oefencasus})` : 'Oefenen'),
-      s2.oefening.opdracht ? h('p', {}, met(s2.oefening.opdracht.tekst)) : null,
+      h('h4', {}, taak.bewijsonderdeel && blok.oefencasus ? `Oefencasus · ${blok.oefencasus}` : 'Oefenen'),
+      s3.oefening.opdracht ? h('p', {}, met(s3.oefening.opdracht.tekst)) : null,
       veldGebied, overslaanGebied);
-    const stof = h('div', { class: 'stof' },
-      s2.stof.alineas.map((a) => h('p', {}, met(a))),
-      s2.stof.format ? h('p', { class: 'format' }, s2.stof.format) : null);
-    // Het format hoort bij de tweede alinea: zet het na de eerste alinea.
-    if (s2.stof.format) stof.insertBefore(stof.lastChild, stof.children[1] ?? null);
-    const stap2 = stap(s2, stof, oefening);
-    const m0 = sessie.oefening(id);
-    toonModel(m0);
-    tekenOverslaan(m0);
+    const stap3 = stap(s3, oefening);
 
-    // stap 3: toepassen op het eigen vraagstuk (bewijs), met live controles (BW-1, BW-2, BW-6, BW-7)
+    // stap 4: toepassen op het eigen vraagstuk (bewijs), met live controles (BW-1, BW-2, BW-6, BW-7), de „klaar als" als
+    // checklist (SX-5), en tot slot klaar en de volgende stap (TK-8, TK-9, TK-10)
     const uitkomst = h('div', { class: 'uitkomst', id: `uitkomst-${id}` });
-    const voorbeeld = s3.livevoorbeeld ? h('p', { class: 'voorbeeld', id: `voorbeeld-${id}`, 'aria-label': 'Jouw vraag, live samengesteld' }) : null;
-    const stapVeld = h('input', { type: 'text', id: `volgende-${id}`, autocomplete: 'off' });
+    const voorbeeld = s4.livevoorbeeld ? h('p', { class: 'voorbeeld', id: `voorbeeld-${id}`, 'aria-label': 'Jouw vraag, live samengesteld' }) : null;
+    const stapVeld = h('input', { type: 'text', id: `volgende-${id}`, autocomplete: 'off', placeholder: 'Ik ga nu …' });
     const klaarKnop = h('button', { type: 'button', class: 'knop knop-accent', id: `klaar-${id}`, hidden: true, onclick: () => {
       bewaarNu(id);
-      if (sessie.markeerKlaar(id)) tekenKlaar();
+      if (sessie.markeerKlaar(id)) { tekenKlaar(); bevestig(`Opgeslagen in je dossier ✓ Taak ${id} is klaar.`); }
     } }, 'Klaar');
     const klaarBericht = h('p', { class: 'klaar-bericht', role: 'status' });
-    const verdiepingKop = h('section', { class: 'stap', 'data-stap': s5.nr, id: `stap-${id}-5`, hidden: true });
+    const verdiepingKop = h('section', { class: 'verdieping', id: `verdieping-sectie-${id}`, hidden: true });
+    const checklist = h('ul', { class: 'klaar-lijst', id: `klaarlijst-${id}` });
+    const zelfSleutel = `klaarals:${id}`;
+    let laatsteUitkomsten = [];
+    function tekenChecklist() {
+      const zelf = store.getMeta(zelfSleutel) ?? [];
+      wis(checklist);
+      klaarAlsLijst(taak, laatsteUitkomsten, zelf).forEach((c, i) => {
+        if (c.zelf) {
+          const vak = h('input', { type: 'checkbox', id: `klaarals-${id}-${i}`, onchange: () => {
+            const nu = new Set(store.getMeta(zelfSleutel) ?? []);
+            if (vak.checked) nu.add(i); else nu.delete(i);
+            store.setMeta(zelfSleutel, [...nu].sort());
+          } });
+          vak.checked = c.afgevinkt;
+          checklist.append(h('li', { class: 'klaar-item klaar-zelf' }, vak, h('label', { for: `klaarals-${id}-${i}` }, c.tekst)));
+        } else {
+          checklist.append(h('li', { class: `klaar-item ${c.afgevinkt ? 'klaar-ja' : 'klaar-nee'}` },
+            h('span', { class: 'vink', 'aria-hidden': 'true' }, c.afgevinkt ? '✓' : ''),
+            h('span', {}, c.tekst), h('span', { class: 'sr-only' }, c.afgevinkt ? ' (gehaald)' : ' (nog niet gehaald)')));
+        }
+      });
+    }
 
     const lees = () => {
       const inhoud = toe.lees();
@@ -177,6 +215,7 @@ async function start() {
       if (volgende !== '') inhoud.volgendeStap = stapVeld.value;
       return inhoud;
     };
+    let checklistTimer;
     function toonResultaat() {
       const inhoud = lees();
       const b = sessie.beoordeel(id, inhoud);
@@ -189,13 +228,16 @@ async function start() {
         if (b.modelLink) uitkomst.append(h('p', {}, h('a', { href: b.modelLink }, 'Bekijk de oefening op de oefencasus'), ' (het modelantwoord verschijnt nadat je zelf een poging hebt gedaan).'));
         if (b.compleetMelding) uitkomst.append(h('p', { class: 'compleet' }, b.compleetMelding));
       }
-      if (voorbeeld) voorbeeld.textContent = VOORBEELDEN[s3.livevoorbeeld](inhoud);
+      // SX-5: de checklist vinkt mee na 600 ms zonder typen
+      clearTimeout(checklistTimer);
+      checklistTimer = setTimeout(() => { laatsteUitkomsten = b.uitkomsten; tekenChecklist(); }, CHECKLIST_NA_MS);
+      if (voorbeeld) voorbeeld.textContent = VOORBEELDEN[s4.livevoorbeeld](inhoud);
       klaarKnop.hidden = !b.klaarMogelijk || sessie.isKlaar(id);
       opnieuwGebied.hidden = !sessie.kanOpnieuw(id);
-      stap4Wacht.hidden = b.klaarMogelijk;
-      stap4Inhoud.hidden = !b.klaarMogelijk;
+      klaarWacht.hidden = b.klaarMogelijk;
       const zin = stapVeld.value.trim();
       stapHint.textContent = zin && !volgendeStapOk(zin) ? 'Schrijf minstens drie woorden.' : '';
+      tekenVoortgang();
     }
     const bijToepassing = () => { toonResultaat(); plan(id); };
     // Een toepassing met component `feedbacklog` (EV-09) is de Wissel zelf; alles wat de Wissel wijzigt, bewaart hij direct.
@@ -205,11 +247,11 @@ async function start() {
     };
     // Een taak met `toepassing.weergave` (leerblok 2: tabel, route, promptgenerator, bronlog) legt de velden anders neer.
     const gewoneVelden = () => (taak.toepassing.weergave
-      ? bouwWeergave(s3.velden, `toe-${id}`, sessie.leesToepassing(id), bijToepassing, taak.toepassing.weergave,
+      ? bouwWeergave(s4.velden, `toe-${id}`, sessie.leesToepassing(id), bijToepassing, taak.toepassing.weergave,
         { taakId: id, store, leesToepassing: (t) => sessie.leesToepassing(t) })
-      : bouwVelden(s3.velden, `toe-${id}`, sessie.leesToepassing(id), bijToepassing));
+      : bouwVelden(s4.velden, `toe-${id}`, sessie.leesToepassing(id), bijToepassing));
     // Leerblok 4: de verbanden-kaart (9.4) en het STARR-sjabloon (6.3) hebben een eigen scherm in lb4-ui.js.
-    const lb4Scherm = (bouw) => bouw({ velden: s3.velden, waarden: sessie.leesToepassing(id), bijWijziging: bijToepassing, store, voorvoegsel: `toe-${id}` });
+    const lb4Scherm = (bouw) => bouw({ velden: s4.velden, waarden: sessie.leesToepassing(id), bijWijziging: bijToepassing, store, voorvoegsel: `toe-${id}` });
     const toe = { feedbacklog, verbanden: () => lb4Scherm(lb4Ui.bouwVerbandenToepassing), starr: () => lb4Scherm(lb4Ui.bouwStarr) }[taak.toepassing.component]?.() ?? gewoneVelden();
     stapVeld.addEventListener('input', bijToepassing);
     stapVeld.value = sessie.leesToepassing(id).volgendeStap ?? '';
@@ -217,7 +259,7 @@ async function start() {
     // Voorlopig vraagstuk (ST-3, ST-4): een voorlopig bewijsonderdeel kan met één klik opnieuw, de oude versie blijft in het dossier (ST-5).
     const opnieuwMelding = h('p', { class: 'klein', role: 'status' });
     const opnieuwGebied = h('div', { class: 'voorlopig-opnieuw', id: `opnieuw-${id}`, hidden: true },
-      h('p', {}, 'Dit bewijs heeft het label voorlopig, omdat je vraagstuk nog niet scherp was. Is je vraagstuk nu afgebakend? Werk het dan eerst bij op de startpagina en doe dit onderdeel opnieuw. Het veld wordt leeg; je voorlopige versie blijft bewaard en staat naast de nieuwe in je dossier.'),
+      h('p', {}, 'Dit resultaat heeft het label voorlopig, omdat je vraagstuk nog niet scherp was. Is je vraagstuk nu afgebakend? Werk het dan eerst bij op de startpagina en doe dit onderdeel opnieuw. Het veld wordt leeg; je voorlopige versie blijft bewaard en staat naast de nieuwe in je dossier.'),
       h('button', { type: 'button', class: 'knop', 'data-actie': 'opnieuw-doen', onclick: () => {
         const r = sessie.opnieuwDoen(id);
         if (!r.ok) { opnieuwMelding.textContent = r.fout; return; }
@@ -229,24 +271,21 @@ async function start() {
         toonResultaat(); tekenKlaar(); tekenAfsluiten();
       } }, 'Opnieuw doen'),
       opnieuwMelding);
-    const stap3 = stap(s3,
-      s3.opdracht ? h('p', {}, met(s3.opdracht.tekst)) : null,
-      voorbeeld ? h('div', {}, h('p', { class: 'klein' }, 'Zo klinkt je vraag nu:'), voorbeeld) : null,
-      toe.element, uitkomst, opnieuwGebied);
-
-    // stap 4: klaar en volgende stap (TK-8, TK-9, TK-10)
     const stapHint = h('p', { class: 'klein', role: 'status' });
-    const stap4Wacht = h('p', { class: 'klein' }, 'Zodra je „klaar als” is gehaald, verschijnt hier de knop Klaar. Je kunt ook gewoon doorgaan naar de volgende taak.');
-    const stap4Inhoud = h('div', {},
-      h('p', {}, 'Is je „klaar als” gehaald? Dan kun je op Klaar drukken, ook als je nog tijd over hebt.'),
-      klaarKnop, klaarBericht,
-      h('div', { class: 'veld' }, h('label', { for: `volgende-${id}` }, 'Mijn volgende stap is …'), stapVeld, stapHint));
-    stap4Inhoud.hidden = true;
-    const stap4 = stap(s4, stap4Wacht, stap4Inhoud);
+    const klaarWacht = h('p', { class: 'klein' }, 'Zodra je „klaar als” is gehaald, verschijnt hier de knop Klaar. Je kunt ook gewoon doorgaan naar de volgende taak.');
+    const stap4 = stap(s4,
+      s4.opdracht ? h('p', {}, met(s4.opdracht.tekst)) : null,
+      voorbeeld ? h('div', {}, h('p', { class: 'klein' }, 'Zo klinkt je vraag nu:'), voorbeeld) : null,
+      toe.element,
+      h('div', { class: 'klaar-blok' }, h('h4', {}, 'Klaar als'), checklist),
+      uitkomst, opnieuwGebied,
+      h('div', { class: 'klaar-voet' },
+        h('div', { class: 'veld' }, h('label', { for: `volgende-${id}` }, 'Mijn volgende stap is …'), stapVeld, stapHint),
+        klaarWacht, klaarKnop, klaarBericht));
 
-    // stap 5: optionele verdieping, pas zichtbaar na „klaar” (TK-13, TK-14, ST-7)
-    verdiepingKop.append(h('h3', {}, `${s5.nr} · ${s5.naam}`));
-    if (s5.verdieping) {
+    // na „klaar": optionele verdieping, geen stap (TK-13, TK-14, ST-7, ADR B76)
+    verdiepingKop.append(h('h3', {}, 'Verdieping (optioneel)'));
+    if (model.verdieping) {
       const v0 = sessie.leesVerdieping();
       const tekstVeld = h('textarea', { id: `verdieping-${id}`, rows: 3 });
       tekstVeld.value = v0.tekst;
@@ -256,8 +295,8 @@ async function start() {
       tekstVeld.addEventListener('input', () => { clearTimeout(vt); vt = setTimeout(() => sessie.zetVerdieping({ tekst: tekstVeld.value }), BEWAAR_NA_MS); });
       gedaan.addEventListener('change', () => sessie.zetVerdieping({ tekst: tekstVeld.value, gedaan: gedaan.checked }));
       verdiepingKop.append(
-        h('p', {}, s5.verdieping.tekst),
-        h('p', { class: 'klein' }, 'Dit is optioneel. Het telt niet mee voor je status en niet voor de richttijd.'),
+        h('p', {}, model.verdieping.tekst),
+        h('p', { class: 'klein' }, 'Dit is optioneel. Het telt niet mee voor je status en niet voor de tijd.'),
         h('div', { class: 'veld' }, h('label', { for: `verdieping-${id}` }, 'Jouw antwoord (optioneel)'), tekstVeld),
         h('div', { class: 'optie' }, gedaan, h('label', { for: `verdieping-gedaan-${id}` }, 'Verdieping gedaan')));
     } else {
@@ -268,16 +307,48 @@ async function start() {
       klaarKnop.hidden = klaar;
       klaarBericht.textContent = klaar ? `Taak ${id} is klaar. Schrijf je volgende stap op en ga door.` : '';
       verdiepingKop.hidden = !klaar;
+      tekenVoortgang();
     }
 
+    // vaste kop: taaknummer in het leerblok, segmentbalk van de vier stappen en de stappenrij (SX-4)
+    const segmenten = h('div', { class: 'segmenten', role: 'img' });
+    const stappenRij = h('ol', { class: 'stappenrij' });
+    function tekenVoortgang() {
+      const o = sessie.oefening(id);
+      const stand = stapStand({
+        gestart: isIngevuld(toe.lees()) || isIngevuld(o.invoer),
+        geoefend: isIngevuld(o.invoer) || o.overgeslagen,
+        oefeningAf: o.modelZichtbaar || o.overgeslagen,
+        klaar: sessie.isKlaar(id),
+      });
+      segmenten.setAttribute('aria-label', segmentLabel(taakNr, blok.taken.length, stand));
+      wis(segmenten);
+      stand.stappen.forEach((st) => segmenten.append(h('span', { class: `segment segment-${st.stand}` })));
+      wis(stappenRij);
+      stand.stappen.forEach((st, i) => stappenRij.append(h('li', {},
+        h('a', { href: `#stap-${id}-${i + 1}`, 'aria-current': st.stand === 'actief' ? 'step' : null, class: `stap-link stap-${st.stand}` }, st.naam))));
+    }
+    const tijd = taak.richttijd.minuten ? `± ${taak.richttijd.minuten} min` : taak.richttijd.tekst;
+    // De balk is een direct kind van het artikel, zodat hij over de hele taak blijft staan (position: sticky).
+    const kop = [
+      h('div', { class: 'taakbalk' },
+        h('p', { class: 'eyebrow' }, `Taak ${taakNr} van ${blok.taken.length} · ${id}`),
+        segmenten,
+        h('nav', { 'aria-label': `Stappen van taak ${id}` }, stappenRij)),
+      h('h2', { id: `kop-${id}` }, h('span', { class: 'nr' }, id), ` ${taak.titel}`),
+      h('p', { class: 'meta' }, h('span', { class: 'vorm' }, taak.vorm), ' · ', h('span', { class: 'tijd' }, tijd))];
+
     taken.set(id, { leesInhoud: lees, toon: toonResultaat });
+    const artikel = h('article', { class: 'taak', id: `taak-${id}`, 'aria-labelledby': `kop-${id}` },
+      kop, stap1, stap2, stap3, stap4, verdiepingKop);
+    const m0 = sessie.oefening(id);
+    toonModel(m0);
+    tekenOverslaan(m0);
     toonResultaat();
     tekenKlaar();
-    const meta = h('p', { class: 'meta' },
-      h('span', { class: 'vorm' }, taak.vorm), ' · ', h('span', { class: 'tijd' }, `Richttijd: ${taak.richttijd.tekst}`));
-    return h('article', { class: 'taak kaart', id: `taak-${id}`, 'aria-labelledby': `kop-${id}` },
-      h('h2', { id: `kop-${id}` }, h('span', { class: 'nr' }, id), ` ${taak.titel}`),
-      meta, stap1, stap2, stap3, stap4, verdiepingKop);
+    laatsteUitkomsten = sessie.beoordeel(id, lees()).uitkomsten;
+    tekenChecklist();
+    return artikel;
   }
 
   // ---------------------------------------------------------------- afsluiten (TK-15, TK-16, TK-17)
@@ -288,12 +359,26 @@ async function start() {
   volgendeStapVeld.value = sessie.leesVolgendeStap();
   let vtimer;
   volgendeStapVeld.addEventListener('input', () => { clearTimeout(vtimer); vtimer = setTimeout(() => sessie.bewaarVolgendeStap(volgendeStapVeld.value), BEWAAR_NA_MS); });
+  // A3-vak 1 in vier delen (SX-12): een deel is gevuld als dat leerblok is afgerond (TK-16).
+  const alleOnderdelen = overzicht.leerblokken.flatMap((b) => b.bewijsonderdelen);
+  const afgerondPerBlok = () => {
+    const recs = leesRecords(store, alleOnderdelen);
+    return Object.fromEntries(overzicht.leerblokken.map((b) => [b.nummer, isAfgerond(b.bewijsonderdelen, recs).afgerond]));
+  };
+  const afsluitKop = h('h2', { id: 'afsluiten-kop' });
+  const afsluitA3 = h('div', { class: 'a3-vak' });
+  const afsluitMelding = h('p', { role: 'status', class: 'klein', id: 'afsluit-kopieer-melding' });
   function tekenAfsluiten() {
     const m = sessie.afsluitModel(volgende);
+    const stand = a3Stand(afgerondPerBlok(), m.afgerond ? blok.leerblok : null);
+    afsluitKop.textContent = m.afgerond
+      ? (stand.aantal === 4 ? 'Je A3-vak 1 staat.' : `Deel ${blok.leerblok} van je A3-vak 1 staat.`)
+      : 'Klaar met dit blok?';
+    tekenA3Vak(afsluitA3, stand);
     wis(afsluitStatus);
     afsluitStatus.append(
       h('ul', { class: 'afsluit-onderdelen' }, m.onderdelen.map((o) => h('li', {},
-        `${o.id} · ${o.titel}: `, statusChip(o.status, o.statusTekst), o.voorlopig ? ' (voorlopig)' : ''))),
+        statusChip(o.status, o.statusTekst), ` ${o.titel}`, o.voorlopig ? ' (voorlopig)' : ''))),
       h('p', { class: 'afgerond-tekst', role: 'status' }, m.afgerondTekst));
   }
   // TK-11: „wat ik hiermee aan mijn A3 heb”, aan het eind van leerblok 4; de dossierpagina toont de zin naast de waarom-zin.
@@ -303,13 +388,27 @@ async function start() {
   let atimer;
   a3Veld.addEventListener('input', () => { clearTimeout(atimer); atimer = setTimeout(() => sessie.bewaarA3Zin(a3Veld.value), BEWAAR_NA_MS); });
   if (a3Vraag) window.addEventListener('pagehide', () => sessie.bewaarA3Zin(a3Veld.value));
-  const afsluiten = h('section', { class: 'kaart', id: 'afsluiten', 'aria-labelledby': 'afsluiten-kop' },
-    h('h2', { id: 'afsluiten-kop' }, `Afsluiten van leerblok ${blok.leerblok}`),
+  // „Kopieer naar mijn A3” (LB-16, LB-17): het tekstblok en het klembord laden pas na de klik (PF-4).
+  const kopieerKnop = h('button', { type: 'button', class: 'knop knop-wit', id: 'afsluit-kopieer', onclick: async () => {
+    try {
+      // gewicht-alleen: naklik
+      const [{ maakA3Tekst }, { logKopie }, { kopieer }] = await Promise.all([import('./a3tekst.js'), import('./a3log.js'), import('./klembord.js')]);
+      await kopieer(maakA3Tekst({ records: leesRecords(store, ['EV-01', 'EV-02', 'EV-08', 'EV-11']), profiel: leesProfiel(store) }).tekst);
+      logKopie(store);
+      afsluitMelding.textContent = 'Gekopieerd. Plak het in vak 1 van de A3 van je team.';
+    } catch (e) {
+      afsluitMelding.textContent = 'Kopiëren lukte niet in deze browser. Op de dossierpagina staat het tekstblok om zelf te selecteren.';
+    }
+  } }, 'Kopieer naar mijn A3');
+  const afsluiten = h('section', { class: 'afsluit-moment', id: 'afsluiten', 'aria-labelledby': 'afsluiten-kop' },
+    h('p', { class: 'eyebrow' }, `Leerblok ${blok.leerblok}`),
+    afsluitKop, afsluitA3,
     afsluitStatus,
     a3Vraag ? h('div', { class: 'veld' }, h('label', { for: 'afsluit-a3-zin' }, a3Vraag.vraag), h('p', { class: 'klein' }, a3Vraag.uitleg), a3Veld) : null,
     h('div', { class: 'veld' }, h('label', { for: 'afsluit-volgende-stap' }, m0Vraag()), volgendeStapVeld),
-    h('p', { class: 'bewaarmelding' }, sessie.afsluitModel(volgende).bewaarmelding, ' ', h('a', { href: 'dossier.html' }, 'Naar het dossier')),
-    h('p', {}, h('a', { class: 'knop knop-link', id: 'door', href: volgende.href }, `Door naar: ${volgende.titel}`)));
+    h('div', { class: 'knoppen' }, kopieerKnop, h('a', { class: 'knop knop-omlijnd', id: 'door', href: volgende.href }, `Door naar ${volgende.titel}`)),
+    afsluitMelding,
+    h('p', { class: 'bewaarmelding' }, sessie.afsluitModel(volgende).bewaarmelding, ' ', h('a', { href: 'dossier.html' }, 'Naar het dossier')));
   function m0Vraag() { return sessie.afsluitModel(null).volgendeStapVraag; }
 
   // ---------------------------------------------------------------- de Wissel in leerblok 1 (ST-7)
@@ -347,15 +446,15 @@ async function start() {
   const kijktips = blok.kijktips ? bouwKijktips({ kijktips: blok.kijktips, met }) : null;
 
   const inhoud = h('nav', { 'aria-label': 'Taken in dit leerblok', class: 'taken-nav' },
-    h('ol', {}, blok.taken.map((t) => h('li', {}, h('a', { href: `#taak-${t.id}` }, `${t.id} ${t.titel}`))), h('li', {}, h('a', { href: '#afsluiten' }, 'Afsluiten'))));
+    h('ol', {}, blok.taken.map((t) => h('li', {}, h('a', { href: `#taak-${t.id}` }, `${t.id} ${t.titel}`))), h('li', {}, h('a', { href: '#afsluiten' }, 'Klaar met dit blok'))));
 
   main.append(...[
     h1,
-    h('p', { class: 'meta' }, `Richttijd: ${blok.richttijd} min. Eindigt met: ${blok.eindigtMet}.`),
+    h('p', { class: 'meta' }, `± ${blok.richttijd} min · Na dit blok heb je: ${blok.eindigtMet.charAt(0).toLowerCase()}${blok.eindigtMet.slice(1)}.`),
     aanbevolen ? h('p', { class: 'meta', id: 'aanbevolen' }, `Aanbevolen: ${aanbevolen.week}, ${aanbevolen.dag}.`) : null,
     geblokkeerd ? geblokkeerdMelding(store, config.versie) : null,
-    foutGebied, herinneringGebied, vorigeKeer, vraagstuk, mediaSectie?.element, kijktips, inhoud,
-    ...blok.taken.flatMap((t) => [taakArtikel(t), t.bewijsonderdeel === blok.wissel?.zichtbaarNa ? wisselSectie : null]), afsluiten,
+    foutGebied, bevestiging, herinneringGebied, vorigeKeer, vraagstuk, mediaSectie?.element, kijktips, inhoud,
+    ...blok.taken.flatMap((t, i) => [taakArtikel(t, i + 1), t.bewijsonderdeel === blok.wissel?.zichtbaarNa ? wisselSectie : null]), afsluiten,
   ].filter(Boolean));
   tekenAfsluiten();
   tekenWissel();

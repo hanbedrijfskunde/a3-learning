@@ -25,11 +25,13 @@ test('TK-2: elke taak toont werkboeknummer, waarom, richttijd en „klaar als" (
   assert.deepEqual(blok.taken.map((t) => t.id), ['1.1', '2.1', '2.2']);
 });
 
-test('TK-18: elke taak heeft dezelfde vijf stappen in dezelfde volgorde', () => {
-  assert.deepEqual(STAPPEN, ['Waarom', 'Stof en oefenen', 'Toepassen', 'Klaar en volgende stap', 'Verdieping (optioneel)']);
+test('TK-18: elke taak heeft dezelfde vier stappen in dezelfde volgorde; de verdieping is geen stap (ADR B76)', () => {
+  assert.deepEqual(STAPPEN, ['Waarom', 'Stof', 'Oefenen', 'Toepassen']);
   for (const t of blok.taken) {
     const m = bouwTaakModel(t, blok);
-    assert.deepEqual(m.stappen.map((s) => s.nr), [1, 2, 3, 4, 5], t.id);
+    assert.deepEqual(m.stappen.map((s) => s.nr), [1, 2, 3, 4], t.id);
+    assert.ok('verdieping' in m, t.id);
+    assert.ok(m.stappen[3].volgendeStapVraag, 'klaar en volgende stap sluiten Toepassen af');
     assert.deepEqual(m.stappen.map((s) => s.naam), STAPPEN, t.id);
   }
 });
@@ -37,8 +39,8 @@ test('TK-18: elke taak heeft dezelfde vijf stappen in dezelfde volgorde', () => 
 test('TK-3: elke taak heeft een oefenversie en een toepassing als twee gescheiden onderdelen', () => {
   for (const t of blok.taken) {
     const m = bouwTaakModel(t, blok);
-    assert.ok(m.stappen[1].oefening.velden.length > 0, `oefening ${t.id}`);
-    assert.ok(m.stappen[2].velden.length > 0, `toepassing ${t.id}`);
+    assert.ok(m.stappen[2].oefening.velden.length > 0, `oefening ${t.id}`);
+    assert.ok(m.stappen[3].velden.length > 0, `toepassing ${t.id}`);
   }
 });
 
@@ -57,9 +59,9 @@ test('TK-6: het taakmodel bevat het modelantwoord niet; het oefenmodel pas na ee
 });
 
 test('TK-13: de verdieping van leerblok 1 hangt aan „klaar" van de laatste taak en alleen daar', () => {
-  const metVerdieping = blok.taken.filter((t) => bouwTaakModel(t, blok).stappen[4].verdieping);
+  const metVerdieping = blok.taken.filter((t) => bouwTaakModel(t, blok).verdieping);
   assert.deepEqual(metVerdieping.map((t) => t.id), ['2.2']);
-  assert.match(bouwTaakModel(blok.taken[2], blok).stappen[4].verdieping.tekst, /vierde zoekvraag/);
+  assert.match(bouwTaakModel(blok.taken[2], blok).verdieping.tekst, /vierde zoekvraag/);
 });
 
 // ------------------------------------------------------------ afgerond-regel (TK-16), 4 testprofielen

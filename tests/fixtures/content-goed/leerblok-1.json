@@ -21,8 +21,7 @@
       },
       "klaarAls": {
         "tekst": "alle drie de delen concreet zijn en de waarde verder gaat dan alleen geld.",
-        "bron": "werkboek"
-      },
+        "bron": "werkboek", "criteria": [{"tekst": "alle drie de delen concreet zijn en de waarde verder gaat dan alleen geld.", "controles": []}]},
       "stof": {
         "bron": "werkboek",
         "opmerking": "Het format staat in werkboek 2.1, het voorbeeld (organisatie Y) in het kader bij 0:30 van het draaiboek. De uitleg van de termen (QA-5) is door de bouwer geschreven.",
@@ -155,8 +154,7 @@
       },
       "klaarAls": {
         "tekst": "je drie zoekvragen hebt, elk vanuit een ander frame, één model hebt gekozen met een zin waarom, en hebt opgeschreven wat je mist als je maar één frame kiest.",
-        "bron": "werkboek"
-      },
+        "bron": "werkboek", "criteria": [{"tekst": "je drie zoekvragen hebt, elk vanuit een ander frame, één model hebt gekozen met een zin waarom, en hebt opgeschreven wat je mist als je maar één frame kiest.", "controles": []}]},
       "stof": {
         "bron": "werkboek",
         "opmerking": "De frames en de modellen zijn letterlijk uit werkboek 2.2; de uitleg van het woord frame is door de bouwer geschreven.",

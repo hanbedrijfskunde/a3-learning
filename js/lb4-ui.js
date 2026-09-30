@@ -39,7 +39,7 @@ function bouwKaart({ kaarten, stakeholders, verbanden: begin = [], idVoor, bijWi
 
   const lijnen = svgEl('svg', { class: 'vb-lijnen', 'aria-hidden': 'true', focusable: 'false' });
   const kolomEl = h('div', { class: 'vb-kolommen' }, lijnen, kaarten.kolommen.map((kolom) => h('div', { class: 'vb-kolom', role: 'group', 'aria-label': kolom.titel },
-    h('h5', {}, kolom.titel, h('span', { class: 'klein vb-bron' }, kolom.bron === 'IIRC' ? ' (IIRC-model, zelf getekend)' : ` (${kolom.bron})`)),
+    h('h5', {}, kolom.titel, h('span', { class: 'klein vb-bron' }, kolom.bron === 'IIRC' ? ' (IIRC-model, zelf getekend)' : ` (uit ${({ 'EV-01': 'leerblok 1', 'EV-07': 'leerblok 3' })[kolom.bron] ?? 'je dossier'})`)),
     kolom.kaarten.length === 0
       ? h('p', { class: 'klein' }, 'Nog geen kaarten: vul eerst het register van leerblok 3 in met minstens één onderdeel van je VPC.')
       : h('ul', { class: 'vb-lijst' }, kolom.kaarten.map((k) => {
