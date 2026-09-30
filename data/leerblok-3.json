@@ -68,6 +68,7 @@
         "tekst": "Het is een aanname zolang niemand het gemeten heeft. Het wordt een feit als je het aantoont, bijvoorbeeld met de klachtencijfers van de klantenservice."
       },
       "toepassing": {
+        "figuur": "vpc",
         "opdracht": {"tekst":"Vul het klantprofiel en de waardekaart in voor je eigen vraagstuk. Zeg daarna van de pain of gain die bij je vraagstuk hoort of het een feit of een aanname is.","bron":"concept-auteur"},
         "velden": [{"id":"klanttaak","label":"Klanttaken (jobs) van de klant","type":"lang","zinstarter":"De klant wil …"},{"id":"pain","label":"Pains van de klant","type":"lang","zinstarter":"De klant ergert zich aan …"},{"id":"gain","label":"Gains van de klant","type":"lang","zinstarter":"De klant zou blij zijn met …"},{"id":"aanbod","label":"Producten en diensten die de organisatie nu biedt","type":"lang","zinstarter":"De organisatie biedt nu …"},{"id":"painReliever","label":"Pain relievers","type":"lang","zinstarter":"Dit neemt de ergernis weg doordat …"},{"id":"gainCreator","label":"Gain creators","type":"lang","zinstarter":"Dit levert de klant op dat …"},{"id":"painSoort","label":"Is de pain of gain die bij je vraagstuk hoort een feit of een aanname?","type":"lijst","opties":["feit","aanname"]},{"id":"fit","label":"Waar ontbreekt de fit?","type":"lang","zinstarter":"De fit ontbreekt waar …"}],
         "weergave": {"groepen":[{"titel":"Klantprofiel","velden":["klanttaak","pain","gain"]},{"titel":"Waardekaart","velden":["aanbod","painReliever","gainCreator"]},{"velden":["painSoort","fit"]}]}

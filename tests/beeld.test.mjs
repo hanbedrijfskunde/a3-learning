@@ -57,6 +57,16 @@ test('Figuur VPC ook bij de oefening van taak 6.1: de student hoeft niet terug n
   assert.match(controleerFormaat(b, 'leerblok-3.json').fouten.join('\n'), /taak 6\.1: oefening\.figuur "bmc" is onbekend/);
 });
 
+test('Figuur VPC ook bij de toepassing van taak 6.1; een onbekende toepassing.figuur wordt afgekeurd', () => {
+  const b = blok(3);
+  const t = b.taken.find((x) => x.id === '6.1');
+  assert.equal(t.toepassing.figuur, 'vpc');
+  assert.equal(bouwTaakModel(t, b).stappen[3].figuur, 'vpc', 'het taakmodel geeft de figuur door aan stap 4');
+  assert.match(lees('js/leerblok.js'), /FIGUREN\[s4\.figuur\]\?\.bouw\(\{ met \}\)/);
+  t.toepassing.figuur = 'bmc';
+  assert.match(controleerFormaat(b, 'leerblok-3.json').fouten.join('\n'), /taak 6\.1: toepassing\.figuur "bmc" is onbekend/);
+});
+
 test('SX-13: elke oefenvraag van de vier leerblokken heeft een hint; de hint staat achter een knop (details), niet op mouse-over', () => {
   let n = 0;
   for (const nr of [1, 2, 3, 4]) {
