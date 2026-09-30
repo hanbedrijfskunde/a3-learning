@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -14,8 +14,11 @@ for (const p of PAGINAS) {
     assert.match(html, /CC BY-SA 4\.0/); // LI-5
     assert.match(html, /href="LICENSE"/);
     if (p !== 'index') {
+      // Docentmodus en verificatie staan in de voettekst (SX-1); de leerblokken in de lijst die index-pagina.js tekent
+      // uit data/leerblokken.json. Beide in 1 klik vanaf de startpagina.
       const index = readFileSync(resolve(root, 'index.html'), 'utf8');
-      assert.ok(index.includes(`href="${p}.html"`), `index linkt niet naar ${p}`);
+      const lijst = JSON.parse(readFileSync(resolve(root, 'data/leerblokken.json'), 'utf8')).leerblokken.map((b) => b.pagina);
+      assert.ok(index.includes(`href="${p}.html"`) || (lijst.includes(`${p}.html`) && index.includes('js/index-pagina.js')), `index linkt niet naar ${p}`);
     }
   });
 }
@@ -34,4 +37,14 @@ test('TK-6: geen native append met een optionele aanroep (anders staat „undefi
     });
   }
   assert.deepEqual(fout, [], 'native append zet undefined en null om in tekst; filter ze eerst weg of gebruik h()');
+});
+
+test('SX-1: het hoofdmenu heeft 4 items (Start, Leerblokken, Dossier, Bronnen); docentmodus en verificatie staan in de voettekst', () => {
+  for (const p of readdirSync(root).filter((n) => n.endsWith('.html'))) {
+    const html = readFileSync(resolve(root, p), 'utf8');
+    const nav = /<nav aria-label="Hoofdmenu">([\s\S]*?)<\/nav>/.exec(html)[1];
+    assert.deepEqual([...nav.matchAll(/>([^<]+)<\/a>/g)].map((m) => m[1]), ['Start', 'Leerblokken', 'Dossier', 'Bronnen'], p);
+    const voet = /<footer>([\s\S]*?)<\/footer>/.exec(html)[1];
+    assert.ok(voet.includes('href="docent.html"') && voet.includes('href="verificatie.html"'), `${p}: voettekst mist de docentlinks`);
+  }
 });

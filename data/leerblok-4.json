@@ -164,7 +164,7 @@
           {
             "id": "synthese",
             "label": "Synthese in hoogstens vijf zinnen",
-            "type": "lang"
+            "type": "lang", "zinstarter": "Als … verandert, leidt dat tot …"
           },
           {
             "id": "syntheseKaarten",
@@ -174,17 +174,17 @@
           {
             "id": "nietZien1",
             "label": "Wat laat de user story niet zien?",
-            "type": "lang"
+            "type": "lang", "zinstarter": "De user story laat niet zien …"
           },
           {
             "id": "nietZien2",
             "label": "Wat laat het value proposition canvas niet zien?",
-            "type": "lang"
+            "type": "lang", "zinstarter": "Het canvas laat niet zien …"
           },
           {
             "id": "nietZien3",
             "label": "Wat laten de zes kapitalen niet zien?",
-            "type": "lang"
+            "type": "lang", "zinstarter": "De zes kapitalen laten niet zien …"
           }
         ]
       },
@@ -473,27 +473,27 @@
           {
             "id": "situatie",
             "label": "Situatie",
-            "type": "lang"
+            "type": "lang", "zinstarter": "Tijdens de gallery walk …"
           },
           {
             "id": "taak",
             "label": "Taak",
-            "type": "lang"
+            "type": "lang", "zinstarter": "Mijn taak was om …"
           },
           {
             "id": "actie",
             "label": "Actie",
-            "type": "lang"
+            "type": "lang", "zinstarter": "Ik deed …"
           },
           {
             "id": "resultaat",
             "label": "Resultaat",
-            "type": "lang"
+            "type": "lang", "zinstarter": "Daardoor …"
           },
           {
             "id": "reflectie",
             "label": "Reflectie",
-            "type": "lang"
+            "type": "lang", "zinstarter": "Volgende keer zou ik …, omdat …"
           },
           {
             "id": "gedrag",

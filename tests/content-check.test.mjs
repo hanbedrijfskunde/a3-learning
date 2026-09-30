@@ -143,3 +143,15 @@ test('LB-1/ST-1/ST-2: het overzicht heeft 4 leerblokken van 45 min, precies de v
   const c = overzicht(); c.start.privacytekst = Array(101).fill('woord').join(' ');
   assert.match(controleerOverzicht(c).join('\n'), /1 tot en met 100 woorden/);
 });
+
+test('SX-11: een lang veld zonder zinstarter, of met een zinstarter uit het modelantwoord, is een fout', () => {
+  const inhoud = JSON.parse(readFileSync(resolve(fixtures('content-goed'), 'leerblok-1.json'), 'utf8'));
+  assert.deepEqual(controleerFormaat(inhoud, 'leerblok-1.json').fouten, []);
+  const taak = inhoud.taken.find((t) => t.toepassing.velden.some((v) => v.type === 'lang'));
+  const veld = taak.toepassing.velden.find((v) => v.type === 'lang');
+  delete veld.zinstarter;
+  assert.ok(controleerFormaat(inhoud, 'leerblok-1.json').fouten.some((f) => f.includes(`veld ${veld.id}`) && f.includes('SX-11')));
+  const langste = [...JSON.stringify(taak.modelantwoord).matchAll(/"([^"]*)"/g)].map((m) => m[1]).sort((x, y) => y.length - x.length)[0];
+  veld.zinstarter = `${langste.slice(0, 30)} …`;
+  assert.ok(controleerFormaat(inhoud, 'leerblok-1.json').fouten.some((f) => f.includes('staat in het modelantwoord')), veld.zinstarter);
+});

@@ -66,12 +66,12 @@
           {
             "id": "pain",
             "label": "Probleem / pain / gain",
-            "type": "lang"
+            "type": "lang", "zinstarter": "Ik denk dat …"
           },
           {
             "id": "waarde",
             "label": "Waardecreatie",
-            "type": "lang"
+            "type": "lang", "zinstarter": "Ik denk dat …"
           },
           {
             "id": "kapitalen",
@@ -242,12 +242,12 @@
           {
             "id": "verantwoording",
             "label": "Mijn verantwoording van de modelkeuze",
-            "type": "lang"
+            "type": "lang", "zinstarter": "Ik denk dat …"
           },
           {
             "id": "mis",
             "label": "Wat mis je als je maar één frame kiest?",
-            "type": "lang"
+            "type": "lang", "zinstarter": "Ik denk dat …"
           }
         ]
       },
@@ -411,7 +411,7 @@
           {
             "id": "aanleiding",
             "label": "Aanleiding van mijn vraagstuk (vak 1)",
-            "type": "lang"
+            "type": "lang", "zinstarter": "Ik denk dat …"
           }
         ]
       },
@@ -482,7 +482,7 @@
           {
             "id": "aanleiding",
             "label": "Aanleiding van mijn vraagstuk (vak 1)",
-            "type": "lang"
+            "type": "lang", "zinstarter": "Ik denk dat …"
           }
         ]
       },

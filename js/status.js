@@ -5,7 +5,7 @@ import { SOORTEN, RESULTATEN } from './schema.js';
 export const STATUS_TEKST = Object.freeze({
   compleet: 'Compleet',
   bijna: 'Bijna',
-  'nog niet': 'Nog niet',
+  'nog niet': 'Te doen', // weergave; de sleutel in schema en records blijft `nog niet` (ADR B74)
 });
 
 /**

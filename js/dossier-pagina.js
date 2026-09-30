@@ -7,6 +7,7 @@ import {
   zwaksteOnderdeel, bouwTweeZinnen, bouwVersieVergelijking, leesVerdiepingGedaan,
 } from './dossier.js';
 import { leesProfiel } from './profiel.js';
+import { STATUS_TEKST } from './status.js';
 import { waardeTekst } from './weergave.js';
 import { maakA3Tekst } from './a3tekst.js';
 import { leesKopieLog, logKopie } from './a3log.js';
@@ -44,11 +45,11 @@ async function start() {
       h('h2', { id: 'mijn-stand-kop' }, 'Mijn stand'),
       h('p', { class: 'klein' }, 'Per bewijsonderdeel alleen de status, zonder inhoud. Laat dit scherm gerust aan je coach zien.'),
       h('p', { class: 'zwakste', id: 'zwakste-onderdeel' }, h('strong', {}, 'Zwakste onderdeel: '),
-        zwakste ? [`${zwakste.id} · ${zwakste.titel} (`, statusChip(zwakste.status, zwakste.heeftRecord ? zwakste.statusTekst : 'Nog niet'), ')'] : 'geen: alle bewijsonderdelen zijn compleet.'),
+        zwakste ? [`${zwakste.id} · ${zwakste.titel} (`, statusChip(zwakste.status, zwakste.heeftRecord ? zwakste.statusTekst : STATUS_TEKST['nog niet']), ')'] : 'geen: alle bewijsonderdelen zijn compleet.'),
       h('ul', { class: 'dos-stand' }, stand.map((c) => h('li', { class: `dos-tegel dos-tegel-${c.status.replace(' ', '-')}` },
         h('span', { class: 'dos-tegel-id' }, c.id),
         h('span', { class: 'dos-tegel-titel' }, c.titel),
-        h('span', { class: 'dos-tegel-status' }, c.heeftRecord ? c.statusTekst : 'Nog niet', c.voorlopig ? ' (voorlopig)' : '')))));
+        h('span', { class: 'dos-tegel-status' }, c.heeftRecord ? c.statusTekst : STATUS_TEKST['nog niet'], c.voorlopig ? ' (voorlopig)' : '')))));
   }
 
   // ---------------------------------------------------------------- dekking van de LUK (BW-13)
@@ -180,7 +181,7 @@ async function start() {
       versieGebied.append(h('div', { class: 'versie-paar', 'data-ev': id }, h('h3', {}, id), h('div', { class: 'versie-kolommen' }, kolom('Oude versie', oud), kolom('Nieuwe versie', nieuw))));
     }
   }
-  const STATUS_LABEL = (st) => ({ compleet: 'Compleet', bijna: 'Bijna', 'nog niet': 'Nog niet' })[st] ?? st;
+  const STATUS_LABEL = (st) => STATUS_TEKST[st] ?? st;
 
   // ---------------------------------------------------------------- export (DS-5, DS-6) en afdrukbaar (DS-7)
 
@@ -199,7 +200,7 @@ async function start() {
         h('p', { class: 'meta' }, `Student: ${p.alias || '(geen alias)'} · Team: ${p.teamnummer || '(geen teamnummer)'} · Geëxporteerd: ${p.geexporteerd} · E-learning ${p.elearning}`),
         p.onderdelen.map((o) => h('section', { class: 'dos-onderdeel', 'data-ev': o.id },
           h('h3', {}, `${o.id} · ${o.titel}`),
-          h('p', {}, 'Status: ', statusChip(o.status, o.heeftRecord ? o.statusTekst : 'Nog niet'), o.voorlopig ? ' (voorlopig)' : '',
+          h('p', {}, 'Status: ', statusChip(o.status, o.heeftRecord ? o.statusTekst : STATUS_TEKST['nog niet']), o.voorlopig ? ' (voorlopig)' : '',
             o.versie ? ` · versie ${o.versie}, bijgewerkt ${o.bijgewerkt}` : ' · nog geen inhoud'),
           o.velden.length ? h('dl', { class: 'dos-velden' }, o.velden.flatMap((v) => [h('dt', {}, v.label), h('dd', {}, v.waarde)])) : null)),
         h('p', { class: 'dos-controlesom' }, h('strong', {}, 'Controlesom (SHA-256): '), h('code', {}, p.controlesom))));

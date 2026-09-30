@@ -229,7 +229,7 @@ test('TK-15/TK-16/TK-17: afsluiten toont status, volgende stap en bewaarmelding;
   assert.equal(leeg.doorgaanBlokkeert, false);
   assert.equal(leeg.volgende.href, 'leerblok-2.html');
   assert.ok(leeg.bewaarmelding.startsWith('Bewaar je dossier'));
-  assert.deepEqual(leeg.onderdelen.map((o) => o.statusTekst), ['Nog niet', 'Nog niet']);
+  assert.deepEqual(leeg.onderdelen.map((o) => o.statusTekst), ['Te doen', 'Te doen']);
   sessie.bewaar('2.1', EV01);
   sessie.bewaar('2.2', EV02);
   sessie.bewaarVolgendeStap('Ik begin aan leerblok 2');

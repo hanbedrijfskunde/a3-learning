@@ -5,7 +5,7 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { bouwTaakModel, bouwIndexModel, bouwAfsluitModel, oefenModel, modelZichtbaar, STAPPEN, BEWAARMELDING } from '../js/weergave.js';
 import { isAfgerond, onderdeelTelt } from '../js/afgerond.js';
-import { normaliseerProfiel, beoordeelProfiel, PROFIEL_VELDEN } from '../js/profiel.js';
+import { normaliseerProfiel, beoordeelProfiel, zichtbareMeldingen, PROFIEL_VELDEN } from '../js/profiel.js';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const lees = (p) => JSON.parse(readFileSync(resolve(root, p), 'utf8'));
@@ -90,7 +90,7 @@ test('TK-16: onderdeelTelt en een leerblok zonder onderdelen', () => {
 test('TK-15: het afsluitscherm heeft status, volgende stap en bewaarmelding, ook zonder dat het leerblok is afgerond', () => {
   const m = bouwAfsluitModel(blok, {}, { href: 'leerblok-2.html', titel: 'Leerblok 2' });
   assert.deepEqual(m.onderdelen.map((o) => o.id), ['EV-01', 'EV-02']);
-  assert.ok(m.onderdelen.every((o) => o.statusTekst === 'Nog niet'));
+  assert.ok(m.onderdelen.every((o) => o.statusTekst === 'Te doen'));
   assert.ok(m.volgendeStapVraag.length > 0);
   assert.equal(m.bewaarmelding, BEWAARMELDING);
   assert.equal(m.afgerond, false);
@@ -116,7 +116,7 @@ test('LB-1: afgerond bewijs verschijnt op de startpagina bij het juiste leerblok
   const m = bouwIndexModel(overzicht, { 'EV-01': rec('compleet'), 'EV-02': rec('bijna') });
   assert.deepEqual(m.map((b) => b.afgerond), [true, false, false, false]);
   assert.equal(m[0].afgerondTekst, 'Afgerond');
-  assert.equal(m[1].afgerondTekst, 'Nog niet afgerond');
+  assert.equal(m[1].afgerondTekst, 'Te doen');
 });
 
 test('BW-4: het weergavemodel bevat geen score, percentage of punt', () => {
@@ -150,4 +150,17 @@ test('ST-1: het profiel geeft hints en blokkeert niets; „nog geen scherp vraag
   const vol = { alias: 'Kim', teamnummer: '7', vraagstuk: 'Onze retouren duren te lang', waaromZin: 'Klanten wachten te lang' };
   assert.equal(beoordeelProfiel(vol).compleet, true);
   assert.ok(beoordeelProfiel({ ...vol, vraagstuk: 'Dit is zin een. Dit is zin twee.' }).hints.vraagstuk);
+});
+
+test('SX-2: bij het laden staat er geen melding; na het verlaten van een veld hoogstens één melding voor dat veld', () => {
+  const hints = beoordeelProfiel({}).hints;
+  assert.ok(Object.keys(hints).length >= 4, 'een leeg profiel heeft wel hints');
+  assert.deepEqual(zichtbareMeldingen(hints, new Set()), {});
+  const na = zichtbareMeldingen(hints, new Set(['alias']));
+  assert.deepEqual(Object.keys(na), ['alias']);
+  assert.equal(typeof na.alias, 'string');
+  const bron = readFileSync(resolve(dirname(fileURLToPath(import.meta.url)), '../js/index-pagina.js'), 'utf8');
+  assert.match(bron, /zichtbareMeldingen\(/, 'de startpagina toont meldingen via zichtbareMeldingen');
+  assert.match(bron, /onblur: \(\) => \{ aangeraakt\.add\(v\.id\)/, 'een veld telt pas als aangeraakt na blur');
+  assert.doesNotMatch(bron, /class: 'hints'/, 'geen lijst met alle meldingen tegelijk');
 });

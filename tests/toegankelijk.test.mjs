@@ -57,3 +57,16 @@ test('PF-5: elk leerblok toont zijn richttijd van 45 min (4 leerblokken); de tij
   assert.match(lees('js/leerblok.js'), /Richttijd: \$\{blok\.richttijd\} min/);
   assert.ok(!existsSync(resolve(root, 'js/leerblok-stub.js')), 'leerblok 3 gebruikt sinds fase 10 leerblok.js');
 });
+
+test('SX-8: links gebruiken de linkkleur uit de tokens (geen browserblauw)', () => {
+  const t = tokensUit(css);
+  assert.ok(t['--link'] && t['--link-hover'] && t['--leeg'], 'tokens --link, --link-hover en --leeg in :root');
+  assert.match(css, /(^|\n)a \{ color:var\(--link\);/, 'een algemene a-regel met var(--link)');
+  assert.match(css, /a:hover \{ color:var\(--link-hover\); \}/);
+});
+
+test('B74: „Te doen" is neutraal; geen waarschuwingskleur op de lege staat', () => {
+  assert.match(css, /\.status-nog-niet \{ background:var\(--leeg\); \}/);
+  assert.match(css, /\.dos-tegel-nog-niet \{ background:var\(--leeg\); \}/);
+  assert.doesNotMatch(css, /nog-niet[^{]*\{[^}]*var\(--accent\)/);
+});

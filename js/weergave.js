@@ -136,7 +136,7 @@ export function bouwIndexModel(overzicht, records = {}) {
       el: lb.el,
       aanbevolen: lb.aanbevolen ? `${lb.aanbevolen.week}, ${lb.aanbevolen.dag}` : '',
       afgerond,
-      afgerondTekst: afgerond ? 'Afgerond' : 'Nog niet afgerond',
+      afgerondTekst: afgerond ? 'Afgerond' : 'Te doen',
       onderdelen: onderdelen.map((o) => ({ id: o.id, status: o.status, statusTekst: STATUS_TEKST[o.status], voorlopig: o.voorlopig })),
     };
   });

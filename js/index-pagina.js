@@ -3,7 +3,7 @@
 // „Mijn stand" of „kopieer naar A3" (ST-7).
 import { h, wis, statusChip, maakWisAlles } from './dom.js';
 import { kiesOpslag, maakStore } from './store.js';
-import { leesProfiel, bewaarProfiel, beoordeelProfiel } from './profiel.js';
+import { leesProfiel, bewaarProfiel, beoordeelProfiel, zichtbareMeldingen } from './profiel.js';
 import { bouwIndexModel } from './weergave.js';
 import { leesRecords } from './afgerond.js';
 
@@ -40,20 +40,31 @@ async function start() {
   const vel = overzicht.start;
   const profiel = leesProfiel(store);
   const invoer = {};
-  const hints = h('ul', { class: 'hints', id: 'start-hints' });
+  // SX-2: een melding bij een veld pas nadat de student het veld heeft verlaten; nooit bij het laden.
+  const aangeraakt = new Set();
+  const meldingen = {};
   const leesInvoer = () => ({
     alias: invoer.alias.value, teamnummer: invoer.teamnummer.value,
     vraagstuk: invoer.vraagstuk.value, waaromZin: invoer.waaromZin.value, voorlopig: invoer.voorlopig.checked,
   });
   const toonHints = () => {
-    wis(hints);
-    for (const zin of Object.values(beoordeelProfiel(leesInvoer()).hints)) hints.append(h('li', {}, zin));
+    const zichtbaar = zichtbareMeldingen(beoordeelProfiel(leesInvoer()).hints, aangeraakt);
+    for (const [id, el] of Object.entries(meldingen)) {
+      const zin = zichtbaar[id];
+      el.textContent = zin ?? '';
+      el.hidden = !zin;
+      if (zin) invoer[id].setAttribute('aria-invalid', 'true'); else invoer[id].removeAttribute('aria-invalid');
+    }
   };
-  /** Bij elke wijziging door de student: bewaren en de hints bijwerken. Bij het laden wordt niets geschreven. */
+  /** Bij elke wijziging door de student: bewaren en de meldingen bijwerken. Bij het laden wordt niets geschreven. */
   const bijwerken = () => { bewaarProfiel(store, leesInvoer()); toonHints(); };
   const velden = vel.velden.map((v) => {
-    invoer[v.id] = h('input', { type: 'text', id: `start-${v.id}`, value: profiel[v.id], oninput: bijwerken, autocomplete: 'off' });
-    return h('div', { class: 'veld' }, h('label', { for: `start-${v.id}` }, v.label), invoer[v.id]);
+    meldingen[v.id] = h('p', { class: 'veld-fout', id: `start-${v.id}-fout`, hidden: true });
+    invoer[v.id] = h('input', {
+      type: 'text', id: `start-${v.id}`, value: profiel[v.id], oninput: bijwerken, autocomplete: 'off',
+      'aria-describedby': `start-${v.id}-fout`, onblur: () => { aangeraakt.add(v.id); toonHints(); },
+    });
+    return h('div', { class: 'veld' }, h('label', { for: `start-${v.id}` }, v.label), invoer[v.id], meldingen[v.id]);
   });
   invoer.voorlopig = h('input', { type: 'checkbox', id: 'start-voorlopig', onchange: bijwerken });
   invoer.voorlopig.checked = profiel.voorlopig;
@@ -66,14 +77,14 @@ async function start() {
     h('form', { class: 'kaart', onsubmit: (e) => e.preventDefault() },
       velden,
       h('div', { class: 'optie' }, invoer.voorlopig, h('label', { for: 'start-voorlopig' }, vel.voorlopigLabel)),
-      h('p', { class: 'klein' }, 'Je invoer wordt automatisch bewaard in deze browser.'),
-      hints),
+      h('p', { class: 'klein' }, 'Je invoer wordt automatisch bewaard in deze browser.')),
     h('div', { class: 'kaart privacy', id: 'privacy' }, h('h3', {}, 'Privacy'), h('p', {}, vel.privacytekst)));
 
   const gegevens = h('section', { id: 'gegevens', 'aria-labelledby': 'gegevens-kop' },
     h('h2', { id: 'gegevens-kop' }, 'Jouw gegevens'),
     maakWisAlles(store, () => {
       Object.values(invoer).forEach((el) => { if (el.type === 'checkbox') el.checked = false; else el.value = ''; });
+      aangeraakt.clear();
       teken();
       toonHints();
     }));
@@ -82,7 +93,6 @@ async function start() {
   wis(main);
   main.append(h1, start1, blokken, gegevens);
   teken();
-  toonHints();
 }
 
 start().catch((e) => {

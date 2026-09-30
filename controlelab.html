@@ -35,7 +35,9 @@ tr.afwijking td { background:var(--roze); }
 <a class="han-logo" href="index.html" aria-label="HAN, naar de startpagina"><svg class="logo" role="img" aria-label="Logo HAN"><use href="#hanlogo"/></svg></a>
 <nav aria-label="Hoofdmenu">
 <a href="index.html">Start</a>
-<a href="controlelab.html" aria-current="page">Controlelab</a>
+<a href="index.html#blokken" data-sectie="leerblokken">Leerblokken</a>
+<a href="dossier.html">Dossier</a>
+<a href="bronnen.html">Bronnen</a>
 </nav>
 </header>
 <main id="inhoud" tabindex="-1">
@@ -51,7 +53,7 @@ tr.afwijking td { background:var(--roze); }
 <label>Soort C <select id="sel-C"></select></label>
 <div>Status: <span id="uit-status" class="status" aria-live="polite"></span></div>
 </div>
-<p class="klein">Regel: „Nog niet" als A of B op <em>mist</em> staat; anders „Bijna" als C op <em>mist</em> staat of A of B op <em>let op</em>; anders Compleet (C mag op <em>let op</em>).</p>
+<p class="klein">Regel: „Te doen" als A of B op <em>mist</em> staat; anders „Bijna" als C op <em>mist</em> staat of A of B op <em>let op</em>; anders Compleet (C mag op <em>let op</em>).</p>
 <button type="button" id="knop-alle">Loop alle combinaties na</button>
 <p id="uit-nalopen" aria-live="polite"></p>
 <table id="tabel-nalopen" hidden>
@@ -82,6 +84,7 @@ tr.afwijking td { background:var(--roze); }
 </section>
 </main>
 <footer>
+<p class="voor-docenten">Voor docenten: <a href="docent.html">docentmodus</a> · <a href="verificatie.html">verificatie van dossiers</a></p>
 <p>Naamsvermelding: HAN Bedrijfskunde, C-cluster (<a href="https://github.com/hanbedrijfskunde/a3-learning">hanbedrijfskunde/a3-learning</a>). Licentie: <a href="LICENSE">CC BY-SA 4.0</a> (volledige licentietekst).</p>
 </footer>
 <script type="module" src="js/site.js"></script>

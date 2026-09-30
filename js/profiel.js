@@ -29,6 +29,15 @@ export function beoordeelProfiel(invoer) {
   return { compleet: Object.keys(hints).length === 0, hints };
 }
 
+/**
+ * Welke meldingen zichtbaar zijn (SX-2): alleen bij velden die de student al heeft verlaten, hoogstens één per veld.
+ * Bij het laden is de set leeg, dus staat er geen enkele melding.
+ * @param {Object<string, string>} hints uit beoordeelProfiel
+ * @param {Set<string>} aangeraakt velden die de student heeft verlaten
+ */
+export const zichtbareMeldingen = (hints, aangeraakt) =>
+  Object.fromEntries(Object.entries(hints).filter(([id]) => aangeraakt.has(id)));
+
 const PROFIEL_SLEUTEL = 'profiel';
 
 /** Leest het profiel uit de opslag (leeg profiel als er nog niets is). */

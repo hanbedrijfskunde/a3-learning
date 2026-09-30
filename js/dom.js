@@ -56,9 +56,9 @@ export function bouwVelden(velden, voorvoegsel, waarden, bijWijziging) {
       if (v.type === 'lijst') {
         el = h('select', { id, onchange: bijWijziging }, h('option', { value: '' }, '— kies —'), v.opties.map((o) => h('option', { value: o }, o)));
       } else if (v.type === 'lang') {
-        el = h('textarea', { id, rows: 3, oninput: bijWijziging });
+        el = h('textarea', { id, rows: 3, oninput: bijWijziging, placeholder: v.zinstarter });
       } else {
-        el = h('input', { type: 'text', id, oninput: bijWijziging, autocomplete: 'off' });
+        el = h('input', { type: 'text', id, oninput: bijWijziging, autocomplete: 'off', placeholder: v.zinstarter });
       }
       rij.append(h('div', { class: 'veld' }, h('label', { for: id }, v.label), el));
       lezers[v.id] = () => el.value;

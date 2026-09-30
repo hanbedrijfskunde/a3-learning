@@ -53,7 +53,7 @@
           "bron": "concept-auteur"
         },
         "velden": [
-          { "id": "aanleiding", "label": "Aanleiding van mijn vraagstuk (vak 1)", "type": "lang" }
+          { "id": "aanleiding", "label": "Aanleiding van mijn vraagstuk (vak 1)", "type": "lang", "zinstarter": "Bij onze opdrachtgever merken we dat …" }
         ]
       },
       "controles": [
@@ -109,8 +109,8 @@
         },
         "velden": [
           { "id": "gebruiker", "label": "Gebruiker", "type": "tekst" },
-          { "id": "pain", "label": "Probleem / pain / gain", "type": "lang" },
-          { "id": "waarde", "label": "Waardecreatie", "type": "lang" },
+          { "id": "pain", "label": "Probleem / pain / gain", "type": "lang", "zinstarter": "Zij lopen er nu tegenaan dat …" },
+          { "id": "waarde", "label": "Waardecreatie", "type": "lang", "zinstarter": "Als dit is opgelost, dan …" },
           { "id": "kapitalen", "label": "Welke kapitalen?", "type": "meer",
             "opties": ["financieel", "productie", "intellectueel", "menselijk", "sociaal en relationeel", "natuurlijk"] }
         ],
@@ -184,8 +184,8 @@
           { "id": "frame3", "label": "Frame van zoekvraag 3", "type": "lijst", "opties": ["functioneel", "intern of extern", "theoretisch of empirisch"] },
           { "id": "zoekvraag3", "label": "Zoekvraag 3", "type": "tekst" },
           { "id": "model", "label": "Welk model kiest jullie team? (kies er één)", "type": "keuze", "opties": ["7S", "Strategy Map", "Six Capitals", "TOM-model"] },
-          { "id": "verantwoording", "label": "Mijn verantwoording van de modelkeuze", "type": "lang" },
-          { "id": "mis", "label": "Wat mis je als je maar één frame kiest?", "type": "lang" }
+          { "id": "verantwoording", "label": "Mijn verantwoording van de modelkeuze", "type": "lang", "zinstarter": "We kiezen dit model omdat ons vraagstuk …" },
+          { "id": "mis", "label": "Wat mis je als je maar één frame kiest?", "type": "lang", "zinstarter": "Met één frame zie ik niet …" }
         ]
       },
       "controles": [

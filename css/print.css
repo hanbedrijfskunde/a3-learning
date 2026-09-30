@@ -3,7 +3,7 @@
 @media print {
   html, body { background: var(--wit); color: var(--zwart); }
   body { font-size: 11pt; line-height: 1.35; }
-  nav, .skip, #pilot-banner { display: none; }
+  nav, .skip, #pilot-banner, .voor-docenten { display: none; }
   main { padding: 0; margin: 0; max-width: none; }
   .kaart { box-shadow: none; }
   h1, h2, h3, h4 { break-after: avoid; }

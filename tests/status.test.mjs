@@ -59,5 +59,5 @@ test('BW-5: onbekende soort of onbekend resultaat wordt geweigerd', () => {
 });
 
 test('BW-3: elke status heeft een zichtbare tekst', () => {
-  assert.deepEqual(Object.values(STATUS_TEKST), ['Compleet', 'Bijna', 'Nog niet']);
+  assert.deepEqual(Object.values(STATUS_TEKST), ['Compleet', 'Bijna', 'Te doen']);
 });

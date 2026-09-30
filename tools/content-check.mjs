@@ -67,6 +67,8 @@ export function controleerLeerblok(inhoud, bestand) {
 export const BRONNEN = Object.freeze(['werkboek', 'concept-auteur', 'draaiboek', 'lrd']);
 /** Toepassingen met een eigen scherm (js/leerblok.js): de Wissel, de verbanden-kaart en het STARR-sjabloon. */
 export const COMPONENTEN = Object.freeze(['feedbacklog', 'verbanden', 'starr']);
+/** Lange velden die een component vult en die de student niet als los tekstvak ziet (SX-11). */
+export const ZONDER_ZINSTARTER = Object.freeze(['verbanden', 'markering', 'syntheseKaarten', 'regels', 'teamactie']);
 export const VELDTYPEN = Object.freeze(['tekst', 'lang', 'keuze', 'lijst', 'meer']);
 const MET_OPTIES = ['keuze', 'lijst', 'meer'];
 
@@ -150,6 +152,17 @@ export function controleerFormaat(inhoud, bestand) {
       bronTekst(wie, 'modelantwoord', taak.modelantwoord, { tekst: false });
       for (const k of Object.keys(taak.modelantwoord.velden ?? {})) {
         if (!oefenIds.has(k)) fout(wie, `modelantwoord heeft een antwoord voor onbekend veld ${k}`);
+      }
+    }
+
+    // SX-11: elk lang tekstvak van de toepassing heeft een zinstarter als placeholder, en die zinstarter zegt het
+    // modelantwoord niet voor. Velden die een component vult (lijnen, markeringen, feedbackregels) tellen niet mee.
+    const modelTekst = JSON.stringify(taak.modelantwoord ?? '').toLowerCase();
+    for (const v of velden) {
+      if (v?.type !== 'lang' || ZONDER_ZINSTARTER.includes(v.id)) continue;
+      if (!gevuld(v.zinstarter)) { fout(wie, `veld ${v.id} is een lang veld zonder zinstarter (SX-11)`); continue; }
+      for (const stuk of v.zinstarter.split('…').map((x) => x.trim().toLowerCase()).filter((x) => x.length >= 15)) {
+        if (modelTekst.includes(stuk)) fout(wie, `de zinstarter van ${v.id} staat in het modelantwoord (SX-11): „${stuk}”`);
       }
     }
 

@@ -7,6 +7,8 @@
   --accent-donker:#B8004A;            /* hover van de accentknop, wit erop */
   --roze:#FFD9E6;                     /* achtergrond van een afwijkende rij (controlelab) */
   --groen:#1A7F37; --oker:#B7791F;    /* alleen onderstreping bij een status, nooit tekst (TG-4) */
+  --link:#000000; --link-hover:#B8004A; /* linkkleur (SX-8); hover = --accent-donker, als hex voor de contrastcontrole */
+  --leeg:#F2F2F0;                     /* „Te doen" en lege voortgangssegmenten; = --grijs */
   --rand:3px; --schaduw:5px 5px 0 var(--zwart);
   --f:"Avenir Next","Avenir","Nunito Sans","Segoe UI",Helvetica,Arial,sans-serif;
   --fm:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
@@ -14,25 +16,32 @@
 * { box-sizing:border-box; }
 body { margin:0; font:16px/1.5 var(--f); color:var(--zwart); background:var(--wit); }
 header,main,footer { max-width:60rem; margin:0 auto; padding:1rem; }
+a { color:var(--link); font-weight:700; text-decoration-thickness:3px; text-underline-offset:3px; }
+a:hover { color:var(--link-hover); }
 nav a { margin-right:1rem; color:var(--zwart); font-weight:700; }
 nav a[aria-current="page"] { color:var(--accent); background:var(--wit); text-decoration:underline; text-decoration-thickness:4px; text-underline-offset:4px; }
 h1 { border-bottom:4px solid var(--accent); padding-bottom:.25rem; }
 .kaart { border:var(--rand) solid var(--zwart); box-shadow:var(--schaduw); padding:1rem; margin:1rem 0; background:var(--wit); }
 footer { border-top:3px solid var(--zwart); font-size:.875rem; margin-top:2rem; }
-#pilot-banner { background:var(--accent); color:var(--wit); text-align:center; font-weight:700; padding:.25rem; }
+.pilot-chip { display:inline-block; vertical-align:top; margin:0 0 .5rem .75rem; border:2px solid var(--accent); border-radius:1rem; padding:0 .6rem; font-size:.8125rem; font-weight:700; }
+.voor-docenten { font-weight:700; }
 
 /* ---- formulieren: elk veld heeft een zichtbaar label en een duidelijke focusrand ---- */
 label, legend { font-weight:700; display:block; margin:.75rem 0 .25rem; }
+legend { float:left; width:100%; padding:0; }   /* de vraag valt nooit over de eerste optie (taak 2.2) */
+legend + * { clear:both; }
 fieldset { border:3px solid var(--zwart); margin:.75rem 0; padding:.25rem .75rem .75rem; }
 input[type="text"], textarea, select { width:100%; font:inherit; color:var(--zwart); background:var(--wit); border:3px solid var(--zwart); padding:.4rem .6rem; }
 textarea { min-height:4.5rem; resize:vertical; }
-.optie { display:flex; align-items:center; gap:.5rem; margin:.25rem 0; }
-.optie label { display:inline; margin:0; font-weight:400; }
+.optie { display:flex; align-items:center; gap:.5rem; margin:.25rem 0; min-height:2.75rem; padding:0 .5rem; border:2px solid transparent; }
+.optie label { display:inline; margin:0; font-weight:400; flex:1; padding:.5rem 0; cursor:pointer; }
+.optie:has(input:checked) { background:var(--grijs); border-color:var(--zwart); }
 input[type="checkbox"], input[type="radio"] { width:1.25rem; height:1.25rem; accent-color:var(--zwart); flex:none; }
 :focus-visible { outline:4px solid var(--accent); outline-offset:2px; }
 .klein { font-size:.875rem; }
 .meta { color:var(--grijs-tekst); }
-.fout { color:var(--fout); font-weight:700; }
+.fout, .veld-fout { color:var(--fout); font-weight:700; }
+.veld-fout { margin:.25rem 0 0; }
 
 /* ---- knoppen ---- */
 .knop { font:inherit; font-weight:700; cursor:pointer; color:var(--zwart); background:var(--wit); border:3px solid var(--zwart); box-shadow:3px 3px 0 var(--zwart); padding:.4rem .9rem; text-decoration:none; display:inline-block; }
@@ -46,7 +55,7 @@ input[type="checkbox"], input[type="radio"] { width:1.25rem; height:1.25rem; acc
 .status { display:inline-block; border:3px solid var(--zwart); padding:.1rem .6rem; font-weight:700; background:var(--wit); }
 .status-compleet { box-shadow:inset 0 -6px 0 var(--groen); }
 .status-bijna { box-shadow:inset 0 -6px 0 var(--oker); }
-.status-nog-niet { box-shadow:inset 0 -6px 0 var(--accent); }
+.status-nog-niet { background:var(--leeg); }
 
 /* ---- leerblok en taak ---- */
 .taken-nav ol { padding-left:1.25rem; }
@@ -61,7 +70,7 @@ input[type="checkbox"], input[type="radio"] { width:1.25rem; height:1.25rem; acc
 .model-lijst dd { margin:0 0 0 1rem; }
 .format, .voorbeeld { border:3px solid var(--zwart); padding:.5rem .75rem; background:var(--wit); font-weight:700; }
 .uitkomst { margin-top:.75rem; }
-.ontbreekt { margin:.25rem 0; padding-left:1.25rem; }
+.ontbreekt { margin:.25rem 0; padding:.1rem .5rem .1rem 1.75rem; border-left:6px solid var(--fout); }
 .compleet { font-weight:700; }
 .leerblokken { list-style:none; padding:0; }
 .leerblok h3 { margin-top:0; }
@@ -94,7 +103,7 @@ input[type="checkbox"], input[type="radio"] { width:1.25rem; height:1.25rem; acc
 .dos-tegel-status { font-size:1.5rem; font-weight:700; }
 .dos-tegel-compleet { box-shadow:inset 0 -8px 0 var(--groen); }
 .dos-tegel-bijna { box-shadow:inset 0 -8px 0 var(--oker); }
-.dos-tegel-nog-niet { box-shadow:inset 0 -8px 0 var(--accent); }
+.dos-tegel-nog-niet { background:var(--leeg); }
 .dos-tabelwrap, .ver-tabelwrap { overflow-x:auto; }
 .dos-tabel, .ver-tabel { border-collapse:collapse; width:100%; }
 .dos-tabel th, .dos-tabel td, .ver-tabel th, .ver-tabel td { border:2px solid var(--zwart); padding:.4rem .6rem; text-align:left; vertical-align:top; }

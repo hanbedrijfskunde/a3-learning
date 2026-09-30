@@ -335,7 +335,7 @@
           {
             "id": "zoekvraag",
             "label": "Zoekvraag uit 2.2",
-            "type": "lang"
+            "type": "lang", "zinstarter": "Welke …"
           },
           {
             "id": "context",
@@ -350,12 +350,12 @@
           {
             "id": "nietNoemen",
             "label": "„Niet noemen”-lijst: namen en vertrouwelijke termen die niet in de prompt mogen (gescheiden door komma’s)",
-            "type": "lang"
+            "type": "lang", "zinstarter": "naam opdrachtgever, productnaam, …"
           },
           {
             "id": "prompt",
             "label": "Prompt voor route B",
-            "type": "lang"
+            "type": "lang", "zinstarter": "Zoek wetenschappelijke bronnen over …"
           },
           {
             "id": "bron",
@@ -365,7 +365,7 @@
           {
             "id": "werkte",
             "label": "Route A of B: wat werkte wel, wat niet?",
-            "type": "lang"
+            "type": "lang", "zinstarter": "Goed ging: …; minder goed ging: …"
           }
         ],
         "weergave": {
@@ -670,27 +670,27 @@
           {
             "id": "b1t1",
             "label": "Bron 1: toelichting Authority",
-            "type": "lang"
+            "type": "lang", "zinstarter": "De auteur is … en is deskundig omdat …"
           },
           {
             "id": "b1t2",
             "label": "Bron 1: toelichting Accuracy",
-            "type": "lang"
+            "type": "lang", "zinstarter": "De inhoud is onderbouwd met …"
           },
           {
             "id": "b1t3",
             "label": "Bron 1: toelichting Objectivity",
-            "type": "lang"
+            "type": "lang", "zinstarter": "De bron heeft wel of geen belang bij …"
           },
           {
             "id": "b1t4",
             "label": "Bron 1: toelichting Currency",
-            "type": "lang"
+            "type": "lang", "zinstarter": "De bron is van … en dat is actueel genoeg omdat …"
           },
           {
             "id": "b1t5",
             "label": "Bron 1: toelichting Coverage",
-            "type": "lang"
+            "type": "lang", "zinstarter": "De bron behandelt … maar niet …"
           },
           {
             "id": "b1ver",
@@ -713,7 +713,7 @@
           {
             "id": "b1apa",
             "label": "Bron 1 in APA",
-            "type": "lang"
+            "type": "lang", "zinstarter": "Achternaam, V. (jaar). Titel. Uitgever of tijdschrift."
           },
           {
             "id": "b2auteur",
@@ -797,27 +797,27 @@
           {
             "id": "b2t1",
             "label": "Bron 2: toelichting Authority",
-            "type": "lang"
+            "type": "lang", "zinstarter": "De auteur is … en is deskundig omdat …"
           },
           {
             "id": "b2t2",
             "label": "Bron 2: toelichting Accuracy",
-            "type": "lang"
+            "type": "lang", "zinstarter": "De inhoud is onderbouwd met …"
           },
           {
             "id": "b2t3",
             "label": "Bron 2: toelichting Objectivity",
-            "type": "lang"
+            "type": "lang", "zinstarter": "De bron heeft wel of geen belang bij …"
           },
           {
             "id": "b2t4",
             "label": "Bron 2: toelichting Currency",
-            "type": "lang"
+            "type": "lang", "zinstarter": "De bron is van … en dat is actueel genoeg omdat …"
           },
           {
             "id": "b2t5",
             "label": "Bron 2: toelichting Coverage",
-            "type": "lang"
+            "type": "lang", "zinstarter": "De bron behandelt … maar niet …"
           },
           {
             "id": "b2ver",
@@ -840,7 +840,7 @@
           {
             "id": "b2apa",
             "label": "Bron 2 in APA",
-            "type": "lang"
+            "type": "lang", "zinstarter": "Achternaam, V. (jaar). Titel. Uitgever of tijdschrift."
           }
         ],
         "weergave": {
@@ -1474,7 +1474,7 @@
           {
             "id": "argument",
             "label": "Mijn sterkste argument",
-            "type": "lang"
+            "type": "lang", "zinstarter": "Mijn sterkste argument is dat …, omdat …"
           }
         ]
       },

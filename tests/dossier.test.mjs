@@ -345,7 +345,7 @@ test('DS-11: Mijn stand heeft 11 statussen en 0 inhoudsvelden', () => {
   assert.deepEqual(Object.keys(stand[0]).sort(), ['heeftRecord', 'id', 'ontbreekt', 'status', 'statusTekst', 'titel', 'voorlopig']);
   const tekst = JSON.stringify(stand);
   for (const geheim of ['planners', 'roosteren', 'frame', 'inhoud']) assert.ok(!tekst.includes(geheim), geheim);
-  assert.equal(stand.find((c) => c.id === 'EV-05').statusTekst, 'Nog niet');
+  assert.equal(stand.find((c) => c.id === 'EV-05').statusTekst, 'Te doen');
 });
 
 test('BW-13: de dekkingstabel heeft 13 rijen (5 gedekt, 6 deels, 2 buiten scope); EV-01 en EV-02 tonen de status uit het dossier', () => {
@@ -360,7 +360,7 @@ test('BW-13: de dekkingstabel heeft 13 rijen (5 gedekt, 6 deels, 2 buiten scope)
   assert.equal(formuleert.bewijs[0].status, store.get('EV-01').status);
   const analyseert = rijen.find((r) => r.label === 'LUK 1 · Analyseert het probleem methodisch');
   assert.deepEqual(analyseert.bewijs.map((c) => [c.id, c.heeftRecord]), [['EV-02', true], ['EV-03', false]]);
-  assert.equal(analyseert.bewijs[1].statusTekst, 'Nog niet');
+  assert.equal(analyseert.bewijs[1].statusTekst, 'Te doen');
   assert.deepEqual(rijen.filter((r) => r.dekking === 'buiten scope').map((r) => r.bewijs.length), [0, 0]);
 });
 

@@ -242,7 +242,8 @@ export function bouwVerbandenToepassing({ velden, waarden, bijWijziging, store, 
   zetMarkeringen();
 
   // ---- synthese met kaarten als chips (VB-7)
-  const synthese = h('textarea', { id: `${voorvoegsel}-synthese`, rows: 5 });
+  const zinstarter = (id) => velden.find((v) => v.id === id)?.zinstarter;
+  const synthese = h('textarea', { id: `${voorvoegsel}-synthese`, rows: 5, placeholder: zinstarter('synthese') });
   synthese.value = waarden.synthese ?? '';
   const teller = h('p', { class: 'klein', role: 'status' });
   const tel = () => { const n = tellers.telZinnen(synthese.value); teller.textContent = `${n} van ${MAX_ZINNEN_SYNTHESE} zinnen`; teller.classList.toggle('fout', n > MAX_ZINNEN_SYNTHESE); };
@@ -259,7 +260,7 @@ export function bouwVerbandenToepassing({ velden, waarden, bijWijziging, store, 
       bijWijziging();
     } }, `+ ${kort(k.label, 32)}`)));
   const nietZien = ['nietZien1', 'nietZien2', 'nietZien3'].map((id) => {
-    const ta = h('textarea', { id: `${voorvoegsel}-${id}`, rows: 2 });
+    const ta = h('textarea', { id: `${voorvoegsel}-${id}`, rows: 2, placeholder: zinstarter(id) });
     ta.value = waarden[id] ?? '';
     ta.addEventListener('input', bijWijziging);
     return { id, ta, rij: h('div', { class: 'veld' }, h('label', { for: `${voorvoegsel}-${id}` }, label(id)), ta) };
