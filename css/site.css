@@ -231,3 +231,8 @@ input[type="checkbox"], input[type="radio"] { min-width:1.25rem; }
   .onderdeel, .ver-cel { white-space:normal; }
 }
 @media (forced-colors:active) { .status { border-style:double; } }
+
+/* HAN-logo in de kop */
+.han-logo { display:inline-block; color:var(--zwart); margin-bottom:.5rem; }
+.han-logo .logo { display:block; height:28px; width:68px; }
+@media print { .han-logo { display:block; } }
