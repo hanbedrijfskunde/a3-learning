@@ -13,7 +13,7 @@
 //                  "stof": { "bron", "alineas": [..], "format"?, "figuur"? },
 //                  "oefening": { "opdracht": { "tekst", "bron" }, "figuur"?, "velden"? },
 //                  "modelantwoord": { "bron", "velden": { veldId: waarde } },
-//                  "toepassing": { "opdracht": { "tekst", "bron" }, "velden": [ { "id", "label", "type", "opties"? } ], "livevoorbeeld"? },
+//                  "toepassing": { "opdracht": { "tekst", "bron" }, "figuur"?, "velden": [ { "id", "label", "type", "opties"? } ], "livevoorbeeld"? },
 //                  "controles": [ { "id", "soort": "A"|"B"|"C", "type", "veld"?, "velden"?, ...parameters } ],
 //                  "bewijsonderdeel": "EV-01" | null, "luk": [1], "bc": ["BC1"] } ],
 //     "verdieping": { "tekst", "bron", "na": "2.2" },
@@ -132,6 +132,7 @@ export function controleerFormaat(inhoud, bestand) {
     else bronTekst(wie, 'stof', taak.stof, { tekst: false });
     if (!isObject(taak.oefening)) fout(wie, 'mist een oefening (TK-3)');
     else bronTekst(wie, 'oefening.opdracht', taak.oefening.opdracht);
+    if (taak.toepassing?.figuur !== undefined && !FIGUUR_NAMEN.includes(taak.toepassing.figuur)) fout(wie, `toepassing.figuur ${JSON.stringify(taak.toepassing.figuur)} is onbekend; kies ${FIGUUR_NAMEN.join(', ')}`);
     if (taak.oefening?.figuur !== undefined && !FIGUUR_NAMEN.includes(taak.oefening.figuur)) fout(wie, `oefening.figuur ${JSON.stringify(taak.oefening.figuur)} is onbekend; kies ${FIGUUR_NAMEN.join(', ')}`);
 
     const velden = Array.isArray(taak.toepassing?.velden) ? taak.toepassing.velden : [];

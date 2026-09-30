@@ -210,7 +210,7 @@ async function start() {
     const oefening = h('div', { class: 'oefening', id: `oefening-${id}` },
       h('h4', {}, taak.bewijsonderdeel && blok.oefencasus ? `Oefencasus · ${blok.oefencasus}` : 'Oefenen'),
       s3.oefening.opdracht ? h('p', {}, met(s3.oefening.opdracht.tekst)) : null,
-      // De figuur uit de stof nog eens bij de oefening (oefening.figuur), zodat de student niet terug hoeft te klikken (taak 6.1: het VPC).
+      // De figuur uit de stof nog eens bij de oefening (oefening.figuur) en de toepassing (toepassing.figuur), zodat de student niet terug hoeft te klikken (taak 6.1: het VPC).
       FIGUREN[s3.oefening.figuur]?.bouw({ met }) ?? null,
       veldGebied, overslaanGebied);
     const stap3 = stap(s3, oefening);
@@ -326,6 +326,7 @@ async function start() {
     const klaarWacht = h('p', { class: 'klein' }, 'Zodra je „klaar als” is gehaald, kun je deze taak afronden. Je kunt ook gewoon doorgaan naar de volgende taak.');
     const stap4 = stap(s4,
       s4.opdracht ? h('p', {}, met(s4.opdracht.tekst)) : null,
+      FIGUREN[s4.figuur]?.bouw({ met }) ?? null, // net als bij de oefening (toepassing.figuur)
       voorbeeld ? h('div', {}, h('p', { class: 'klein' }, 'Zo klinkt je vraag nu:'), voorbeeld) : null,
       toe.element,
       h('div', { class: 'klaar-blok' }, h('h4', {}, 'Klaar als'), checklist),
