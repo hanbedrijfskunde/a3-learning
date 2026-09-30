@@ -22,7 +22,7 @@ jobs:
         with:
           node-version: 22
       - name: "Controle 1: unittests"
-        run: node --test tests/
+        run: node --test
       - name: "Controle 2: contentcontrole"
         run: node tools/content-check.mjs
       - name: "Controle 3: linkcontrole"

@@ -11,7 +11,7 @@ CC BY-SA 4.0, zie [LICENSE](LICENSE). Naamsvermelding: HAN Bedrijfskunde, C-clus
 ## Controles
 
 ```
-node --test tests/
+node --test
 node tools/content-check.mjs
 node tools/link-check.mjs
 ```
