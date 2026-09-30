@@ -56,3 +56,21 @@ input[type="checkbox"], input[type="radio"] { width:1.25rem; height:1.25rem; acc
 .onderdeel { margin-right:.75rem; white-space:nowrap; }
 .hints { color:#b0003f; padding-left:1.25rem; }
 @media (max-width:40rem) { header, main, footer { padding:.75rem; } nav a { display:inline-block; margin:.25rem 1rem .25rem 0; } }
+
+/* ---- de Wissel (fase 4, prefix wis-) ---- */
+.wis-sectie[hidden], .wis-teamactie[hidden], .wis-herinnering[hidden], .wis-terug[hidden] { display:none; }
+.wis-details > summary { cursor:pointer; font-weight:700; padding:.4rem .9rem; border:3px solid var(--zwart); box-shadow:3px 3px 0 var(--zwart); display:inline-block; background:var(--wit); }
+.wis-details[open] > summary { background:var(--grijs); }
+.wis-paneel { margin-top:.75rem; }
+.wis-privacy { border-left:6px solid var(--accent); padding:.25rem .75rem; background:var(--grijs); }
+.wis-stap { border-top:2px solid var(--zwart); margin-top:1rem; padding-top:.25rem; }
+.wis-stap h3 { font-size:1.05rem; margin:.5rem 0; }
+.wis-pre { white-space:pre-wrap; background:var(--grijs); border:2px dashed var(--zwart); padding:.5rem .75rem; }
+.wis-blok { border:3px solid var(--zwart); padding:.5rem .75rem; margin:.75rem 0; }
+.wis-herinnering { border:3px solid var(--accent); padding:.25rem .75rem; margin:.75rem 0; font-weight:700; }
+.wis-log { list-style:none; padding:0; }
+.wis-regel { border:3px solid var(--zwart); padding:.5rem .75rem; margin:.75rem 0; }
+.wis-dl dt { font-weight:700; }
+.wis-dl dd { margin:0 0 .25rem 1rem; }
+.wis-handmatig { margin:.75rem 0; }
+.wis-melding { min-height:1.25rem; }

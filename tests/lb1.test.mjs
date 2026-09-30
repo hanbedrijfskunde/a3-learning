@@ -183,6 +183,7 @@ test('EV-02: Compleet alleen bij drie verschillende frames, vraagtekens, één m
 test('de controles in de data hebben elk drie goede en drie zwakke voorbeelden of een fabriek die die heeft', () => {
   // Elk type dat in leerblok 1 wordt gebruikt is hierboven of in core.test.mjs (QA-2) gedekt.
   const gebruikt = new Set(blok.taken.flatMap((t) => t.controles.map((c) => c.type)));
-  const gedekt = new Set([...Object.keys(CONTROLES), 'veldGevuld', 'keuzeUitLijst', 'eindigtOp', 'minWoorden', 'minZinnen']);
+  const gedekt = new Set([...Object.keys(CONTROLES), 'veldGevuld', 'keuzeUitLijst', 'eindigtOp', 'minWoorden', 'minZinnen',
+    'nietGelijkAanWissel']); // de laatste: QA-2-voorbeelden in wissel.test.mjs (fase 4)
   for (const type of gebruikt) assert.ok(gedekt.has(type), `${type} heeft geen QA-2-voorbeelden`);
 });

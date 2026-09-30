@@ -6,6 +6,8 @@ import { maakSessie, volgendeStapOk } from './sessie.js';
 import { bouwTaakModel, isIngevuld } from './weergave.js';
 import { leesProfiel } from './profiel.js';
 import { VOORBEELDEN } from './checks/index.js';
+import { maakWissel, wisselContext, EV09_TAAK } from './wissel.js';
+import { bouwWisselPaneel } from './wissel-paneel.js';
 
 const laad = async (pad) => (await fetch(new URL(pad, import.meta.url))).json();
 const BEWAAR_NA_MS = 500; // bewaren na de laatste toetsaanslag; de controles zelf lopen direct
@@ -28,12 +30,22 @@ async function start() {
   ]);
   const { opslag, geblokkeerd } = kiesOpslag();
   const store = maakStore(opslag);
-  const sessie = maakSessie({ store, blok, elearning: config.versie });
+  const context = () => wisselContext(store); // ontvangen wisselblokken voor de kopiecontrole (WS-7)
+  const sessie = maakSessie({ store, blok, elearning: config.versie, context });
+  // De Wissel hoort bij leerblok 4 (taak 6.2, EV-09); in leerblok 1 staat hij na de eerste versie van EV-02 (ST-7).
+  const wisselSessie = blok.wissel
+    ? maakSessie({ store, blok: await laad(`../data/leerblok-${blok.wissel.leerblok}.json`), elearning: config.versie, context })
+    : null;
+  function wisselPaneel(wsessie, opties) {
+    const wissel = maakWissel({ store, sessie: wsessie });
+    const leesStatus = () => wsessie.beoordeel(EV09_TAAK, wissel.leesInhoud());
+    return { wissel, ...bouwWisselPaneel({ wissel, alias: leesProfiel(store).alias, leesStatus, ...opties }) };
+  }
   const main = document.querySelector('#inhoud');
   const h1 = main.querySelector('h1');
   wis(main);
 
-  const taken = new Map(); // id → { leesInhoud, plan, bewaarNu }
+  const taken = new Map(); // id → { leesInhoud, toon }
   const foutGebied = h('p', { class: 'fout', role: 'alert', hidden: true });
   const afsluitStatus = h('div', { id: 'afsluit-status' });
 
@@ -52,6 +64,7 @@ async function start() {
       foutGebied.hidden = false;
     }
     tekenAfsluiten();
+    tekenWissel();
   }
   const bewaarAlles = () => [...wachtend.keys()].forEach(bewaarNu);
   window.addEventListener('pagehide', bewaarAlles);
@@ -152,7 +165,12 @@ async function start() {
       stapHint.textContent = zin && !volgendeStapOk(zin) ? 'Schrijf minstens drie woorden.' : '';
     }
     const bijToepassing = () => { toonResultaat(); plan(id); };
-    const toe = bouwVelden(s3.velden, `toe-${id}`, sessie.leesToepassing(id), bijToepassing);
+    // Een toepassing met component `feedbacklog` (EV-09) is de Wissel zelf; alles wat de Wissel wijzigt, bewaart hij direct.
+    const feedbacklog = () => {
+      const w = wisselPaneel(sessie, { metTeamactie: true, bijWijziging: bijToepassing });
+      return { element: w.element, lees: () => w.wissel.leesInhoud(), zet: () => w.ververs() };
+    };
+    const toe = taak.toepassing.component === 'feedbacklog' ? feedbacklog() : bouwVelden(s3.velden, `toe-${id}`, sessie.leesToepassing(id), bijToepassing);
     stapVeld.addEventListener('input', bijToepassing);
     stapVeld.value = sessie.leesToepassing(id).volgendeStap ?? '';
 
@@ -197,7 +215,7 @@ async function start() {
       verdiepingKop.hidden = !klaar;
     }
 
-    taken.set(id, { leesInhoud: lees });
+    taken.set(id, { leesInhoud: lees, toon: toonResultaat });
     toonResultaat();
     tekenKlaar();
     const meta = h('p', { class: 'meta' },
@@ -231,6 +249,23 @@ async function start() {
     h('p', {}, h('a', { class: 'knop knop-link', id: 'door', href: volgende.href }, `Door naar: ${volgende.titel}`)));
   function m0Vraag() { return sessie.afsluitModel(null).volgendeStapVraag; }
 
+  // ---------------------------------------------------------------- de Wissel in leerblok 1 (ST-7)
+
+  const wisselSectie = wisselSessie && h('section', { class: 'kaart wis-sectie', id: 'wissel', 'aria-labelledby': 'wissel-kop', hidden: true },
+    h('h2', { id: 'wissel-kop' }, 'De Wissel'),
+    h('details', { class: 'wis-details' },
+      h('summary', {}, 'Feedback vragen en geven aan een wisselpartner'),
+      wisselPaneel(wisselSessie, {
+        bijWijziging: () => {
+          // een ontvangen wisselblok kan de kopiecontrole van EV-01 en EV-02 veranderen (WS-7)
+          for (const id of ['2.1', '2.2']) if (taken.has(id)) { sessie.bewaar(id, taken.get(id).leesInhoud()); taken.get(id).toon(); }
+          tekenAfsluiten();
+        },
+      }).element));
+  function tekenWissel() {
+    if (wisselSectie) wisselSectie.hidden = !store.get(blok.wissel.zichtbaarNa);
+  }
+
   // ---------------------------------------------------------------- pagina
 
   const profiel = leesProfiel(store);
@@ -249,9 +284,10 @@ async function start() {
     h('p', { class: 'meta' }, `Richttijd: ${blok.richttijd} min. Eindigt met: ${blok.eindigtMet}.`),
     geblokkeerd ? h('p', { class: 'fout', role: 'alert' }, 'Je browser blokkeert opslag: wat je invult blijft alleen staan zolang deze pagina open is.') : null,
     foutGebied, vraagstuk, inhoud,
-    ...blok.taken.map(taakArtikel), afsluiten,
+    ...blok.taken.flatMap((t) => [taakArtikel(t), t.bewijsonderdeel === blok.wissel?.zichtbaarNa ? wisselSectie : null]), afsluiten,
   ].filter(Boolean));
   tekenAfsluiten();
+  tekenWissel();
 }
 
 start().catch((e) => {

@@ -1,0 +1,89 @@
+{
+  "formaat": "1.0",
+  "leerblok": 4,
+  "titel": "Verbinden en reflecteren",
+  "richttijd": 45,
+  "eindigtMet": "Synthese met feedback en reflectie, en het dossier (EV-11, EV-09, EV-10)",
+  "oefencasus": "Webshop X",
+  "taken": [
+    {
+      "id": "6.2",
+      "titel": "Gallery walk: oefenronde en de Wissel",
+      "vorm": "Team",
+      "richttijd": { "tekst": "10 min", "minuten": 10, "bron": "werkboek" },
+      "waarom": {
+        "tekst": "Op dag 3 doen jullie een gallery walk met alle vier de overzichten. Nu oefen je hoe het werkt, en je krijgt feedback die je meteen gebruikt bij vel 2.",
+        "bron": "werkboek"
+      },
+      "klaarAls": {
+        "tekst": "je feedback hebt gekregen én gegeven, en hebt opgeschreven wat je met de ontvangen feedback doet.",
+        "bron": "concept-auteur"
+      },
+      "stof": {
+        "bron": "concept-auteur",
+        "opmerking": "De drie zinsdelen (ik zie, ik mis, ik vraag me af) staan in werkboek 6.2; de uitleg van de Wissel via het klembord is door de bouwer geschreven.",
+        "alineas": [
+          "Goede feedback is geen oordeel maar een beschrijving. Je gebruikt drie zinsdelen: „Ik zie…” (wat staat er, zonder mening), „Ik mis…” (wat had je verwacht en staat er niet) en „Ik vraag me af…” (een vraag waar de ander over kan nadenken).",
+          "De Wissel gaat zo: je kopieert je wisselblok (je onderzoeksvraag en zoekvragen, zonder alias) en stuurt het met een app die je al gebruikt naar een wisselpartner: een teamgenoot, een medestudent of je coach. Die geeft feedback en stuurt je een tekst terug, die je hier plakt. De feedback mag dagen later komen: je bewijs blijft dan op Bijna staan.",
+          "Feedback is pas iets waard als je er iets mee doet. Schrijf daarom bij de ontvangen feedback één actie en zet de status: open, bezig of gedaan. Blijft een actie een week op dezelfde status staan, dan herinnert de site je eraan."
+        ]
+      },
+      "oefening": {
+        "opdracht": {
+          "tekst": "Casus: een collega van webshop X laat je zijn onderzoeksvraag zien: „Wat is de beste oplossing voor terugkerende klanten van webshop X om weer een aankoopervaring te krijgen die ze minstens een 8 geven, zodat de klantrelatie herstelt?” Schrijf feedback met de drie zinsdelen.",
+          "bron": "concept-auteur"
+        },
+        "velden": [
+          { "id": "zie", "label": "Ik zie…", "type": "lang" },
+          { "id": "mis", "label": "Ik mis…", "type": "lang" },
+          { "id": "vraag", "label": "Ik vraag me af…", "type": "lang" }
+        ]
+      },
+      "modelantwoord": {
+        "bron": "concept-auteur",
+        "opmerking": "Voorbeeld door de bouwer geschreven, bij de vraag over webshop X uit de kaders van het draaiboek.",
+        "velden": {
+          "zie": "Ik zie dat je de klanttevredenheid concreet maakt met een cijfer (een 8) en dat je kiest voor terugkerende klanten.",
+          "mis": "Ik mis een tweede kapitaal naast de klantrelatie: bij „de klantrelatie herstelt” denk ik aan sociaal kapitaal, maar wat levert het de medewerkers op?",
+          "vraag": "Ik vraag me af of een 8 de juiste grens is, en hoe je weet dat de daling bij terugkerende klanten zit en niet bij nieuwe."
+        }
+      },
+      "toepassing": {
+        "opdracht": {
+          "tekst": "Stuur je wisselblok naar een wisselpartner, plak zijn wisselblok en geef feedback, en plak de feedback die je zelf terugkrijgt. Schrijf bij de ontvangen feedback één actie en kies een status. Post-its van andere teams leg je vast met de rol „ander team”.",
+          "bron": "concept-auteur"
+        },
+        "component": "feedbacklog",
+        "velden": [
+          { "id": "regels", "label": "Feedbacklog: regels met ik zie, ik mis, ik vraag me af, rol, actie en status", "type": "lang" },
+          { "id": "teamactie", "label": "Teamactie na de post-its van andere teams", "type": "lang" }
+        ]
+      },
+      "controles": [
+        { "id": "feedback-gegeven", "soort": "A", "type": "feedbackGegeven", "veld": "regels" },
+        { "id": "zie-mis-vraag", "soort": "A", "type": "zieMisVraag", "veld": "regels" },
+        { "id": "actie-met-status", "soort": "A", "type": "actieMetStatus", "veld": "regels" },
+        { "id": "eigen-niet-kopie-wissel", "soort": "B", "type": "eigenNietGelijkAanWissel", "velden": ["regels"] }
+      ],
+      "bewijsonderdeel": "EV-09",
+      "luk": [5],
+      "bc": ["BC5"]
+    }
+  ],
+  "verdieping": {
+    "tekst": "Kies een actie uit je feedbacklog die nog niet op gedaan staat en schrijf op wat je vandaag doet om haar een stap verder te brengen.",
+    "bron": "concept-auteur",
+    "na": "6.2"
+  },
+  "bewijsonderdelen": [
+    {
+      "id": "EV-09",
+      "taak": "6.2",
+      "titel": "Feedback ontvangen en gegeven",
+      "lukOnderdelen": [
+        "LUK 5 · Haalt feedback op en reflecteert erop",
+        "LUK 5 · Formuleert ontwikkelpunten en werkt er aantoonbaar aan"
+      ]
+    }
+  ]
+}

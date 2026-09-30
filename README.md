@@ -50,3 +50,7 @@ De workflow `.github/workflows/pages.yml` draait deze drie bij elke push en publ
 ## Sitemap
 
 `index.html`, `leerblok-1.html` … `leerblok-4.html`, `dossier.html`, `verificatie.html`, `docent.html`. Testhulpmiddel, niet gelinkt vanaf de index: `controlelab.html` (recordvalidatie, statusregel en de 27 combinaties uit blueprint §5).
+
+## De Wissel (fase 4)
+
+`js/wissel.js` (logica, geen DOM) en `js/wissel-paneel.js` (DOM). Klembordtekst is gewone tekst met een kopregel: `A3-WISSELBLOK` (onderzoeksvraag en zoekvragen, zonder alias) en `A3-FEEDBACK` (ik zie, ik mis, ik vraag me af). Ontvangen wisselblokken staan in meta `wissel:blokken` (nooit in een record); de feedbacklog en de teamactie staan in het bewijsrecord EV-09 (`inhoud: { regels: [{ id, richting, rol, zie, mis, vraag, actie, status, statusOp }], teamactie }`, taak 6.2 in `data/leerblok-4.json`). `maakSessie` accepteert `context: () => object` voor extra controlecontext (`wisselContext(store)` levert `wissel.ontvangen` en `eigen`). Een toepassing met `"component": "feedbacklog"` laat `leerblok.js` de Wissel tonen in plaats van gewone velden; `"wissel": { "zichtbaarNa": "EV-02", ... }` in `leerblok-1.json` toont de Wissel pas na de eerste versie van dat onderdeel (ST-7). `herinneringenUitStore(store, nu)` geeft de acties die ≥ 7 dagen dezelfde status hebben (WS-11); de klok is overal injecteerbaar.

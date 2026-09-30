@@ -121,7 +121,8 @@
         { "id": "pain-woorden", "soort": "A", "type": "minWoordenAanwezig", "veld": "pain", "label": "het probleem (pain of gain)", "min": 4 },
         { "id": "waarde-woorden", "soort": "A", "type": "minWoordenAanwezig", "veld": "waarde", "label": "de waardecreatie", "min": 4 },
         { "id": "kapitaal-niet-financieel", "soort": "A", "type": "kapitaalNietFinancieel", "veld": "kapitalen", "label": "een kapitaal" },
-        { "id": "verschilt-van-casus", "soort": "B", "type": "verschiltVanCasus", "velden": ["gebruiker", "pain", "waarde"] }
+        { "id": "verschilt-van-casus", "soort": "B", "type": "verschiltVanCasus", "velden": ["gebruiker", "pain", "waarde"] },
+        { "id": "niet-tekst-wisselpartner", "soort": "B", "type": "nietGelijkAanWissel", "onderdeel": "vraag", "velden": ["gebruiker", "pain", "waarde"] }
       ],
       "bewijsonderdeel": "EV-01",
       "luk": [1],
@@ -197,7 +198,8 @@
         { "id": "frames-verschillend", "soort": "B", "type": "verschillendeFrames", "velden": ["frame1", "frame2", "frame3"] },
         { "id": "model-een", "soort": "A", "type": "precies1Keuze", "veld": "model", "label": "model" },
         { "id": "verantwoording-zin", "soort": "C", "type": "minZinnen", "veld": "verantwoording", "label": "je verantwoording van de modelkeuze", "min": 1 },
-        { "id": "mis-ingevuld", "soort": "A", "type": "veldGevuld", "veld": "mis", "label": "wat je mist als je maar één frame kiest" }
+        { "id": "mis-ingevuld", "soort": "A", "type": "veldGevuld", "veld": "mis", "label": "wat je mist als je maar één frame kiest" },
+        { "id": "niet-tekst-wisselpartner", "soort": "B", "type": "nietGelijkAanWissel", "onderdeel": "zoekvragen", "velden": ["zoekvraag1", "zoekvraag2", "zoekvraag3"] }
       ],
       "bewijsonderdeel": "EV-02",
       "luk": [1],
@@ -209,6 +211,7 @@
     "bron": "lrd",
     "na": "2.2"
   },
+  "wissel": { "zichtbaarNa": "EV-02", "leerblok": 4, "taak": "6.2" },
   "bewijsonderdelen": [
     {
       "id": "EV-01",

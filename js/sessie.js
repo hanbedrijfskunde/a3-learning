@@ -34,8 +34,9 @@ export const volgendeStapOk = (tekst) => tellers.telWoorden(tekst) >= 3;
  * @param {object} p.blok inhoud van data/leerblok-N.json
  * @param {string} p.elearning versienummer uit data/config.json
  * @param {() => Date} [p.nu]
+ * @param {() => object} [p.context] extra context voor de controles (bijvoorbeeld de Wissel, fase 4); `taak` en `records` gaan voor
  */
-export function maakSessie({ store, blok, elearning, nu = () => new Date() }) {
+export function maakSessie({ store, blok, elearning, nu = () => new Date(), context = () => ({}) }) {
   const taken = new Map(blok.taken.map((t) => [t.id, t]));
   const bewijs = new Map(blok.bewijsonderdelen.map((b) => [b.taak, b]));
   const taak = (id) => {
@@ -61,7 +62,7 @@ export function maakSessie({ store, blok, elearning, nu = () => new Date() }) {
   function beoordeel(taakId, inhoud) {
     const t = taak(taakId);
     const records = Object.fromEntries([...bewijs.values()].map((b) => [b.id, store.get(b.id)]));
-    const uitkomsten = voerUit(controles(t), inhoud ?? {}, { taak: t, records });
+    const uitkomsten = voerUit(controles(t), inhoud ?? {}, { ...context(), taak: t, records });
     const status = bepaalStatus(uitkomsten);
     return {
       uitkomsten,
