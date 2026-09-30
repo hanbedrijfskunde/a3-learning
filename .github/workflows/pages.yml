@@ -44,6 +44,7 @@ jobs:
           cp -r *.html css js data LICENSE .nojekyll _site/
           [ -d media ] && cp -r media _site/ || true
           [ -d spellen ] && cp -r spellen _site/ || true
+          [ -d docs ] && cp -r docs _site/ || true
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site
