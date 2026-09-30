@@ -5,6 +5,7 @@ import { readFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { controleerFormaat } from '../tools/content-check.mjs';
+import { bouwTaakModel } from '../js/weergave.js';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const lees = (p) => readFileSync(resolve(root, p), 'utf8');
@@ -44,6 +45,16 @@ test('Figuur VPC: taak 6.1 toont het value proposition canvas van Strategyzer (z
   assert.match(dom, /met\('\(Strategyzer, z\.d\.\)'\)/, 'bronvermelding in het bijschrift');
   for (const nl of ['Klanttaken', 'Pains', 'Gains', 'Producten en diensten', 'Pain relievers', 'Gain creators']) assert.ok(dom.includes(`'${nl}'`), nl);
   assert.match(lees('js/leerblok.js'), /vpc: \{ bouw: vpcFiguur, na: 0 \}/);
+});
+
+test('Figuur VPC ook bij de oefening van taak 6.1: de student hoeft niet terug naar de stof; een onbekende oefening.figuur wordt afgekeurd', () => {
+  const b = blok(3);
+  const t = b.taken.find((x) => x.id === '6.1');
+  assert.equal(t.oefening.figuur, 'vpc');
+  assert.equal(bouwTaakModel(t, b).stappen[2].oefening.figuur, 'vpc', 'het taakmodel geeft de figuur door aan stap 3');
+  assert.match(lees('js/leerblok.js'), /FIGUREN\[s3\.oefening\.figuur\]\?\.bouw\(\{ met \}\)/);
+  t.oefening.figuur = 'bmc';
+  assert.match(controleerFormaat(b, 'leerblok-3.json').fouten.join('\n'), /taak 6\.1: oefening\.figuur "bmc" is onbekend/);
 });
 
 test('SX-13: elke oefenvraag van de vier leerblokken heeft een hint; de hint staat achter een knop (details), niet op mouse-over', () => {
