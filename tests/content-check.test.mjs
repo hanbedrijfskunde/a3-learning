@@ -77,12 +77,14 @@ test('QA-1/QA-3: data/leerblok-1.json en data/leerblokken.json geven 0 fouten (f
 });
 
 test('werkboekteksten geven geen waarschuwing; teksten van de bouwer wel, met taak en veld in de melding', () => {
+  // De fixtures noemen het TOM³-model, dat nog geen figuur heeft; die waarschuwing (SX-15) staat hier buiten.
+  const zonderSx15 = (lijst) => lijst.filter((w) => !/\(SX-15\)/.test(w));
   const goed = controleerMap(fixtures('content-goed'));
-  assert.deepEqual(goed.waarschuwingen, []);
+  assert.deepEqual(zonderSx15(goed.waarschuwingen), []);
   const concept = controleerMap(fixtures('content-concept'));
   assert.equal(concept.fouten.length, 0);
-  assert.equal(concept.waarschuwingen.length, 1);
-  assert.match(concept.waarschuwingen[0], /taak 2\.1: klaarAls is een concept van de bouwer/);
+  assert.equal(zonderSx15(concept.waarschuwingen).length, 1);
+  assert.match(zonderSx15(concept.waarschuwingen)[0], /taak 2\.1: klaarAls is een concept van de bouwer/);
   const echtBlok = controleerFormaat(echt(), 'leerblok-1.json');
   assert.ok(echtBlok.waarschuwingen.some((w) => /taak 1\.1: klaarAls is een concept/.test(w)));
   assert.ok(echtBlok.waarschuwingen.some((w) => /taak 2\.2: klaarAls is een concept/.test(w)));
@@ -93,7 +95,8 @@ test('bron concept-auteur: het commando geeft een WAARSCHUWING en exit 0, geen f
   const r = draai(fixtures('content-concept'));
   assert.equal(r.status, 0);
   assert.match(r.stderr, /WAARSCHUWING leerblok-1\.json: taak 2\.1: klaarAls/);
-  assert.match(r.stdout, /1 waarschuwingen/);
+  assert.match(r.stdout, /2 waarschuwingen/); // het concept en het TOM³-model zonder figuur (SX-15)
+  assert.match(r.stderr, /WAARSCHUWING leerblok-1\.json: de stof noemt het TOM³-model, maar dat model heeft nog geen figuur \(SX-15\)/);
 });
 
 test('formaat: een onbekende bron is een fout, geen waarschuwing', () => {

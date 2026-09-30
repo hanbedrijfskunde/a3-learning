@@ -7,12 +7,16 @@
 //            optioneel?, toevoegKnop?            verborgen tot iemand de knop indrukt of er al iets in staat
 //            afgeleidVan?: "3.1", kolommen?      toont alleen de waarden van een andere taak (dezelfde veld-id's)
 //            promptgenerator?: { zoekvraag, context, jaar, lijst, prompt, overnemenUit? }   (LB-6)
-//            raster?: { voor, aantal }            invloed/belang-raster met tekstweergave; rij i heeft de velden <voor>i + naam, soort, raakt, invloed, belang (LB-9)
+//            bord?: { voor, aantal, vraagstuk?, vraagstukTekst?, voorstel? }   het stakeholderbord (LB-9, SX-16): het invloed/belang-raster als
+//                                                 invoer; rij i heeft de velden <voor>i + naam, soort, raakt, invloed en belang;
+//                                                 het vraagstuk in het midden komt uit veld `vraagstuk` of is `vraagstukTekst` (oefencasus);
+//                                                 `voorstel` is een bewijsonderdeel (EV-01) waarvan de gebruiker als voorstel in de bak ligt.
+//                                                 Met `hint` en `hintBron` op de groep (SX-13). De module komt via ctx.bord (alleen leerblok 3).
 //            zoekvragenHint?                      toont de zoekvragen uit EV-02 (LB-12)
 //            hint?                                 bij afgeleidVan: eigen tekst onder de spiegeltabel }
-import { h, wis, bouwVelden } from './dom.js';
+import { h, wis, bouwVelden, hintEl } from './dom.js';
 import { bouwPrompt, verbodenWoorden } from './checks/lb2.js';
-import { rasterEl, zoekvragenEl } from './lb3-ui.js';
+import { zoekvragenEl } from './lb3-ui.js';
 import { stakeholderRijen, reeks } from './raster.js';
 
 export { metVerwijzingen } from './verwijzing.js';
@@ -26,6 +30,15 @@ const deelVan = (taakId) => {
 
 /** De rijen van een tabel: expliciet, of als reeks (rij i heeft de velden <voor>i + suffix). */
 const tabelRijen = (g) => g.tabel?.rijen ?? (g.tabel?.reeks ? reeks(g.tabel.reeks.voor, g.tabel.reeks.aantal, g.tabel.reeks.suffixen) : []);
+
+/** „Ons vraagstuk is dat planners te laat roosteren” → „Planners te laat roosteren”: in het midden van het bord staat alleen de kern. */
+function zonderZinstarter(tekst, zinstarter) {
+  const t = String(tekst ?? '').trim();
+  const begin = String(zinstarter ?? '').split('…')[0].trim().toLowerCase();
+  if (!begin || !t.toLowerCase().startsWith(begin)) return t;
+  const kern = t.slice(begin.length).trim();
+  return kern.charAt(0).toUpperCase() + kern.slice(1);
+}
 
 const heeftWaarde = (w) => (Array.isArray(w) ? w.length > 0 : typeof w === 'string' ? w.trim() !== '' : w !== undefined && w !== null);
 
@@ -42,7 +55,7 @@ export function bouwWeergave(velden, voorvoegsel, waarden, bijWijziging, weergav
   const def = new Map(velden.map((v) => [v.id, v]));
   const bouwers = new Map(); // veld-id → { element, lees, zet }
   const spiegels = []; // { velden, toon }
-  const verversers = []; // tekeningen die meegaan met de velden (het raster)
+  const verversers = []; // tekeningen die meegaan met de velden (het vraagstuk in het midden van het bord)
   const regels = []; // { el, veld, waarde }
   let generator = null; // { p, genereer, toon } zodra een groep een promptgenerator heeft
   const hier = deelVan(ctx.taakId);
@@ -142,10 +155,15 @@ export function bouwWeergave(velden, voorvoegsel, waarden, bijWijziging, weergav
     else {
       if (g.zoekvragenHint) doos.append(zoekvragenEl(ctx.store));
       if (g.tabel) doos.append(tabelEl(g));
-      if (g.raster) {
-        const r = rasterEl(stakeholderRijen(g.raster), () => lees());
-        verversers.push(r.ververs);
-        doos.append(r.element);
+      if (g.bord) {
+        const b = ctx.bord.stakeholderBord({
+          rijen: stakeholderRijen(g.bord), voorvoegsel, waarden, bijWijziging: melding, hint: hintEl(g.hint, g.hintBron),
+          vraagstuk: () => (g.bord.vraagstuk ? zonderZinstarter(eigenWaarde(g.bord.vraagstuk), def.get(g.bord.vraagstuk)?.zinstarter) : g.bord.vraagstukTekst ?? ''),
+          voorstel: g.bord.voorstel ? String(ctx.store?.get(g.bord.voorstel)?.inhoud?.gebruiker ?? '').trim() : '',
+        });
+        bouwers.set(`bord:${g.bord.voor}`, b);
+        verversers.push(b.ververs);
+        doos.append(b.element);
       }
       (g.velden ?? []).forEach((id) => doos.append(bouwVeld(id).element));
       if (g.promptgenerator) doos.append(promptEl(g));

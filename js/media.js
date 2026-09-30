@@ -136,7 +136,7 @@ export function bouwSpelPaneel({ spel, met = (t) => t }) {
 
 // ---------------------------------------------------------------- de sectie op de leerblokpagina
 
-function tekstRoute({ blok, met, modelZichtbaar }) {
+function tekstRoute({ blok, met, modelZichtbaar, bord }) {
   const u = blok.media.uitleg;
   const model = h('div', { class: 'md-model', 'aria-live': 'polite' });
   const toonModel = () => {
@@ -146,7 +146,10 @@ function tekstRoute({ blok, met, modelZichtbaar }) {
       model.append(h('p', { class: 'klein' }, `Het modelantwoord van de oefencasus verschijnt nadat je de oefening bij taak ${taak} zelf hebt geprobeerd.`));
       return;
     }
+    // Een model staat ook in het modelantwoord in beeld (SX-15): de stakeholders van taak 5.1 op het bord (SX-16).
+    const bordCfg = u.modelantwoord?.bord && mediaTaak(blok).oefening?.weergave?.groepen?.find((g) => g.bord)?.bord;
     model.append(h('h4', {}, `Modelantwoord van de oefencasus (taak ${taak})`),
+      bord && bordCfg ? bord.modelBord(mediaTaak(blok).modelantwoord.velden, bordCfg).element : null,
       h('dl', { class: 'model-lijst' }, modelRegels(blok).flatMap((r) => [h('dt', {}, r.label), h('dd', {}, r.tekst)])));
   };
   toonModel();
@@ -154,6 +157,8 @@ function tekstRoute({ blok, met, modelZichtbaar }) {
     h('h3', {}, u.titel),
     u.alineas.map((a) => h('p', {}, met(a))),
     h('p', { class: 'voorbeeld' }, u.voorbeeld),
+    // Het voorbeeld staat in de figuur van het model (SX-15), naast de tekst hierboven.
+    bord && u.voorbeeldBord ? bord.vastBord({ ...u.voorbeeldBord, bijschrift: 'Het voorbeeld hierboven op het invloed/belang-raster.' }) : null,
     model);
   return { element: paneel, ververs: toonModel };
 }
@@ -167,14 +172,14 @@ function tekstRoute({ blok, met, modelZichtbaar }) {
  * @param {() => boolean} p.modelZichtbaar is het modelantwoord van de oefening al te zien (TK-6)
  * @returns {{ element: HTMLElement, ververs: () => void, toon: (route: string) => void }}
  */
-export function bouwMediaSectie({ blok, store, met = (t) => t, modelZichtbaar = () => false }) {
+export function bouwMediaSectie({ blok, store, met = (t) => t, modelZichtbaar = () => false, bord = null }) {
   const m = blok.media;
   const knoppen = new Map();
   const paneel = h('div', { class: 'md-paneel', id: 'media-paneel' });
   let tekst = null;
   let route = leesRoute(store, blok.leerblok);
   const bouwers = {
-    tekst: () => { tekst = tekstRoute({ blok, met, modelZichtbaar }); return tekst.element; },
+    tekst: () => { tekst = tekstRoute({ blok, met, modelZichtbaar, bord }); return tekst.element; },
     video: () => h('div', {}, h('h3', {}, `Video ${m.video.id}: ${m.video.titel}`), bouwVideo({ video: m.video, met })),
     spel: () => h('div', {}, h('h3', {}, `Spel: ${m.spel.titel}`), bouwSpelPaneel({ spel: m.spel, met })),
   };

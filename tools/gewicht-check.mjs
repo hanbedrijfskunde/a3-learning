@@ -7,7 +7,7 @@
 //
 // Dynamische imports tellen alleen mee voor de pagina's die ze echt laden (ADR B69):
 //   // gewicht-alleen: <voorwaarde>   vlak boven de import: de import telt alleen mee als de eigen leerblokdata aan de voorwaarde
-//                                     voldoet (wissel, weergave, lb4ui of media; dezelfde voorwaarden als in js/leerblok.js);
+//                                     voldoet (wissel, weergave, bord, lb4ui of media; dezelfde voorwaarden als in js/leerblok.js);
 //                                     `naklik` telt nooit mee: die module laadt pas na een klik (spel, kopieer naar A3)
 //   import(`./lb${n}.js`)             een sjabloon in het pad telt de modules van het eigen leerblok en van het leerblok van de
 //                                     Wissel (modulesVoor in js/checks/register.js); een pagina zonder leerblok telt ze allemaal
@@ -39,7 +39,8 @@ export function paginaBestanden(root, paginaNaam) {
   const voldoet = (naam) => {
     const b = eigenBlok();
     if (naam === 'wissel') return Boolean(b.wissel) || (b.taken ?? []).some((t) => t.toepassing?.component === 'feedbacklog');
-    if (naam === 'weergave') return (b.taken ?? []).some((t) => t.toepassing?.weergave);
+    if (naam === 'weergave') return (b.taken ?? []).some((t) => t.toepassing?.weergave || t.oefening?.weergave);
+    if (naam === 'bord') return (b.taken ?? []).some((t) => [t.toepassing?.weergave, t.oefening?.weergave].some((w) => w?.groepen?.some((g) => g.bord)));
     if (naam === 'media') return Boolean(b.media || b.kijktips);
     if (naam === 'kijktips') return Boolean(b.kijktips);
     if (naam === 'naklik') return false; // laadt pas na een klik van de student: geen eerste lading (ADR B81)

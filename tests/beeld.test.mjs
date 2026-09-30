@@ -6,6 +6,7 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { controleerFormaat } from '../tools/content-check.mjs';
 import { bouwTaakModel } from '../js/weergave.js';
+import { stakeholderRijen } from '../js/raster.js';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const lees = (p) => readFileSync(resolve(root, p), 'utf8');
@@ -67,11 +68,18 @@ test('Figuur VPC ook bij de toepassing van taak 6.1; een onbekende toepassing.fi
   assert.match(controleerFormaat(b, 'leerblok-3.json').fouten.join('\n'), /taak 6\.1: toepassing\.figuur "bmc" is onbekend/);
 });
 
+/** De vragen van een oefening; een stakeholderbord (SX-16) is één vraag met de hint op de groep (zoals de contentcontrole). */
+function oefenVragen(t) {
+  const borden = (t.oefening?.weergave?.groepen ?? []).filter((g) => g.bord);
+  const ids = new Set(borden.flatMap((g) => stakeholderRijen(g.bord).flat()));
+  return [...(t.oefening?.velden ?? t.toepassing.velden).filter((v) => !v.reeks && !ids.has(v.id)), ...borden.map((g) => ({ id: `bord ${g.bord.voor}`, hint: g.hint, hintBron: g.hintBron }))];
+}
+
 test('SX-13: elke oefenvraag van de vier leerblokken heeft een hint; de hint staat achter een knop (details), niet op mouse-over', () => {
   let n = 0;
   for (const nr of [1, 2, 3, 4]) {
     for (const t of blok(nr).taken) {
-      for (const v of t.oefening?.velden ?? t.toepassing.velden) { assert.ok(v.hint?.length > 10, `${t.id} ${v.id}`); n += 1; }
+      for (const v of oefenVragen(t)) { assert.ok(v.hint?.length > 10, `${t.id} ${v.id}`); n += 1; }
     }
   }
   assert.equal(n, 54);
@@ -96,7 +104,7 @@ test('ADR B85: elke hint zegt waar het antwoord staat; een bron bestaat in de br
   let bronnen = 0;
   for (const nr of [1, 2, 3, 4]) {
     for (const t of blok(nr).taken) {
-      for (const v of t.oefening?.velden ?? t.toepassing.velden) {
+      for (const v of oefenVragen(t)) {
         assert.ok(v.hintBron?.length >= 1, `${t.id} ${v.id}`);
         for (const w of v.hintBron) {
           if (w.soort === 'bron') { assert.ok(bronIds.has(w.bron), `${t.id} ${v.id}: bron ${w.bron}`); bronnen += 1; }
@@ -132,7 +140,7 @@ test('ADR B85 (sabotage): een hint mag niet vooruit verwijzen naar stof die de s
 test('TK-19: een vraag gaat altijd over stof die ervoor is behandeld; alleen een bron of het werkboek is niet genoeg (sabotage)', () => {
   for (const nr of [1, 2, 3, 4]) {
     for (const t of blok(nr).taken) {
-      for (const v of t.oefening?.velden ?? t.toepassing.velden) {
+      for (const v of oefenVragen(t)) {
         assert.ok(v.hintBron.some((w) => w.soort === 'stof' || w.soort === 'eigen werk'), `${t.id} ${v.id}`);
       }
     }

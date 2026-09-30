@@ -83,7 +83,7 @@ const regels = (css) => [...css.replace(/\/\*[\s\S]*?\*\//g, '').matchAll(/([^{}
 
 test('SX-7: een harde schaduw staat alleen op iets wat je kunt aantikken; informatieve kaarten hebben geen schaduw', () => {
   const css = lees('css/site.css');
-  const tikbaar = /knop|kaart-tik|taak-link|keuzekaart|summary|vb-weg|md-knop|bestandkiezer|:root/;
+  const tikbaar = /knop|kaart-tik|taak-link|keuzekaart|summary|vb-weg|md-knop|bestandkiezer|sb-kaart|sb-opgepakt|:root/;
   const fout = regels(css).filter(([sel, d]) => /box-shadow\s*:(?![^;]*\binset\b)(?!\s*none)/.test(d) && !tikbaar.test(sel)).map(([sel]) => sel);
   assert.deepEqual(fout, []);
   assert.doesNotMatch(regels(css).find(([sel]) => sel === '.kaart')[1], /box-shadow/);
