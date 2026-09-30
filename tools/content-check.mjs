@@ -126,7 +126,7 @@ export function controleerFormaat(inhoud, bestand) {
     if (taak.klaarAls !== undefined && gevuld(tekstVan(taak.klaarAls))) bronTekst(wie, 'klaarAls', taak.klaarAls);
 
     if (!isObject(taak.stof) || !lijstGevuld(taak.stof.alineas)) fout(wie, 'mist stof met alineas');
-    if (taak.stof?.figuur !== undefined && !['a3-vel', 'six-capitals'].includes(taak.stof.figuur)) fout(wie, `stof.figuur ${JSON.stringify(taak.stof.figuur)} is onbekend; kies a3-vel of six-capitals`);
+    if (taak.stof?.figuur !== undefined && !['a3-vel', 'six-capitals', 'vpc'].includes(taak.stof.figuur)) fout(wie, `stof.figuur ${JSON.stringify(taak.stof.figuur)} is onbekend; kies a3-vel, six-capitals of vpc`);
     else bronTekst(wie, 'stof', taak.stof, { tekst: false });
     if (!isObject(taak.oefening)) fout(wie, 'mist een oefening (TK-3)');
     else bronTekst(wie, 'oefening.opdracht', taak.oefening.opdracht);

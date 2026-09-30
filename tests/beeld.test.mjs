@@ -34,6 +34,18 @@ test('Figuur six capitals: taak 2.1 toont het waardecreatieproces van het IIRC (
   assert.match(lees('js/leerblok.js'), /'six-capitals': \{ bouw: sixCapitalsFiguur, na: 1 \}/);
 });
 
+test('Figuur VPC: taak 6.1 toont het value proposition canvas van Strategyzer (z.d.) als citaat met bron, alt-tekst en de vakken van beide kanten (ADR B88)', () => {
+  const t = blok(3).taken.find((x) => x.id === '6.1');
+  assert.equal(t.stof.figuur, 'vpc');
+  assert.match(t.stof.alineas[0], /klantprofiel.*waardekaart/s, 'de figuur staat na de alinea die de twee kanten beschrijft');
+  const dom = lees('js/dom.js');
+  assert.match(dom, /src: 'media\/citaten\/strategyzer-zd-value-proposition-canvas\.webp'/);
+  assert.match(dom, /alt: 'Het value proposition canvas\./);
+  assert.match(dom, /met\('\(Strategyzer, z\.d\.\)'\)/, 'bronvermelding in het bijschrift');
+  for (const nl of ['Klanttaken', 'Pains', 'Gains', 'Producten en diensten', 'Pain relievers', 'Gain creators']) assert.ok(dom.includes(`'${nl}'`), nl);
+  assert.match(lees('js/leerblok.js'), /vpc: \{ bouw: vpcFiguur, na: 0 \}/);
+});
+
 test('SX-13: elke oefenvraag van de vier leerblokken heeft een hint; de hint staat achter een knop (details), niet op mouse-over', () => {
   let n = 0;
   for (const nr of [1, 2, 3, 4]) {

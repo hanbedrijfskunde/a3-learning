@@ -407,7 +407,7 @@ html { scroll-padding-bottom:5rem; }
 .a3-bezig { border-style:dashed; border-width:3px; }
 .a3-opbouw { font-size:.8125rem; }
 
-/* ---- figuur als citaat (ADR B84): het A3-sjabloon (taak 1.1; Schwagerman & Ulmer, 2013) en de six capitals (taak 2.1; IIRC, 2021) ---- */
+/* ---- figuur als citaat (ADR B84): het A3-sjabloon (taak 1.1; Schwagerman & Ulmer, 2013) , de six capitals (taak 2.1; IIRC, 2021) en het VPC (taak 6.1; Strategyzer, z.d.) ---- */
 .a3-vel { margin:1rem 0; }
 .a3-vel img { display:block; width:100%; height:auto; border:3px solid var(--zwart); background:var(--wit); }
 .a3-vel figcaption { font-size:.875rem; margin-top:.4rem; }
