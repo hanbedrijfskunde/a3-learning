@@ -26,12 +26,13 @@ import { bouwControle } from '../js/checks/index.js';
 import { apaJaar } from '../js/checks/lb2.js';
 import { CITATIE_RE, eersteVolgordefout } from '../js/bronnen.js';
 import { normaliseerBlok } from '../js/blok.js';
+import { stakeholderRijen } from '../js/raster.js';
 import { uitlegWoorden, modelRegels, MAX_WOORDEN_UITLEG, MAX_VIDEO_SECONDEN, MAX_VIDEO_BYTES, METADATA } from '../js/media.js';
 import { controleerSpel } from './spel-check.mjs';
 import { KAPITALEN, VPC_ONDERDELEN, SPANNING, bouwOefenKaarten, maakVerband } from '../js/verbanden.js';
 
 // De figuren die de stap stof of de oefening kan tonen (FIGUREN in js/leerblok.js).
-const FIGUUR_NAMEN = ['a3-vel', 'six-capitals', 'vpc', 'bmc', 'tom'];
+export const FIGUUR_NAMEN = ['a3-vel', 'six-capitals', 'vpc', 'bmc', 'tom', 'invloed-belang']; // invloed-belang: het lege raster van het stakeholderbord (SX-15, SX-16)
 const gevuld = (t) => typeof t === 'string' && t.trim() !== '';
 const lijstGevuld = (l) => Array.isArray(l) && l.length > 0;
 /** Een tekstveld is een tekst of een object { tekst }. */
@@ -154,7 +155,11 @@ export function controleerFormaat(inhoud, bestand) {
     const oefenIds = new Set(oefenVelden.map((v) => v.id));
     // SX-13: elke oefenvraag heeft een hint die het modelantwoord niet verklapt (stuk van ≥ 15 tekens).
     const modelVoorHint = JSON.stringify(taak.modelantwoord ?? '').toLowerCase();
-    for (const v of oefenVelden) {
+    // Een stakeholderbord bij de oefening (SX-16) is één vraag: de hint staat op de groep, niet op elk van de 35 velden.
+    const borden = (taak.oefening?.weergave?.groepen ?? []).filter((g) => g?.bord);
+    const bordIds = new Set(borden.flatMap((g) => stakeholderRijen(g.bord).flat()));
+    const oefenVragen = [...oefenVelden.filter((v) => !bordIds.has(v?.id)), ...borden.map((g) => ({ id: `bord ${g.bord.voor}`, hint: g.hint, hintBron: g.hintBron }))];
+    for (const v of oefenVragen) {
       if (!v?.id || v.reeks) continue;
       if (!gevuld(v.hint)) { fout(wie, `oefenvraag ${v.id} heeft geen hint (SX-13)`); continue; }
       // ADR B85: de hint zegt waar het antwoord staat (stof van een taak, een bron, het werkboek of het eigen werk)
@@ -255,7 +260,28 @@ export function controleerFormaat(inhoud, bestand) {
       if (t && t.bewijsonderdeel !== ev.id) fout('', `bewijsonderdeel ${ev.id} wordt niet genoemd door taak ${ev.taak}`);
     }
   }
+  for (const m of modellenZonderFiguur(inhoud)) waarschuwingen.push(`${bestand}: de stof noemt het ${m}, maar dat model heeft nog geen figuur (SX-15)`);
   return { fouten, waarschuwingen };
+}
+
+/**
+ * SX-15 (ADR B92, B95): een model staat in beeld én in tekst. Een model is iets met assen, vakken of lagen; een lijst of
+ * ezelsbruggetje (AAOCC, STARR, 3xC) niet. `figuur` is de naam van zijn figuur (stof.figuur, FIGUREN in js/leerblok.js);
+ * zolang die niet in FIGUUR_NAMEN staat, heeft het model nog geen figuur.
+ */
+export const MODELLEN = Object.freeze([
+  { naam: 'A3-vel', patroon: /A3-(vel|sjabloon)/i, figuur: 'a3-vel' },
+  { naam: 'six capitals-model', patroon: /six capitals/i, figuur: 'six-capitals' },
+  { naam: 'invloed/belang-raster', patroon: /invloed en belang|invloed\/belang/i, figuur: 'invloed-belang' },
+  { naam: 'value proposition canvas', patroon: /value proposition canvas/i, figuur: 'vpc' },
+  { naam: 'business model canvas', patroon: /business model canvas/i, figuur: 'bmc' },
+  { naam: 'TOM³-model', patroon: /TOM³|TOM-model/i, figuur: 'tom' },
+]);
+
+/** De modellen die de stof of de tekstroute van dit leerblok noemt, maar die nog geen figuur hebben (SX-15). */
+export function modellenZonderFiguur(inhoud, figuren = FIGUUR_NAMEN) {
+  const stof = [...(inhoud?.taken ?? []).flatMap((t) => t.stof?.alineas ?? []), ...(inhoud?.media?.uitleg?.alineas ?? [])].join('\n');
+  return MODELLEN.filter((m) => !figuren.includes(m.figuur) && m.patroon.test(stof)).map((m) => m.naam);
 }
 
 /**

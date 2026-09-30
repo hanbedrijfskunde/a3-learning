@@ -82,15 +82,15 @@ test('SX-3: de studentweergave noemt geen interne codes: samenvattingen zonder E
 const regels = (css) => [...css.replace(/\/\*[\s\S]*?\*\//g, '').matchAll(/([^{}]+)\{([^{}]*)\}/g)].map((m) => [m[1].trim(), m[2]]);
 
 test('SX-7: een harde schaduw staat alleen op iets wat je kunt aantikken; informatieve kaarten hebben geen schaduw', () => {
-  const css = lees('css/site.css');
-  const tikbaar = /knop|kaart-tik|taak-link|keuzekaart|summary|vb-weg|md-knop|:root/;
+  const css = lees('css/site.css') + lees('css/stakeholderbord.css');
+  const tikbaar = /knop|kaart-tik|taak-link|keuzekaart|summary|vb-weg|md-knop|bestandkiezer|sb-kaart|sb-opgepakt|:root/;
   const fout = regels(css).filter(([sel, d]) => /box-shadow\s*:(?![^;]*\binset\b)(?!\s*none)/.test(d) && !tikbaar.test(sel)).map(([sel]) => sel);
   assert.deepEqual(fout, []);
   assert.doesNotMatch(regels(css).find(([sel]) => sel === '.kaart')[1], /box-shadow/);
 });
 
 test('SX-9: transities duren 150–250 ms en vervallen bij prefers-reduced-motion', () => {
-  const css = lees('css/site.css');
+  const css = lees('css/site.css') + lees('css/stakeholderbord.css');
   const duren = [...css.matchAll(/transition:[^;]*?(\d+)ms/g)].map((m) => Number(m[1]));
   assert.ok(duren.length >= 2);
   for (const d of duren) assert.ok(d >= 150 && d <= 250, `${d} ms`);
@@ -103,4 +103,19 @@ test('SX-12: een deel in opbouw laat zien hoeveel resultaten er al staan (tekst,
   assert.equal(s.delen[0].opbouw, '1 van 2 resultaten');
   assert.equal(s.delen[1].opbouw, '');
   assert.equal(a3Stand({ 1: true }, null, { 1: [2, 2] }).delen[0].opbouw, '', 'een gevuld deel is niet meer in opbouw');
+});
+
+test('SX-14: elk bestandveld is de bestandkiezer; geen kale browserknop met „No file chosen”', () => {
+  for (const p of ['js/dossier-pagina.js', 'js/terugblik-pagina.js', 'js/verificatie-pagina.js']) {
+    const js = lees(p);
+    assert.match(js, /bestandKiezer\(\{ id: '[^']+', titel: 'Kies [^']+'/, p);
+    assert.doesNotMatch(js, /type: 'file'/, `${p}: kaal bestandveld`);
+  }
+  const dom = lees('js/dom.js');
+  assert.match(dom, /type: 'file', id, class: 'sr-only'/, 'het echte veld blijft bestaan (toetsenbord, schermlezer, telefoon)');
+  assert.match(dom, /ondrop:/, 'slepen werkt');
+  assert.match(dom, /`Gekozen: \$\{/, 'het gekozen bestand staat er in het Nederlands');
+  const css = lees('css/site.css');
+  assert.match(css, /\.bestandkiezer:has\(input:focus-visible\) \{ outline:4px solid var\(--accent\)/, 'focusrand zichtbaar op de knop');
+  assert.match(css, /\.bestandkiezer:active \{ box-shadow:none; transform:translate\(3px,3px\)/, 'drukt in als een knop');
 });

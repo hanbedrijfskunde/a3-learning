@@ -1,0 +1,58 @@
+/* Stakeholderbord (SX-16, ADR B96, DESIGN §6): alleen pagina's met een bord laden dit (PF-4). Kleuren: tokens uit site.css.
+   Het raster blijft 2 × 2, ook op een telefoon. */
+.sb-figuur { margin:1rem 0; }
+.sb-figuur figcaption { margin-top:.5rem; }
+.sb-assen { position:relative; padding:0 0 1.75rem 1.75rem; }
+.sb-as { position:absolute; display:flex; justify-content:space-between; font-size:.75rem; font-weight:700; color:var(--grijs-tekst); }
+.sb-as-x { left:1.75rem; right:0; bottom:0; }
+.sb-as-y { left:0; top:0; bottom:1.75rem; writing-mode:vertical-rl; transform:rotate(180deg); }
+.sb-asnaam { color:var(--zwart); text-transform:uppercase; letter-spacing:.06em; }
+.sb-raster { position:relative; display:grid; grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr; gap:.375rem; }
+.sb-vak { border:var(--rand) solid var(--zwart); background:var(--wit); padding:.5rem .6rem; min-height:9rem; display:flex; flex-direction:column; gap:.25rem; }
+.sb-vak[data-vak="tevreden"], .sb-vak[data-vak="nauw"] { padding-bottom:2.75rem; }
+.sb-vak[data-vak="volgen"], .sb-vak[data-vak="informeren"] { padding-top:2.75rem; }
+.sb-vak[data-vak="nauw"] { background:var(--roze); }
+.sb-vaknaam, .sb-baknaam { margin:0; font-size:.75rem; font-weight:800; text-transform:uppercase; letter-spacing:.06em; }
+.sb-vakmeta { margin:0; font-size:.8125rem; color:var(--grijs-tekst); }
+.sb-kaarten { list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:.5rem; }
+.sb-midden { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); z-index:1; max-width:60%; padding:.35rem .7rem; background:var(--zwart); color:var(--wit); border:3px solid var(--zwart); font-weight:800; font-size:.875rem; line-height:1.25; text-align:center; display:-webkit-box; -webkit-line-clamp:2; line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+.sb-midden-leeg { background:var(--wit); color:var(--grijs-tekst); border-style:dashed; }
+.sb-kaart, .sb-voorstel { display:inline-flex; align-items:center; gap:.4rem; min-height:2.75rem; padding:.25rem .6rem; font:inherit; font-size:.9375rem; font-weight:700; color:var(--zwart); background:var(--wit); border:2px solid var(--zwart); text-align:left; }
+.sb-intern { background:var(--zwart); color:var(--wit); }
+.sb-soort { font-size:.75rem; text-transform:uppercase; letter-spacing:.06em; border-left:2px solid currentColor; padding-left:.4rem; }
+.sb-soort-open { opacity:.75; }
+button.sb-kaart { cursor:grab; box-shadow:3px 3px 0 var(--zwart); touch-action:none; }
+button.sb-kaart:active { box-shadow:none; transform:translate(3px,3px); }
+.sb-vast { min-height:0; }
+.sb-opgepakt { border-color:var(--accent); box-shadow:3px 3px 0 var(--accent) !important; }
+.sb-sleept { position:relative; z-index:10; pointer-events:none; cursor:grabbing; }
+.sb-bak { border:var(--rand) dashed var(--zwart); padding:.5rem .75rem .75rem; margin:.5rem 0 1rem; display:grid; gap:.5rem; }
+.sb-leeg { margin:0; color:var(--grijs-tekst); }
+.sb-nieuw label { margin:0 0 .25rem; }
+.sb-nieuwrij { display:flex; gap:.5rem; }
+.sb-nieuwrij input { flex:1; min-width:0; }
+.sb-voorstel { border-style:dashed; cursor:pointer; }
+.sb-voorstel:hover { background:var(--grijs); }
+.sb-voorstel-uitleg { font-weight:400; color:var(--grijs-tekst); }
+.sb-doel { outline:3px dashed var(--accent); outline-offset:-6px; }
+.sb-zet { display:none; margin-top:auto; align-self:flex-start; }
+.sb-bezig .sb-zet { display:inline-block; }
+.sb-bezig .sb-vak { cursor:pointer; }
+.sb-status { min-height:1.5em; }
+.sb-paneel { border:var(--rand) solid var(--zwart); padding:.75rem 1rem; margin:.75rem 0; }
+.sb-paneelkop { margin:0 0 .5rem; font-size:1.125rem; }
+.sb-label { display:block; font-weight:700; margin:.75rem 0 .25rem; }
+.sb-soortknoppen { margin:0; }
+.sb-soortknop[aria-pressed="true"] { background:var(--zwart); color:var(--wit); }
+.sb-tekst { margin:.75rem 0; }
+@media (max-width:40rem) {
+  .sb-assen { padding-left:1.25rem; }
+  .sb-as-x { left:1.25rem; }
+  .sb-vak { padding-left:.4rem; padding-right:.4rem; min-height:7rem; }
+  .sb-vakmeta { display:none; }
+  .sb-kaart, .sb-voorstel { font-size:.8125rem; padding:.2rem .45rem; }
+  .sb-midden { max-width:70%; font-size:.8125rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  button.sb-kaart:active { transform:none; }
+}

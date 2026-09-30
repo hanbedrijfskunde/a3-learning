@@ -57,3 +57,19 @@ export function rasterTekst(raster) {
   }
   return regels;
 }
+
+/** Het vak van een stakeholder, of null zolang invloed of belang niet gekozen is (het stakeholderbord, SX-16). */
+export const vakVan = (s) => KWADRANTEN.find((k) => k.invloed === s.invloed && k.belang === s.belang) ?? null;
+
+/**
+ * Eén stap met een pijltje op het stakeholderbord (SX-16): omhoog is meer invloed, rechts meer belang. Een kaart die nog
+ * in de bak ligt, begint bij invloed laag en belang laag.
+ * @returns {{invloed: 'hoog'|'laag', belang: 'hoog'|'laag'}|null} null bij een andere toets
+ */
+export function schuif(s, toets) {
+  const zet = { ArrowUp: ['invloed', 'hoog'], ArrowDown: ['invloed', 'laag'], ArrowRight: ['belang', 'hoog'], ArrowLeft: ['belang', 'laag'] }[toets];
+  if (!zet) return null;
+  const pos = { invloed: s.invloed === 'hoog' ? 'hoog' : 'laag', belang: s.belang === 'hoog' ? 'hoog' : 'laag' };
+  pos[zet[0]] = zet[1];
+  return pos;
+}

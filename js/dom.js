@@ -35,132 +35,6 @@ export function metInvulplekken(tekst, ingevuld = []) {
   });
 }
 
-/** Hoe de blokken van het A3-sjabloon uit de figuur bij de acht vakken van het werkboek (1.1) horen. */
-const A3_KOPPELING = [
-  ['Plan', 'Background', '1 · Aanleiding / achtergrond'], ['Plan', 'Current Condition', '2 · Huidige situatie'],
-  ['Plan', 'Goal', '3 · Doelen'], ['Plan', 'Root Cause Analysis', '4 · Analyse'],
-  ['Do', 'Countermeasures', '5 · Toekomstige situatie en 6 · Implementatie'],
-  ['Check', 'Effect Confirmation', '7 · Borging en evaluatie'], ['Act', 'Follow-Up Actions', '8 · Next steps'],
-];
-
-/**
- * Figuur: het A3-sjabloon met PDCA uit Schwagerman & Ulmer (2013), als citaat met bronvermelding (media/citaten.json,
- * ADR B84). Lui geladen: het beeld staat in de stap stof en telt niet mee voor de eerste lading (PF-4). Onder de figuur
- * staat welk Engels blok bij welk vak van het werkboek hoort.
- */
-export function a3VelFiguur({ met = (t) => t } = {}) {
-  return h('figure', { class: 'a3-vel citaat' },
-    h('img', {
-      src: 'media/citaten/schwagerman-ulmer-2013-figuur-1.png', width: 1202, height: 892, loading: 'lazy', decoding: 'async',
-      alt: 'Een A3-sjabloon. Links vier blokken onder elkaar: Background, Current Condition, Goal en Root Cause Analysis, samen Plan. Rechts drie blokken: Countermeasures (Do), Effect Confirmation (Check) en Follow-Up Actions (Act). Pijlen lopen van Plan naar Do, omlaag naar Check en Act, en terug naar Plan.',
-    }),
-    h('figcaption', {},
-      h('p', {}, 'Figuur: het A3-sjabloon met de cirkel plan, do, check, act. Overgenomen uit ', met('(Schwagerman & Ulmer, 2013)'), ', figuur 1, via ', h('a', { href: 'https://www.semanticscholar.org/paper/The-A3-Lean-Management-and-Leadership-Thought-Schwagerman/c2db12278e49858626968aa7d02410dc1f337ed5/figure/0' }, 'Semantic Scholar'), '. De licentie van deze site geldt niet voor deze figuur.'),
-      h('details', { class: 'a3-koppeling' }, h('summary', {}, 'Zo horen de blokken bij de acht vakken van het werkboek'),
-        h('table', {}, h('thead', {}, h('tr', {}, ['PDCA', 'Blok in de figuur', 'Vak in het werkboek'].map((k) => h('th', { scope: 'col' }, k)))),
-          h('tbody', {}, A3_KOPPELING.map(([f, en, nl]) => h('tr', {}, h('td', {}, f), h('td', { lang: 'en' }, en), h('td', {}, nl))))))));
-}
-
-/** De zes kapitalen uit de figuur van het IIRC, met de Nederlandse naam uit de stof van taak 2.1. */
-const KAPITALEN = [
-  ['Financial', 'Financieel'], ['Manufactured', 'Productie'], ['Intellectual', 'Intellectueel'],
-  ['Human', 'Menselijk'], ['Social and relationship', 'Sociaal en relationeel'], ['Natural', 'Natuurlijk'],
-];
-
-/**
- * Figuur: het waardecreatieproces met de six capitals uit het <IR>-framework (IIRC, 2021), als citaat met bronvermelding
- * (media/citaten.json, ADR B84). Lui geladen zoals het A3-vel (PF-4). Onder de figuur staat de Nederlandse naam van elk kapitaal.
- */
-export function sixCapitalsFiguur({ met = (t) => t } = {}) {
-  return h('figure', { class: 'a3-vel citaat' },
-    h('img', {
-      src: 'media/citaten/iirc-2021-waardecreatieproces.webp', width: 1110, height: 550, loading: 'lazy', decoding: 'async',
-      alt: 'Het waardecreatieproces van het IIRC. Links zes blauwe kapitalen als input: Financial, Manufactured, Intellectual, Human, Social and relationship en Natural. Ze lopen via het businessmodel in het midden (inputs, business activities, outputs) naar outcomes. Rechts staan dezelfde zes kapitalen in groen als uitkomst. Een pijl onderaan loopt terug naar links: de uitkomsten worden weer input. Onder de figuur: value creation, preservation or erosion over time.',
-    }),
-    h('figcaption', {},
-      h('p', {}, 'Figuur: de six capitals gaan als input een organisatie in en komen er als uitkomst weer uit, groter of kleiner dan ze waren. Overgenomen uit ', met('(International Integrated Reporting Council, 2021)'), ', figuur van het waardecreatieproces, via ', h('a', { href: 'https://www.ok-methode.nl/2021/11/09/six-capitals-van-het-iirc-model/' }, 'OK-methode'), '. De licentie van deze site geldt niet voor deze figuur.'),
-      h('details', { class: 'a3-koppeling' }, h('summary', {}, 'De zes kapitalen in het Nederlands'),
-        h('table', {}, h('thead', {}, h('tr', {}, ['In de figuur', 'Kapitaal'].map((k) => h('th', { scope: 'col' }, k)))),
-          h('tbody', {}, KAPITALEN.map(([en, nl]) => h('tr', {}, h('td', { lang: 'en' }, en), h('td', {}, nl))))))));
-}
-
-/** De zes vakken van het VPC uit de figuur van Strategyzer, met de naam uit de stof van taak 6.1. */
-const VPC_VAKKEN = [
-  ['Klantprofiel (cirkel)', 'Customer Jobs', 'Klanttaken'], ['Klantprofiel (cirkel)', 'Pains', 'Pains'], ['Klantprofiel (cirkel)', 'Gains', 'Gains'],
-  ['Waardekaart (vierkant)', 'Products and Services', 'Producten en diensten'], ['Waardekaart (vierkant)', 'Pain Relievers', 'Pain relievers'],
-  ['Waardekaart (vierkant)', 'Gain Creators', 'Gain creators'],
-];
-
-/**
- * Figuur: het value proposition canvas van Strategyzer (z.d.-b), alleen het canvas zelf (zonder kop, QR-code en logo), als citaat
- * met bronvermelding (media/citaten.json, ADR B84 en B89). Lui geladen zoals het A3-vel (PF-4). Onder de figuur staat welk vak bij welke kant hoort.
- */
-export function vpcFiguur({ met = (t) => t } = {}) {
-  return h('figure', { class: 'a3-vel citaat' },
-    h('img', {
-      src: 'media/citaten/strategyzer-zd-value-proposition-canvas.webp', width: 1200, height: 616, loading: 'lazy', decoding: 'async',
-      alt: 'Het value proposition canvas. Links een vierkant met een cadeau in het midden: de waardekaart, met de vakken Products and Services, Gain Creators en Pain Relievers. Rechts een cirkel met een hoofd in het midden: het klantprofiel, met de vakken Customer Jobs, Gains en Pains. Een lijn met twee pijlen verbindt het cadeau en het hoofd: daar moeten ze op elkaar passen.',
-    }),
-    h('figcaption', {},
-      h('p', {}, 'Figuur: rechts het klantprofiel, links de waardekaart. Er is een fit als de waardekaart past bij het klantprofiel. Overgenomen uit ', met('(Strategyzer, z.d.-b)'), ', het officiële sjabloon, via ', h('a', { href: 'https://www.strategyzer.com/library/the-value-proposition-canvas' }, 'Strategyzer'), '. De licentie van deze site geldt niet voor deze figuur.'),
-      h('details', { class: 'a3-koppeling' }, h('summary', {}, 'De vakken van het canvas in de stof'),
-        h('table', {}, h('thead', {}, h('tr', {}, ['Kant', 'In de figuur', 'In de stof'].map((k) => h('th', { scope: 'col' }, k)))),
-          h('tbody', {}, VPC_VAKKEN.map(([kant, en, nl]) => h('tr', {}, h('td', {}, kant), h('td', { lang: 'en' }, en), h('td', {}, nl))))))));
-}
-
-/** De negen bouwstenen van het BMC uit de figuur van Strategyzer, met de naam uit de stof en de velden van taak 7.1. */
-const BMC_BOUWSTENEN = [
-  ['Links: wat ervoor nodig is', 'Key Partnerships', 'Kernpartners'], ['Links: wat ervoor nodig is', 'Key Activities', 'Kernactiviteiten'],
-  ['Links: wat ervoor nodig is', 'Key Resources', 'Kernmiddelen'], ['Midden', 'Value Propositions', 'Waardepropositie'],
-  ['Rechts: de markt', 'Customer Relationships', 'Klantrelaties'], ['Rechts: de markt', 'Channels', 'Kanalen'],
-  ['Rechts: de markt', 'Customer Segments', 'Klantsegmenten'], ['Onderaan: het geld', 'Cost Structure', 'Kostenstructuur'],
-  ['Onderaan: het geld', 'Revenue Streams', 'Inkomstenstromen'],
-];
-
-/**
- * Figuur: het business model canvas van Strategyzer (z.d.-a), alleen het canvas zelf (zonder kop, QR-code en logo). Strategyzer geeft het
- * sjabloon uit onder CC BY-SA 3.0; de uitsnede staat met naamsvermelding in het register (media/citaten.json, ADR B84 en B92).
- * Lui geladen zoals het A3-vel (PF-4). Onder de figuur staat welke bouwsteen waar staat en hoe hij in de stof heet.
- */
-export function bmcFiguur({ met = (t) => t } = {}) {
-  return h('figure', { class: 'a3-vel citaat' },
-    h('img', {
-      src: 'media/citaten/strategyzer-zd-business-model-canvas.webp', width: 1200, height: 728, loading: 'lazy', decoding: 'async',
-      alt: 'Het business model canvas: een rechthoek met negen vakken. Bovenaan vijf kolommen. Van links naar rechts: Key Partnerships; Key Activities boven Key Resources; Value Propositions in het midden; Customer Relationships boven Channels; Customer Segments. Onderaan twee brede vakken: links Cost Structure, rechts Revenue Streams. Elk vak heeft een pictogram, zoals een cadeau bij Value Propositions en een hoofd bij Customer Segments.',
-    }),
-    h('figcaption', {},
-      h('p', {}, 'Figuur: in het midden de waardepropositie, rechts de markt, links wat nodig is om die markt te bedienen, onderaan kosten en inkomsten. Uit ', met('(Strategyzer, z.d.-a)'), ', het officiële sjabloon, via ', h('a', { href: 'https://www.strategyzer.com/library/the-business-model-canvas' }, 'Strategyzer'), '. Alleen het canvas is overgenomen. Licentie: ', h('a', { href: 'https://creativecommons.org/licenses/by-sa/3.0/' }, 'CC BY-SA 3.0'), '.'),
-      h('details', { class: 'a3-koppeling' }, h('summary', {}, 'De bouwstenen van het canvas in de stof'),
-        h('table', {}, h('thead', {}, h('tr', {}, ['Plek', 'In de figuur', 'In de stof'].map((k) => h('th', { scope: 'col' }, k)))),
-          h('tbody', {}, BMC_BOUWSTENEN.map(([plek, en, nl]) => h('tr', {}, h('td', {}, plek), h('td', { lang: 'en' }, en), h('td', {}, nl))))))));
-}
-
-/** De lagen en kolommen van de TOM³-indeling (Westmoreland BV, z.d.), met eigen korte uitleg (geen zinnen uit het ongepubliceerde document, LI-3). */
-const TOM_LAGEN = [['Strategisch', 'koers en lange termijn'], ['Tactisch', 'afspraken, processen en rollen'], ['Operationeel', 'het dagelijkse werk']];
-const TOM_KOLOMMEN = [['Methode', 'hoe het werk loopt'], ['Mens', 'wie het doet en wat ze kunnen'], ['Machine', 'systemen en gegevens'], ['Informatie & Rapportage', 'cijfers om mee te sturen']];
-
-/**
- * Figuur: eigen weergave van de TOM³-indeling naar Westmoreland BV (z.d.), in HTML en CSS zodat hij meeschaalt en de labels tekst blijven.
- * Drie lagen × vier kolommen; de vierde kolom verbindt de lagen: cijfers gaan omhoog, doelen gaan omlaag (ADR B93). Er is geen gepubliceerd
- * beeld van het model om te citeren; de licentie van de site geldt voor deze weergave.
- */
-export function tomFiguur({ met = (t) => t } = {}) {
-  const kop = ([naam, uitleg], extra = '') => h('div', { class: `tom-kop ${extra}`.trim() }, h('strong', {}, naam), h('span', {}, uitleg));
-  return h('figure', { class: 'a3-vel tom-figuur' },
-    h('div', {
-      class: 'tom-raster', role: 'img',
-      'aria-label': 'Het TOM-model als raster van drie lagen en vier kolommen. De lagen van boven naar beneden: strategisch (koers en lange termijn), tactisch (afspraken, processen en rollen) en operationeel (het dagelijkse werk). De kolommen: Methode (hoe het werk loopt), Mens (wie het doet en wat ze kunnen), Machine (systemen en gegevens) en Informatie & Rapportage (cijfers om mee te sturen). De vierde kolom is gekleurd en loopt door alle lagen. Een pijl omhoog: cijfers van de werkvloer gaan naar boven. Een pijl omlaag: doelen gaan naar beneden. Samen twaalf cellen.',
-    },
-      h('div', { class: 'tom-hoek' }),
-      TOM_KOLOMMEN.map((k, i) => kop(k, i === 3 ? 'tom-ir' : '')),
-      TOM_LAGEN.flatMap((laag, i) => [kop(laag, 'tom-laag'), ...[0, 1, 2].map(() => h('div', { class: 'tom-cel' })), h('div', { class: `tom-cel tom-ir tom-rij-${i + 2}` })]),
-      h('div', { class: 'tom-lus', 'aria-hidden': 'true' },
-        h('span', { class: 'tom-pijl' }, '▲', h('span', { class: 'tom-lijn' }), h('small', {}, 'cijfers')),
-        h('span', { class: 'tom-pijl' }, h('small', {}, 'doelen'), h('span', { class: 'tom-lijn' }), '▼'))),
-    h('figcaption', {},
-      h('p', {}, 'Figuur: twaalf cellen. De vierde kolom verbindt de lagen: cijfers gaan omhoog, doelen gaan omlaag. Eigen weergave van de TOM³-indeling naar ', met('(Westmoreland BV, z.d.)'), '.')));
-}
-
 /** A3-vak 1 in vier delen (SX-12): gevulde delen in vlak, de rest alleen een rand; de stand ook als tekst (TG-4). */
 export function tekenA3Vak(el, stand) {
   wis(el);
@@ -278,4 +152,45 @@ export function maakWisAlles(store, na) {
     h('button', { type: 'button', class: 'knop', id: 'wis-annuleer', onclick: () => { bevestig.hidden = true; knop.hidden = false; knop.focus(); } }, 'Annuleer'));
   knop.addEventListener('click', () => { knop.hidden = true; bevestig.hidden = false; bevestig.querySelector('#wis-annuleer').focus(); });
   return h('div', { class: 'wis' }, knop, bevestig);
+}
+
+const isJson = (b) => /\.json$/i.test(b.name) || b.type === 'application/json';
+
+/**
+ * Bestandkiezer (SX-14, DESIGN §6, ADR B94): een brede knop in plaats van de kale browserknop. Het echte
+ * <input type="file"> zit er onzichtbaar in, zodat toetsenbord, schermlezer en de bestandskiezer van de telefoon werken
+ * zoals altijd; met een muis kun je het bestand er ook op slepen. De knop noemt het gekozen bestand in het Nederlands,
+ * ook nadat het veld is leeggemaakt (de browser zou dan weer „No file chosen” tonen).
+ * @param {{id: string, titel: string, meer?: boolean, bijKeuze: (bestanden: File[]) => (void|Promise<void>)}} o
+ */
+export function bestandKiezer({ id, titel, meer = false, bijKeuze }) {
+  const gekozen = h('span', { class: 'bk-gekozen' });
+  async function kies(bestanden) {
+    const json = bestanden.filter(isJson);
+    gekozen.classList.toggle('fout', json.length === 0);
+    if (!json.length) { gekozen.textContent = 'Dat is geen .json-bestand. Kies een dossierbestand.'; return; }
+    const lijst = meer ? json : json.slice(0, 1);
+    gekozen.textContent = lijst.length === 1 ? `Gekozen: ${lijst[0].name}` : `Gekozen: ${lijst.length} bestanden`;
+    await bijKeuze(lijst);
+  }
+  const invoer = h('input', { type: 'file', id, class: 'sr-only', accept: '.json,application/json', multiple: meer, onchange: async (e) => {
+    const bestanden = [...e.target.files];
+    e.target.value = '';
+    if (bestanden.length) await kies(bestanden);
+  } });
+  const zet = (aan) => knop.classList.toggle('bk-slepen', aan);
+  const knop = h('label', {
+    class: 'bestandkiezer', for: id,
+    ondragover: (e) => { e.preventDefault(); zet(true); },
+    ondragleave: (e) => { if (!knop.contains(e.relatedTarget)) zet(false); },
+    ondrop: (e) => { e.preventDefault(); zet(false); kies([...e.dataTransfer.files]); },
+  },
+  h('span', { class: 'bk-icoon', 'aria-hidden': 'true' }, '↑'),
+  h('span', { class: 'bk-tekst' },
+    h('span', { class: 'bk-titel' }, titel),
+    h('span', { class: 'bk-hulp' },
+      h('span', { class: 'bk-tik' }, 'Tik om te kiezen'), h('span', { class: 'bk-sleep' }, meer ? 'Klik of sleep ze hierheen' : 'Klik of sleep het hierheen'), ' · .json'),
+    gekozen),
+  invoer);
+  return knop;
 }

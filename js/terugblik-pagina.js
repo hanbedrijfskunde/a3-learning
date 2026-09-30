@@ -1,7 +1,7 @@
 // Het scherm „Vorige keer" (TP-11) aan het begin van leerblok 2 tot en met 4: 1 dossiercontrole met zo nodig een
 // importaanbod (TP-9), 2 de terugblik met de meenemen-kaart (TP-2, TP-3, TP-7), 3 de transfervraag (TP-4).
 // Alleen DOM; de regels zitten in terugblik.js. Niets hierin blokkeert het leerblok eronder (TP-10, TP-5).
-import { h, wis } from './dom.js';
+import { h, wis, bestandKiezer } from './dom.js';
 import { maakTerugblik, dossierControle } from './terugblik.js';
 import { controleerDossier, importeerDossier, veldLabels } from './dossier.js';
 
@@ -70,13 +70,7 @@ export async function vorigeKeerSectie({ store, opslag, overzicht, leerblok, nu 
       h('p', { class: c.aanwezig ? '' : 'fout', role: c.aanwezig ? undefined : 'alert' },
         c.aanwezig ? 'In deze browser ontbreken resultaten van eerdere leerblokken:' : 'Er staat geen dossier in deze browser. Heb je eerder gewerkt en je dossier bewaard? Lees het hier weer in. Onderdelen die ontbreken:'),
       h('ul', { class: 'tb-ontbrekend' }, c.ontbrekend.map((o) => h('li', { 'data-ev': o.id }, `${o.titel} (leerblok ${o.leerblok})`))),
-      h('div', { class: 'veld' },
-        h('label', { for: 'tb-import-bestand' }, 'Kies je dossierbestand (.json)'),
-        h('input', { type: 'file', id: 'tb-import-bestand', accept: '.json,application/json', onchange: async (e) => {
-          const bestand = e.target.files[0];
-          if (bestand) await neemOver(await bestand.text());
-          e.target.value = '';
-        } })),
+      bestandKiezer({ id: 'tb-import-bestand', titel: 'Kies je dossierbestand', bijKeuze: async ([b]) => neemOver(await b.text()) }),
       importUitkomst,
       h('p', { class: 'klein' }, 'Je kunt ook gewoon doorwerken; dit blokkeert niets. Zie ', h('a', { href: 'dossier.html' }, 'het dossier'), ' voor het terugzetten en bewaren.'));
   }

@@ -1,6 +1,6 @@
 // Leerblokpagina: bouwt de pagina uit data/leerblok-N.json met het vaste ritme van vier stappen per taak (TK-18, ADR B76).
 // Alleen DOM. Controles, opslag, oefenregels en de afgerond-regel zitten in sessie.js, weergave.js en afgerond.js.
-import { h, wis, statusChip, bouwVelden, tekenA3Vak, a3VelFiguur, sixCapitalsFiguur, vpcFiguur, bmcFiguur, tomFiguur, metInvulplekken } from './dom.js';
+import { h, wis, statusChip, bouwVelden, tekenA3Vak, metInvulplekken } from './dom.js';
 import { kiesOpslag, maakStore } from './store.js';
 import { maakSessie, volgendeStapOk } from './sessie.js';
 import { bouwTaakModel, isIngevuld } from './weergave.js';
@@ -22,22 +22,29 @@ const laadBlok = async (pad) => normaliseerBlok(await laad(pad)); // reeksen vel
 const laadBronIndex = () => laadBronnen((u) => fetch(new URL(`../${u}`, import.meta.url)))
   .then((bestanden) => maakIndex(bestanden.flatMap((b) => b.bronnen ?? []))).catch(() => new Map());
 const LB4_COMPONENTEN = ['verbanden', 'starr']; // taken met een eigen scherm in lb4-ui.js
-// De figuren in de stap stof (stof.figuur) en na welke alinea ze staan (0 = de eerste).
-const FIGUREN = { 'a3-vel': { bouw: a3VelFiguur, na: 0 }, 'six-capitals': { bouw: sixCapitalsFiguur, na: 1 }, vpc: { bouw: vpcFiguur, na: 0 }, bmc: { bouw: bmcFiguur, na: 0 }, tom: { bouw: tomFiguur, na: 0 } };
+// De figuren in stof, oefening en toepassing (figuur) en na welke alinea van de stof ze staan. Ze komen per leerblok binnen
+// (figuren-lb1.js, figuren-lb3.js, het stakeholderbord), alleen als de data ze gebruikt (PF-4, ADR B97).
+const FIGUREN = {};
+const FIGUREN_LB1 = ['a3-vel', 'six-capitals'];
+const FIGUREN_LB3 = ['vpc', 'bmc', 'tom'];
+/** Welke figuren de data van dit leerblok gebruikt (stof, oefening, toepassing). */
+const figuurNamen = (blok) => new Set(blok.taken.flatMap((t) => [t.stof?.figuur, t.oefening?.figuur, t.toepassing?.figuur]).filter(Boolean));
 const BEWAAR_NA_MS = 500; // bewaren na de laatste toetsaanslag; de controles zelf lopen direct
 const CHECKLIST_NA_MS = 600; // de „klaar als"-checklist vinkt mee na 600 ms zonder typen (SX-5)
 const BEVESTIG_MS = 1500; // kort bevestigingsmoment na „klaar" (DESIGN §7.1), geen modaal venster
 
-/** Het modelantwoord als lijst van veld en antwoord. */
-function modelantwoordEl(model, velden) {
+/** Het modelantwoord als lijst van veld en antwoord; stakeholders van een bord staan op een vast bord (SX-15, SX-16). */
+function modelantwoordEl(model, velden, bordFiguur = null) {
   const dl = h('dl', { class: 'model-lijst' });
   for (const v of velden) {
     const w = model.velden?.[v.id];
-    if (w === undefined) continue;
+    if (w === undefined || bordFiguur?.ids.has(v.id)) continue;
     dl.append(h('dt', {}, v.label), h('dd', {}, Array.isArray(w) ? w.join(', ') : w));
   }
-  return h('div', {}, dl, model.tekst ? h('p', {}, model.tekst) : null);
+  return h('div', {}, bordFiguur?.element, dl, model.tekst ? h('p', {}, model.tekst) : null);
 }
+/** De bordgroep van een weergave (SX-16), of undefined. */
+const bordGroep = (weergave) => weergave?.groepen?.find((g) => g.bord);
 
 async function start() {
   const nummer = document.body.dataset.leerblok;
@@ -49,7 +56,8 @@ async function start() {
   // leerblok van de Wissel, de Wissel zelf (alleen leerblok 1 en 4), de weergavegroepen (leerblok 2 en 3) en de verbanden-kaart
   // en het STARR-sjabloon (leerblok 4) komen dynamisch binnen, elk met de voorwaarde die tools/gewicht-check.mjs leest.
   const heeftWissel = Boolean(blok.wissel) || blok.taken.some((t) => t.toepassing.component === 'feedbacklog');
-  const heeftWeergave = blok.taken.some((t) => t.toepassing.weergave);
+  const heeftWeergave = blok.taken.some((t) => t.toepassing.weergave || t.oefening?.weergave);
+  const heeftBord = blok.taken.some((t) => bordGroep(t.toepassing.weergave) || bordGroep(t.oefening?.weergave));
   const heeftLb4Ui = blok.taken.some((t) => LB4_COMPONENTEN.includes(t.toepassing.component));
   const heeftKijktips = Boolean(blok.kijktips); // leerblok 1: kijktips staan in het overzicht, dus media.js laadt meteen
   await laadControles([blok.leerblok, blok.wissel?.leerblok]);
@@ -57,6 +65,15 @@ async function start() {
   const [{ maakWissel, EV09_TAAK }, { bouwWisselPaneel }] = heeftWissel ? await Promise.all([import('./wissel.js'), import('./wissel-paneel.js')]) : [{}, {}];
   // gewicht-alleen: weergave
   const { bouwWeergave } = heeftWeergave ? await import('./lb2-ui.js') : {};
+  const figuren = figuurNamen(blok);
+  // gewicht-alleen: figurenlb1
+  if (FIGUREN_LB1.some((n) => figuren.has(n))) Object.assign(FIGUREN, (await import('./figuren-lb1.js')).FIGUREN);
+  // gewicht-alleen: figurenlb3
+  if (FIGUREN_LB3.some((n) => figuren.has(n))) Object.assign(FIGUREN, (await import('./figuren-lb3.js')).FIGUREN);
+  // gewicht-alleen: bord
+  const bord = heeftBord ? await import('./stakeholderbord.js') : null;
+  await bord?.klaar; // eerst de opmaak, dan het bord
+  if (bord) FIGUREN['invloed-belang'] = { bouw: bord.rasterFiguur, na: 1 }; // het model in de stof van taak 5.1 (SX-15)
   // gewicht-alleen: lb4ui
   const lb4Ui = heeftLb4Ui ? await import('./lb4-ui.js') : {};
   // gewicht-alleen: kijktips
@@ -157,7 +174,11 @@ async function start() {
     // Een oefening met component `verbanden` (taak 9.4) heeft een eigen kaart en toont het modelvoorbeeld pas na een getrokken lijn (VB-2).
     const oefVelden = taak.oefening.component === 'verbanden'
       ? lb4Ui.bouwVerbandenOefening({ taak, velden: s3.oefening.velden, waarden: sessie.oefening(id).invoer, bijWijziging: bijOefening })
-      : bouwVelden(s3.oefening.velden, `oef-${id}`, sessie.oefening(id).invoer, bijOefening);
+      // Een oefening met een weergave (taak 5.1: het stakeholderbord, SX-16) oefent in dezelfde vorm als de toepassing.
+      : taak.oefening.weergave
+        ? bouwWeergave(s3.oefening.velden, `oef-${id}`, sessie.oefening(id).invoer, bijOefening, taak.oefening.weergave,
+          { taakId: `oef-${id}`, store, bord, leesToepassing: () => ({}) })
+        : bouwVelden(s3.oefening.velden, `oef-${id}`, sessie.oefening(id).invoer, bijOefening);
     const modelGebied = h('div', { class: 'model', 'aria-live': 'polite' });
     // Het modelantwoord als beloning na de eigen poging (TK-6, DESIGN §5.3): een uitklappaneel „Zo zou het kunnen”.
     let modelOpen = false;
@@ -170,7 +191,7 @@ async function start() {
         // modelExtra bestaat alleen bij 9.4 en kan null geven; native append zou dat als tekst tonen
         const paneel = h('details', { class: 'model-paneel', id: `model-${id}` },
           h('summary', {}, 'Zo zou het kunnen'),
-          ...[modelantwoordEl(m.modelantwoord, m.velden), oefVelden.modelExtra && oefVelden.modelExtra(m.modelantwoord)].filter(Boolean));
+          ...[modelantwoordEl(m.modelantwoord, m.velden, bord && bordGroep(taak.oefening.weergave) ? bord.modelBord(m.modelantwoord.velden ?? {}, bordGroep(taak.oefening.weergave).bord) : null), oefVelden.modelExtra && oefVelden.modelExtra(m.modelantwoord)].filter(Boolean));
         paneel.open = modelOpen;
         paneel.addEventListener('toggle', () => { modelOpen = paneel.open; tekenVoet(); });
         modelGebied.append(paneel);
@@ -299,7 +320,7 @@ async function start() {
     // Een taak met `toepassing.weergave` (leerblok 2: tabel, route, promptgenerator, bronlog) legt de velden anders neer.
     const gewoneVelden = () => (taak.toepassing.weergave
       ? bouwWeergave(s4.velden, `toe-${id}`, sessie.leesToepassing(id), bijToepassing, taak.toepassing.weergave,
-        { taakId: id, store, leesToepassing: (t) => sessie.leesToepassing(t) })
+        { taakId: id, store, bord, leesToepassing: (t) => sessie.leesToepassing(t) })
       : bouwVelden(s4.velden, `toe-${id}`, sessie.leesToepassing(id), bijToepassing));
     // Leerblok 4: de verbanden-kaart (9.4) en het STARR-sjabloon (6.3) hebben een eigen scherm in lb4-ui.js.
     const lb4Scherm = (bouw) => bouw({ velden: s4.velden, waarden: sessie.leesToepassing(id), bijWijziging: bijToepassing, store, voorvoegsel: `toe-${id}` });
@@ -516,7 +537,7 @@ async function start() {
   async function toonMedia() {
     if (mediaSectie || !mediaPlek) return;
     const { bouwMediaSectie } = await laadMedia();
-    mediaSectie = bouwMediaSectie({ blok, store, met, modelZichtbaar: () => sessie.oefening(blok.media.taak).modelZichtbaar });
+    mediaSectie = bouwMediaSectie({ blok, store, met, bord, modelZichtbaar: () => sessie.oefening(blok.media.taak).modelZichtbaar });
     mediaPlek.append(mediaSectie.element);
   }
   if (mediaPlek) document.addEventListener('a3-oefening', (e) => { if (e.detail.taak === blok.media.taak) mediaSectie?.ververs(); });

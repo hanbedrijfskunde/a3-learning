@@ -251,13 +251,14 @@ test('LB-9: een rij zonder naam bestaat niet; reeks schrijft de veld-id\'s van e
   assert.equal(stakeholderRijen({ voor: 's', aantal: 7 }).length, 7);
 });
 
-test('LB-9: 5.1 heeft 7 rijen stakeholders met intern of extern, invloed en belang (hoog of laag) en een groep raster', () => {
+test('LB-9, SX-16: 5.1 heeft 7 rijen stakeholders met intern of extern, invloed en belang (hoog of laag) op een stakeholderbord, ook bij oefenen', () => {
   const velden = taak('5.1').toepassing.velden;
   for (const suffix of ['naam', 'soort', 'raakt', 'invloed', 'belang']) assert.equal(velden.filter((v) => v.id.endsWith(suffix) && /^s\d/.test(v.id)).length, 7, suffix);
   assert.deepEqual(velden.find((v) => v.id === 's1soort').opties, ['intern', 'extern']);
   assert.deepEqual(velden.find((v) => v.id === 's1invloed').opties, ['hoog', 'laag']);
   assert.deepEqual(velden.find((v) => v.id === 's1belang').opties, ['hoog', 'laag']);
-  assert.ok(taak('5.1').toepassing.weergave.groepen.some((g) => g.raster?.voor === 's' && g.raster.aantal === 7));
+  for (const deel of ['toepassing', 'oefening']) assert.ok(taak('5.1')[deel].weergave.groepen.some((g) => g.bord?.voor === 's' && g.bord.aantal === 7), deel);
+  assert.deepEqual(taak('5.1').oefening.velden.map((v) => v.id), velden.filter((v) => /^s\d/.test(v.id) || ['merktEerst', 'belangHuidig'].includes(v.id)).map((v) => v.id), 'oefenen en toepassen hebben dezelfde velden');
 });
 
 // ---------------------------------------------------------------- LB-10 t/m LB-13: de vier producten, het TOM-model, het register, de conclusies
@@ -574,8 +575,8 @@ function kopieerData() {
 }
 function schrijf(map, naam, inhoud) { writeFileSync(resolve(map, naam), JSON.stringify(inhoud)); }
 
-test('LB-9: lb2-ui tekent het raster opnieuw bij elke wijziging van een veld (in de browser gecontroleerd met Playwright)', () => {
+test('LB-9, SX-16: lb2-ui ververst het bord bij elke wijziging van een veld (in de browser gecontroleerd met Playwright)', () => {
   const bron = readFileSync(resolve(root, 'js/lb2-ui.js'), 'utf8');
   assert.match(bron, /verversers\.forEach\(\(f\) => f\(\)\);\n    bijWijziging\(\);/);
-  assert.match(bron, /rasterEl\(stakeholderRijen\(g\.raster\)/);
+  assert.match(bron, /ctx\.bord\.stakeholderBord\(\{\n\s+rijen: stakeholderRijen\(g\.bord\)/);
 });

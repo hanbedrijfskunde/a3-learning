@@ -16,21 +16,30 @@
       "stof": {
         "bron": "concept-auteur",
         "opmerking": "Uitleg door de bouwer geschreven; het werkboek geeft alleen de opdracht en de tabel.",
-        "alineas": ["Een stakeholder is een persoon of partij die het vraagstuk merkt of er invloed op heeft. Een interne stakeholder zit in de organisatie, een externe erbuiten. Bij elke stakeholder horen twee kenmerken. Zijn invloed op het vraagstuk is hoog of laag. Zijn belang erbij is ook hoog of laag.","Invloed en belang geven samen vier vakken. Nauw betrekken: beide hoog. Tevreden houden: invloed hoog, belang laag. Op de hoogte houden: invloed laag, belang hoog. Volgen: beide laag. Het raster hieronder tekent zichzelf zodra je invloed en belang kiest.","De gebruiker uit je onderzoeksvraag van leerblok 1 hoort in de lijst. De site controleert dat."]
+        "alineas": ["Een stakeholder is een persoon of partij die het vraagstuk merkt of er invloed op heeft. Een interne stakeholder zit in de organisatie, een externe erbuiten. Bij elke stakeholder horen twee kenmerken. Zijn invloed op het vraagstuk is hoog of laag. Zijn belang erbij is ook hoog of laag.","Invloed en belang geven samen vier vakken. Nauw betrekken: beide hoog. Tevreden houden: invloed hoog, belang laag. Op de hoogte houden: invloed laag, belang hoog. Volgen: beide laag. Het raster hieronder laat de vier vakken zien. Bij oefenen en toepassen zet je de stakeholders er zelf in.","De gebruiker uit je onderzoeksvraag van leerblok 1 hoort op het bord. De site controleert dat."],
+        "figuur": "invloed-belang"
       },
       "oefening": {
-        "opdracht": {"tekst":"Casus webshop X: terugkerende klanten geven lagere waarderingen dan vroeger. Noteer minstens vijf stakeholders, met intern of extern, invloed en belang. Beantwoord daarna de twee vragen uit het werkboek.","bron":"concept-auteur"},
-        "velden": [{"id":"stakeholders","label":"Stakeholders, elk met intern of extern, invloed (hoog of laag) en belang (hoog of laag)","type":"lang","hint":"Denk aan wie het probleem merkt, wie erover beslist en wie erbij betrokken is, binnen en buiten de organisatie.","hintBron":[{"soort":"stof","taak":"5.1","vindplaats":"alinea 1"},{"soort":"stof","taak":"5.1","vindplaats":"uitleg onder de knop Tekst, alinea 2"}]},{"id":"merktEerst","label":"Wie merkt het probleem het eerst?","type":"lang","hint":"Volg het probleem vanaf de klant: bij welke afdeling of persoon meldt het zich?","hintBron":[{"soort":"eigen werk","vindplaats":"je stakeholderlijst in het eerste veld van taak 5.1"},{"soort":"stof","taak":"5.1","vindplaats":"alinea 2"}]},{"id":"belangHuidig","label":"Wie heeft belang bij de huidige situatie?","type":"lang","hint":"Wie heeft er voordeel bij dat alles blijft zoals het is?","hintBron":[{"soort":"eigen werk","vindplaats":"je stakeholderlijst in het eerste veld van taak 5.1 (kolom belang)"},{"soort":"stof","taak":"5.1","vindplaats":"alinea 1"}]}]
+        "opdracht": {"tekst":"Casus webshop X: terugkerende klanten geven lagere waarderingen dan vroeger. Zet minstens vijf stakeholders op het bord, elk met intern of extern. Beantwoord daarna de twee vragen uit het werkboek.","bron":"concept-auteur"},
+        "velden": [{"reeks":{"voor":"s","aantal":7,"velden":[{"suffix":"naam","label":"Stakeholder {n}","type":"tekst"},{"suffix":"soort","label":"Stakeholder {n}: intern of extern","type":"lijst","opties":["intern","extern"]},{"suffix":"raakt","label":"Stakeholder {n}: relatie met het vraagstuk","type":"tekst"},{"suffix":"invloed","label":"Stakeholder {n}: invloed","type":"lijst","opties":["hoog","laag"]},{"suffix":"belang","label":"Stakeholder {n}: belang","type":"lijst","opties":["hoog","laag"]}]}},{"id":"merktEerst","label":"Wie merkt het probleem het eerst?","type":"lang","hint":"Volg het probleem vanaf de klant: bij welke afdeling of persoon meldt het zich?","hintBron":[{"soort":"eigen werk","vindplaats":"je stakeholderbord bij deze oefening"},{"soort":"stof","taak":"5.1","vindplaats":"alinea 2"}]},{"id":"belangHuidig","label":"Wie heeft belang bij de huidige situatie?","type":"lang","hint":"Wie heeft er voordeel bij dat alles blijft zoals het is?","hintBron":[{"soort":"eigen werk","vindplaats":"je stakeholderbord bij deze oefening (de rechterhelft: belang hoog)"},{"soort":"stof","taak":"5.1","vindplaats":"alinea 1"}]}],
+        "weergave": {"groepen":[{"titel":"Stakeholderbord","bord":{"voor":"s","aantal":7,"vraagstukTekst":"Terugkerende klanten geven webshop X lagere waarderingen"},"hint":"Denk aan wie het probleem merkt, wie erover beslist en wie erbij betrokken is, binnen en buiten de organisatie.","hintBron":[{"soort":"stof","taak":"5.1","vindplaats":"alinea 1 en de figuur"},{"soort":"stof","taak":"5.1","vindplaats":"uitleg onder de knop Tekst, alinea 2"}]},{"velden":["merktEerst","belangHuidig"]}]}
       },
       "modelantwoord": {
         "bron": "concept-auteur",
         "opmerking": "Voorbeeld door de bouwer geschreven.",
-        "velden": {"stakeholders":"Terugkerende klanten (extern): invloed laag, belang hoog. Klantenservice (intern): invloed laag, belang hoog. Directie van de webshop (intern): invloed hoog, belang hoog. Bezorgdienst (extern): invloed hoog, belang laag. Marketingafdeling (intern): invloed laag, belang laag. Concurrenten (extern): invloed laag, belang laag.","merktEerst":"De klantenservice. Daar komen klachten en vragen als eerste binnen.","belangHuidig":"De bezorgdienst, als de huidige afspraken voor hen voordelig zijn."}
+        "velden": {
+          "s1naam":"Terugkerende klanten","s1soort":"extern","s1raakt":"Zij geven de lagere waarderingen.","s1invloed":"laag","s1belang":"hoog",
+          "s2naam":"Klantenservice","s2soort":"intern","s2raakt":"Krijgt de klachten als eerste binnen.","s2invloed":"laag","s2belang":"hoog",
+          "s3naam":"Directie van de webshop","s3soort":"intern","s3raakt":"Beslist over aanpak en budget.","s3invloed":"hoog","s3belang":"hoog",
+          "s4naam":"Bezorgdienst","s4soort":"extern","s4raakt":"Levert de bestellingen; te laat leveren drukt de waardering.","s4invloed":"hoog","s4belang":"laag",
+          "s5naam":"Marketingafdeling","s5soort":"intern","s5raakt":"Ziet de waarderingen terug in de reviews.","s5invloed":"laag","s5belang":"laag",
+          "s6naam":"Concurrenten","s6soort":"extern","s6raakt":"Winnen de klanten die afhaken.","s6invloed":"laag","s6belang":"laag",
+          "merktEerst":"De klantenservice. Daar komen klachten en vragen als eerste binnen.","belangHuidig":"De bezorgdienst, als de huidige afspraken voor hen voordelig zijn."}
       },
       "toepassing": {
-        "opdracht": {"tekst":"Schrijf je vraagstuk in één zin. Noteer dan je stakeholders. Zet bij elke stakeholder of hij intern of extern is. Noteer ook de relatie met het vraagstuk, de invloed en het belang. Neem de map daarna over op vel 1.","bron":"concept-auteur"},
+        "opdracht": {"tekst":"Schrijf je vraagstuk in één zin. Zet dan je stakeholders op het bord, elk met intern of extern, de relatie met het vraagstuk, de invloed en het belang. Neem het bord daarna over op vel 1.","bron":"concept-auteur"},
         "velden": [{"id":"vraagstuk","label":"Ons vraagstuk in één zin","type":"lang","zinstarter":"Ons vraagstuk is dat …"},{"reeks":{"voor":"s","aantal":7,"velden":[{"suffix":"naam","label":"Stakeholder {n}","type":"tekst"},{"suffix":"soort","label":"Stakeholder {n}: intern of extern","type":"lijst","opties":["intern","extern"]},{"suffix":"raakt","label":"Stakeholder {n}: relatie met het vraagstuk","type":"tekst"},{"suffix":"invloed","label":"Stakeholder {n}: invloed","type":"lijst","opties":["hoog","laag"]},{"suffix":"belang","label":"Stakeholder {n}: belang","type":"lijst","opties":["hoog","laag"]}]}},{"id":"merktEerst","label":"Wie merkt het probleem het eerst?","type":"lang","zinstarter":"Het eerst merkt … het, omdat …"},{"id":"belangHuidig","label":"Wie heeft belang bij de huidige situatie?","type":"lang","zinstarter":"… heeft belang bij de huidige situatie, want …"}],
-        "weergave": {"groepen":[{"velden":["vraagstuk"]},{"titel":"Stakeholders","tabel":{"kolommen":["Stakeholder","Intern of extern","Hoe raakt het vraagstuk deze stakeholder?","Invloed","Belang"],"reeks":{"voor":"s","aantal":7,"suffixen":["naam","soort","raakt","invloed","belang"]}}},{"velden":["merktEerst","belangHuidig"]},{"titel":"Het raster van invloed en belang","raster":{"voor":"s","aantal":7}}]}
+        "weergave": {"groepen":[{"velden":["vraagstuk"]},{"titel":"Stakeholderbord","bord":{"voor":"s","aantal":7,"vraagstuk":"vraagstuk","voorstel":"EV-01"}},{"velden":["merktEerst","belangHuidig"]}]}
       },
       "controles": [
         {"id":"vraagstuk-woorden","soort":"A","type":"minWoordenAanwezig","veld":"vraagstuk","label":"je vraagstuk in één zin","min":4},
@@ -277,10 +286,11 @@
         "Daarna plaats je het vraagstuk in drie modellen. Het value proposition canvas gaat over de klant (Osterwalder e.a., 2014). Het business model canvas gaat over de organisatie (Osterwalder & Pigneur, 2010). Het TOM³-model heeft drie lagen en vier kolommen (Westmoreland BV, z.d.)."
       ],
       "voorbeeld": "Een voorbeeld uit een andere organisatie. Bij het rapportagevraagstuk van organisatie Y is de controller intern, met hoge invloed en hoog belang. Hem betrek je dus nauw. De accountant is extern, met hoge invloed en laag belang. Hem houd je dus tevreden.",
+      "voorbeeldBord": {"vraagstuk":"Rapportage van organisatie Y","stakeholders":[{"naam":"Controller","soort":"intern","invloed":"hoog","belang":"hoog"},{"naam":"Accountant","soort":"extern","invloed":"hoog","belang":"laag"}]},
       "modelantwoord": {
         "taak": "5.1",
+        "bord": true,
         "velden": [
-          "stakeholders",
           "merktEerst",
           "belangHuidig"
         ]
