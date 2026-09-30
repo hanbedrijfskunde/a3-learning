@@ -7,7 +7,7 @@
   "taak": "9.4",
   "fictief": true,
   "bron": "concept-auteur",
-  "intro": "Webshop X (fictief) wil terugkerende klanten terugwinnen. Bij drie beslissingen kies je een optie, voorspel je wat er met de zes kapitalen gebeurt (International Integrated Reporting Council, 2021) en zie je het effect op drie termijnen.",
+  "intro": "Webshop X (fictief) wil terugkerende klanten terugwinnen. Je neemt drie beslissingen. Bij elke beslissing kies je een optie. Je voorspelt wat er met de zes kapitalen gebeurt (International Integrated Reporting Council, 2021). Daarna zie je het effect op drie termijnen.",
   "fictiefUitleg": "Webshop X en alle effecten zijn verzonnen.",
   "geenBewijs": "Dit komt niet in je dossier.",
   "voorspelVraag": "Wat gebeurt er op de lange termijn?",
@@ -29,10 +29,10 @@
           "tekst": "Een eigen bezorgdienst opzetten",
           "feedback": "Je krijgt de bezorging zelf in de hand, maar je betaalt eerst met geld en milieu. Wat nu kost, levert pas later op.",
           "effect": {
-            "financieel": { "termijn": ["min", "min", "plus"], "toelichting": "Eerst bussen en personeel; later goedkoper dan het contract." },
+            "financieel": { "termijn": ["min", "min", "plus"], "toelichting": "Eerst betaal je bussen en personeel. Later is het goedkoper dan het contract." },
             "productie": { "termijn": ["input", "input", "input"], "toelichting": "Bussen en een depot gaan erin." },
-            "menselijk": { "termijn": ["input", "input", "plus"], "toelichting": "Je werft bezorgers; na een paar jaar hebben ze ervaring." },
-            "sociaal en relationeel": { "termijn": ["geen", "plus", "plus"], "toelichting": "Klanten krijgen hun bestelling betrouwbaar; het vertrouwen groeit." },
+            "menselijk": { "termijn": ["input", "input", "plus"], "toelichting": "Je werft bezorgers. Na een paar jaar hebben ze ervaring." },
+            "sociaal en relationeel": { "termijn": ["geen", "plus", "plus"], "toelichting": "Klanten krijgen hun bestelling betrouwbaar. Het vertrouwen groeit." },
             "natuurlijk": { "termijn": ["min", "min", "min"], "toelichting": "Extra kilometers, extra uitstoot." }
           }
         },
@@ -41,7 +41,7 @@
           "tekst": "Bij de logistiek partner blijven en vaste bezorgtijden afspreken",
           "feedback": "Goedkoper en sneller, maar je blijft afhankelijk van de partner. Klanten merken pas verbetering als de partner zich aan de afspraak houdt.",
           "effect": {
-            "financieel": { "termijn": ["geen", "plus", "plus"], "toelichting": "Lage kosten; boetes bij te late levering besparen geld." },
+            "financieel": { "termijn": ["geen", "plus", "plus"], "toelichting": "Lage kosten. Boetes bij te late levering besparen geld." },
             "intellectueel": { "termijn": ["geen", "plus", "plus"], "toelichting": "Je krijgt bezorggegevens en leert wanneer het misgaat." },
             "sociaal en relationeel": { "termijn": ["geen", "geen", "plus"], "toelichting": "Duidelijke afspraken helpen, maar alleen als de partner ze nakomt." }
           }
@@ -59,18 +59,18 @@
           "tekst": "Medewerkers van de klantenservice bellen terugkerende klanten met aanbevelingen",
           "feedback": "Persoonlijk contact bouwt de band op, maar het kost mensen. Denk aan de klantenservice als stakeholder.",
           "effect": {
-            "financieel": { "termijn": ["min", "plus", "plus"], "toelichting": "Bellen kost eerst uren; herhaalaankopen verdienen dat terug." },
+            "financieel": { "termijn": ["min", "plus", "plus"], "toelichting": "Bellen kost eerst uren. Herhaalaankopen verdienen dat terug." },
             "intellectueel": { "termijn": ["geen", "plus", "plus"], "toelichting": "Medewerkers leren wat klanten willen." },
-            "menselijk": { "termijn": ["min", "min", "min"], "toelichting": "Extra werk drukt op de klantenservice; het werkplezier daalt." },
+            "menselijk": { "termijn": ["min", "min", "min"], "toelichting": "Extra werk drukt op de klantenservice. Het werkplezier daalt." },
             "sociaal en relationeel": { "termijn": ["plus", "plus", "plus"], "toelichting": "Klanten voelen zich gekend." }
           }
         },
         {
           "id": "b",
           "tekst": "Een programma laten aanbevelingen doen",
-          "feedback": "Zonder extra mensen, maar het effect op de relatie kan omslaan: wat eerst persoonlijk voelt, wordt later routine.",
+          "feedback": "Je hebt geen extra mensen nodig. Wel kan het effect op de relatie omslaan. Wat eerst persoonlijk voelt, wordt later routine.",
           "effect": {
-            "financieel": { "termijn": ["min", "plus", "plus"], "toelichting": "Software kost geld; extra bestellingen verdienen dat terug." },
+            "financieel": { "termijn": ["min", "plus", "plus"], "toelichting": "Software kost geld. Extra bestellingen verdienen dat terug." },
             "intellectueel": { "termijn": ["input", "plus", "plus"], "toelichting": "Je stopt klantgegevens en programmeerwerk erin en leert wat werkt." },
             "menselijk": { "termijn": ["geen", "plus", "plus"], "toelichting": "Er komt tijd vrij voor lastige klantvragen." },
             "sociaal en relationeel": { "termijn": ["geen", "plus", "min"], "toelichting": "Eerst voelen klanten zich geholpen, later ervaren ze het als onpersoonlijk." }
@@ -92,15 +92,15 @@
             "financieel": { "termijn": ["min", "min", "geen"], "toelichting": "Het bureau kost elke maand geld." },
             "intellectueel": { "termijn": ["geen", "min", "min"], "toelichting": "Kennis over klachten blijft bij het bureau." },
             "menselijk": { "termijn": ["geen", "min", "min"], "toelichting": "Je eigen team verliest ervaring met klachten." },
-            "sociaal en relationeel": { "termijn": ["plus", "plus", "min"], "toelichting": "Klanten krijgen snel antwoord, later missen ze iemand die hun geschiedenis kent." }
+            "sociaal en relationeel": { "termijn": ["plus", "plus", "min"], "toelichting": "Klanten krijgen snel antwoord. Later missen ze iemand die hun geschiedenis kent." }
           }
         },
         {
           "id": "b",
           "tekst": "Het eigen team uitbreiden en trainen",
-          "feedback": "Kost eerst geld en tijd, maar de organisatie bouwt kennis op en houdt die. Je ziet het effect pas na een paar maanden.",
+          "feedback": "Dit kost eerst geld en tijd. Wel bouwt de organisatie kennis op en houdt ze die. Je ziet het effect pas na een paar maanden.",
           "effect": {
-            "financieel": { "termijn": ["min", "min", "plus"], "toelichting": "Salarissen en training kosten geld; minder klachten en herhaalaankopen leveren het later op." },
+            "financieel": { "termijn": ["min", "min", "plus"], "toelichting": "Salarissen en training kosten geld. Minder klachten en herhaalaankopen leveren het later op." },
             "intellectueel": { "termijn": ["input", "plus", "plus"], "toelichting": "De organisatie bouwt kennis over klachten op en houdt die." },
             "menselijk": { "termijn": ["input", "plus", "plus"], "toelichting": "Je investeert in mensen en zij groeien in hun vak." },
             "sociaal en relationeel": { "termijn": ["geen", "plus", "plus"], "toelichting": "Klanten krijgen een vast gezicht." }

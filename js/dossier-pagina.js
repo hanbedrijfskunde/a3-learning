@@ -119,7 +119,7 @@ async function start() {
     const blok = maakA3Tekst({ records: leesRecords(store, ['EV-01', 'EV-02', 'EV-08', 'EV-11']), profiel: leesProfiel(store) });
     a3Gebied.append(
       h('h2', { id: 'a3-kop' }, 'Kopieer naar A3 vak 1'),
-      h('p', {}, 'Eén klik zet je onderzoeksvraag, zoekvragen, de plaatsing van je vraagstuk en je waarom-zin (en de verbanden uit leerblok 4, als je ze hebt) als tekst op het klembord. Plak ze in vak 1 van de A3 van je team. Er gaat niets over het netwerk.'),
+      h('p', {}, 'Met één klik zet je vak 1 als tekst op het klembord: je onderzoeksvraag, zoekvragen, plaatsing en waarom-zin. Heb je leerblok 4 gedaan, dan komen je verbanden erbij. Plak de tekst in vak 1 van de A3 van je team. Er gaat niets over het netwerk.'),
       h('pre', { class: 'a3-blok', id: 'a3-tekst', tabindex: '0', 'aria-label': 'Voorbeeld van het tekstblok voor vak 1' }, blok.tekst),
       h('div', { class: 'knoppen' }, h('button', { type: 'button', class: 'knop', 'data-actie': 'kopieer-a3', onclick: async () => {
         try {

@@ -2,7 +2,7 @@
   "formaat": "1.0",
   "start": {
     "titel": "Begin met je eigen vraagstuk",
-    "intro": "Vul dit één keer in. Je oefent daarna alles op je eigen vraagstuk, en wat je typt blijft bewaard in deze browser.",
+    "intro": "Vul dit één keer in. Daarna oefen je alles op je eigen vraagstuk. Wat je typt, blijft bewaard in deze browser.",
     "velden": [
       {
         "id": "alias",
@@ -26,7 +26,7 @@
       }
     ],
     "voorlopigLabel": "Ik heb nog geen scherp vraagstuk",
-    "privacytekst": "Je gegevens blijven in deze browser. De site gebruikt geen cookies en geen analytics, heeft geen account en stuurt niets naar een server. Vul geen namen van opdrachtgevers en geen andere vertrouwelijke gegevens in, ook niet in je vraagstuk of in je antwoorden. Gebruik een alias of je voornaam. Je werk staat alleen op dit apparaat: wis je de browsergegevens, dan is het weg. Met de knop Wis alles haal je zelf alles van deze site uit je browser."
+    "privacytekst": "Je gegevens blijven in deze browser. De site gebruikt geen cookies en geen analytics. Hij werkt zonder account en stuurt niets naar een server. Vul geen namen van opdrachtgevers of andere vertrouwelijke gegevens in. Dat geldt ook voor je vraagstuk en je antwoorden. Gebruik een alias of je voornaam. Je werk staat alleen op dit apparaat. Wis je de browsergegevens, dan is je werk weg. Met de knop Wis alles haal je zelf alles van deze site uit je browser."
   },
   "leerblokken": [
     {

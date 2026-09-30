@@ -15,7 +15,7 @@
     { "id": "EV-11", "titel": "Verbanden tussen modellen" }
   ],
   "onderdelen": [
-    { "luk": 1, "label": "LUK 1 · Signaleert knelpunten in een intern proces", "dekking": "deels", "toelichting": "probleemzin komt van buiten; wordt niet getoetst", "bewijs": ["EV-01"] },
+    { "luk": 1, "label": "LUK 1 · Signaleert knelpunten in een intern proces", "dekking": "deels", "toelichting": "de probleemzin krijg je aangereikt; die wordt niet getoetst", "bewijs": ["EV-01"] },
     { "luk": 1, "label": "LUK 1 · Formuleert een onderzoeksvraag", "dekking": "gedekt", "toelichting": "", "bewijs": ["EV-01"] },
     { "luk": 1, "label": "LUK 1 · Analyseert het probleem methodisch", "dekking": "deels", "toelichting": "zoekvragen en zoekstrategie", "bewijs": ["EV-02", "EV-03"] },
     { "luk": 1, "label": "LUK 1 · Stelt een onderbouwde diagnose", "dekking": "buiten scope", "toelichting": "", "bewijs": [] },
@@ -27,6 +27,6 @@
     { "luk": 2, "label": "LUK 2 · Oog voor meervoudige waardecreatie", "dekking": "deels", "toelichting": "zien, niet herontwerpen", "bewijs": ["EV-11"] },
     { "luk": null, "label": "LUK 2 (overig), LUK 3 en LUK 4", "dekking": "buiten scope", "toelichting": "", "bewijs": [] },
     { "luk": 5, "label": "LUK 5 · Haalt feedback op en reflecteert erop", "dekking": "gedekt", "toelichting": "", "bewijs": ["EV-09", "EV-10"] },
-    { "luk": 5, "label": "LUK 5 · Formuleert ontwikkelpunten en werkt er aantoonbaar aan", "dekking": "deels", "toelichting": "actie en volgende stap (TK-10)", "bewijs": ["EV-09"] }
+    { "luk": 5, "label": "LUK 5 · Formuleert ontwikkelpunten en werkt er aantoonbaar aan", "dekking": "deels", "toelichting": "je actie en je volgende stap", "bewijs": ["EV-09"] }
   ]
 }

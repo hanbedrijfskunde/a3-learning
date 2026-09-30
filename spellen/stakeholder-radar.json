@@ -6,7 +6,7 @@
   "leerblok": 3,
   "taak": "5.1",
   "bron": "concept-auteur",
-  "intro": "Bij webshop X stijgt het aantal retouren. Je plaatst zes stakeholders op invloed en belang en leest bij elke keuze de feedback. Daarna zie je je raster en beantwoord je twee vragen: wie merkt het probleem het eerst, en wie heeft er belang bij dat het blijft zoals het is?",
+  "intro": "Bij webshop X stijgt het aantal retouren. Je plaatst zes stakeholders op invloed en belang en leest bij elke keuze de feedback. Daarna zie je je raster en beantwoord je twee vragen. Wie merkt het probleem het eerst? En wie heeft er belang bij dat het blijft zoals het is?",
   "fictiefUitleg": "Webshop X en de stakeholders zijn verzonnen.",
   "geenBewijs": "Dit komt niet in je dossier.",
   "vakken": [
@@ -73,7 +73,7 @@
             {
               "id": "laag",
               "tekst": "Laag",
-              "feedback": "Retouren kosten de webshop geld en de directie wil dat omlaag. Het raakt haar dus wel: het belang is hoog."
+              "feedback": "Retouren kosten de webshop geld en de directie wil dat omlaag. Het raakt haar dus wel. Het belang is hoog."
             }
           ]
         }
@@ -136,7 +136,7 @@
             {
               "id": "hoog",
               "tekst": "Hoog",
-              "feedback": "Ze bepalen de regels niet. Ze voeren het werk uit, daarom is hun invloed op het vraagstuk laag."
+              "feedback": "Ze bepalen de regels niet. Ze voeren het werk uit. Daarom is hun invloed op het vraagstuk laag."
             },
             {
               "id": "laag",
@@ -179,7 +179,7 @@
             {
               "id": "hoog",
               "tekst": "Hoog",
-              "feedback": "Een enkele klant verandert de retourregels niet. Samen kunnen klanten iets bereiken, maar dat is hier niet het geval."
+              "feedback": "Een enkele klant verandert de retourregels niet. Samen kunnen klanten wel iets bereiken. Hier gebeurt dat niet."
             },
             {
               "id": "laag",
@@ -239,13 +239,13 @@
             {
               "id": "hoog",
               "tekst": "Hoog",
-              "feedback": "Retouren doen hem weinig: hij haalt ze op zoals alle andere pakketten. Het vraagstuk raakt hem weinig."
+              "feedback": "Hij haalt retouren op zoals alle andere pakketten. Het vraagstuk raakt hem dus weinig."
             },
             {
               "id": "laag",
               "tekst": "Laag",
               "passend": true,
-              "feedback": "Klopt. Het vraagstuk zelf raakt hem weinig. Dat is iets anders dan belang hebben bij hoe het nu gaat: daarover gaat de laatste vraag."
+              "feedback": "Klopt. Het vraagstuk zelf raakt hem weinig. Belang hebben bij hoe het nu gaat, is iets anders. Daarover gaat de laatste vraag."
             }
           ]
         }
@@ -319,7 +319,7 @@
         {
           "id": "s4",
           "tekst": "Klanten die terugsturen",
-          "feedback": "Klanten weten dat hun eigen bestelling niet paste, maar niet dat het er steeds meer worden. Het probleem van de webshop zien ze niet."
+          "feedback": "Klanten weten alleen dat hun eigen bestelling niet paste. Ze zien niet dat er steeds meer retouren komen."
         },
         {
           "id": "s5",
@@ -350,7 +350,7 @@
         {
           "id": "s3",
           "tekst": "Magazijnmedewerkers",
-          "feedback": "Het magazijn heeft er extra werk van. Het blijft zo niet prettig voor hen."
+          "feedback": "Het magazijn heeft extra werk van de retouren. Het heeft er geen voordeel bij dat het zo blijft."
         },
         {
           "id": "s4",
@@ -371,5 +371,5 @@
       ]
     }
   ],
-  "slot": "Je hebt zes stakeholders geplaatst. Let op: belang bij het vraagstuk is iets anders dan belang bij de huidige situatie. Kijk naar je eigen vraagstuk. Wie merkt het eerst, en wie heeft er belang bij dat het blijft zoals het is? Dat schrijf je in taak 5.1 voor je eigen vraagstuk."
+  "slot": "Je hebt zes stakeholders geplaatst. Belang bij het vraagstuk is iets anders dan belang bij de huidige situatie. Kijk nu naar je eigen vraagstuk. Wie merkt het eerst? En wie heeft er belang bij dat het blijft zoals het is? Schrijf dat op in taak 5.1."
 }

@@ -6,7 +6,7 @@
   "leerblok": 1,
   "taak": "2.1",
   "bron": "concept-auteur",
-  "intro": "Drie vage vragen bij webshop X. Maak van elke vraag een onderzoeksvraag in het format van de user story: voor wie, welk probleem en welke waarde. Bij elk deel kies je een formulering en lees je meteen de feedback.",
+  "intro": "Je krijgt drie vage vragen bij webshop X. Maak van elke vraag een onderzoeksvraag in het format van de user story. Dat format noemt voor wie, welk probleem en welke waarde. Bij elk deel kies je een formulering en lees je meteen de feedback.",
   "fictiefUitleg": "Webshop X, de vragen en de cijfers zijn verzonnen.",
   "geenBewijs": "Dit komt niet in je dossier.",
   "format": "Wat is de beste oplossing voor {gebruiker} om {pain}, zodat {waarde}?",
@@ -30,7 +30,7 @@
       "fictief": true,
       "titel": "De klantenservice verbeteren",
       "vageVraag": "Hoe kunnen we de klantenservice verbeteren?",
-      "situatie": "Klanten geven de klantenservice een 5,8: lang wachten en dezelfde vraag twee keer vertellen.",
+      "situatie": "Klanten geven de klantenservice een 5,8. Ze wachten lang en moeten dezelfde vraag twee keer vertellen.",
       "keuzes": {
         "gebruiker": [
           {
@@ -83,7 +83,7 @@
             "id": "c",
             "tekst": "klanten de webshop weer vertrouwen en medewerkers minder onder druk staan",
             "passend": true,
-            "feedback": "Goed. Sociaal en relationeel kapitaal (vertrouwen) en menselijk kapitaal (werkdruk), twee die niet financieel zijn."
+            "feedback": "Goed. Je noemt sociaal en relationeel kapitaal (vertrouwen) en menselijk kapitaal (werkdruk). Geen van beide is financieel."
           }
         ]
       }
@@ -93,7 +93,7 @@
       "fictief": true,
       "titel": "Minder retouren",
       "vageVraag": "Hoe zorgen we dat er minder retouren zijn?",
-      "situatie": "Klanten sturen 18 procent van de bestellingen terug, vooral kleding, vaak met de reden: past niet.",
+      "situatie": "Klanten sturen 18 procent van de bestellingen terug. Het gaat vooral om kleding, en vaak past het niet.",
       "keuzes": {
         "gebruiker": [
           {
@@ -104,7 +104,7 @@
           {
             "id": "b",
             "tekst": "klanten die weleens iets terugsturen",
-            "feedback": "Beter dan alle klanten, maar weleens is nog breed. Welke producten en waarom?"
+            "feedback": "Beter dan alle klanten, maar „weleens” is nog breed. Welke producten en waarom?"
           },
           {
             "id": "c",
@@ -141,7 +141,7 @@
             "id": "b",
             "tekst": "klanten een bestelling krijgen die past, er minder pakketten rondgaan en de retourkosten dalen",
             "passend": true,
-            "feedback": "Goed. Sociaal en relationeel, natuurlijk en financieel kapitaal: drie kapitalen, twee niet financieel."
+            "feedback": "Goed. Je noemt sociaal en relationeel, natuurlijk en financieel kapitaal. Twee van de drie zijn niet financieel."
           },
           {
             "id": "c",
@@ -191,7 +191,7 @@
             "id": "c",
             "tekst": "in drukke weken lang te moeten zoeken naar artikelen, waardoor ze overwerken",
             "passend": true,
-            "feedback": "Goed. Concreet: wanneer, wat en met welk gevolg."
+            "feedback": "Goed. Je noemt wanneer het misgaat, wat er misgaat en met welk gevolg."
           }
         ],
         "waarde": [
@@ -204,7 +204,7 @@
             "id": "b",
             "tekst": "medewerkers minder overwerken en bestellingen op tijd bij de klant zijn",
             "passend": true,
-            "feedback": "Goed. Menselijk kapitaal en sociaal en relationeel kapitaal, met een duidelijke ontvanger: medewerker en klant."
+            "feedback": "Goed. Je noemt menselijk kapitaal en sociaal en relationeel kapitaal. Ook de ontvangers zijn duidelijk: medewerker en klant."
           },
           {
             "id": "c",

@@ -26,10 +26,10 @@
         "bron": "concept-auteur",
         "opmerking": "Taak 9.4 staat niet in het werkboek. De uitleg is door de bouwer geschreven uit LRD 6.9 en wacht op akkoord van de auteur.",
         "alineas": [
-          "Drie modellen beschrijven jouw vraagstuk elk vanuit een andere kant. De user story zegt voor wie het is, welk probleem er speelt en welke waarde je wilt maken. Het value proposition canvas (Osterwalder e.a., 2014) zet links een klantprofiel met klanttaken, pains (wat de klant hindert) en gains (wat de klant zoekt) en rechts een waardekaart met producten en diensten, pain relievers (wat een pain wegneemt) en gain creators (wat een gain oplevert). De zes kapitalen uit het waardecreatiemodel van het IIRC (International Integrated Reporting Council, 2021) laten zien dat dezelfde kapitalen een organisatie in gaan als input en er als uitkomst weer uit komen, positief of negatief, op korte, middellange en lange termijn.",
-          "Een verband is een lijn tussen twee kaarten uit verschillende kolommen. Je kiest een van drie typen. „Hoort bij” gebruik je als twee kaarten over hetzelfde gaan of als de ene om de andere vraagt; in je zin schrijf je welke van de twee het is. „Leidt tot” gebruik je als de ene kaart de andere veroorzaakt. „Gaat ten koste van” gebruik je als wat je oplevert ergens anders iets kost. Bij elk verband schrijf je één zin waarom.",
+          "Drie modellen beschrijven jouw vraagstuk, elk vanuit een andere kant. De user story zegt voor wie het is, welk probleem er speelt en welke waarde je wilt maken. Het value proposition canvas (Osterwalder e.a., 2014) heeft twee kanten. Links staat een klantprofiel met klanttaken, pains (wat de klant hindert) en gains (wat de klant zoekt). Rechts staat een waardekaart met producten en diensten. Daarbij horen pain relievers (wat een pain wegneemt) en gain creators (wat een gain oplevert). De zes kapitalen komen uit het waardecreatiemodel van het IIRC (International Integrated Reporting Council, 2021). Dezelfde kapitalen gaan een organisatie in als input en komen er als uitkomst weer uit. Die uitkomst is positief of negatief, op korte, middellange en lange termijn.",
+          "Een verband is een lijn tussen twee kaarten uit verschillende kolommen. Je kiest een van drie typen. „Hoort bij” gebruik je als twee kaarten over hetzelfde gaan of als de ene om de andere vraagt. Schrijf in je zin welke van de twee het is. „Leidt tot” gebruik je als de ene kaart de andere veroorzaakt. „Gaat ten koste van” gebruik je als wat je oplevert ergens anders iets kost. Bij elk verband schrijf je één zin waarom.",
           "Alleen ontdekken werkt voor beginners minder goed dan ontdekken met begeleiding (Mayer, 2004). Daarom begin je met een oefencasus en zie je het voorbeeld pas nadat je zelf een lijn hebt getrokken. Kaarten zonder lijn komen terug als vraag. De site zegt nooit welk verband je mist.",
-          "Elk kapitaal markeer je als input (het gaat de organisatie in), uitkomst (+) (het groeit) of uitkomst (−) (het neemt af). Minstens één verband „gaat ten koste van” koppel je aan een stakeholder uit je lijst van leerblok 3: wie merkt dat als eerste? Sluit af met een synthese van hoogstens vijf zinnen waarin je kaarten uit minstens twee modellen noemt, en beantwoord bij elk model kort wat het niet laat zien."
+          "Elk kapitaal markeer je als input (het gaat de organisatie in), uitkomst (+) (het groeit) of uitkomst (−) (het neemt af). Koppel minstens één verband „gaat ten koste van” aan een stakeholder uit je lijst van leerblok 3. Wie merkt dat als eerste? Sluit af met een synthese van hoogstens vijf zinnen. Noem daarin kaarten uit minstens twee modellen. Beantwoord daarna bij elk model kort wat het niet laat zien."
         ]
       },
       "oefening": {
@@ -81,7 +81,7 @@
           {
             "id": "v1",
             "label": "Waar komt de gebruiker uit de user story terug in het VPC?",
-            "type": "lang", "hint": "Zoek in het klantprofiel van het canvas: bij welke onderdelen hoort de gebruiker?", "hintBron": [{"soort": "stof", "taak": "9.4", "vindplaats": "uitleg onder de knop Tekst, voorbeeld"}, {"soort": "stof", "taak": "9.4", "vindplaats": "alinea 1"}]
+            "type": "lang", "hint": "Zoek in het klantprofiel van het canvas. Bij welke onderdelen hoort de gebruiker?", "hintBron": [{"soort": "stof", "taak": "9.4", "vindplaats": "uitleg onder de knop Tekst, voorbeeld"}, {"soort": "stof", "taak": "9.4", "vindplaats": "alinea 1"}]
           },
           {
             "id": "v2",
@@ -99,8 +99,8 @@
         "bron": "concept-auteur",
         "opmerking": "Voorbeeld door de bouwer geschreven bij webshop X. De verbanden zijn hypotheses en geen enig juist antwoord (LRD 6.9).",
         "velden": {
-          "v1": "De terugkerende klant is degene die de klanttaak uitvoert: snel en zonder gedoe bestellen. De klant staat ook bij de pain en de gain van het klantprofiel.",
-          "v2": "De waarde raakt het sociaal en relationeel kapitaal (de band met de klant) en het financiële kapitaal (herhaalaankopen). Beide komen eruit als uitkomst (+); het productiekapitaal van de bezorging gaat erin als input.",
+          "v1": "De terugkerende klant voert de klanttaak uit: snel en zonder gedoe bestellen. De klant staat ook bij de pain en de gain van het klantprofiel.",
+          "v2": "De waarde raakt het sociaal en relationeel kapitaal (de band met de klant) en het financiële kapitaal (herhaalaankopen). Beide komen eruit als uitkomst (+). Het productiekapitaal van de bezorging gaat erin als input.",
           "v3": "Het menselijk kapitaal kan afnemen: persoonlijke aanbevelingen vragen extra werk van de medewerkers van de klantenservice."
         },
         "verbanden": [
@@ -145,7 +145,7 @@
       },
       "toepassing": {
         "opdracht": {
-          "tekst": "Trek lijnen tussen de kaarten van je eigen vraagstuk en schrijf bij elke lijn één zin waarom. Markeer elk kapitaal, benoem een spanning met een stakeholder uit leerblok 3 en schrijf je synthese en de drie antwoorden.",
+          "tekst": "Trek lijnen tussen de kaarten van je eigen vraagstuk en schrijf bij elke lijn één zin waarom. Markeer elk kapitaal. Benoem een spanning met een stakeholder uit leerblok 3. Schrijf dan je synthese en de drie antwoorden.",
           "bron": "concept-auteur"
         },
         "component": "verbanden",
@@ -300,14 +300,14 @@
         "bron": "concept-auteur",
         "opmerking": "De drie zinsdelen (ik zie, ik mis, ik vraag me af) staan in werkboek 6.2; de uitleg van de Wissel via het klembord is door de bouwer geschreven.",
         "alineas": [
-          "Goede feedback is geen oordeel maar een beschrijving. Je gebruikt drie zinsdelen: „Ik zie…” (wat staat er, zonder mening), „Ik mis…” (wat had je verwacht en staat er niet) en „Ik vraag me af…” (een vraag waar de ander over kan nadenken).",
-          "De Wissel gaat zo: je kopieert je wisselblok (je onderzoeksvraag en zoekvragen, zonder alias) en stuurt het met een app die je al gebruikt naar een wisselpartner: een teamgenoot, een medestudent of je coach. Die geeft feedback en stuurt je een tekst terug, die je hier plakt. De feedback mag dagen later komen: je bewijs blijft dan op Bijna staan.",
+          "Goede feedback beschrijft wat je ziet, zonder oordeel. Je gebruikt drie zinsdelen. Bij „Ik zie…” schrijf je wat er staat, zonder mening. Bij „Ik mis…” schrijf je wat je had verwacht en niet vindt. Bij „Ik vraag me af…” stel je een vraag waar de ander over kan nadenken.",
+          "Zo werkt de Wissel. Kopieer je wisselblok. Daarin staan je onderzoeksvraag en zoekvragen, zonder alias. Stuur het met een app die je al gebruikt naar een wisselpartner. Dat kan een teamgenoot, een medestudent of je coach zijn. Je partner geeft feedback en stuurt je een tekst terug. Die tekst plak je hier. Komt de feedback pas dagen later? Dan blijft je bewijs zolang op Bijna staan.",
           "Feedback is pas iets waard als je er iets mee doet. Schrijf daarom bij de ontvangen feedback één actie en zet de status: open, bezig of gedaan. Blijft een actie een week op dezelfde status staan, dan herinnert de site je eraan."
         ]
       },
       "oefening": {
         "opdracht": {
-          "tekst": "Casus: een collega van webshop X laat je zijn onderzoeksvraag zien: „Wat is de beste oplossing voor terugkerende klanten van webshop X om weer een aankoopervaring te krijgen die ze minstens een 8 geven, zodat de klantrelatie herstelt?” Schrijf feedback met de drie zinsdelen.",
+          "tekst": "Een collega van webshop X laat je zijn onderzoeksvraag zien. Geef feedback met de drie zinsdelen. Dit is zijn vraag: „Wat is de beste oplossing voor terugkerende klanten van webshop X om weer een aankoopervaring te krijgen die ze minstens een 8 geven, zodat de klantrelatie herstelt?”",
           "bron": "concept-auteur"
         },
         "velden": [
@@ -333,13 +333,13 @@
         "opmerking": "Voorbeeld door de bouwer geschreven, bij de vraag over webshop X uit de kaders van het draaiboek.",
         "velden": {
           "zie": "Ik zie dat je de klanttevredenheid concreet maakt met een cijfer (een 8) en dat je kiest voor terugkerende klanten.",
-          "mis": "Ik mis een tweede kapitaal naast de klantrelatie: bij „de klantrelatie herstelt” denk ik aan sociaal kapitaal, maar wat levert het de medewerkers op?",
-          "vraag": "Ik vraag me af of een 8 de juiste grens is, en hoe je weet dat de daling bij terugkerende klanten zit en niet bij nieuwe."
+          "mis": "Ik mis een tweede kapitaal naast de klantrelatie. Bij „de klantrelatie herstelt” denk ik aan sociaal kapitaal. Maar wat levert het de medewerkers op?",
+          "vraag": "Ik vraag me af of een 8 de juiste grens is. En hoe weet je dat de daling bij terugkerende klanten zit en niet bij nieuwe?"
         }
       },
       "toepassing": {
         "opdracht": {
-          "tekst": "Stuur je wisselblok naar een wisselpartner, plak zijn wisselblok en geef feedback, en plak de feedback die je zelf terugkrijgt. Schrijf bij de ontvangen feedback één actie en kies een status. Post-its van andere teams leg je vast met de rol „ander team”.",
+          "tekst": "Stuur je wisselblok naar een wisselpartner. Plak zijn wisselblok en geef er feedback op. Plak ook de feedback die je zelf terugkrijgt. Schrijf bij die feedback één actie en kies een status. Leg post-its van andere teams vast met de rol „ander team”.",
           "bron": "concept-auteur"
         },
         "component": "feedbacklog",
@@ -402,7 +402,7 @@
         "bron": "concept-auteur"
       },
       "waarom": {
-        "tekst": "Feedback helpt pas als je ook ziet wat jij zelf deed. Met STARR beschrijf je een moment en je eigen aandeel, zodat je kunt zeggen wat je een volgende keer anders doet. Dat laat je ook zien in je portfolio.",
+        "tekst": "Feedback helpt pas als je ook ziet wat jij zelf deed. Met STARR beschrijf je een moment en je eigen aandeel. Zo kun je zeggen wat je een volgende keer anders doet. Dat laat je ook zien in je portfolio.",
         "bron": "concept-auteur"
       },
       "klaarAls": {
@@ -412,13 +412,13 @@
         "bron": "concept-auteur",
         "opmerking": "De STARR-reflectie staat niet in het werkboek. De uitleg is door de bouwer geschreven uit LRD 6.1 en wacht op akkoord van de auteur.",
         "alineas": [
-          "STARR staat voor situatie, taak, actie, resultaat en reflectie. Situatie: waar en wanneer speelde het? Taak: wat moest jij doen? Actie: wat deed jij, in de ik-vorm en zo concreet dat een ander het kan zien? Resultaat: wat gebeurde er daardoor? Reflectie: wat leer je over je eigen handelen en wat doe je een volgende keer anders?",
-          "Kies bij de reflectie een gedragskeuze uit de lijst die jouw actie het best beschrijft. Je kunt je STARR koppelen aan een regel uit je feedbacklog van taak 6.2; dat is niet verplicht. Sluit af met een volgende stap: één ding dat je de volgende keer anders doet."
+          "STARR staat voor situatie, taak, actie, resultaat en reflectie. Bij situatie schrijf je waar en wanneer het speelde. Bij taak schrijf je wat jij moest doen. Bij actie beschrijf je wat jij deed. Schrijf in de ik-vorm en zo concreet dat een ander het kan zien. Bij resultaat schrijf je wat er daardoor gebeurde. Bij reflectie schrijf je wat je leert over je eigen handelen en wat je een volgende keer anders doet.",
+          "Kies bij de reflectie een gedragskeuze uit de lijst die jouw actie het best beschrijft. Je mag je STARR koppelen aan een regel uit je feedbacklog van taak 6.2. Sluit af met een volgende stap: één ding dat je de volgende keer anders doet."
         ]
       },
       "oefening": {
         "opdracht": {
-          "tekst": "Schrijf een STARR over een moment uit de oefenronde van de gallery walk: je gaf feedback op de onderzoeksvraag van webshop X uit taak 6.2.",
+          "tekst": "Schrijf een STARR over een moment uit de oefenronde van de gallery walk. Daarin gaf je feedback op de onderzoeksvraag van webshop X uit taak 6.2.",
           "bron": "concept-auteur"
         },
         "velden": [
@@ -462,7 +462,7 @@
       },
       "toepassing": {
         "opdracht": {
-          "tekst": "Schrijf een STARR over een moment uit dit leerblok, de e-learning of de gallery walk waarop jij feedback vroeg, gaf of kreeg. Kies het gedrag dat jouw actie het best beschrijft, koppel eventueel een regel uit je feedbacklog en schrijf je volgende stap.",
+          "tekst": "Kies een moment waarop jij feedback vroeg, gaf of kreeg. Dat kan in dit leerblok, in de e-learning of tijdens de gallery walk zijn. Schrijf daarover een STARR. Kies het gedrag dat jouw actie het best beschrijft. Koppel eventueel een regel uit je feedbacklog. Schrijf tot slot je volgende stap.",
           "bron": "concept-auteur"
         },
         "component": "starr",
@@ -561,7 +561,7 @@
     }
   ],
   "verdieping": {
-    "tekst": "Schrijf terug op de feedback die je kreeg: wat neem je niet over, en waarom? Of: welk kapitaal neemt af als de waarde uit je user story voor iedereen geleverd wordt?",
+    "tekst": "Reageer schriftelijk op de feedback die je kreeg. Wat neem je niet over, en waarom? Of zoek uit welk kapitaal neemt af als je de waarde uit je user story aan iedereen levert.",
     "bron": "lrd",
     "na": "6.3"
   },
@@ -699,7 +699,7 @@
             "Sociaal en relationeel + financieel: uitkomst +",
             "Menselijk kapitaal kan afnemen"
           ],
-          "spreektekst": "Het modelantwoord voor webshop X. De waarde raakt het sociaal en relationeel kapitaal (de band met de klant) en het financiële kapitaal (herhaalaankopen). Beide komen eruit als uitkomst (+); het productiekapitaal van de bezorging gaat erin als input. Het menselijk kapitaal kan afnemen: persoonlijke aanbevelingen vragen extra werk van de medewerkers van de klantenservice."
+          "spreektekst": "Het modelantwoord voor webshop X. De waarde raakt het sociaal en relationeel kapitaal (de band met de klant) en het financiële kapitaal (herhaalaankopen). Beide komen eruit als uitkomst (+). Het productiekapitaal van de bezorging gaat erin als input. Het menselijk kapitaal kan afnemen: persoonlijke aanbevelingen vragen extra werk van de medewerkers van de klantenservice."
         },
         {
           "titel": "Klaar als",

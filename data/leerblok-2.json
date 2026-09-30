@@ -16,7 +16,7 @@
         "bron": "werkboek"
       },
       "waarom": {
-        "tekst": "Een zoekvraag is een zin, maar een zoekmachine zoekt op woorden. Haal je de kernbegrippen eruit en zoek je er synoniemen en Engelse termen bij, dan mis je minder bronnen die hetzelfde anders noemen.",
+        "tekst": "Een zoekvraag is een zin. Een zoekmachine zoekt op woorden. Haal daarom de kernbegrippen uit je vraag en zoek er synoniemen en Engelse termen bij. Zo mis je minder bronnen die hetzelfde anders noemen.",
         "bron": "concept-auteur"
       },
       "klaarAls": {
@@ -26,8 +26,8 @@
         "bron": "concept-auteur",
         "opmerking": "Het werkboek geeft bij 3.1 alleen de opdracht en de tabel; de uitleg over kernbegrippen en de verwijzing naar Mayer (2004) zijn door de bouwer geschreven.",
         "alineas": [
-          "Een kernbegrip is het woord in je zoekvraag dat het onderwerp draagt. In „Welke factoren bepalen de klanttevredenheid bij webshops?” zijn dat klanttevredenheid en webshop. Zoek per begrip andere woorden voor hetzelfde (synoniemen en verwante termen), de Engelse term (veel wetenschappelijke bronnen zijn Engelstalig) en zo nodig een breder of smaller begrip.",
-          "Eerst een voorbeeld en dan zelf doen werkt voor beginners beter dan alles zelf ontdekken (Mayer, 2004). Probeer daarom eerst de oefening; het modelantwoord komt nadat je zelf een poging hebt gedaan."
+          "Een kernbegrip is het woord in je zoekvraag dat het onderwerp draagt. In „Welke factoren bepalen de klanttevredenheid bij webshops?” zijn dat klanttevredenheid en webshop. Zoek per begrip andere woorden voor hetzelfde (synoniemen en verwante termen). Zoek ook de Engelse term, want veel wetenschappelijke bronnen zijn Engelstalig. Voeg zo nodig een breder of smaller begrip toe.",
+          "Eerst een voorbeeld en dan zelf doen werkt voor beginners beter dan alles zelf ontdekken (Mayer, 2004). Probeer daarom eerst de oefening. Het modelantwoord zie je pas als je het zelf hebt geprobeerd."
         ]
       },
       "oefening": {
@@ -49,7 +49,7 @@
           {
             "id": "engels",
             "label": "Engelse termen",
-            "type": "lang", "hint": "Veel onderzoek is Engelstalig. Hoe heet het begrip in vakliteratuur?", "hintBron": [{"soort": "stof", "taak": "3.1", "vindplaats": "alinea 1"}, {"soort": "werkboek", "vindplaats": "Werkboek week 5, opdracht 3.1 (tabel)"}]
+            "type": "lang", "hint": "Veel onderzoek is Engelstalig. Hoe heet het begrip in de vakliteratuur?", "hintBron": [{"soort": "stof", "taak": "3.1", "vindplaats": "alinea 1"}, {"soort": "werkboek", "vindplaats": "Werkboek week 5, opdracht 3.1 (tabel)"}]
           }
         ]
       },
@@ -207,7 +207,7 @@
         "bron": "werkboek"
       },
       "waarom": {
-        "tekst": "Een goede bron vind je zelden met je eerste zoekopdracht. Je vergelijkt twee routes: de databank, waar jij de zoekstring bepaalt, en een AI-tool, waar de prompt (de opdracht die je aan de tool geeft) bepaalt wat je krijgt. Wat beter werkt, ontdek je alleen door het te doen.",
+        "tekst": "Een goede bron vind je zelden met je eerste zoekopdracht. Je vergelijkt twee routes. In de databank bepaal jij de zoekstring. Bij een AI-tool bepaalt de prompt (de opdracht die je aan de tool geeft) wat je krijgt. Wat beter werkt, ontdek je alleen door het te doen.",
         "bron": "concept-auteur"
       },
       "klaarAls": {
@@ -217,16 +217,16 @@
         "bron": "concept-auteur",
         "opmerking": "De teksten over route A en route B en de waarschuwing komen letterlijk uit werkboek 3.2. Het voorbeeld van een zoekstring en de verwijzing naar Hattie en Timperley (2007) zijn door de bouwer geschreven.",
         "alineas": [
-          "Route A · databank. Combineer je termen: \"aanhalingstekens\" voor een vaste combinatie, * en ? voor varianten, AND / OR / NOT. Zoek in HANQuest, Google Scholar of per vaktijdschrift via de LibGuide Bedrijfskunde.",
-          "Route B · AI. Laat Perplexity, Claude (Research), Gemini (Deep Research) of ChatGPT (Deep Research) zoeken met de prompt hieronder. Deep Research duurt vaak langer dan 10 minuten: start hem meteen, of gebruik Perplexity.",
-          "Een voorbeeld van een zoekstring: (\"customer satisfaction\" OR \"customer experience\") AND (webshop* OR \"online retail\"). De aanhalingstekens houden woorden bij elkaar, OR laat één van de twee volstaan, AND eist beide en de * vindt varianten als webshops.",
-          "Let op: AI verzint soms bronnen of citeert ze verkeerd. Open elke bron, controleer auteur, jaar en titel, en lees zelf of er staat wat de AI zegt. Zet geen namen of vertrouwelijke gegevens van je opdrachtgever in een prompt.",
+          "Route A · databank. Combineer je termen met zoekoperatoren. Zet een vaste combinatie tussen \"aanhalingstekens\". Gebruik * en ? voor varianten. Verbind termen met AND, OR of NOT. Zoek in HANQuest, Google Scholar of per vaktijdschrift via de LibGuide Bedrijfskunde.",
+          "Route B · AI. Laat Perplexity, Claude (Research), Gemini (Deep Research) of ChatGPT (Deep Research) zoeken met de prompt hieronder. Deep Research duurt vaak langer dan 10 minuten. Start hem dus meteen, of gebruik Perplexity.",
+          "Een voorbeeld van een zoekstring: (\"customer satisfaction\" OR \"customer experience\") AND (webshop* OR \"online retail\"). De aanhalingstekens houden woorden bij elkaar. Met OR is één van de twee genoeg. AND eist beide. De * vindt varianten, zoals webshops.",
+          "Let op: AI verzint soms bronnen of citeert ze verkeerd. Open daarom elke bron en controleer auteur, jaar en titel. Lees zelf of er staat wat de AI zegt. Zet geen namen of vertrouwelijke gegevens van je opdrachtgever in een prompt.",
           "De controles onder je antwoord zeggen wat er nog ontbreekt. Feedback werkt het best als hij laat zien waar je staat en wat je nu kunt doen (Hattie & Timperley, 2007)."
         ]
       },
       "oefening": {
         "opdracht": {
-          "tekst": "Schrijf voor de zoekvraag over webshop X („Welke factoren bepalen de klanttevredenheid bij webshops?”) een zoekstring voor route A, met minstens één zoekoperator.",
+          "tekst": "Schrijf een zoekstring voor route A, met minstens één zoekoperator. Gebruik de zoekvraag over webshop X: „Welke factoren bepalen de klanttevredenheid bij webshops?”",
           "bron": "concept-auteur"
         },
         "velden": [
@@ -531,7 +531,7 @@
         "bron": "werkboek"
       },
       "waarom": {
-        "tekst": "Een bron is pas bruikbaar als je weet of je hem kunt vertrouwen. AAOCC geeft je vijf vragen om dat te beoordelen, en met APA laat je de lezer zien waar je het vandaan hebt.",
+        "tekst": "Een bron is pas bruikbaar als je weet of je hem kunt vertrouwen. AAOCC geeft je vijf vragen om dat te beoordelen. Met APA laat je de lezer zien waar je het vandaan hebt.",
         "bron": "concept-auteur"
       },
       "klaarAls": {
@@ -541,15 +541,15 @@
         "bron": "concept-auteur",
         "opmerking": "De vijf criteria met hun vragen, de oordelen (+, ?, –) en de twee AI-controles komen uit werkboek 4.1. De uitleg van APA en de verwijzingen naar de Publication manual en naar Roediger en Karpicke (2006) zijn door de bouwer geschreven.",
         "alineas": [
-          "AAOCC: Authority (wie is de auteur en is die deskundig?), Accuracy (klopt de inhoud en is die onderbouwd?), Objectivity (is de bron neutraal of heeft die een belang?), Currency (is de bron actueel genoeg?) en Coverage (behandelt de bron het onderwerp volledig genoeg?). Geef elk criterium een oordeel: +, ? of –, met een zin toelichting.",
+          "AAOCC bestaat uit vijf vragen. Authority: wie is de auteur en is die deskundig? Accuracy: klopt de inhoud en is die onderbouwd? Objectivity: is de bron neutraal of heeft die een belang? Currency: is de bron actueel genoeg? Coverage: behandelt de bron het onderwerp volledig genoeg? Geef elk criterium een oordeel (+, ? of –) en een zin toelichting.",
           "Kwam de bron van een AI-tool? Controleer twee dingen: de bron bestaat echt, en er staat in wat de AI zegt. Open de bron zelf.",
           "In APA (7e editie) staat het jaar tussen haakjes achter de auteur: Achternaam, A. (jaar). Titel. Uitgever of tijdschrift. Link. De regels staan in de Publication manual (American Psychological Association, 2020). De bronnen van deze site staan in dezelfde stijl op de bronnenpagina.",
-          "Beoordeel eerst zelf en kijk daarna pas naar het modelantwoord. Wat je zelf ophaalt en toepast onthoud je beter dan wat je alleen herleest (Roediger & Karpicke, 2006)."
+          "Beoordeel eerst zelf en kijk daarna pas naar het modelantwoord. Wat je zelf ophaalt en toepast, onthoud je beter dan wat je alleen herleest (Roediger & Karpicke, 2006)."
         ]
       },
       "oefening": {
         "opdracht": {
-          "tekst": "Bij webshop X vind je (Bakker & De Vries, 2016), een verzonnen bron voor deze oefening: een tijdschriftartikel van twee universitaire onderzoekers over een enquête onder 1.200 webshopklanten, gepubliceerd in 2016. Beoordeel Authority en Currency in een zin per criterium, met +, ? of –, en schrijf de bron in APA.",
+          "tekst": "Bij webshop X vind je (Bakker & De Vries, 2016). Die bron is verzonnen voor deze oefening. Het is een tijdschriftartikel van twee universitaire onderzoekers. Ze hielden een enquête onder 1.200 webshopklanten en publiceerden in 2016. Beoordeel Authority en Currency met +, ? of –, en een zin per criterium. Schrijf de bron daarna in APA.",
           "bron": "concept-auteur"
         },
         "velden": [
@@ -575,13 +575,13 @@
         "opmerking": "Door de bouwer geschreven; de bron van Bakker en De Vries is verzonnen (fictief: true in data/bronnen-2.json).",
         "velden": {
           "authority": "+ De auteurs zijn onderzoekers aan een universiteit en publiceren in een wetenschappelijk tijdschrift.",
-          "currency": "? De bron is van 2016; voor een markt die snel verandert is dat oud, dus zoek ook nieuwer onderzoek.",
+          "currency": "? De bron is van 2016. Voor een markt die snel verandert, is dat oud. Zoek dus ook nieuwer onderzoek.",
           "apa": "Bakker, J. & De Vries, M. (2016). Klanttevredenheid in webwinkels: Een enquête onder 1.200 klanten. Tijdschrift voor Marketingonderzoek, 12(3), 45–61."
         }
       },
       "toepassing": {
         "opdracht": {
-          "tekst": "Beoordeel een bron die je in 3.2 vond. Vul de gegevens in, geef elk criterium een oordeel met een zin toelichting en schrijf de bron in APA. Heb je een tweede bron, dan kun je die ook invullen.",
+          "tekst": "Beoordeel een bron die je in 3.2 vond. Vul de gegevens in. Geef elk criterium een oordeel met een zin toelichting. Schrijf de bron in APA. Heb je een tweede bron? Vul die dan ook in.",
           "bron": "concept-auteur"
         },
         "velden": [
@@ -1409,7 +1409,7 @@
         "bron": "werkboek"
       },
       "waarom": {
-        "tekst": "Over AI als zoekhulp zijn de meningen verdeeld. Moet je kiezen en dat onderbouwen, dan merk je wat jij eigenlijk vindt en waarop dat rust.",
+        "tekst": "Over AI als zoekhulp zijn de meningen verdeeld. Als je een kant kiest en die onderbouwt, merk je wat jij eigenlijk vindt. Je ziet ook waarop dat rust.",
         "bron": "concept-auteur"
       },
       "klaarAls": {
@@ -1419,7 +1419,7 @@
         "bron": "concept-auteur",
         "opmerking": "Het werkboek geeft bij 4.2 alleen de stelling, de keuze en het veld voor het argument; de uitleg is door de bouwer geschreven.",
         "alineas": [
-          "Een argument is een bewering met een reden. Kies je „voor” of „tegen”, dan is je keuze pas sterk als je kunt zeggen waarom. Denk aan wat je bij 3.2 en 4.1 zelf zag: hoe vaak klopte wat de AI zei, wat kostte het controleren en wat leverde het op?"
+          "Een argument is een bewering met een reden. Kies je „voor” of „tegen”? Dan is je keuze pas sterk als je kunt zeggen waarom. Denk aan wat je zelf zag bij 3.2 en 4.1. Hoe vaak klopte wat de AI zei? Wat kostte het controleren, en wat leverde het op?"
         ]
       },
       "oefening": {
@@ -1431,7 +1431,7 @@
           {
             "id": "kant",
             "label": "Jouw kant",
-            "type": "keuze", "hint": "Er is geen goede kant. Kies de kant die je het best kunt onderbouwen.", "hintBron": [{"soort": "eigen werk", "vindplaats": "je eigen ervaring met route B bij taak 3.2 en je beoordeling bij taak 4.1"}, {"soort": "stof", "taak": "4.2", "vindplaats": "alinea 1"}],
+            "type": "keuze", "hint": "Beide kanten zijn te verdedigen. Kies de kant die je het best kunt onderbouwen.", "hintBron": [{"soort": "eigen werk", "vindplaats": "je eigen ervaring met route B bij taak 3.2 en je beoordeling bij taak 4.1"}, {"soort": "stof", "taak": "4.2", "vindplaats": "alinea 1"}],
             "opties": [
               "voor",
               "tegen"
@@ -1449,7 +1449,7 @@
         "opmerking": "Door de bouwer geschreven; een ander goed antwoord kiest tegen.",
         "velden": {
           "kant": "voor",
-          "argument": "Voor inspiratie hoef je nog niet te weten of alles klopt: een AI-tool geeft snel richtingen en zoektermen die je zelf niet bedacht. Daarna zoek je de echte bronnen zelf op en controleer je die."
+          "argument": "Voor inspiratie hoeft nog niet alles te kloppen. Een AI-tool geeft snel richtingen en zoektermen die je zelf niet bedacht. Daarna zoek je de echte bronnen op en controleer je ze."
         }
       },
       "toepassing": {
@@ -1505,7 +1505,7 @@
     }
   ],
   "verdieping": {
-    "tekst": "Beoordeel een tweede bron en zet beide naast elkaar: welke weegt zwaarder en waarom?",
+    "tekst": "Beoordeel een tweede bron en zet beide naast elkaar. Welke weegt zwaarder, en waarom?",
     "bron": "lrd",
     "na": "4.1"
   },
@@ -1542,7 +1542,7 @@
       "titel": "Een bron beoordelen in vijf vragen",
       "bron": "concept-auteur",
       "alineas": [
-        "Een bron is pas bruikbaar als je weet of je hem kunt vertrouwen. AAOCC geeft je vijf vragen: Authority (wie schreef het en is die persoon deskundig?), Accuracy (klopt het en is het onderbouwd?), Objectivity (heeft de bron een belang?), Currency (is het actueel genoeg?) en Coverage (is het volledig genoeg?). Geef elk criterium een plus, een vraagteken of een min, met één zin toelichting.",
+        "Een bron is pas bruikbaar als je weet of je hem kunt vertrouwen. AAOCC geeft je vijf vragen. Authority: wie schreef het en is die persoon deskundig? Accuracy: klopt het en is het onderbouwd? Objectivity: heeft de bron een belang? Currency: is het actueel genoeg? Coverage: is het volledig genoeg? Geef elk criterium een plus, een vraagteken of een min, met één zin toelichting.",
         "Een AI-tool verzint soms bronnen of citeert ze verkeerd. Controleer daarom twee dingen: de bron bestaat echt, en er staat in wat de AI zegt. Open de bron zelf.",
         "Daarna zet je de bron in APA, zodat de lezer kan zien waar je het vandaan hebt. De regels staan in de Publication manual (American Psychological Association, 2020)."
       ],
@@ -1580,7 +1580,7 @@
             "Currency: actueel genoeg?",
             "Coverage: volledig genoeg?"
           ],
-          "spreektekst": "Een bron is pas bruikbaar als je weet of je hem kunt vertrouwen. AAOCC geeft je vijf vragen. Authority: wie schreef het en is die persoon deskundig? Accuracy: klopt het en is het onderbouwd? Objectivity: heeft de bron een belang? Currency: is het actueel genoeg? En Coverage: is het volledig genoeg?"
+          "spreektekst": "Een bron is pas bruikbaar als je weet of je hem kunt vertrouwen. AAOCC geeft je vijf vragen. Authority: wie schreef het en is die persoon deskundig? De bron is van 2016. Voor een markt die snel verandert, is dat oud. Zoek dus ook nieuwer onderzoek. Accuracy: klopt het en is het onderbouwd? De bron is van 2016. Voor een markt die snel verandert, is dat oud. Zoek dus ook nieuwer onderzoek. Objectivity: heeft de bron een belang? De bron is van 2016. Voor een markt die snel verandert, is dat oud. Zoek dus ook nieuwer onderzoek. Currency: is het actueel genoeg? De bron is van 2016. Voor een markt die snel verandert, is dat oud. Zoek dus ook nieuwer onderzoek. En Coverage: is het volledig genoeg? De bron is van 2016. Voor een markt die snel verandert, is dat oud. Zoek dus ook nieuwer onderzoek."
         },
         {
           "titel": "Een oordeel per vraag",

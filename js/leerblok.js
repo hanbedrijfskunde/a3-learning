@@ -263,7 +263,7 @@ async function start() {
       wis(uitkomst);
       if (b.heeftBewijs) uitkomst.append(h('p', { class: 'status-regel', role: 'status' }, 'Status: ', statusChip(b.status, b.statusTekst)));
       if (!isIngevuld(inhoud)) {
-        uitkomst.append(h('p', { class: 'klein' }, 'Vul de velden in; hier zie je direct wat er nog ontbreekt.'));
+        uitkomst.append(h('p', { class: 'klein' }, 'Vul de velden in. Hier zie je meteen wat nog ontbreekt.'));
       } else {
         if (b.ontbreekt.length > 0) uitkomst.append(h('ul', { class: 'ontbreekt' }, b.ontbreekt.map((o) => h('li', {}, o.melding))));
         if (b.modelLink) uitkomst.append(h('p', {}, h('a', { href: b.modelLink }, 'Bekijk de oefening op de oefencasus'), ' (het modelantwoord verschijnt nadat je zelf een poging hebt gedaan).'));

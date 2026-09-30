@@ -6,7 +6,7 @@
   "leerblok": 2,
   "taak": "4.1",
   "bron": "concept-auteur",
-  "intro": "Zes bronkaarten bij de zoekvraag van webshop X. Onderzoek de gegevens, kies wat je met de bron doet en lees de feedback. Daarna zie je de AAOCC-beoordeling. Een bron die je gebruikt, zet je in APA (American Psychological Association, 2020).",
+  "intro": "Zes bronkaarten bij de zoekvraag van webshop X. Bekijk per kaart de gegevens en kies wat je met de bron doet. Lees dan de feedback. Daarna zie je de AAOCC-beoordeling. Een bron die je gebruikt, zet je in APA (American Psychological Association, 2020).",
   "fictiefUitleg": "Alle bronnen zijn verzonnen. Zoek ze niet op.",
   "geenBewijs": "Dit komt niet in je dossier.",
   "kaarten": [
@@ -35,7 +35,7 @@
       "kernpunt": "Controleer bij een AI-bron eerst of de bron bestaat.",
       "opties": [
         { "id": "gebruiken", "tekst": "Gebruiken", "feedback": "Riskant. Een AI-tool verzint soms bronnen en hier wijst alles erop. Een bron die je niet kunt openen, kun je ook niet in APA verantwoorden." },
-        { "id": "voorzichtig", "tekst": "Voorzichtig gebruiken", "feedback": "Voorzichtig zijn is een goede reflex, maar hier is niets om voorzichtig mee te zijn: de bron bestaat niet." },
+        { "id": "voorzichtig", "tekst": "Voorzichtig gebruiken", "feedback": "Voorzichtig zijn is een goede reflex. Toch valt hier niets voorzichtig te gebruiken, want de bron bestaat niet." },
         { "id": "niet", "tekst": "Niet gebruiken", "passend": true, "feedback": "Dat past. Je kon de bron niet openen. Vraag de AI-tool om een echte bron met een link, of zoek zelf verder." }
       ]
     },
@@ -62,9 +62,9 @@
       },
       "kernpunt": "Wie iets te winnen heeft bij de conclusie, is niet neutraal.",
       "opties": [
-        { "id": "gebruiken", "tekst": "Gebruiken", "feedback": "Te snel. Het onderzoek is niet nep, maar de afzender heeft belang bij de uitkomst. Zonder kanttekening lijkt het neutraal." },
+        { "id": "gebruiken", "tekst": "Gebruiken", "feedback": "Te snel. Het onderzoek is echt, maar de afzender heeft belang bij de uitkomst. Zonder kanttekening lijkt het neutraal." },
         { "id": "voorzichtig", "tekst": "Voorzichtig gebruiken", "passend": true, "feedback": "Verstandig. Gebruik de cijfers, noem erbij dat de bezorgdienst het onderzoek betaalde en zoek een onafhankelijke bron." },
-        { "id": "niet", "tekst": "Niet gebruiken", "feedback": "Streng. De gegevens zijn niet verzonnen; alleen de afzender heeft een belang. Met een tweede, onafhankelijke bron erbij is de bron bruikbaar." }
+        { "id": "niet", "tekst": "Niet gebruiken", "feedback": "Streng. De gegevens zijn echt. Alleen de afzender heeft een belang. Met een tweede, onafhankelijke bron erbij is deze bron bruikbaar." }
       ]
     },
     {
@@ -87,13 +87,13 @@
         "Accuracy": "+ Methode beschreven, grote steekproef.",
         "Objectivity": "+ Geen belanghebbende opdrachtgever.",
         "Currency": "– Van 2009: de markt is veranderd.",
-        "Coverage": "? Gaat over betalen, jouw vraag over tevredenheid."
+        "Coverage": "? Gaat over betalen. Jouw vraag gaat over tevredenheid."
       },
       "kernpunt": "Een degelijke bron kan te oud zijn.",
       "opties": [
-        { "id": "gebruiken", "tekst": "Gebruiken", "feedback": "Te makkelijk. De bron is degelijk, maar uit 2009 en gaat over betalen, niet over tevredenheid." },
+        { "id": "gebruiken", "tekst": "Gebruiken", "feedback": "Te makkelijk. De bron is degelijk, maar komt uit 2009. Hij gaat bovendien over betalen, terwijl jouw vraag over tevredenheid gaat." },
         { "id": "voorzichtig", "tekst": "Voorzichtig gebruiken", "passend": true, "feedback": "Dat past. Gebruik de bron voor de achtergrond en zoek er een nieuwere bij. Zo laat je zien dat je het jaar meewoog." },
-        { "id": "niet", "tekst": "Niet gebruiken", "feedback": "Te streng. Alleen Currency is een probleem, en dat los je op door ook nieuwer onderzoek te zoeken." }
+        { "id": "niet", "tekst": "Niet gebruiken", "feedback": "Te streng. Alleen Currency is een probleem. Dat los je op door ook nieuwer onderzoek te zoeken." }
       ]
     },
     {
@@ -121,7 +121,7 @@
       "kernpunt": "Soms is een bron gewoon goed.",
       "opties": [
         { "id": "gebruiken", "tekst": "Gebruiken", "passend": true, "feedback": "Dat past. Alle vijf criteria zijn op orde. Open de bron zelf, schrijf hem in APA en gebruik hem." },
-        { "id": "voorzichtig", "tekst": "Voorzichtig gebruiken", "feedback": "Voorzichtig zijn kan nooit kwaad, maar hier is geen zwak punt. Noem hooguit dat het alleen om Nederland gaat." },
+        { "id": "voorzichtig", "tekst": "Voorzichtig gebruiken", "feedback": "Voorzichtig zijn kan geen kwaad. Toch heeft deze bron geen zwak punt. Noem hooguit dat het alleen om Nederland gaat." },
         { "id": "niet", "tekst": "Niet gebruiken", "feedback": "Jammer. Dit is het soort bron waar je naar zoekt. Zonder reden afwijzen kost je tijd." }
       ]
     },
@@ -149,7 +149,7 @@
       },
       "kernpunt": "Geen auteur en geen bronnen: niets te controleren.",
       "opties": [
-        { "id": "gebruiken", "tekst": "Gebruiken", "feedback": "Niet verstandig. Je kunt niets controleren en de schrijver verkoopt wat hij aanbeveelt." },
+        { "id": "gebruiken", "tekst": "Gebruiken", "feedback": "Niet verstandig. Je kunt niets controleren. En de schrijver verkoopt wat hij aanbeveelt." },
         { "id": "voorzichtig", "tekst": "Voorzichtig gebruiken", "feedback": "Als inspiratie voor zoektermen kan het. Als bron in je onderbouwing houdt het niet stand: geen auteur, geen bronnen." },
         { "id": "niet", "tekst": "Niet gebruiken", "passend": true, "feedback": "Dat past. Lees de tips gerust voor zoektermen en zoek er dan een echte bron bij." }
       ]
@@ -177,11 +177,11 @@
       },
       "kernpunt": "Noem bij een goede bron ook de beperking ervan.",
       "opties": [
-        { "id": "gebruiken", "tekst": "Gebruiken", "feedback": "Kan, maar noem de beperking: alleen grote webwinkels en een vereniging met belang bij een positief beeld. Past webshop X daarbij?" },
+        { "id": "gebruiken", "tekst": "Gebruiken", "feedback": "Kan, maar noem de beperkingen. Het gaat alleen om grote webwinkels. En de vereniging heeft belang bij een positief beeld. Past webshop X daarbij?" },
         { "id": "voorzichtig", "tekst": "Voorzichtig gebruiken", "passend": true, "feedback": "Dat past. Schrijf erbij dat het alleen grote webwinkels betreft en dat de vereniging een belang heeft." },
-        { "id": "niet", "tekst": "Niet gebruiken", "feedback": "Te streng. Methode open, rapport actueel. De beperkingen zijn een reden om de bron te benoemen, niet om hem weg te laten." }
+        { "id": "niet", "tekst": "Niet gebruiken", "feedback": "Te streng. De methode is open en het rapport is actueel. Gebruik de bron en noem de beperkingen erbij." }
       ]
     }
   ],
-  "slot": "Wat gaf telkens de doorslag: een bron die niet bestaat, een afzender met een belang, een bron die te oud is, geen auteur, of een bron die gewoon goed is? Zo beoordeel je in taak 4.1 een eigen bron."
+  "slot": "Wat gaf telkens de doorslag? Bestond de bron niet? Had de afzender een belang? Is de bron te oud, ontbreekt de auteur, of is de bron gewoon goed? Zo beoordeel je in taak 4.1 een eigen bron."
 }
