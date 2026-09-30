@@ -125,7 +125,8 @@ async function start() {
     const modelGebied = h('div', { class: 'model', 'aria-live': 'polite' });
     const toonModel = (m) => {
       wis(modelGebied);
-      if (m.modelZichtbaar) modelGebied.append(modelantwoordEl(m.modelantwoord, m.velden), oefVelden.modelExtra?.(m.modelantwoord));
+      // modelExtra bestaat alleen bij 9.4 en kan null geven; native append zou dat als tekst tonen
+      if (m.modelZichtbaar) modelGebied.append(...[modelantwoordEl(m.modelantwoord, m.velden), oefVelden.modelExtra && oefVelden.modelExtra(m.modelantwoord)].filter(Boolean));
       document.dispatchEvent(new CustomEvent('a3-oefening', { detail: { taak: id, modelZichtbaar: m.modelZichtbaar } })); // de mediasectie toont het model in de tekstroute pas dan (TK-6)
     };
     const veldGebied = h('div', { class: 'oef-velden' },

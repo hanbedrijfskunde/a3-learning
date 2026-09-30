@@ -23,3 +23,15 @@ for (const p of PAGINAS) {
 test('LI-4: LICENSE bevat CC BY-SA 4.0', () => {
   assert.match(readFileSync(resolve(root, 'LICENSE'), 'utf8'), /^Attribution-ShareAlike 4\.0 International/);
 });
+
+test('TK-6: geen native append met een optionele aanroep (anders staat „undefined" of „null" als tekst op de pagina)', async () => {
+  const { readdirSync } = await import('node:fs');
+  const bestanden = readdirSync(resolve(root, 'js'), { recursive: true }).filter((f) => f.endsWith('.js'));
+  const fout = [];
+  for (const f of bestanden) {
+    readFileSync(resolve(root, 'js', f), 'utf8').split('\n').forEach((regel, i) => {
+      if (/\.append\(/.test(regel) && /\?\.\(/.test(regel)) fout.push(`js/${f}:${i + 1}`);
+    });
+  }
+  assert.deepEqual(fout, [], 'native append zet undefined en null om in tekst; filter ze eerst weg of gebruik h()');
+});
