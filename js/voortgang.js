@@ -13,9 +13,14 @@ export const A3_DELEN = Object.freeze([
  * Welke delen van A3-vak 1 gevuld zijn: een deel is gevuld als het leerblok is afgerond (TK-16).
  * @param {Object<number, boolean>} afgerond leerbloknummer → afgerond
  * @param {number|null} nieuw het leerblok dat zojuist is afgerond (afsluitscherm), om dat deel te markeren
+ * @param {Object<number, [number, number]>} bezig per leerblok [resultaten die meetellen, totaal]: een deel in opbouw
  */
-export function a3Stand(afgerond = {}, nieuw = null) {
-  const delen = A3_DELEN.map((d) => ({ ...d, gevuld: afgerond[d.leerblok] === true, nieuw: d.leerblok === nieuw }));
+export function a3Stand(afgerond = {}, nieuw = null, bezig = {}) {
+  const delen = A3_DELEN.map((d) => {
+    const gevuld = afgerond[d.leerblok] === true;
+    const [n, m] = bezig[d.leerblok] ?? [0, 0];
+    return { ...d, gevuld, nieuw: d.leerblok === nieuw, opbouw: !gevuld && n > 0 ? `${n} van ${m} resultaten` : '' };
+  });
   const aantal = delen.filter((d) => d.gevuld).length;
   return {
     delen,

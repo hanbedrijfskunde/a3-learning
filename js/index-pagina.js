@@ -44,7 +44,8 @@ async function start() {
     // Pas als er werk is (ST-7: bij een eerste bezoek alleen alias, vraagstuk, waarom-zin en de vier leerblokken).
     a3.hidden = !Object.values(records).some(Boolean);
     a3.append(h('h2', { id: 'mijn-a3-kop' }, 'Zo staat je A3-vak 1'),
-      tekenA3Vak(h('div', { class: 'a3-vak' }), a3Stand(Object.fromEntries(model.map((b) => [b.nummer, b.afgerond])))));
+      tekenA3Vak(h('div', { class: 'a3-vak' }), a3Stand(Object.fromEntries(model.map((b) => [b.nummer, b.afgerond])), null,
+        Object.fromEntries(model.map((b) => [b.nummer, [b.onderdelen.filter((o) => onderdeelTelt(records[o.id])).length, b.onderdelen.length]])))));
     wis(blokken);
     blokken.append(
       h('h2', { id: 'blokken-kop' }, 'De vier leerblokken'),

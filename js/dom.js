@@ -22,9 +22,10 @@ export const wis = (el) => { while (el.firstChild) el.removeChild(el.firstChild)
 export function tekenA3Vak(el, stand) {
   wis(el);
   el.append(
-    h('ol', { class: 'a3-delen' }, stand.delen.map((d) => h('li', { class: `a3-deel${d.gevuld ? ' a3-gevuld' : ''}${d.nieuw ? ' a3-nieuw' : ''}` },
+    h('ol', { class: 'a3-delen' }, stand.delen.map((d) => h('li', { class: `a3-deel${d.gevuld ? ' a3-gevuld' : ''}${d.opbouw ? ' a3-bezig' : ''}${d.nieuw ? ' a3-nieuw' : ''}` },
       h('span', { class: 'a3-nr' }, String(d.leerblok)), h('span', { class: 'a3-label' }, d.label),
-      h('span', { class: 'sr-only' }, d.gevuld ? ' (staat)' : ' (nog leeg)')))),
+      d.opbouw ? h('span', { class: 'a3-opbouw' }, d.opbouw) : null,
+      h('span', { class: 'sr-only' }, d.gevuld ? ' (staat)' : d.opbouw ? ' (in opbouw)' : ' (nog leeg)')))),
     h('p', { class: 'a3-onderschrift' }, stand.tekst));
   return el;
 }

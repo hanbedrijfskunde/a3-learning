@@ -107,8 +107,8 @@
         },
         "velden": [
           { "id": "gebruiker", "label": "Gebruiker", "type": "tekst" },
-          { "id": "pain", "label": "Probleem / pain / gain", "type": "lang", "zinstarter": "Zij lopen er nu tegenaan dat …" },
-          { "id": "waarde", "label": "Waardecreatie", "type": "lang", "zinstarter": "Als dit is opgelost, dan …" },
+          { "id": "pain", "label": "Probleem / pain / gain", "type": "lang", "zinstarter": "… (wat ze willen bereiken of kwijt willen)" },
+          { "id": "waarde", "label": "Waardecreatie", "type": "lang", "zinstarter": "… (wat het oplevert, meer dan geld)" },
           { "id": "kapitalen", "label": "Welke kapitalen?", "type": "meer",
             "opties": ["financieel", "productie", "intellectueel", "menselijk", "sociaal en relationeel", "natuurlijk"] }
         ],

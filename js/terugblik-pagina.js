@@ -127,7 +127,7 @@ export async function vorigeKeerSectie({ store, opslag, overzicht, leerblok, nu 
       terugblikGebied.append(h('p', {}, 'Je hebt de terugblik overgeslagen met „ik weet het nog”. Dat heeft geen gevolgen voor je bewijs.'),
         h('button', { type: 'button', class: 'knop', id: 'tb-opnieuw', 'data-actie': 'toch-doen', onclick: () => { tb.opnieuw(); nogEens(); } }, 'Toch de terugblik doen'));
     } else {
-      terugblikGebied.append(h('p', {}, m.omschrijving, ` Richttijd: ${m.minuten} min.`));
+      terugblikGebied.append(h('p', {}, m.omschrijving, ` ± ${m.minuten} min.`));
       if (e.punten === 0 && e.kennisvragen === 0) {
         terugblikGebied.append(h('p', {}, 'Bij zo’n korte pauze is er geen ophaalvraag. Ga door naar de transfervraag.'));
       } else {

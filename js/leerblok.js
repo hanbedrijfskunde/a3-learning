@@ -214,7 +214,14 @@ async function start() {
     const stapVeld = h('input', { type: 'text', id: `volgende-${id}`, autocomplete: 'off', placeholder: 'Ik ga nu …' });
     const klaarKnop = h('button', { type: 'button', class: 'knop knop-accent', id: `klaar-${id}`, hidden: true, onclick: () => {
       bewaarNu(id);
-      if (sessie.markeerKlaar(id)) { tekenKlaar(); bevestig(`Opgeslagen in je dossier ✓ Taak ${id} is klaar.`); }
+      if (sessie.markeerKlaar(id)) {
+        tekenKlaar();
+        bevestig(`Opgeslagen in je dossier ✓ Taak ${id} is klaar.`);
+        // „Ga verder” wijst na klaar naar de volgende taak die nog open is, niet naar deze
+        const volgendeOpen = blok.taken.map((t) => t.id).find((t) => !sessie.isKlaar(t));
+        const t2 = blok.taken.find((t) => t.id === volgendeOpen);
+        try { store.setMeta(`positie:${blok.leerblok}`, t2 ? { leerblok: blok.leerblok, taak: t2.id, stap: 1, titel: t2.titel, bijgewerkt: new Date().toISOString() } : null); } catch (e) { /* zonder opslag geen „ga verder” */ }
+      }
     } }, 'Klaar');
     const klaarBericht = h('p', { class: 'klaar-bericht', role: 'status' });
     const verdiepingKop = h('section', { class: 'verdieping', id: `verdieping-sectie-${id}`, hidden: true });
@@ -333,13 +340,13 @@ async function start() {
         h('div', { class: 'veld' }, h('label', { for: `verdieping-${id}` }, 'Jouw antwoord (optioneel)'), tekstVeld),
         h('div', { class: 'optie' }, gedaan, h('label', { for: `verdieping-gedaan-${id}` }, 'Verdieping gedaan')));
     } else {
-      verdiepingKop.append(h('p', { class: 'klein' }, 'Bij deze taak is er geen verdieping.'));
+      verdiepingKop.classList.add('geen-verdieping'); // niets te tonen (DESIGN: geen lege blokken)
     }
     function tekenKlaar() {
       const klaar = sessie.isKlaar(id);
       klaarKnop.hidden = klaar;
       klaarBericht.textContent = klaar ? `Taak ${id} is klaar. Schrijf je volgende stap op en ga door.` : '';
-      verdiepingKop.hidden = !klaar;
+      verdiepingKop.hidden = !klaar || !model.verdieping;
       tekenVoortgang();
     }
 
@@ -357,7 +364,9 @@ async function start() {
       segmenten.setAttribute('aria-label', segmentLabel(taakNr, blok.taken.length, stand));
       tekenVoet();
       wis(segmenten);
-      stand.stappen.forEach((st) => segmenten.append(h('span', { class: `segment segment-${st.stand}` })));
+      // DESIGN §5.3: voltooid zwart, de stap waar je bent in accent, de rest grijs
+      const hierStap = adres.soort === 'taak' && adres.taak === id ? adres.stap : stand.actief + 1;
+      stand.stappen.forEach((st, i) => segmenten.append(h('span', { class: `segment segment-${i + 1 === hierStap ? 'actief' : st.stand === 'voltooid' ? 'voltooid' : 'open'}` })));
       wis(stappenRij);
       // onderstreept is de stap die de student nu ziet; de segmenten tonen de voortgang
       const hier = adres.soort === 'taak' && adres.taak === id ? adres.stap : stand.actief + 1;
@@ -407,16 +416,18 @@ async function start() {
   volgendeStapVeld.addEventListener('input', () => { clearTimeout(vtimer); vtimer = setTimeout(() => sessie.bewaarVolgendeStap(volgendeStapVeld.value), BEWAAR_NA_MS); });
   // A3-vak 1 in vier delen (SX-12): een deel is gevuld als dat leerblok is afgerond (TK-16).
   const alleOnderdelen = overzicht.leerblokken.flatMap((b) => b.bewijsonderdelen);
-  const afgerondPerBlok = () => {
+  const standPerBlok = () => {
     const recs = leesRecords(store, alleOnderdelen);
-    return Object.fromEntries(overzicht.leerblokken.map((b) => [b.nummer, isAfgerond(b.bewijsonderdelen, recs).afgerond]));
+    const per = overzicht.leerblokken.map((b) => [b.nummer, isAfgerond(b.bewijsonderdelen, recs)]);
+    return { afgerond: Object.fromEntries(per.map(([n, r]) => [n, r.afgerond])), bezig: Object.fromEntries(per.map(([n, r]) => [n, [r.onderdelen.filter((o) => o.telt).length, r.onderdelen.length]])) };
   };
   const afsluitKop = h('h2', { id: 'afsluiten-kop' });
   const afsluitA3 = h('div', { class: 'a3-vak' });
   const afsluitMelding = h('p', { role: 'status', class: 'klein', id: 'afsluit-kopieer-melding' });
   function tekenAfsluiten() {
     const m = sessie.afsluitModel(volgende);
-    const stand = a3Stand(afgerondPerBlok(), m.afgerond ? blok.leerblok : null);
+    const pb = standPerBlok();
+    const stand = a3Stand(pb.afgerond, m.afgerond ? blok.leerblok : null, pb.bezig);
     afsluitKop.textContent = m.afgerond
       ? (stand.aantal === 4 ? 'Je A3-vak 1 staat.' : `Deel ${blok.leerblok} van je A3-vak 1 staat.`)
       : 'Klaar met dit blok?';

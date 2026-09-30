@@ -96,3 +96,11 @@ test('SX-9: transities duren 150–250 ms en vervallen bij prefers-reduced-motio
   for (const d of duren) assert.ok(d >= 150 && d <= 250, `${d} ms`);
   assert.match(css, /@media \(prefers-reduced-motion: reduce\) \{\s*\*, \*::before, \*::after \{ transition:none !important;/);
 });
+
+test('SX-12: een deel in opbouw laat zien hoeveel resultaten er al staan (tekst, geen percentage); gevuld pas bij afronden', () => {
+  const s = a3Stand({}, null, { 1: [1, 2], 2: [0, 3] });
+  assert.equal(s.delen[0].gevuld, false);
+  assert.equal(s.delen[0].opbouw, '1 van 2 resultaten');
+  assert.equal(s.delen[1].opbouw, '');
+  assert.equal(a3Stand({ 1: true }, null, { 1: [2, 2] }).delen[0].opbouw, '', 'een gevuld deel is niet meer in opbouw');
+});
