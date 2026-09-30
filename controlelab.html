@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Controlelab · A3 e-learning</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="css/site.css">
+<link rel="stylesheet" href="css/print.css" media="print">
+<style>
+.lab-rij { display:flex; flex-wrap:wrap; gap:1rem; align-items:flex-end; margin:.5rem 0; }
+.lab-rij label { display:flex; flex-direction:column; font-weight:700; gap:.25rem; }
+select, textarea, input[type="text"], button { font:inherit; border:3px solid var(--zwart); background:var(--wit); color:var(--zwart); padding:.4rem .6rem; border-radius:0; }
+textarea { width:100%; min-height:14rem; font-family:ui-monospace,Menlo,monospace; font-size:.875rem; }
+button { font-weight:700; cursor:pointer; box-shadow:3px 3px 0 var(--zwart); }
+button:hover, button:focus-visible { background:var(--accent); color:var(--wit); }
+.status { display:inline-block; border:3px solid var(--zwart); padding:.1rem .6rem; font-weight:700; }
+.status-compleet { background:#fff; box-shadow:inset 0 -6px 0 #1a7f37; }
+.status-bijna { background:#fff; box-shadow:inset 0 -6px 0 #b7791f; }
+.status-nog-niet { background:#fff; box-shadow:inset 0 -6px 0 var(--accent); }
+table { border-collapse:collapse; width:100%; margin:.5rem 0; }
+th, td { border:2px solid var(--zwart); padding:.25rem .5rem; text-align:left; }
+th { background:var(--grijs); }
+tr.afwijking td { background:#ffd9e6; }
+.fout { color:var(--accent); font-weight:700; }
+.let-op { font-weight:700; }
+.klein { font-size:.875rem; }
+</style>
+</head>
+<body>
+<header>
+<nav aria-label="Hoofdmenu">
+<a href="index.html">Start</a>
+<a href="controlelab.html" aria-current="page">Controlelab</a>
+</nav>
+</header>
+<main id="inhoud">
+<h1>Controlelab</h1>
+<p>Testhulpmiddel voor de bouwers en testers van de site. Hier zie je hoe een bewijsrecord wordt gecontroleerd en hoe de statusregel uit het blueprint (§5) werkt. De uitkomst is altijd een status in woorden.</p>
+
+<section class="kaart" aria-labelledby="h-status">
+<h2 id="h-status">1. Statusregel</h2>
+<p class="klein">Per soort controle kies je de slechtste uitkomst. Soort A is aanwezigheid en vorm, soort B is samenhang tussen onderdelen, soort C is omvang (alleen woorden en zinnen tellen).</p>
+<div class="lab-rij">
+<label>Soort A <select id="sel-A"></select></label>
+<label>Soort B <select id="sel-B"></select></label>
+<label>Soort C <select id="sel-C"></select></label>
+<div>Status: <span id="uit-status" class="status" aria-live="polite"></span></div>
+</div>
+<p class="klein">Regel: „Nog niet" als A of B op <em>mist</em> staat; anders „Bijna" als C op <em>mist</em> staat of A of B op <em>let op</em>; anders Compleet (C mag op <em>let op</em>).</p>
+<button type="button" id="knop-alle">Loop alle combinaties na</button>
+<p id="uit-nalopen" aria-live="polite"></p>
+<table id="tabel-nalopen" hidden>
+<thead><tr><th>Soort A</th><th>Soort B</th><th>Soort C</th><th>Verwacht (§5)</th><th>Berekend</th><th>Vergelijking</th></tr></thead>
+<tbody></tbody>
+</table>
+</section>
+
+<section class="kaart" aria-labelledby="h-record">
+<h2 id="h-record">2. Bewijsrecord plakken</h2>
+<p class="klein">Plak een bewijsrecord (JSON, schema 1.0). Het lab controleert de vorm en toont status en controles.</p>
+<label for="in-record" class="klein">Bewijsrecord (JSON)</label>
+<textarea id="in-record" spellcheck="false"></textarea>
+<div class="lab-rij">
+<button type="button" id="knop-record">Controleer record</button>
+<button type="button" id="knop-voorbeeld">Vul voorbeeldrecord in</button>
+</div>
+<div id="uit-record" aria-live="polite"></div>
+</section>
+
+<section class="kaart" aria-labelledby="h-controle">
+<h2 id="h-controle">3. Eén controle uitproberen</h2>
+<div class="lab-rij">
+<label>Controle <select id="sel-controle"></select></label>
+<label>Invoer <input type="text" id="in-controle" size="40" autocomplete="off"></label>
+</div>
+<div id="uit-controle" aria-live="polite"></div>
+</section>
+</main>
+<footer>
+<p>Naamsvermelding: HAN Bedrijfskunde, C-cluster (<a href="https://github.com/hanbedrijfskunde/a3-learning">hanbedrijfskunde/a3-learning</a>). Licentie: <a href="LICENSE">CC BY-SA 4.0</a> (volledige licentietekst).</p>
+</footer>
+<script type="module" src="js/site.js"></script>
+<script type="module">
+import { bepaalStatus, STATUS_TEKST } from './js/status.js';
+import { RESULTATEN, valideer } from './js/schema.js';
+import { veldGevuld, keuzeUitLijst, eindigtOp, minWoorden, minZinnen } from './js/checks/core.js';
+
+const $ = (id) => document.getElementById(id);
+const statusHtml = (status) => {
+  const s = document.createElement('span');
+  s.className = `status status-${status.replace(' ', '-')}`;
+  s.textContent = STATUS_TEKST[status];
+  return s;
+};
+const zet = (el, ...kinderen) => { el.replaceChildren(...kinderen); };
+const tekst = (t, klasse) => { const p = document.createElement('p'); p.textContent = t; if (klasse) p.className = klasse; return p; };
+
+// --- 1. Statusregel
+for (const soort of ['A', 'B', 'C']) {
+  const sel = $(`sel-${soort}`);
+  for (const r of RESULTATEN) sel.append(new Option(r, r));
+  sel.addEventListener('change', toonStatus);
+}
+const berekend = (a, b, c) => bepaalStatus([
+  { id: 'a', soort: 'A', resultaat: a }, { id: 'b', soort: 'B', resultaat: b }, { id: 'c', soort: 'C', resultaat: c },
+]);
+function toonStatus() {
+  zet($('uit-status'), statusHtml(berekend($('sel-A').value, $('sel-B').value, $('sel-C').value)));
+}
+toonStatus();
+
+$('knop-alle').addEventListener('click', async () => {
+  const uit = $('uit-nalopen');
+  try {
+    const { regels } = await (await fetch('data/statustabel.json')).json();
+    const body = $('tabel-nalopen').tBodies[0];
+    body.replaceChildren();
+    let afwijkingen = 0;
+    for (const r of regels) {
+      const eigen = berekend(r.A, r.B, r.C);
+      const klopt = eigen === r.status;
+      if (!klopt) afwijkingen += 1;
+      const tr = body.insertRow();
+      if (!klopt) tr.className = 'afwijking';
+      for (const w of [r.A, r.B, r.C]) tr.insertCell().textContent = w;
+      tr.insertCell().append(statusHtml(r.status));
+      tr.insertCell().append(statusHtml(eigen));
+      tr.insertCell().textContent = klopt ? 'gelijk' : 'AFWIJKING';
+    }
+    $('tabel-nalopen').hidden = false;
+    uit.textContent = afwijkingen === 0
+      ? 'Alle combinaties komen overeen met de tabel uit §5.'
+      : 'Let op: er zijn combinaties die afwijken van de tabel uit §5 (gemarkeerd).';
+    uit.className = afwijkingen === 0 ? '' : 'fout';
+  } catch (e) {
+    uit.textContent = 'De tabel uit §5 kon niet worden geladen.';
+    uit.className = 'fout';
+  }
+});
+
+// --- 2. Bewijsrecord
+const VOORBEELD = {
+  schema: '1.0', id: 'EV-01', taak: '2.1', leerblok: 1, luk: [1], bc: ['BC1'],
+  inhoud: { gebruiker: 'Een klantenservicemedewerker', pain: 'Klanten bellen opnieuw over dezelfde retour', waarde: 'Klanten voelen zich sneller geholpen', kapitalen: ['sociaal'] },
+  controles: [{ id: 'velden-gevuld', resultaat: 'ok' }, { id: 'niet-financieel-kapitaal', resultaat: 'ok' }],
+  status: 'compleet', voorlopig: false, versie: 3, bijgewerkt: '2026-09-30T14:02:11+02:00', elearning: '0.1.0',
+};
+$('knop-voorbeeld').addEventListener('click', () => { $('in-record').value = JSON.stringify(VOORBEELD, null, 2); });
+$('knop-record').addEventListener('click', () => {
+  const uit = $('uit-record');
+  let record;
+  try { record = JSON.parse($('in-record').value); }
+  catch (e) { zet(uit, tekst('Dit is geen geldige JSON. Controleer haakjes en aanhalingstekens.', 'fout')); return; }
+  const { geldig, fouten } = valideer(record);
+  if (!geldig) {
+    const ul = document.createElement('ul');
+    for (const f of fouten) { const li = document.createElement('li'); li.textContent = f; ul.append(li); }
+    zet(uit, tekst('Het record voldoet niet aan schema 1.0.', 'fout'), ul);
+    return;
+  }
+  const kop = document.createElement('p');
+  kop.append(`Record ${record.id} (taak ${record.taak}) voldoet aan schema 1.0. Status: `, statusHtml(record.status));
+  const tabel = document.createElement('table');
+  tabel.innerHTML = '<thead><tr><th>Controle</th><th>Uitkomst</th></tr></thead>';
+  const body = tabel.createTBody();
+  for (const c of record.controles) {
+    const tr = body.insertRow();
+    tr.insertCell().textContent = c.id;
+    tr.insertCell().textContent = c.resultaat;
+  }
+  const inh = document.createElement('pre');
+  inh.className = 'klein';
+  inh.textContent = JSON.stringify(record.inhoud, null, 2);
+  zet(uit, kop, tabel, tekst('Ingevulde inhoud:', 'klein'), inh);
+});
+
+// --- 3. Eén controle
+const PROEF = {
+  'veldGevuld (A)': veldGevuld({ id: 'veld-gevuld', veld: 'v', label: 'het veld' }),
+  'keuzeUitLijst (A: rood, groen, blauw)': keuzeUitLijst({ id: 'keuze', veld: 'v', label: 'een kleur', toegestaan: ['rood', 'groen', 'blauw'] }),
+  'eindigtOp (A: vraagteken)': eindigtOp({ id: 'vraagteken', veld: 'v', label: 'de zoekvraag', tekens: ['?'] }),
+  'minWoorden (C: minstens 4 woorden)': minWoorden({ id: 'woorden', veld: 'v', label: 'de tekst', min: 4 }),
+  'minZinnen (C: minstens 2 zinnen)': minZinnen({ id: 'zinnen', veld: 'v', label: 'de tekst', min: 2 }),
+};
+for (const naam of Object.keys(PROEF)) $('sel-controle').append(new Option(naam, naam));
+function toonControle() {
+  const r = PROEF[$('sel-controle').value]({ v: $('in-controle').value }, {});
+  const regel = document.createElement('p');
+  regel.append(`Soort ${r.soort}, uitkomst: `);
+  const b = document.createElement('strong');
+  b.textContent = r.resultaat;
+  regel.append(b);
+  zet($('uit-controle'), regel, tekst(r.melding || 'Niets aan te merken.'));
+}
+$('sel-controle').addEventListener('change', toonControle);
+$('in-controle').addEventListener('input', toonControle);
+toonControle();
+</script>
+</body>
+</html>

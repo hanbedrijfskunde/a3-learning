@@ -1,0 +1,25 @@
+{
+  "leerblok": 1,
+  "taken": [
+    {
+      "id": "2.1",
+      "luk": [1],
+      "bc": ["BC1"],
+      "klaarAls": "Je onderzoeksvraag noemt gebruiker, probleem en waarde.",
+      "modelantwoord": "Hoe kan de retourafdeling klanten sneller helpen?",
+      "controles": [{ "id": "velden-gevuld", "soort": "A" }]
+    },
+    {
+      "id": "2.2",
+      "luk": [1],
+      "bc": ["BC1"],
+      "klaarAls": "Je hebt drie zoekvragen en één model gekozen.",
+      "modelantwoord": "Zoekvraag 1: wat weten we over retouren?",
+      "controles": [{ "id": "vraagteken", "soort": "A" }]
+    }
+  ],
+  "bewijsonderdelen": [
+    { "id": "EV-01", "taak": "2.1", "lukOnderdelen": ["LUK 1 · Formuleert een onderzoeksvraag"] },
+    { "id": "EV-02", "taak": "2.2", "lukOnderdelen": ["LUK 1 · Analyseert het probleem methodisch"] }
+  ]
+}

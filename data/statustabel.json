@@ -1,0 +1,32 @@
+{
+  "bron": "BLUEPRINT-ELEARNING-A3 §5 (BW-5): per soort de slechtste uitkomst; 27 combinaties",
+  "regels": [
+    { "A": "ok", "B": "ok", "C": "ok", "status": "compleet" },
+    { "A": "ok", "B": "ok", "C": "let op", "status": "compleet" },
+    { "A": "ok", "B": "ok", "C": "mist", "status": "bijna" },
+    { "A": "ok", "B": "let op", "C": "ok", "status": "bijna" },
+    { "A": "ok", "B": "let op", "C": "let op", "status": "bijna" },
+    { "A": "ok", "B": "let op", "C": "mist", "status": "bijna" },
+    { "A": "ok", "B": "mist", "C": "ok", "status": "nog niet" },
+    { "A": "ok", "B": "mist", "C": "let op", "status": "nog niet" },
+    { "A": "ok", "B": "mist", "C": "mist", "status": "nog niet" },
+    { "A": "let op", "B": "ok", "C": "ok", "status": "bijna" },
+    { "A": "let op", "B": "ok", "C": "let op", "status": "bijna" },
+    { "A": "let op", "B": "ok", "C": "mist", "status": "bijna" },
+    { "A": "let op", "B": "let op", "C": "ok", "status": "bijna" },
+    { "A": "let op", "B": "let op", "C": "let op", "status": "bijna" },
+    { "A": "let op", "B": "let op", "C": "mist", "status": "bijna" },
+    { "A": "let op", "B": "mist", "C": "ok", "status": "nog niet" },
+    { "A": "let op", "B": "mist", "C": "let op", "status": "nog niet" },
+    { "A": "let op", "B": "mist", "C": "mist", "status": "nog niet" },
+    { "A": "mist", "B": "ok", "C": "ok", "status": "nog niet" },
+    { "A": "mist", "B": "ok", "C": "let op", "status": "nog niet" },
+    { "A": "mist", "B": "ok", "C": "mist", "status": "nog niet" },
+    { "A": "mist", "B": "let op", "C": "ok", "status": "nog niet" },
+    { "A": "mist", "B": "let op", "C": "let op", "status": "nog niet" },
+    { "A": "mist", "B": "let op", "C": "mist", "status": "nog niet" },
+    { "A": "mist", "B": "mist", "C": "ok", "status": "nog niet" },
+    { "A": "mist", "B": "mist", "C": "let op", "status": "nog niet" },
+    { "A": "mist", "B": "mist", "C": "mist", "status": "nog niet" }
+  ]
+}

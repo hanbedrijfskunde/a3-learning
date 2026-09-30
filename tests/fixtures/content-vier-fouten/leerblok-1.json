@@ -1,0 +1,39 @@
+{
+  "leerblok": 1,
+  "taken": [
+    {
+      "id": "2.1",
+      "luk": [],
+      "bc": [],
+      "klaarAls": "Je onderzoeksvraag noemt gebruiker, probleem en waarde.",
+      "modelantwoord": "Hoe kan de retourafdeling klanten sneller helpen?",
+      "controles": [{ "id": "velden-gevuld", "soort": "A" }]
+    },
+    {
+      "id": "2.2",
+      "luk": [1],
+      "bc": ["BC1"],
+      "klaarAls": "",
+      "modelantwoord": "Zoekvraag 1: wat weten we over retouren?",
+      "controles": [{ "id": "vraagteken", "soort": "A" }]
+    },
+    {
+      "id": "3.1",
+      "luk": [1],
+      "bc": ["BC1"],
+      "klaarAls": "Je hebt kernbegrippen met synoniemen.",
+      "modelantwoord": "Kernbegrip: retour; synoniem: terugzending.",
+      "controles": []
+    },
+    {
+      "id": "3.2",
+      "luk": [1],
+      "bc": ["BC1"],
+      "klaarAls": "Je hebt een zoekstring met operatoren.",
+      "controles": [{ "id": "operator", "soort": "A" }]
+    }
+  ],
+  "bewijsonderdelen": [
+    { "id": "EV-01", "taak": "2.1", "lukOnderdelen": ["LUK 1 · Formuleert een onderzoeksvraag"] }
+  ]
+}
