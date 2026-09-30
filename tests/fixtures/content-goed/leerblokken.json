@@ -40,7 +40,11 @@
         "EV-02"
       ],
       "el": "EL1–EL3",
-      "pagina": "leerblok-1.html"
+      "pagina": "leerblok-1.html",
+      "aanbevolen": {
+        "week": "Week 5",
+        "dag": "Dag 2 (woensdag)"
+      }
     },
     {
       "nummer": 2,
@@ -54,7 +58,11 @@
         "EV-05"
       ],
       "el": "EL4, EL5",
-      "pagina": "leerblok-2.html"
+      "pagina": "leerblok-2.html",
+      "aanbevolen": {
+        "week": "Week 5",
+        "dag": "Dag 2 (woensdag)"
+      }
     },
     {
       "nummer": 3,
@@ -68,7 +76,11 @@
         "EV-08"
       ],
       "el": "EL6, EL7",
-      "pagina": "leerblok-3.html"
+      "pagina": "leerblok-3.html",
+      "aanbevolen": {
+        "week": "Week 5",
+        "dag": "Dag 2 (woensdag)"
+      }
     },
     {
       "nummer": 4,
@@ -82,7 +94,11 @@
         "EV-10"
       ],
       "el": "EL9, EL8",
-      "pagina": "leerblok-4.html"
+      "pagina": "leerblok-4.html",
+      "aanbevolen": {
+        "week": "Week 5",
+        "dag": "Dag 2 (woensdag)"
+      }
     }
   ]
 }

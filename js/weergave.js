@@ -11,6 +11,17 @@ export const BEWAARMELDING = 'Bewaar je dossier: je werk staat alleen in deze br
 
 const heeftWaarde = (w) => (Array.isArray(w) ? w.length > 0 : typeof w === 'string' ? w.trim() !== '' : w !== undefined && w !== null);
 
+/**
+ * Een veldwaarde als leesbare tekst: een tekst blijft een tekst, een lijst wordt „a; b", een object „sleutel: waarde, …".
+ * Nodig voor records met geneste inhoud (EV-09: regels en teamactie) op de afdrukpagina en in de meenemen-kaart.
+ */
+export function waardeTekst(w) {
+  if (w === undefined || w === null) return '';
+  if (Array.isArray(w)) return w.map(waardeTekst).filter((t) => t !== '').join('; ');
+  if (typeof w === 'object') return Object.entries(w).map(([k, v]) => [k, waardeTekst(v)]).filter(([, t]) => t !== '').map(([k, t]) => `${k}: ${t}`).join(', ');
+  return String(w);
+}
+
 /** Is er in minstens één veld iets ingevuld? */
 export const isIngevuld = (invoer = {}) => Object.values(invoer).some(heeftWaarde);
 
@@ -116,6 +127,7 @@ export function bouwIndexModel(overzicht, records = {}) {
       richttijdTekst: tijd,
       afgerondBewijs: lb.afgerondBewijs,
       el: lb.el,
+      aanbevolen: lb.aanbevolen ? `${lb.aanbevolen.week}, ${lb.aanbevolen.dag}` : '',
       afgerond,
       afgerondTekst: afgerond ? 'Afgerond' : 'Nog niet afgerond',
       onderdelen: onderdelen.map((o) => ({ id: o.id, status: o.status, statusTekst: STATUS_TEKST[o.status], voorlopig: o.voorlopig })),

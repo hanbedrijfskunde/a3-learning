@@ -199,6 +199,7 @@ export function controleerOverzicht(inhoud, bestand = 'leerblokken.json') {
     if (!gevuld(b.titel) || !gevuld(b.afgerondBewijs) || !gevuld(b.pagina)) fout(`leerblok ${i + 1} mist titel, afgerondBewijs of pagina`);
     if (b.richttijd !== 45) fout(`leerblok ${i + 1} moet een richttijd van 45 min hebben`);
     if (!lijstGevuld(b.bewijsonderdelen) || !b.bewijsonderdelen.every((e) => /^EV-\d{2}$/.test(e))) fout(`leerblok ${i + 1} mist bewijsonderdelen (EV-01, …)`);
+    if (!gevuld(b.aanbevolen?.week) || !gevuld(b.aanbevolen?.dag)) fout(`leerblok ${i + 1} mist aanbevolen.week en aanbevolen.dag (TP-10)`);
   });
   const velden = inhoud?.start?.velden ?? [];
   const idsVelden = velden.map((v) => v.id).join(',');
@@ -207,6 +208,40 @@ export function controleerOverzicht(inhoud, bestand = 'leerblokken.json') {
   const woorden = (inhoud?.start?.privacytekst ?? '').trim().split(/\s+/).filter(Boolean).length;
   if (woorden === 0 || woorden > 100) fout(`de privacytekst moet 1 tot en met 100 woorden hebben, heeft er ${woorden} (ST-2)`);
   return fouten;
+}
+
+export const TERUGBLIK_BANDEN = Object.freeze(['kort', 'middel', 'volledig', 'lang']);
+
+/**
+ * Controleert data/terugblik.json (TP-1, TP-2, TP-3, TP-7, fase 7): per leerblok 2, 3 en 4 een meenemen-kaart met items,
+ * precies 2 kennisvragen, een transfervraag en een samenvatting; per bandbreedte een richttijd van hoogstens 15 min (TP-1).
+ * Een samenvatting met bron `concept-auteur` geeft een waarschuwing.
+ * @returns {{fouten: string[], waarschuwingen: string[]}}
+ */
+export function controleerTerugblik(inhoud, bestand = 'terugblik.json') {
+  const fouten = [];
+  const waarschuwingen = [];
+  const fout = (t) => fouten.push(`${bestand}: ${t}`);
+  if (inhoud?.formaat !== '1.0') fout('formaat moet "1.0" zijn');
+  for (const band of TERUGBLIK_BANDEN) {
+    const b = inhoud?.bandbreedtes?.[band];
+    if (!isObject(b) || !gevuld(b.omschrijving)) fout(`bandbreedte ${band} mist een omschrijving`);
+    else if (!(typeof b.minuten === 'number' && b.minuten > 0 && b.minuten <= 15)) fout(`bandbreedte ${band}: de terugblik duurt 1 tot en met 15 min (TP-1), niet ${JSON.stringify(b.minuten)}`);
+  }
+  const kaarten = Array.isArray(inhoud?.kaarten) ? inhoud.kaarten : [];
+  if (kaarten.map((k) => k?.leerblok).join(',') !== '2,3,4') fout('er moet één kaart zijn voor leerblok 2, 3 en 4, in die volgorde');
+  for (const k of kaarten) {
+    const wie = `kaart voor leerblok ${k?.leerblok}: `;
+    if (k?.vorig !== k?.leerblok - 1) fout(`${wie}vorig moet ${k?.leerblok - 1} zijn`);
+    if (!lijstGevuld(k?.items) || !k.items.every(gevuld)) fout(`${wie}mist items`);
+    if (!(Array.isArray(k?.kennisvragen) && k.kennisvragen.length === 2 && k.kennisvragen.every(gevuld))) fout(`${wie}heeft precies 2 kennisvragen nodig (TP-2)`);
+    if (!gevuld(k?.transfervraag)) fout(`${wie}mist een transfervraag (TP-4)`);
+    if (!BRONNEN.includes(k?.bron)) fout(`${wie}bron ${JSON.stringify(k?.bron)}; kies uit ${BRONNEN.join(', ')}`);
+    if (!gevuld(k?.samenvatting?.tekst)) fout(`${wie}mist een samenvatting (TP-7)`);
+    else if (!BRONNEN.includes(k.samenvatting.bron)) fout(`${wie}samenvatting heeft bron ${JSON.stringify(k.samenvatting.bron)}; kies uit ${BRONNEN.join(', ')}`);
+    else if (k.samenvatting.bron === 'concept-auteur') waarschuwingen.push(`${bestand}: ${wie}de samenvatting is een concept van de bouwer (bron concept-auteur), wacht op akkoord van de auteur`);
+  }
+  return { fouten, waarschuwingen };
 }
 
 export const DEKKINGEN = Object.freeze(['gedekt', 'deels', 'buiten scope']);
@@ -389,6 +424,10 @@ export function controleerMap(map) {
   if (existsSync(resolve(map, 'luk.json'))) {
     const luk = lees('luk.json');
     if (luk) fouten.push(...controleerLuk(luk, 'luk.json', blokken));
+  }
+  if (existsSync(resolve(map, 'terugblik.json'))) {
+    const t = lees('terugblik.json');
+    if (t) { const r = controleerTerugblik(t); fouten.push(...r.fouten); waarschuwingen.push(...r.waarschuwingen); }
   }
   const bronnen = controleerBronnen(map);
   fouten.push(...bronnen.fouten);

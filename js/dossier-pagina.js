@@ -3,7 +3,7 @@
 import { h, wis, statusChip } from './dom.js';
 import { kiesOpslag, maakStore } from './store.js';
 import {
-  maakDossier, controleerDossier, importeerDossier, bouwMijnStand, bouwDekking, bouwLeeruitkomsten, bouwAfdruk, veldLabels,
+  maakDossier, controleerDossier, importeerDossier, bouwMijnStand, bouwDekking, bouwLeeruitkomsten, bouwAfdruk, veldLabels, bouwFeedbackOverzicht,
 } from './dossier.js';
 import { leesRecords } from './sessie.js';
 import { exportKnop, geblokkeerdMelding, toonBewaarHerinnering } from './dossier-dom.js';
@@ -57,6 +57,31 @@ async function start() {
           h('th', { scope: 'row' }, r.label),
           h('td', {}, r.dekking, r.toelichting ? h('span', { class: 'klein' }, ` (${r.toelichting})`) : null),
           h('td', {}, r.bewijs.length === 0 ? '–' : h('ul', { class: 'dos-lijst' }, r.bewijs.map((c) => h('li', {}, `${c.id} · `, cel(c)))))))))));
+  }
+
+  // ---------------------------------------------------------------- feedback uit de Wissel (WS-6): individueel naast andere teams
+
+  const regelEl = (r) => h('li', { class: 'fb-regel', 'data-rol': r.rol },
+    h('strong', {}, r.rol), ': ',
+    [['Ik zie', r.zie], ['Ik mis', r.mis], ['Ik vraag me af', r.vraag]].filter(([, t]) => t).map(([k, t]) => h('span', { class: 'fb-deel' }, `${k}: ${t}. `)),
+    r.actie ? h('span', { class: 'klein' }, ` Actie: ${r.actie} (${r.status})`) : null);
+  const feedbackGebied = h('section', { id: 'feedback', 'aria-labelledby': 'feedback-kop' });
+  function tekenFeedback() {
+    wis(feedbackGebied);
+    const f = bouwFeedbackOverzicht(records()['EV-09']);
+    const lijst = (regels, leegTekst) => (regels.length ? h('ul', { class: 'fb-lijst' }, regels.map(regelEl)) : h('p', { class: 'klein' }, leegTekst));
+    feedbackGebied.append(h('h2', { id: 'feedback-kop' }, 'Feedback uit de Wissel (EV-09)'));
+    if (f.leeg) { feedbackGebied.append(h('p', { class: 'klein' }, 'Nog geen feedback vastgelegd. Dat doe je in leerblok 4.')); return; }
+    feedbackGebied.append(h('div', { class: 'fb-kolommen' },
+      h('div', { class: 'kaart', id: 'fb-individueel' },
+        h('h3', {}, 'Individuele feedback'),
+        h('h4', {}, 'Ontvangen'), lijst(f.individueel.ontvangen, 'Nog niets ontvangen.'),
+        h('h4', {}, 'Gegeven'), lijst(f.individueel.gegeven, 'Nog niets gegeven.')),
+      h('div', { class: 'kaart', id: 'fb-ander-team' },
+        h('h3', {}, 'Post-its van andere teams'),
+        lijst(f.anderTeam, 'Nog geen post-its van andere teams.'),
+        h('h4', {}, 'Teamactie'),
+        f.teamactie ? h('p', { id: 'fb-teamactie' }, `${f.teamactie.tekst} (${f.teamactie.status})`) : h('p', { class: 'klein' }, 'Nog geen teamactie.'))));
   }
 
   // ---------------------------------------------------------------- export (DS-5, DS-6) en afdrukbaar (DS-7)
@@ -139,7 +164,7 @@ async function start() {
   }
 
   function tekenAlles() {
-    tekenStand(); tekenLuks(); tekenDekking();
+    tekenStand(); tekenLuks(); tekenFeedback(); tekenDekking();
     toonBewaarHerinnering(herinneringGebied, store, config.versie);
   }
   tekenAlles();
@@ -148,7 +173,7 @@ async function start() {
     h1,
     h('p', {}, 'Hier zie je waar je staat, bewaar je je werk en zet je het terug. Je dossier is wat je inlevert en wat je docent nakijkt.'),
     geblokkeerd ? geblokkeerdMelding(store, config.versie) : null,
-    herinneringGebied, standGebied, luks, dekkingGebied, exportGebied, importGebied, afdruk,
+    herinneringGebied, standGebied, luks, feedbackGebied, dekkingGebied, exportGebied, importGebied, afdruk,
   ].filter(Boolean));
 }
 

@@ -11,6 +11,7 @@ import { bouwWisselPaneel } from './wissel-paneel.js';
 import { geblokkeerdMelding, toonBewaarHerinnering } from './dossier-dom.js'; // fase 3: DS-2, DS-12
 import { bouwWeergave, metVerwijzingen } from './lb2-ui.js';
 import { laadBronnen, maakIndex } from './bronnen.js';
+import { vorigeKeerSectie } from './terugblik-pagina.js'; // fase 7: TP-11
 
 const laad = async (pad) => (await fetch(new URL(pad, import.meta.url))).json();
 /** citatie → bron voor de in-tekstverwijzingen (BR-4); lukt het laden niet, dan blijven het gewone tekst. */
@@ -283,6 +284,8 @@ async function start() {
   // ---------------------------------------------------------------- pagina
 
   const profiel = leesProfiel(store);
+  const aanbevolen = overzicht.leerblokken.find((b) => b.nummer === blok.leerblok)?.aanbevolen; // TP-10: alleen tekst
+  const vorigeKeer = blok.leerblok >= 2 ? await vorigeKeerSectie({ store, opslag, overzicht, leerblok: blok.leerblok }) : null; // TP-11
   const vraagstuk = h('aside', { class: 'kaart', id: 'mijn-vraagstuk', 'aria-labelledby': 'mijn-vraagstuk-kop' },
     h('h2', { id: 'mijn-vraagstuk-kop' }, 'Jouw vraagstuk'),
     profiel.vraagstuk
@@ -296,8 +299,9 @@ async function start() {
   main.append(...[
     h1,
     h('p', { class: 'meta' }, `Richttijd: ${blok.richttijd} min. Eindigt met: ${blok.eindigtMet}.`),
+    aanbevolen ? h('p', { class: 'meta', id: 'aanbevolen' }, `Aanbevolen: ${aanbevolen.week}, ${aanbevolen.dag}.`) : null,
     geblokkeerd ? geblokkeerdMelding(store, config.versie) : null,
-    foutGebied, herinneringGebied, vraagstuk, inhoud,
+    foutGebied, herinneringGebied, vorigeKeer, vraagstuk, inhoud,
     ...blok.taken.flatMap((t) => [taakArtikel(t), t.bewijsonderdeel === blok.wissel?.zichtbaarNa ? wisselSectie : null]), afsluiten,
   ].filter(Boolean));
   tekenAfsluiten();

@@ -28,6 +28,7 @@ async function start() {
       lijst.append(h('li', { class: 'kaart leerblok' },
         h('h3', {}, h('a', { href: b.href }, `Leerblok ${b.nummer} · ${b.titel}`)),
         h('p', { class: 'meta' }, `Richttijd: ${b.richttijdTekst}`),
+        b.aanbevolen ? h('p', { class: 'meta', 'data-aanbevolen': b.nummer }, `Aanbevolen: ${b.aanbevolen}`) : null,
         h('p', {}, `Eindigt met: ${b.afgerondBewijs}`),
         h('p', {}, statusChip(b.afgerond ? 'compleet' : 'nog niet', b.afgerondTekst),
           ' ', b.onderdelen.map((o) => h('span', { class: 'onderdeel' }, `${o.id}: ${o.statusTekst}${o.voorlopig ? ' (voorlopig)' : ''} `)))));

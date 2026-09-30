@@ -5,6 +5,7 @@
 // Bestandsvorm van een export (bewijsdossier-<alias>-<datum>.json):
 //   { formaat: 'a3-bewijsdossier', schema: '1.0', elearning, geexporteerd, alias, teamnummer, vraagstuk, waaromZin, voorlopig,
 //     records: [ { record: <nieuwste versie>, eerdereVersies: <aantal> } ],
+//     terugblik: [ { leerblok, pauzeDagen, status: 'gedaan'|'overgeslagen' } ]   (TP-8; geen bewijs, geen record)
 //     controlesom: { algoritme: 'SHA-256', waarde: <64 hex>, over: <uitleg> } }
 // De controlesom loopt over alle velden behalve `controlesom` zelf, in canonieke vorm (gesorteerde sleutels).
 // Hij laat zien dat een bestand na export is gewijzigd; hij is geen handtekening: wie de som opnieuw uitrekent
@@ -13,6 +14,9 @@ import { PREFIX } from './store.js';
 import { SCHEMA_VERSIE, valideer } from './schema.js';
 import { STATUS_TEKST } from './status.js';
 import { leesProfiel, bewaarProfiel, PROFIEL_VELDEN } from './profiel.js';
+import { ROL_ANDER_TEAM } from './wissel.js';
+import { waardeTekst } from './weergave.js';
+import { leesTerugblikLog, importeerTerugblikLog } from './terugblik.js';
 
 export const FORMAAT = 'a3-bewijsdossier';
 export const ALGORITME = 'SHA-256';
@@ -63,6 +67,7 @@ export async function maakDossier(store, { elearning, nu = () => new Date() }) {
       const record = store.get(id);
       return { record, eerdereVersies: record.versie - 1 };
     }),
+    terugblik: leesTerugblikLog(store),
   };
   dossier.controlesom = {
     algoritme: ALGORITME,
@@ -154,10 +159,11 @@ const gelijk = (a, b) => canoniek(a) === canoniek(b);
  *
  * Bij een bestaand record wint het nieuwste (`bijgewerkt`); het andere blijft staan of wordt behouden.
  * De profielvelden (alias, teamnummer, vraagstuk, waarom-zin) worden alleen ingevuld als ze nog leeg zijn.
- * @returns {{overgenomen: string[], gelijk: string[], behouden: string[], profiel: string[]}}
+ * Het terugblik-log (TP-8) wordt aangevuld waar de opslag voor een leerblok nog niets heeft.
+ * @returns {{overgenomen: string[], gelijk: string[], behouden: string[], profiel: string[], terugblik: number[]}}
  */
 export function importeerDossier({ store, opslag }, dossier) {
-  const uit = { overgenomen: [], gelijk: [], behouden: [], profiel: [] };
+  const uit = { overgenomen: [], gelijk: [], behouden: [], profiel: [], terugblik: [] };
   for (const { record } of dossier.records) {
     const lijst = leesLijst(opslag, record.id);
     const laatste = lijst[lijst.length - 1];
@@ -181,6 +187,7 @@ export function importeerDossier({ store, opslag }, dossier) {
   }
   if (PROFIEL_VELDEN.every((v) => huidig[v] === '') && dossier.voorlopig === true) nieuw.voorlopig = true;
   bewaarProfiel(store, nieuw);
+  uit.terugblik = importeerTerugblikLog(store, dossier.terugblik);
   sluitHerinneringAf(store);
   return uit;
 }
@@ -272,7 +279,7 @@ export function bouwLeeruitkomsten(luk, records) {
 }
 
 /** Tekst van een veldwaarde voor de afdrukpagina. */
-const toonWaarde = (w) => (Array.isArray(w) ? w.join(', ') : String(w ?? ''));
+const toonWaarde = waardeTekst;
 
 /**
  * De afdrukbare pagina's per leeruitkomst (DS-7): per bewijsonderdeel de status, de ingevulde inhoud en onderaan de
@@ -339,4 +346,26 @@ export function veldLabels(blokken) {
     }
   }
   return uit;
+}
+
+// ------------------------------------------------------------------ feedback naast elkaar (WS-6, fase 4.7)
+
+/**
+ * Het record EV-09 als twee kolommen voor de dossierpagina: de individuele feedback (teamgenoot, medestudent, coach)
+ * naast de post-its van andere teams (rol „ander team") en de ene teamactie.
+ * @param {object|undefined} record nieuwste record van EV-09
+ */
+export function bouwFeedbackOverzicht(record) {
+  const inhoud = isObject(record?.inhoud) ? record.inhoud : {};
+  const regels = Array.isArray(inhoud.regels) ? inhoud.regels.filter(isObject) : [];
+  const anderTeam = regels.filter((r) => r.rol === ROL_ANDER_TEAM);
+  const individueel = regels.filter((r) => r.rol !== ROL_ANDER_TEAM);
+  const actie = isObject(inhoud.teamactie) && typeof inhoud.teamactie.tekst === 'string' && inhoud.teamactie.tekst.trim() !== '' ? inhoud.teamactie : null;
+  return {
+    heeftRecord: Boolean(record),
+    individueel: { ontvangen: individueel.filter((r) => r.richting === 'ontvangen'), gegeven: individueel.filter((r) => r.richting === 'gegeven') },
+    anderTeam,
+    teamactie: actie,
+    leeg: regels.length === 0 && !actie,
+  };
 }
