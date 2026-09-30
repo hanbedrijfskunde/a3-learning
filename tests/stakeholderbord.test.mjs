@@ -74,7 +74,7 @@ test('SX-16: drie manieren om te plaatsen (slepen, tikken, pijltjes), een tekstw
   const js = lees('js/stakeholderbord.js');
   for (const [wat, patroon] of [['slepen', /onpointerdown: \(e\) => sleepStart/], ['tikken', /onclick: \(\) => \{ if \(!negeerKlik\) pak\(s\.nr\); \}/],
     ['pijltjes', /const pos = schuif\(s, e\.key\)/], ['Zet hier', /'Zet hier'/], ['tekstweergave', /'Het bord in tekst'/], ['status', /role: 'status'/]]) assert.match(js, patroon, wat);
-  const css = lees('css/site.css');
+  const css = lees('css/stakeholderbord.css');
   assert.match(css, /\.sb-raster \{ position:relative; display:grid; grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr;/);
   assert.doesNotMatch(css, /\.sb-raster \{[^}]*grid-template-columns:1fr;/, 'geen enkele kolom op een telefoon');
   assert.match(css, /button\.sb-kaart \{[^}]*touch-action:none/, 'slepen werkt ook met een vinger');

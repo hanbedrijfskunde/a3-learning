@@ -1,6 +1,6 @@
 // Leerblokpagina: bouwt de pagina uit data/leerblok-N.json met het vaste ritme van vier stappen per taak (TK-18, ADR B76).
 // Alleen DOM. Controles, opslag, oefenregels en de afgerond-regel zitten in sessie.js, weergave.js en afgerond.js.
-import { h, wis, statusChip, bouwVelden, tekenA3Vak, a3VelFiguur, sixCapitalsFiguur, vpcFiguur, metInvulplekken } from './dom.js';
+import { h, wis, statusChip, bouwVelden, tekenA3Vak, metInvulplekken } from './dom.js';
 import { kiesOpslag, maakStore } from './store.js';
 import { maakSessie, volgendeStapOk } from './sessie.js';
 import { bouwTaakModel, isIngevuld } from './weergave.js';
@@ -22,8 +22,13 @@ const laadBlok = async (pad) => normaliseerBlok(await laad(pad)); // reeksen vel
 const laadBronIndex = () => laadBronnen((u) => fetch(new URL(`../${u}`, import.meta.url)))
   .then((bestanden) => maakIndex(bestanden.flatMap((b) => b.bronnen ?? []))).catch(() => new Map());
 const LB4_COMPONENTEN = ['verbanden', 'starr']; // taken met een eigen scherm in lb4-ui.js
-// De figuren in de stap stof (stof.figuur) en na welke alinea ze staan (0 = de eerste).
-const FIGUREN = { 'a3-vel': { bouw: a3VelFiguur, na: 0 }, 'six-capitals': { bouw: sixCapitalsFiguur, na: 1 }, vpc: { bouw: vpcFiguur, na: 0 } };
+// De figuren in stof, oefening en toepassing (figuur) en na welke alinea van de stof ze staan. Ze komen per leerblok binnen
+// (figuren-lb1.js, figuren-lb3.js, het stakeholderbord), alleen als de data ze gebruikt (PF-4, ADR B97).
+const FIGUREN = {};
+const FIGUREN_LB1 = ['a3-vel', 'six-capitals'];
+const FIGUREN_LB3 = ['vpc', 'bmc', 'tom'];
+/** Welke figuren de data van dit leerblok gebruikt (stof, oefening, toepassing). */
+const figuurNamen = (blok) => new Set(blok.taken.flatMap((t) => [t.stof?.figuur, t.oefening?.figuur, t.toepassing?.figuur]).filter(Boolean));
 const BEWAAR_NA_MS = 500; // bewaren na de laatste toetsaanslag; de controles zelf lopen direct
 const CHECKLIST_NA_MS = 600; // de „klaar als"-checklist vinkt mee na 600 ms zonder typen (SX-5)
 const BEVESTIG_MS = 1500; // kort bevestigingsmoment na „klaar" (DESIGN §7.1), geen modaal venster
@@ -60,8 +65,14 @@ async function start() {
   const [{ maakWissel, EV09_TAAK }, { bouwWisselPaneel }] = heeftWissel ? await Promise.all([import('./wissel.js'), import('./wissel-paneel.js')]) : [{}, {}];
   // gewicht-alleen: weergave
   const { bouwWeergave } = heeftWeergave ? await import('./lb2-ui.js') : {};
+  const figuren = figuurNamen(blok);
+  // gewicht-alleen: figurenlb1
+  if (FIGUREN_LB1.some((n) => figuren.has(n))) Object.assign(FIGUREN, (await import('./figuren-lb1.js')).FIGUREN);
+  // gewicht-alleen: figurenlb3
+  if (FIGUREN_LB3.some((n) => figuren.has(n))) Object.assign(FIGUREN, (await import('./figuren-lb3.js')).FIGUREN);
   // gewicht-alleen: bord
   const bord = heeftBord ? await import('./stakeholderbord.js') : null;
+  await bord?.klaar; // eerst de opmaak, dan het bord
   if (bord) FIGUREN['invloed-belang'] = { bouw: bord.rasterFiguur, na: 1 }; // het model in de stof van taak 5.1 (SX-15)
   // gewicht-alleen: lb4ui
   const lb4Ui = heeftLb4Ui ? await import('./lb4-ui.js') : {};
@@ -152,7 +163,7 @@ async function start() {
       s2.stof.format ? h('p', { class: 'format' }, metInvulplekken(s2.stof.format)) : null);
     // Het format hoort bij de tweede alinea: zet het na de eerste alinea.
     if (s2.stof.format) stof.insertBefore(stof.lastChild, stof.children[1] ?? null);
-    // Een figuur staat direct na de alinea die hem beschrijft: het A3-vel (taak 1.1) na alinea 1, de six capitals (taak 2.1) na alinea 2, het VPC (taak 6.1) na alinea 1.
+    // Een figuur staat direct na de alinea die hem beschrijft: het A3-vel (taak 1.1) na alinea 1, de six capitals (taak 2.1) na alinea 2, het VPC (taak 6.1) na alinea 1, het BMC (taak 7.1) en het TOM-model (taak 8.1) na alinea 1.
     const figuur = FIGUREN[s2.stof.figuur];
     if (figuur) alineas[figuur.na].after(figuur.bouw({ met }));
     // De routekeuze tekst, video of spel staat in de stap stof van de taak waar de media bij horen (MD-2, ADR B79).

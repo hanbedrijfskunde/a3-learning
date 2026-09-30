@@ -1,9 +1,14 @@
 // Het stakeholderbord (SX-16, ADR B96, DESIGN §6): het invloed/belang-raster als figuur én als invoer. Alleen DOM; de regels
-// (vakken, pijltjes, tekstweergave) zitten in raster.js. De gegevens blijven de vaste rijen velden van EV-06
-// (s1naam … s7belang), dus opslag, controles, export en verificatie merken niets van het bord.
-// Alleen geladen op een leerblok met een bord (`// gewicht-alleen: bord` in leerblok.js).
+// staan in raster.js. Het bord schrijft de velden van EV-06 (s1naam … s7belang); het dossier merkt er niets van.
 import { h, wis } from './dom.js';
 import { KWADRANTEN, bouwRaster, rasterTekst, stakeholdersUit, stakeholderRijen, vakVan, schuif } from './raster.js';
+
+// De opmaak staat in een eigen stylesheet, zodat pagina's zonder bord hem niet laden (PF-4); `klaar` wacht erop.
+const CSS = new URL('../css/stakeholderbord.css', import.meta.url).href;
+export const klaar = new Promise((af) => {
+  if (document.querySelector(`link[href="${CSS}"]`)) { af(); return; }
+  document.head.append(h('link', { rel: 'stylesheet', href: CSS, onload: af, onerror: af }));
+});
 
 // Zoals de figuur: boven invloed hoog, rechts belang hoog.
 const OPSTELLING = ['tevreden', 'nauw', 'volgen', 'informeren'];
@@ -24,12 +29,7 @@ function zetMidden(el, vraagstuk) {
   wis(el).append(h('span', { class: 'sr-only' }, 'Vraagstuk: '), leeg ? 'Je vraagstuk' : vraagstuk);
 }
 
-/**
- * Het raster met assen: vier vakken en het vraagstuk op het kruispunt, zoals op vel 1 van het werkboek.
- * @param {object[]} stakeholders wie geen vak heeft, staat er niet in (die ligt in de bak)
- * @param {(s: object) => HTMLElement} kaart hoe een kaart eruitziet (vast of tikbaar)
- * @param {(k: object) => any} [extra] wat er nog in een vak staat (de knop „Zet hier”)
- */
+/** Het raster met assen, vier vakken en het vraagstuk op het kruispunt (zoals op vel 1). `extra`: de knop „Zet hier”. */
 function rasterEl(stakeholders, vraagstuk, kaart, extra = () => null) {
   const r = bouwRaster(stakeholders);
   const midden = h('div', { class: 'sb-midden' });
@@ -79,17 +79,9 @@ const lijkt = (a, b) => {
 };
 
 /**
- * Het bord als invoer bij oefenen en toepassen (SX-16). Zelfde vorm als bouwVelden ({element, lees, zet}), plus `ververs`
- * voor het vraagstuk in het midden. Plaatsen kan op drie manieren: slepen (muis en aanraking), tikken (kaart, dan vak) en
- * pijltjes op een kaart (↑ meer invloed, → meer belang).
- * @param {object} p
- * @param {string[][]} p.rijen per stakeholder de veld-id's [naam, soort, raakt, invloed, belang]
- * @param {string} p.voorvoegsel unieke aanhef voor id's
- * @param {object} [p.waarden] beginwaarden
- * @param {() => void} p.bijWijziging
- * @param {() => string} p.vraagstuk wat er in het midden staat
- * @param {string} [p.voorstel] de gebruiker uit de onderzoeksvraag (EV-01), als voorstel in de bak
- * @param {HTMLElement|null} [p.hint]
+ * Het bord als invoer (SX-16), in de vorm van bouwVelden ({element, lees, zet}) plus `ververs` voor het midden. Plaatsen:
+ * slepen, tikken (kaart, dan vak) of pijltjes. `rijen`: per stakeholder [naam, soort, raakt, invloed, belang];
+ * `voorstel`: de gebruiker uit EV-01, als voorstel in de bak.
  */
 export function stakeholderBord({ rijen, voorvoegsel, waarden = {}, bijWijziging, vraagstuk, voorstel = '', hint = null }) {
   const ids = rijen.flat();
@@ -198,7 +190,6 @@ export function stakeholderBord({ rijen, voorvoegsel, waarden = {}, bijWijziging
   // ------------------------------------------------------------ tekenen
   const kaartKnop = (s) => h('button', {
     type: 'button', class: `${kaartKlasse(s)}${opgepakt === s.nr ? ' sb-opgepakt' : ''}`, 'data-nr': s.nr, 'aria-pressed': String(opgepakt === s.nr),
-    title: 'Sleep, of tik en kies een vak. Pijltjes: ↑ meer invloed, → meer belang.',
     onclick: () => { if (!negeerKlik) pak(s.nr); },
     onkeydown: (e) => {
       const pos = schuif(s, e.key);

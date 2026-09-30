@@ -16,7 +16,7 @@ test('Figuur A3-vel: taak 1.1 toont figuur 1 van Schwagerman & Ulmer (2013) als 
   const t = blok(1).taken.find((x) => x.id === '1.1');
   assert.equal(t.stof.figuur, 'a3-vel');
   assert.match(t.stof.alineas[0], /\(Schwagerman & Ulmer, 2013\)/);
-  const dom = lees('js/dom.js');
+  const dom = lees('js/figuren-lb1.js');
   assert.match(dom, /src: 'media\/citaten\/schwagerman-ulmer-2013-figuur-1\.png'/);
   assert.match(dom, /loading: 'lazy'/, 'telt niet mee voor de eerste lading (PF-4)');
   assert.match(dom, /alt: 'Een A3-sjabloon\./);
@@ -28,24 +28,24 @@ test('Figuur six capitals: taak 2.1 toont het waardecreatieproces van het IIRC (
   const t = blok(1).taken.find((x) => x.id === '2.1');
   assert.equal(t.stof.figuur, 'six-capitals');
   assert.match(t.stof.alineas[1], /six capitals/, 'de figuur staat na de alinea die de kapitalen noemt');
-  const dom = lees('js/dom.js');
+  const dom = lees('js/figuren-lb1.js');
   assert.match(dom, /src: 'media\/citaten\/iirc-2021-waardecreatieproces\.webp'/);
   assert.match(dom, /alt: 'Het waardecreatieproces van het IIRC\./);
   assert.match(dom, /met\('\(International Integrated Reporting Council, 2021\)'\)/, 'bronvermelding in het bijschrift');
   for (const nl of ['Financieel', 'Productie', 'Intellectueel', 'Menselijk', 'Sociaal en relationeel', 'Natuurlijk']) assert.ok(dom.includes(`'${nl}'`), nl);
-  assert.match(lees('js/leerblok.js'), /'six-capitals': \{ bouw: sixCapitalsFiguur, na: 1 \}/);
+  assert.match(lees('js/figuren-lb1.js'), /'six-capitals': \{ bouw: sixCapitalsFiguur, na: 1 \}/);
 });
 
-test('Figuur VPC: taak 6.1 toont het value proposition canvas van Strategyzer (z.d.) als citaat met bron, alt-tekst en de vakken van beide kanten (ADR B89)', () => {
+test('Figuur VPC: taak 6.1 toont het value proposition canvas van Strategyzer (z.d.-b) als citaat met bron, alt-tekst en de vakken van beide kanten (ADR B89)', () => {
   const t = blok(3).taken.find((x) => x.id === '6.1');
   assert.equal(t.stof.figuur, 'vpc');
   assert.match(t.stof.alineas[0], /klantprofiel.*waardekaart/s, 'de figuur staat na de alinea die de twee kanten beschrijft');
-  const dom = lees('js/dom.js');
+  const dom = lees('js/figuren-lb3.js');
   assert.match(dom, /src: 'media\/citaten\/strategyzer-zd-value-proposition-canvas\.webp'/);
   assert.match(dom, /alt: 'Het value proposition canvas\./);
-  assert.match(dom, /met\('\(Strategyzer, z\.d\.\)'\)/, 'bronvermelding in het bijschrift');
+  assert.match(dom, /met\('\(Strategyzer, z\.d\.-b\)'\)/, 'bronvermelding in het bijschrift');
   for (const nl of ['Klanttaken', 'Pains', 'Gains', 'Producten en diensten', 'Pain relievers', 'Gain creators']) assert.ok(dom.includes(`'${nl}'`), nl);
-  assert.match(lees('js/leerblok.js'), /vpc: \{ bouw: vpcFiguur, na: 0 \}/);
+  assert.match(lees('js/figuren-lb3.js'), /vpc: \{ bouw: vpcFiguur, na: 0 \}/);
 });
 
 test('Figuur VPC ook bij de oefening van taak 6.1: de student hoeft niet terug naar de stof; een onbekende oefening.figuur wordt afgekeurd', () => {
@@ -54,8 +54,8 @@ test('Figuur VPC ook bij de oefening van taak 6.1: de student hoeft niet terug n
   assert.equal(t.oefening.figuur, 'vpc');
   assert.equal(bouwTaakModel(t, b).stappen[2].oefening.figuur, 'vpc', 'het taakmodel geeft de figuur door aan stap 3');
   assert.match(lees('js/leerblok.js'), /FIGUREN\[s3\.oefening\.figuur\]\?\.bouw\(\{ met \}\)/);
-  t.oefening.figuur = 'bmc';
-  assert.match(controleerFormaat(b, 'leerblok-3.json').fouten.join('\n'), /taak 6\.1: oefening\.figuur "bmc" is onbekend/);
+  t.oefening.figuur = 'swot';
+  assert.match(controleerFormaat(b, 'leerblok-3.json').fouten.join('\n'), /taak 6\.1: oefening\.figuur "swot" is onbekend/);
 });
 
 test('Figuur VPC ook bij de toepassing van taak 6.1; een onbekende toepassing.figuur wordt afgekeurd', () => {
@@ -64,8 +64,48 @@ test('Figuur VPC ook bij de toepassing van taak 6.1; een onbekende toepassing.fi
   assert.equal(t.toepassing.figuur, 'vpc');
   assert.equal(bouwTaakModel(t, b).stappen[3].figuur, 'vpc', 'het taakmodel geeft de figuur door aan stap 4');
   assert.match(lees('js/leerblok.js'), /FIGUREN\[s4\.figuur\]\?\.bouw\(\{ met \}\)/);
-  t.toepassing.figuur = 'bmc';
-  assert.match(controleerFormaat(b, 'leerblok-3.json').fouten.join('\n'), /taak 6\.1: toepassing\.figuur "bmc" is onbekend/);
+  t.toepassing.figuur = 'swot';
+  assert.match(controleerFormaat(b, 'leerblok-3.json').fouten.join('\n'), /taak 6\.1: toepassing\.figuur "swot" is onbekend/);
+});
+
+test('Figuur BMC: taak 7.1 toont het business model canvas van Strategyzer (z.d.-a, CC BY-SA 3.0) in stof, oefenen en toepassen; de stof licht toe en somt niet op (ADR B92)', () => {
+  const b = blok(3);
+  const t = b.taken.find((x) => x.id === '7.1');
+  assert.equal(t.stof.figuur, 'bmc');
+  assert.equal(t.oefening.figuur, 'bmc');
+  assert.equal(t.toepassing.figuur, 'bmc');
+  assert.equal(bouwTaakModel(t, b).stappen[2].oefening.figuur, 'bmc');
+  assert.equal(bouwTaakModel(t, b).stappen[3].figuur, 'bmc');
+  assert.match(t.stof.alineas[1], /midden.*[Rr]echts.*[Ll]inks.*[Oo]nderaan/s, 'de stof legt uit hoe je het canvas leest');
+  assert.doesNotMatch(t.stof.alineas.join(' '), /kernpartners, kernactiviteiten/i, 'de figuur toont de bouwstenen; de stof somt ze niet op');
+  const dom = lees('js/figuren-lb3.js');
+  assert.match(dom, /src: 'media\/citaten\/strategyzer-zd-business-model-canvas\.webp', width: 1200, height: 728/);
+  assert.match(dom, /alt: 'Het business model canvas: /);
+  assert.match(dom, /met\('\(Strategyzer, z\.d\.-a\)'\)/, 'bronvermelding in het bijschrift');
+  assert.match(dom, /creativecommons\.org\/licenses\/by-sa\/3\.0\//, 'link naar de licentie van het sjabloon');
+  const opties = t.toepassing.velden.find((v) => v.id === 'geraakt').opties;
+  for (const nl of opties) assert.ok(dom.includes(`'${nl}'`), `de tabel onder de figuur noemt ${nl}`);
+  assert.match(lees('js/figuren-lb3.js'), /bmc: \{ bouw: bmcFiguur, na: 0 \}/);
+});
+
+test('Figuur TOM-model: taak 8.1 toont een eigen weergave van de TOM³-indeling in stof, oefenen en toepassen; de vierde kolom verbindt de lagen (ADR B93)', () => {
+  const b = blok(3);
+  const t = b.taken.find((x) => x.id === '8.1');
+  for (const stap of [t.stof, t.oefening, t.toepassing]) assert.equal(stap.figuur, 'tom');
+  assert.equal(bouwTaakModel(t, b).stappen[3].figuur, 'tom');
+  assert.match(t.stof.alineas[0], /\(Westmoreland BV, z\.d\.\)/);
+  assert.match(t.stof.alineas[1], /van boven naar beneden/, 'de stof legt uit hoe je het raster leest');
+  assert.match(t.stof.alineas[2], /omhoog.*omlaag/s, 'de stof licht de lus van de vierde kolom toe');
+  assert.doesNotMatch(t.stof.alineas.join(' '), /Methode is hoe|De drie lagen zijn/, 'de figuur toont de lagen en kolommen; de stof definieert ze niet een voor een');
+  const dom = lees('js/figuren-lb3.js');
+  assert.match(dom, /export function tomFiguur/);
+  assert.match(dom, /role: 'img',\s*'aria-label': 'Het TOM-model als raster/);
+  for (const naam of ['Strategisch', 'Tactisch', 'Operationeel', 'Methode', 'Mens', 'Machine', 'Informatie & Rapportage']) assert.ok(dom.includes(`['${naam}'`), naam);
+  assert.match(dom, /Eigen weergave van de TOM³-indeling naar ', met\('\(Westmoreland BV, z\.d\.\)'\)/);
+  const css = lees('css/site.css');
+  assert.match(css, /\.tom-lus \{ grid-column:5; grid-row:2 \/ 5;/, 'de pijlen lopen door alle drie de lagen');
+  assert.match(css, /\.tom-cel\.tom-ir \{ grid-column:5; \}/, 'de cellen van kolom 4 staan expliciet onder de pijlen');
+  assert.match(lees('js/figuren-lb3.js'), /tom: \{ bouw: tomFiguur, na: 0 \}/);
 });
 
 /** De vragen van een oefening; een stakeholderbord (SX-16) is één vraag met de hint op de groep (zoals de contentcontrole). */
@@ -148,4 +188,13 @@ test('TK-19: een vraag gaat altijd over stof die ervoor is behandeld; alleen een
   const b = blok(1);
   b.taken[0].oefening.velden[1].hintBron = [{ soort: 'bron', bron: 'mit-ocw-2014', citatie: 'MIT OpenCourseWare, 2014', vindplaats: '5:07' }];
   assert.match(controleerFormaat(b, 'leerblok-1.json').fouten.join('\n'), /gaat niet over stof die ervoor is behandeld \(TK-19\)/);
+});
+
+test('PF-4 (ADR B97): de figuren laden per leerblok, alleen als de data ze gebruikt; dom.js, dat elke pagina laadt, heeft er geen', () => {
+  const pagina = lees('js/leerblok.js');
+  for (const n of [1, 3]) {
+    assert.match(pagina, new RegExp(`// gewicht-alleen: figurenlb${n}\\n\\s+if \\(FIGUREN_LB${n}\\.some\\(\\(n\\) => figuren\\.has\\(n\\)\\)\\) Object\\.assign\\(FIGUREN, \\(await import\\('\\./figuren-lb${n}\\.js'\\)\\)\\.FIGUREN\\);`), `leerblok ${n}`);
+    assert.match(lees('tools/gewicht-check.mjs'), new RegExp(`naam === 'figurenlb${n}'`), `gewichtcontrole ${n}`);
+  }
+  assert.doesNotMatch(lees('js/dom.js'), /export function \w+Figuur/, 'geen figuren in dom.js');
 });
