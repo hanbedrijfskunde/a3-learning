@@ -189,7 +189,7 @@ export function bouwMediaSectie({ blok, store, met = (t) => t, modelZichtbaar = 
   for (const r of ROUTES) knoppen.set(r, h('button', { type: 'button', class: 'knop md-knop', 'data-route': r, 'aria-pressed': 'false', onclick: () => toon(r, { bewaar: true }) }, ROUTE_NAMEN[r]));
   const taak = m.taak;
   const element = h('section', { class: 'kaart media', id: 'media', 'aria-labelledby': 'media-kop' },
-    h('h2', { id: 'media-kop' }, 'Kies hoe je de stof doorneemt'),
+    h('h4', { id: 'media-kop' }, 'Kies hoe je de stof doorneemt'),
     h('p', {}, `Lees de tekst, kijk de video of speel het spel. Alle drie leiden naar dezelfde „klaar als” en dezelfde oefening (taak ${taak}). Alles hieronder staat ook in de taken zelf; je kunt dit leerblok volledig met alleen tekst doen.`),
     h('div', { class: 'md-routes', role: 'group', 'aria-label': 'Route' }, [...knoppen.values()]),
     paneel,

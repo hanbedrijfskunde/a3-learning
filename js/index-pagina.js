@@ -7,6 +7,7 @@ import { leesProfiel, bewaarProfiel, beoordeelProfiel, zichtbareMeldingen } from
 import { bouwIndexModel } from './weergave.js';
 import { leesRecords, onderdeelTelt } from './afgerond.js';
 import { a3Stand } from './voortgang.js';
+import { maakAdres } from './taakweergave.js';
 
 const laad = async (pad) => (await fetch(new URL(pad, import.meta.url))).json();
 
@@ -20,9 +21,25 @@ async function start() {
   const blokken = h('section', { id: 'blokken', 'aria-labelledby': 'blokken-kop' });
   // SX-12: wat de student aan A3-vak 1 heeft opgebouwd, bovenaan; geen percentage (BW-4).
   const a3 = h('section', { id: 'mijn-a3', 'aria-labelledby': 'mijn-a3-kop' });
+  // „Verder waar je was” (DESIGN §5.2): de laatste taak en stap die de student opende, uit de taakweergave (SX-6).
+  const verder = h('section', { id: 'verder', class: 'verder-kaart', 'aria-labelledby': 'verder-kop', hidden: true });
+  function tekenVerder() {
+    const posities = overzicht.leerblokken.map((b) => store.getMeta(`positie:${b.nummer}`)).filter((p) => p?.taak && p?.stap);
+    const p = posities.sort((a, b) => String(b.bijgewerkt).localeCompare(String(a.bijgewerkt)))[0];
+    wis(verder);
+    verder.hidden = !p;
+    if (!p) return;
+    const pagina = overzicht.leerblokken.find((b) => b.nummer === p.leerblok)?.pagina;
+    verder.append(
+      h('p', { class: 'eyebrow' }, 'Verder waar je was'),
+      h('h2', { id: 'verder-kop' }, h('span', { class: 'nr' }, p.taak), ` ${p.titel ?? ''}`),
+      h('p', {}, `Leerblok ${p.leerblok} · stap ${p.stap} van 4`),
+      h('a', { class: 'knop knop-accent', href: `${pagina}${maakAdres(p.taak, p.stap)}` }, 'Ga verder'));
+  }
   const teken = () => {
     const model = bouwIndexModel(overzicht, leesRecords(store, alleIds));
     const records = leesRecords(store, alleIds);
+    tekenVerder();
     wis(a3);
     // Pas als er werk is (ST-7: bij een eerste bezoek alleen alias, vraagstuk, waarom-zin en de vier leerblokken).
     a3.hidden = !Object.values(records).some(Boolean);
@@ -103,7 +120,7 @@ async function start() {
 
   const h1 = main.querySelector('h1');
   wis(main);
-  main.append(h1, a3, start1, blokken, gegevens);
+  main.append(h1, verder, a3, start1, blokken, gegevens);
   teken();
 }
 

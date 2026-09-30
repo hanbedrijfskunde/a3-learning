@@ -77,65 +77,72 @@ export function bouwSpel({ spel, met = (t) => t }) {
   // ---------------------------------------------------------------- simulatie
 
   function simulatie() {
+    // Een echt spel (DESIGN §7.4): keuzes zijn grote kaarten die je aantikt, de voorspelling tik je per kapitaal aan, en het
+    // effect verschijnt als zes balken die zichtbaar op- of neergaan. Elke balk heeft zijn effect ook als tekst (TG-4); de
+    // tabel met alle termijnen staat uitklapbaar (MD-9). Geen score (MD-10).
     let i = 0;
     const tekenBeslissing = () => {
       wis(veld);
       const b = spel.beslissingen[i];
-      let gekozen = null;
-      const meldingKies = h('p', { class: 'fout', role: 'alert', hidden: true }, 'Kies eerst een optie.');
-      const opties = h('fieldset', { class: 'sp-opties' }, h('legend', {}, 'Wat besluit je?'),
-        b.opties.map((o) => h('div', { class: 'optie' },
-          h('input', { type: 'radio', name: `sp-${b.id}`, id: `sp-${b.id}-${o.id}`, value: o.id, onchange: () => { gekozen = o.id; meldingKies.hidden = true; } }),
-          h('label', { for: `sp-${b.id}-${o.id}` }, o.tekst))));
       veld.append(
         h('h3', { class: 'sp-kop', tabindex: '-1' }, `Beslissing ${i + 1} van ${spel.beslissingen.length}: ${b.titel} `, fictiefBadge()),
-        h('p', {}, b.situatie), opties, meldingKies,
-        h('div', { class: 'knoppen' }, h('button', { type: 'button', class: 'knop knop-accent', 'data-actie': 'kies', onclick: () => {
-          if (!gekozen) { meldingKies.hidden = false; return; }
-          tekenVoorspelling(b, gekozen);
-        } }, 'Kies deze optie')));
+        h('p', {}, b.situatie),
+        h('p', { class: 'sp-vraag' }, 'Wat besluit je? Tik een kaart aan.'),
+        h('div', { class: 'sp-keuzekaarten', role: 'group', 'aria-label': 'Wat besluit je?' },
+          b.opties.map((o) => h('button', { type: 'button', class: 'sp-keuzekaart', 'data-optie': o.id, onclick: () => tekenVoorspelling(b, o.id) }, o.tekst))));
     };
 
     const tekenVoorspelling = (b, optieId) => {
       wis(veld);
       const optie = b.opties.find((o) => o.id === optieId);
       const voorspelling = {};
-      const melding = h('p', { class: 'fout', role: 'alert', hidden: true }, 'Kies bij elk kapitaal een antwoord.');
+      const toon = h('button', { type: 'button', class: 'knop knop-accent', 'data-actie': 'toon', disabled: true, onclick: () => tekenEffect(b, optieId, voorspelling) }, 'Toon het effect');
       const rijen = KAPITALEN.map((kap) => {
-        const sel = h('select', { id: `sp-v-${kap.replace(/\W+/g, '-')}`, onchange: () => { voorspelling[kap] = sel.value; melding.hidden = true; } },
-          h('option', { value: '' }, 'Kies…'), spel.voorspelOpties.map((o) => h('option', { value: o.id }, o.tekst)));
-        return h('div', { class: 'veld' }, h('label', { for: sel.id }, kap), sel);
+        const knoppen = spel.voorspelOpties.map((o) => h('button', { type: 'button', class: 'sp-chip', 'aria-pressed': 'false', 'data-waarde': o.id, onclick: (e) => {
+          voorspelling[kap] = o.id;
+          e.currentTarget.parentElement.querySelectorAll('button').forEach((k) => k.setAttribute('aria-pressed', String(k === e.currentTarget)));
+          toon.disabled = !voorspellingVolledig(voorspelling);
+        } }, o.tekst));
+        return h('div', { class: 'sp-voorspelrij', role: 'group', 'aria-label': kap }, h('span', { class: 'sp-kapitaal' }, kap), h('div', { class: 'sp-chips' }, knoppen));
       });
       veld.append(
         h('h3', { class: 'sp-kop', tabindex: '-1' }, `Voorspel eerst: ${optie.tekst}`),
-        h('p', {}, `${spel.voorspelVraag} Kies per kapitaal. Daarna zie je het effect.`),
-        h('div', { class: 'sp-voorspel' }, rijen), melding,
-        h('div', { class: 'knoppen' }, h('button', { type: 'button', class: 'knop knop-accent', 'data-actie': 'toon', onclick: () => {
-          if (!voorspellingVolledig(voorspelling)) { melding.hidden = false; return; }
-          tekenEffect(b, optieId, voorspelling);
-        } }, 'Toon het effect')));
+        h('p', {}, `${spel.voorspelVraag} Tik per kapitaal aan wat je verwacht. Daarna zie je het effect.`),
+        h('div', { class: 'sp-voorspel' }, rijen),
+        h('div', { class: 'knoppen' }, toon));
+      focusKop();
     };
 
+    const PIJL = { plus: '▲', min: '▼', input: '→', geen: '–' };
     const tekenEffect = (b, optieId, voorspelling) => {
       wis(veld);
       const optie = b.opties.find((o) => o.id === optieId);
       const uitkomst = vergelijkVoorspelling(b, optieId, voorspelling);
-      const tabel = h('table', { class: 'sp-tabel' },
-        h('caption', {}, 'Effect van je keuze'),
-        h('thead', {}, h('tr', {}, h('th', { scope: 'col' }, 'Kapitaal'), TERMIJNEN.map((t) => h('th', { scope: 'col' }, t)), h('th', { scope: 'col' }, 'Jouw voorspelling voor de lange termijn'))),
-        h('tbody', {}, uitkomst.map((r) => h('tr', {},
-          h('th', { scope: 'row' }, r.kapitaal),
-          r.termijn.map((t) => h('td', {}, EFFECT_TEKST[t])),
-          h('td', {}, `${EFFECT_TEKST[r.voorspeld]}: ${r.gelijk ? 'komt overeen' : `het wordt ${EFFECT_TEKST[r.werkelijk]}`}`)))));
+      const balken = h('ul', { class: 'sp-balken' }, uitkomst.map((r) => h('li', { class: 'sp-balkrij' },
+        h('span', { class: 'sp-kapitaal' }, r.kapitaal),
+        h('span', { class: 'sp-termijnen' }, r.termijn.map((t, k) => h('span', { class: `sp-balk sp-balk-${t}`, title: TERMIJNEN[k] },
+          h('span', { class: 'sp-vulling' }), h('span', { class: 'sp-balktekst' }, `${PIJL[t]} ${EFFECT_TEKST[t]}`), h('span', { class: 'sr-only' }, ` (${TERMIJNEN[k]})`)))),
+        h('span', { class: 'sp-oordeel' }, r.gelijk ? '✓ zoals je voorspelde' : `jij: ${EFFECT_TEKST[r.voorspeld]}`))));
+      const tabel = h('details', { class: 'sp-tekstversie' }, h('summary', {}, 'Als tabel'),
+        h('div', { class: 'sp-tabelwrap' }, h('table', { class: 'sp-tabel' },
+          h('caption', {}, 'Effect van je keuze'),
+          h('thead', {}, h('tr', {}, h('th', { scope: 'col' }, 'Kapitaal'), TERMIJNEN.map((t) => h('th', { scope: 'col' }, t)), h('th', { scope: 'col' }, 'Jouw voorspelling voor de lange termijn'))),
+          h('tbody', {}, uitkomst.map((r) => h('tr', {},
+            h('th', { scope: 'row' }, r.kapitaal),
+            r.termijn.map((t) => h('td', {}, EFFECT_TEKST[t])),
+            h('td', {}, `${EFFECT_TEKST[r.voorspeld]}: ${r.gelijk ? 'komt overeen' : `het wordt ${EFFECT_TEKST[r.werkelijk]}`}`)))))));
       const toelichting = h('ul', { class: 'sp-toelichting' }, uitkomst.filter((r) => r.toelichting).map((r) => h('li', {}, h('strong', {}, `${r.kapitaal}: `), r.toelichting)));
       veld.append(
         h('h3', { class: 'sp-kop', tabindex: '-1' }, 'Het effect van je keuze ', fictiefBadge()),
-        h('div', { class: 'sp-tabelwrap' }, tabel),
+        h('p', { class: 'klein' }, `Van links naar rechts: ${TERMIJNEN.join(', ')}.`),
+        balken, tabel,
         h('div', { 'aria-live': 'polite' }, h('p', {}, optie.feedback), toelichting, h('p', {}, h('strong', {}, 'Spanning: '), spanningTekst(effectVan(b, optieId)))),
         h('div', { class: 'knoppen' }, h('button', { type: 'button', class: 'knop knop-accent', 'data-actie': 'volgende', onclick: () => {
           i += 1;
           if (i < spel.beslissingen.length) { tekenBeslissing(); focusKop(); } else eind();
         } }, i + 1 < spel.beslissingen.length ? 'Volgende beslissing' : 'Afronden')));
+      // de balken groeien pas na het tekenen, zodat je de beweging ziet (uit bij prefers-reduced-motion, SX-9)
+      requestAnimationFrame(() => requestAnimationFrame(() => balken.classList.add('sp-balken-zichtbaar')));
       focusKop();
     };
     const eind = () => {

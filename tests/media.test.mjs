@@ -63,7 +63,7 @@ test('MD-2: de pagina toont drie knoppen en één „klaar als” buiten de rout
   assert.match(js, /for \(const r of ROUTES\) knoppen\.set/);
   assert.match(js, /md-klaar[\s\S]{0,400}klaarAlsVan\(blok\)/);
   assert.match(js, /href: `#oefening-\$\{taak\}`/);
-  assert.match(bron('js/leerblok.js'), /blok\.media \? bouwMediaSectie/);
+  assert.match(bron('js/leerblok.js'), /mediaSectie = bouwMediaSectie\(\{ blok, store, met,/);
 });
 
 // ---------------------------------------------------------------- MD-3
@@ -294,7 +294,7 @@ test('MD-9: het spel is met alleen het toetsenbord te bedienen: alleen knoppen, 
   assert.doesNotMatch(js, /h\('(?:div|span|li|td|p)',\s*\{[^}]*onclick/, 'een klik hoort op een knop');
   assert.match(js, /h\('button'/);
   assert.match(js, /type: 'radio'/);
-  assert.match(js, /h\('select'/);
+  assert.match(js, /class: 'sp-keuzekaart'/, 'de simulatie: keuzes als tikbare kaarten, dus knoppen (DESIGN §7.4)');
 });
 
 test('MD-10: de feedback per keuze klopt: elke optie geeft eigen tekst en de simulator vergelijkt per kapitaal, zonder totaal', () => {
@@ -394,9 +394,10 @@ test('MD-12: geen taak vraagt om een video of spel, en tekst is de standaardrout
 
 test('MD-12: de pagina van een leerblok bouwt de taken zonder de mediasectie (media wordt pas geladen als het leerblok media heeft)', () => {
   const pagina = bron('js/leerblok.js');
-  assert.match(pagina, /const heeftMedia = Boolean\(blok\.media \|\| blok\.kijktips\)/);
-  assert.match(pagina, /mediaSectie\?\.element/, 'de mediasectie is optioneel in de opbouw');
-  assert.match(pagina, /const \{ bouwMediaSectie, bouwKijktips \} = heeftMedia \? await import/, 'media.js is een uitgestelde import');
+  assert.match(pagina, /const heeftKijktips = Boolean\(blok\.kijktips\)/);
+  assert.match(pagina, /mediaPlek && blok\.media\.taak === id \? mediaPlek : null/, 'de mediasectie is optioneel en staat in de stap stof van haar taak (MD-2, ADR B79)');
+  assert.match(pagina, /return mediaDirect \?\? import\('\.\/media\.js'\)/, 'media.js laadt pas als de stap stof opengaat');
+  assert.match(pagina, /adres\.stap === 2 && adres\.taak === blok\.media\?\.taak\) toonMedia\(\)/);
 });
 
 test('MD-12: de controle vindt een taak die alleen via een video te doen is', () => {

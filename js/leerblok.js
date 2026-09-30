@@ -14,6 +14,7 @@ import { vorigeKeerSectie } from './terugblik-pagina.js'; // fase 7: TP-11
 import { normaliseerBlok } from './blok.js';
 import { klaarAlsLijst, stapStand, segmentLabel, a3Stand } from './voortgang.js'; // fase 17: SX-4, SX-5, SX-12
 import { isAfgerond, leesRecords } from './afgerond.js';
+import { leesAdres, maakAdres, voetActies } from './taakweergave.js'; // fase 19: SX-6
 
 const laad = async (pad) => (await fetch(new URL(pad, import.meta.url))).json();
 const laadBlok = async (pad) => normaliseerBlok(await laad(pad)); // reeksen velden uitschrijven
@@ -33,7 +34,7 @@ function modelantwoordEl(model, velden) {
     if (w === undefined) continue;
     dl.append(h('dt', {}, v.label), h('dd', {}, Array.isArray(w) ? w.join(', ') : w));
   }
-  return h('div', {}, h('h5', {}, 'Modelantwoord'), dl, model.tekst ? h('p', {}, model.tekst) : null);
+  return h('div', {}, dl, model.tekst ? h('p', {}, model.tekst) : null);
 }
 
 async function start() {
@@ -48,7 +49,7 @@ async function start() {
   const heeftWissel = Boolean(blok.wissel) || blok.taken.some((t) => t.toepassing.component === 'feedbacklog');
   const heeftWeergave = blok.taken.some((t) => t.toepassing.weergave);
   const heeftLb4Ui = blok.taken.some((t) => LB4_COMPONENTEN.includes(t.toepassing.component));
-  const heeftMedia = Boolean(blok.media || blok.kijktips); // fase 12: routekeuze tekst/video/spel (leerblok 2 en 4), kijktips (leerblok 1)
+  const heeftKijktips = Boolean(blok.kijktips); // leerblok 1: kijktips staan in het overzicht, dus media.js laadt meteen
   await laadControles([blok.leerblok, blok.wissel?.leerblok]);
   // gewicht-alleen: wissel
   const [{ maakWissel, EV09_TAAK }, { bouwWisselPaneel }] = heeftWissel ? await Promise.all([import('./wissel.js'), import('./wissel-paneel.js')]) : [{}, {}];
@@ -56,8 +57,13 @@ async function start() {
   const { bouwWeergave } = heeftWeergave ? await import('./lb2-ui.js') : {};
   // gewicht-alleen: lb4ui
   const lb4Ui = heeftLb4Ui ? await import('./lb4-ui.js') : {};
-  // gewicht-alleen: media
-  const { bouwMediaSectie, bouwKijktips } = heeftMedia ? await import('./media.js') : {};
+  // gewicht-alleen: kijktips
+  const mediaDirect = heeftKijktips ? await import('./media.js') : null;
+  // De routekeuze (tekst, video, spel) laadt pas als de student de stap stof van de mediataak opent (fase 19, ADR B82).
+  const laadMedia = async () => {
+    // gewicht-alleen: naklik
+    return mediaDirect ?? import('./media.js');
+  };
   const { opslag, geblokkeerd } = kiesOpslag();
   const store = maakStore(opslag);
   const context = () => wisselContext(store); // ontvangen wisselblokken voor de kopiecontrole (WS-7)
@@ -76,6 +82,8 @@ async function start() {
   wis(main);
 
   const taken = new Map(); // id → { leesInhoud, toon }
+  let klaarVoorVoet = false; // de vaste voet tekent pas als alle taken er zijn (fase 19)
+  let adres = { soort: 'overzicht' }; // waar de student is: overzicht, een taak en stap, of afsluiten
   const bevestiging = h('p', { class: 'bevestig', role: 'status', hidden: true });
   let bevestigTimer;
   function bevestig(tekst) {
@@ -135,7 +143,8 @@ async function start() {
       s2.stof.format ? h('p', { class: 'format' }, s2.stof.format) : null);
     // Het format hoort bij de tweede alinea: zet het na de eerste alinea.
     if (s2.stof.format) stof.insertBefore(stof.lastChild, stof.children[1] ?? null);
-    const stap2 = stap(s2, stof);
+    // De routekeuze tekst, video of spel staat in de stap stof van de taak waar de media bij horen (MD-2, ADR B79).
+    const stap2 = stap(s2, stof, mediaPlek && blok.media.taak === id ? mediaPlek : null);
 
     // stap 3: de oefenversie (TK-3, TK-5, TK-6, TK-7)
     const bijOefening = () => { toonModel(sessie.zetOefening(id, oefVelden.lees())); tekenVoortgang(); };
@@ -144,12 +153,35 @@ async function start() {
       ? lb4Ui.bouwVerbandenOefening({ taak, velden: s3.oefening.velden, waarden: sessie.oefening(id).invoer, bijWijziging: bijOefening })
       : bouwVelden(s3.oefening.velden, `oef-${id}`, sessie.oefening(id).invoer, bijOefening);
     const modelGebied = h('div', { class: 'model', 'aria-live': 'polite' });
+    // Het modelantwoord als beloning na de eigen poging (TK-6, DESIGN §5.3): een uitklappaneel „Zo zou het kunnen”.
+    let modelOpen = false;
+    let modelNu = null;
     const toonModel = (m) => {
+      modelNu = m;
       wis(modelGebied);
-      // modelExtra bestaat alleen bij 9.4 en kan null geven; native append zou dat als tekst tonen
-      if (m.modelZichtbaar) modelGebied.append(...[modelantwoordEl(m.modelantwoord, m.velden), oefVelden.modelExtra && oefVelden.modelExtra(m.modelantwoord)].filter(Boolean));
+      if (m.modelZichtbaar) {
+        tekenModelMelding();
+        // modelExtra bestaat alleen bij 9.4 en kan null geven; native append zou dat als tekst tonen
+        const paneel = h('details', { class: 'model-paneel', id: `model-${id}` },
+          h('summary', {}, 'Zo zou het kunnen'),
+          ...[modelantwoordEl(m.modelantwoord, m.velden), oefVelden.modelExtra && oefVelden.modelExtra(m.modelantwoord)].filter(Boolean));
+        paneel.open = modelOpen;
+        paneel.addEventListener('toggle', () => { modelOpen = paneel.open; tekenVoet(); });
+        modelGebied.append(paneel);
+      } else {
+        modelOpen = false;
+      }
       document.dispatchEvent(new CustomEvent('a3-oefening', { detail: { taak: id, modelZichtbaar: m.modelZichtbaar } })); // de mediasectie toont het model in de tekstroute pas dan (TK-6)
     };
+    const modelMelding = h('p', { class: 'klein', role: 'status' });
+    function tekenModelMelding(tekst = '') { modelMelding.textContent = tekst; }
+    function openModel() {
+      if (!modelNu?.modelZichtbaar) { tekenModelMelding('Vul eerst zelf iets in; daarna zie je hoe het zou kunnen.'); return false; }
+      modelOpen = true;
+      const paneel = modelGebied.querySelector('details');
+      if (paneel) { paneel.open = true; paneel.querySelector('summary').focus(); }
+      return true;
+    }
     const veldGebied = h('div', { class: 'oef-velden' },
       oefVelden.element,
       h('div', { class: 'knoppen' },
@@ -159,7 +191,7 @@ async function start() {
           tekenVoortgang();
         } }, 'Opnieuw oefenen'),
         h('button', { type: 'button', class: 'knop', 'data-actie': 'overslaan', onclick: () => tekenOverslaan(sessie.zetOverslaan(id, true)) }, 'Ik ken dit al')),
-      modelGebied);
+      modelMelding, modelGebied);
     const overslaanGebied = h('div', { class: 'overgeslagen', hidden: true },
       h('p', {}, 'Je hebt de oefening overgeslagen. Dat heeft geen gevolgen voor je bewijs.'),
       h('button', { type: 'button', class: 'knop', 'data-actie': 'toch-oefenen', onclick: () => tekenOverslaan(sessie.zetOverslaan(id, false)) }, 'Toch oefenen'));
@@ -272,7 +304,7 @@ async function start() {
       } }, 'Opnieuw doen'),
       opnieuwMelding);
     const stapHint = h('p', { class: 'klein', role: 'status' });
-    const klaarWacht = h('p', { class: 'klein' }, 'Zodra je „klaar als” is gehaald, verschijnt hier de knop Klaar. Je kunt ook gewoon doorgaan naar de volgende taak.');
+    const klaarWacht = h('p', { class: 'klein' }, 'Zodra je „klaar als” is gehaald, kun je deze taak afronden. Je kunt ook gewoon doorgaan naar de volgende taak.');
     const stap4 = stap(s4,
       s4.opdracht ? h('p', {}, met(s4.opdracht.tekst)) : null,
       voorbeeld ? h('div', {}, h('p', { class: 'klein' }, 'Zo klinkt je vraag nu:'), voorbeeld) : null,
@@ -281,7 +313,8 @@ async function start() {
       uitkomst, opnieuwGebied,
       h('div', { class: 'klaar-voet' },
         h('div', { class: 'veld' }, h('label', { for: `volgende-${id}` }, 'Mijn volgende stap is …'), stapVeld, stapHint),
-        klaarWacht, klaarKnop, klaarBericht));
+        klaarWacht, klaarKnop, klaarBericht),
+      taak.bewijsonderdeel === blok.wissel?.zichtbaarNa ? wisselSectie : null);
 
     // na „klaar": optionele verdieping, geen stap (TK-13, TK-14, ST-7, ADR B76)
     verdiepingKop.append(h('h3', {}, 'Verdieping (optioneel)'));
@@ -315,30 +348,43 @@ async function start() {
     const stappenRij = h('ol', { class: 'stappenrij' });
     function tekenVoortgang() {
       const o = sessie.oefening(id);
-      const stand = stapStand({
+      stand = stapStand({
         gestart: isIngevuld(toe.lees()) || isIngevuld(o.invoer),
         geoefend: isIngevuld(o.invoer) || o.overgeslagen,
         oefeningAf: o.modelZichtbaar || o.overgeslagen,
         klaar: sessie.isKlaar(id),
       });
       segmenten.setAttribute('aria-label', segmentLabel(taakNr, blok.taken.length, stand));
+      tekenVoet();
       wis(segmenten);
       stand.stappen.forEach((st) => segmenten.append(h('span', { class: `segment segment-${st.stand}` })));
       wis(stappenRij);
+      // onderstreept is de stap die de student nu ziet; de segmenten tonen de voortgang
+      const hier = adres.soort === 'taak' && adres.taak === id ? adres.stap : stand.actief + 1;
       stand.stappen.forEach((st, i) => stappenRij.append(h('li', {},
-        h('a', { href: `#stap-${id}-${i + 1}`, 'aria-current': st.stand === 'actief' ? 'step' : null, class: `stap-link stap-${st.stand}` }, st.naam))));
+        h('a', { href: maakAdres(id, i + 1), 'aria-current': i + 1 === hier ? 'step' : null, class: `stap-link stap-${st.stand}` }, st.naam))));
     }
     const tijd = taak.richttijd.minuten ? `± ${taak.richttijd.minuten} min` : taak.richttijd.tekst;
     // De balk is een direct kind van het artikel, zodat hij over de hele taak blijft staan (position: sticky).
     const kop = [
       h('div', { class: 'taakbalk' },
-        h('p', { class: 'eyebrow' }, `Taak ${taakNr} van ${blok.taken.length} · ${id}`),
+        h('p', { class: 'eyebrow' }, h('a', { href: '#', class: 'naar-overzicht' }, `← Leerblok ${blok.leerblok}`), ` · Taak ${taakNr} van ${blok.taken.length}`),
         segmenten,
         h('nav', { 'aria-label': `Stappen van taak ${id}` }, stappenRij)),
       h('h2', { id: `kop-${id}` }, h('span', { class: 'nr' }, id), ` ${taak.titel}`),
       h('p', { class: 'meta' }, h('span', { class: 'vorm' }, taak.vorm), ' · ', h('span', { class: 'tijd' }, tijd))];
 
-    taken.set(id, { leesInhoud: lees, toon: toonResultaat });
+    let stand = null;
+    taken.set(id, {
+      leesInhoud: lees, toon: toonResultaat,
+      actieveStap: () => (stand ? stand.actief + 1 : 1),
+      modelOpen: () => modelOpen || sessie.oefening(id).overgeslagen,
+      openModel,
+      klaarMogelijk: () => sessie.beoordeel(id, lees()).klaarMogelijk,
+      isKlaar: () => sessie.isKlaar(id),
+      klaar: () => klaarKnop.click(),
+      tekenVoortgang: () => tekenVoortgang(),
+    });
     const artikel = h('article', { class: 'taak', id: `taak-${id}`, 'aria-labelledby': `kop-${id}` },
       kop, stap1, stap2, stap3, stap4, verdiepingKop);
     const m0 = sessie.oefening(id);
@@ -441,24 +487,109 @@ async function start() {
     profiel.voorlopig ? h('p', { class: 'klein' }, 'Je werkt met een voorlopig vraagstuk: je bewijs krijgt het label voorlopig.') : null);
 
   // Media (fase 12): leerblok 2 en 4 bieden drie routes met dezelfde „klaar als”; leerblok 1 toont de kijktips als gewone links.
-  const mediaSectie = blok.media ? bouwMediaSectie({ blok, store, met, modelZichtbaar: () => sessie.oefening(blok.media.taak).modelZichtbaar }) : null;
-  if (mediaSectie) document.addEventListener('a3-oefening', (e) => { if (e.detail.taak === blok.media.taak) mediaSectie.ververs(); });
-  const kijktips = blok.kijktips ? bouwKijktips({ kijktips: blok.kijktips, met }) : null;
+  const mediaPlek = blok.media ? h('div', { class: 'media-plek' }) : null;
+  let mediaSectie = null;
+  async function toonMedia() {
+    if (mediaSectie || !mediaPlek) return;
+    const { bouwMediaSectie } = await laadMedia();
+    mediaSectie = bouwMediaSectie({ blok, store, met, modelZichtbaar: () => sessie.oefening(blok.media.taak).modelZichtbaar });
+    mediaPlek.append(mediaSectie.element);
+  }
+  if (mediaPlek) document.addEventListener('a3-oefening', (e) => { if (e.detail.taak === blok.media.taak) mediaSectie?.ververs(); });
+  const kijktips = blok.kijktips ? mediaDirect.bouwKijktips({ kijktips: blok.kijktips, met }) : null;
 
-  const inhoud = h('nav', { 'aria-label': 'Taken in dit leerblok', class: 'taken-nav' },
-    h('ol', {}, blok.taken.map((t) => h('li', {}, h('a', { href: `#taak-${t.id}` }, `${t.id} ${t.titel}`))), h('li', {}, h('a', { href: '#afsluiten' }, 'Klaar met dit blok'))));
+  const takenLijst = h('ol', {});
+  const inhoud = h('nav', { 'aria-label': 'Taken in dit leerblok', class: 'taken-nav' }, takenLijst);
+  function tekenTakenLijst() {
+    wis(takenLijst);
+    takenLijst.append(...blok.taken.map((t) => h('li', {}, h('a', { href: `#taak-${t.id}`, class: 'taak-link' },
+      `${t.id} ${t.titel}`, sessie.isKlaar(t.id) ? h('span', { class: 'taak-klaar' }, ' ✓ klaar') : null))),
+    h('li', {}, h('a', { href: '#afsluiten', class: 'taak-link' }, 'Klaar met dit blok')));
+  }
 
-  main.append(...[
-    h1,
+  // ---------------------------------------------------------------- één taak per scherm (SX-6, fase 19)
+
+  const artikelen = blok.taken.map((t, i) => taakArtikel(t, i + 1));
+  const takenIds = blok.taken.map((t) => t.id);
+  const overzichtSectie = h('div', { id: 'overzicht' },
     h('p', { class: 'meta' }, `± ${blok.richttijd} min · Na dit blok heb je: ${blok.eindigtMet.charAt(0).toLowerCase()}${blok.eindigtMet.slice(1)}.`),
     aanbevolen ? h('p', { class: 'meta', id: 'aanbevolen' }, `Aanbevolen: ${aanbevolen.week}, ${aanbevolen.dag}.`) : null,
+    vorigeKeer, vraagstuk, kijktips, h('h2', {}, 'Taken in dit leerblok'), inhoud);
+  const voetTerug = h('button', { type: 'button', class: 'knop', 'data-actie': 'terug' });
+  const voetPrimair = h('button', { type: 'button', class: 'knop knop-accent', 'data-actie': 'primair' });
+  const voet = h('nav', { class: 'taakvoet', 'aria-label': 'Verder in deze taak' }, voetTerug, voetPrimair);
+  const POSITIE = `positie:${blok.leerblok}`;
+  const ga = (doel) => { if (doel === '#') history.pushState(null, '', location.pathname); else location.hash = doel; if (doel === '#') toonAdres(); };
+
+  function tekenVoet() {
+    if (!klaarVoorVoet) return;
+    const t = adres.soort === 'taak' ? taken.get(adres.taak) : null;
+    const positie = store.getMeta(POSITIE);
+    const a = voetActies({
+      soort: adres.soort, taken: takenIds, taak: adres.taak, stap: adres.stap,
+      verder: positie?.taak ?? (takenIds.some((x) => sessie.isKlaar(x)) ? takenIds.find((x) => !sessie.isKlaar(x)) : undefined),
+      modelOpen: t?.modelOpen(), klaarMogelijk: t?.klaarMogelijk(), klaar: t?.isKlaar(),
+    });
+    voet.hidden = !a.primair && !a.terug;
+    voetPrimair.hidden = !a.primair;
+    voetTerug.hidden = !a.terug;
+    if (a.primair) { voetPrimair.textContent = a.primair.label; voetPrimair.onclick = () => voetActie(a.primair); }
+    if (a.terug) { voetTerug.textContent = a.terug.label; voetTerug.onclick = () => ga(a.terug.doel); }
+  }
+  function voetActie(p) {
+    const t = taken.get(adres.taak);
+    if (p.actie === 'ga') ga(p.doel);
+    else if (p.actie === 'model') { if (t.openModel()) tekenVoet(); }
+    else if (p.actie === 'klaar') { t.klaar(); tekenVoet(); }
+  }
+
+  function toonAdres({ focus = true } = {}) {
+    adres = leesAdres(location.hash, takenIds);
+    if (adres.soort === 'taak' && adres.stap === null) {
+      // zonder stap: de stap waar de student is (SX-6); het adres wordt vervangen, zodat terug niet in een lus loopt
+      adres.stap = taken.get(adres.taak).actieveStap();
+      history.replaceState(null, '', maakAdres(adres.taak, adres.stap));
+    }
+    overzichtSectie.hidden = adres.soort !== 'overzicht';
+    afsluiten.hidden = adres.soort !== 'afsluiten';
+    document.body.classList.toggle('in-taak', adres.soort === 'taak');
+    artikelen.forEach((art, i) => {
+      const deze = adres.soort === 'taak' && takenIds[i] === adres.taak;
+      art.hidden = !deze;
+      if (!deze) return;
+      art.querySelectorAll(':scope > .stap').forEach((sec) => { sec.hidden = Number(sec.dataset.stap) !== adres.stap; });
+      art.classList.toggle('op-toepassen', adres.stap === 4);
+    });
+    if (adres.soort === 'overzicht') tekenTakenLijst();
+    if (adres.soort === 'taak') taken.get(adres.taak).tekenVoortgang();
+    if (adres.soort === 'taak' && adres.stap === 2 && adres.taak === blok.media?.taak) toonMedia().catch(() => mediaPlek.append(h('p', { class: 'klein' }, 'De keuze tussen tekst, video en spel kon niet laden; de tekst hierboven is genoeg om verder te gaan (MD-12).')));
+    if (adres.soort === 'taak') {
+      const titel = blok.taken.find((t) => t.id === adres.taak)?.titel;
+      try { store.setMeta(POSITIE, { leerblok: blok.leerblok, taak: adres.taak, stap: adres.stap, titel, bijgewerkt: new Date().toISOString() }); } catch (e) { /* zonder opslag geen „ga verder” */ }
+    }
+    tekenVoet();
+    if (!focus) return;
+    const doel = adres.soort === 'taak' ? document.getElementById(`stapkop-${adres.taak}-${adres.stap}`)
+      : adres.soort === 'afsluiten' ? document.getElementById('afsluiten-kop') : h1;
+    doel?.setAttribute('tabindex', '-1');
+    doel?.focus();
+    if (adres.soort === 'overzicht') window.scrollTo(0, 0);
+  }
+
+  document.body.classList.add('taakweergave');
+  main.append(...[
+    h1,
     geblokkeerd ? geblokkeerdMelding(store, config.versie) : null,
-    foutGebied, bevestiging, herinneringGebied, vorigeKeer, vraagstuk, mediaSectie?.element, kijktips, inhoud,
-    ...blok.taken.flatMap((t, i) => [taakArtikel(t, i + 1), t.bewijsonderdeel === blok.wissel?.zichtbaarNa ? wisselSectie : null]), afsluiten,
+    foutGebied, bevestiging, herinneringGebied, overzichtSectie,
+    ...artikelen, afsluiten, voet,
   ].filter(Boolean));
   tekenAfsluiten();
   tekenWissel();
   toonBewaarHerinnering(herinneringGebied, store, config.versie);
+  klaarVoorVoet = true;
+  window.addEventListener('hashchange', () => toonAdres());
+  window.addEventListener('popstate', () => toonAdres());
+  toonAdres({ focus: location.hash !== '' });
 }
 
 start().catch((e) => {

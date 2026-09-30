@@ -13,3 +13,9 @@
   img, svg, video { max-width: 100%; }
   a { color: inherit; text-decoration: none; }
 }
+
+/* Fase 19: op papier alle taken en stappen onder elkaar, zonder vaste voet. */
+@media print {
+  .taakweergave .taak, .taakweergave .stap, .taakweergave #overzicht { display:block !important; }
+  .taakvoet, .taakbalk nav, .segmenten { display:none !important; }
+}

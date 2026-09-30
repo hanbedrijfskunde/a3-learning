@@ -77,9 +77,12 @@ function bouwKaart({ kaarten, stakeholders, verbanden: begin = [], idVoor, bijWi
   // ---- de tekstweergave en de open plekken (VB-4)
   const tekstLijst = h('ol', { class: 'vb-tekst-lijst', id: `${idVoor}-tekst` });
   const openLijst = h('ul', { class: 'vb-open', id: `${idVoor}-open` });
-  const tekstKop = h('h5', { id: `${idVoor}-tekst-kop` }, 'Je verbanden in tekst');
-  const openKop = h('h5', {}, 'Open plekken');
+  const tekstKop = h('summary', { id: `${idVoor}-tekst-kop` }, 'Je verbanden in tekst');
+  const openKop = h('summary', {}, 'Alle open plekken');
+  // VB-4 en DESIGN §7.3: één open plek tegelijk als prompt boven de kaart; de volledige lijst en de tekst staan uitklapbaar.
+  const prompt = h('p', { class: 'vb-prompt', id: `${idVoor}-prompt`, 'aria-live': 'polite' });
 
+  const openDetails = h('details', { class: 'vb-details' }, openKop, openLijst);
   const kaartVan = (id) => kaarten.kaarten.get(id);
   function ververs() {
     const verbonden = verbondenKaarten(verbanden);
@@ -97,8 +100,12 @@ function bouwKaart({ kaarten, stakeholders, verbanden: begin = [], idVoor, bijWi
     tekstKop.textContent = `Je verbanden in tekst (${verbanden.length})`;
     if (verbanden.length === 0) tekstLijst.append(h('li', { class: 'klein vb-leeg' }, 'Nog geen verbanden. Kies twee kaarten uit verschillende kolommen.'));
     wis(openLijst);
-    for (const o of openPlekken({ kaarten: kaarten.kaarten, verbanden })) openLijst.append(h('li', { 'data-kaart': o.kaart }, o.vraag));
-    openKop.hidden = openLijst.children.length === 0;
+    const open = openPlekken({ kaarten: kaarten.kaarten, verbanden });
+    for (const o of open) openLijst.append(h('li', { 'data-kaart': o.kaart }, o.vraag));
+    openDetails.hidden = open.length === 0;
+    prompt.textContent = open.length ? `Volgende open plek: ${open[0].vraag}` : 'Er zijn geen open plekken meer.';
+    prompt.hidden = open.length === 0 && verbanden.length === 0; // zonder kaarten en zonder verbanden is er niets te vragen
+    openKop.textContent = `Alle open plekken (${open.length})`;
     plan();
   }
 
@@ -184,7 +191,8 @@ function bouwKaart({ kaarten, stakeholders, verbanden: begin = [], idVoor, bijWi
   const element = h('div', { class: 'vb-kaart', id: idVoor },
     h('p', { class: 'klein' }, 'Kies een kaart en daarna een kaart uit een andere kolom om een verband te leggen. Elke kaart is een knop; alle verbanden staan hieronder ook als tekst. Bronnen: ',
       h('a', { href: 'bronnen.html#bron-osterwalder-2014' }, 'Osterwalder e.a. (2014)'), ' voor het VPC en ', h('a', { href: 'bronnen.html#bron-iirc-2021' }, 'IIRC (2021)'), ' voor de zes kapitalen.'),
-    h('div', { class: 'vb-bord' }, kolomEl), status, form, tekstKop, tekstLijst, openKop, openLijst);
+    prompt, h('div', { class: 'vb-bord' }, kolomEl), status, form,
+    h('details', { class: 'vb-details' }, tekstKop, tekstLijst), openDetails);
   ververs();
   return {
     element, kaarten: kaarten.kaarten,

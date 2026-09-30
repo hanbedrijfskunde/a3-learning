@@ -14,6 +14,7 @@
   --fm:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
 }
 * { box-sizing:border-box; }
+[hidden] { display:none !important; }   /* hidden wint altijd, ook van .knop of .kaart-tik */
 body { margin:0; font:16px/1.5 var(--f); color:var(--zwart); background:var(--wit); }
 header,main,footer { max-width:60rem; margin:0 auto; padding:1rem; }
 a { color:var(--link); font-weight:700; text-decoration-thickness:3px; text-underline-offset:3px; }
@@ -196,7 +197,7 @@ body.dos-afdrukmodus main > :not(#dos-afdruk) { display:none; }
 .vb-kolom > * { position:relative; z-index:1; }
 .vb-kolom h5 { margin:.25rem 0 .5rem; font-size:.95rem; }
 .vb-lijst { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:.6rem; }
-.vb-kaartje { display:block; width:100%; text-align:left; font:inherit; font-size:.8125rem; line-height:1.3; cursor:pointer; color:var(--zwart); background:var(--wit); border:3px solid var(--zwart); padding:.35rem .5rem; }
+.vb-kaartje { display:block; width:100%; text-align:left; font:inherit; font-size:.9375rem; line-height:1.3; cursor:pointer; color:var(--zwart); background:var(--wit); border:3px solid var(--zwart); padding:.35rem .5rem; }
 .vb-kaartje:hover { background:var(--grijs); }
 .vb-kaartje[aria-pressed="true"] { background:var(--zwart); color:var(--wit); }
 .vb-kaartje.vb-verbonden { box-shadow:inset 0 -6px 0 var(--groen); }
@@ -224,7 +225,8 @@ body.dos-afdrukmodus main > :not(#dos-afdruk) { display:none; }
 .zwakste { border-left:8px solid var(--accent); }
 @media (max-width:40rem) {
   .vb-kolommen { gap:1rem; }
-  .vb-kaartje { font-size:.75rem; padding:.3rem .35rem; }
+  .vb-kaartje { font-size:.9375rem; padding:.3rem .35rem; }   /* SX-10: ≥ 15 px, ook op 360 px */
+  .vb-kolommen { grid-template-columns:1fr; }
 }
 
 /* ---- toegankelijkheid en kleine schermen (fase 8: TG-2, TG-5, PF-1) ---- */
@@ -254,8 +256,8 @@ input[type="checkbox"], input[type="radio"] { min-width:1.25rem; }
 @media print { .han-logo { display:block; } }
 
 /* ---- media (fase 12): routekeuze md-, kijktips, video en spellen sp- ---- */
-.md-routes { display:flex; flex-wrap:wrap; gap:.5rem; margin:.5rem 0; }
-.md-knop { font-size:.875rem; padding:.2rem .75rem; box-shadow:2px 2px 0 var(--zwart); }
+.md-routes { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:.75rem; margin:.75rem 0; }
+.md-knop { font-size:1rem; min-height:4.5rem; padding:.5rem; box-shadow:5px 5px 0 var(--zwart); }   /* drie grote tegels (MD-2) */
 .md-knop[aria-pressed="true"] { background:var(--zwart); color:var(--wit); }
 .md-paneel { border-top:2px solid var(--zwart); margin-top:.5rem; padding-top:.25rem; }
 .md-paneel h3 { margin:.5rem 0; }
@@ -349,3 +351,57 @@ html { scroll-padding-top:7rem; }
   *, *::before, *::after { transition:none !important; animation:none !important; scroll-behavior:auto !important; }
   .knop:active, .kaart-tik:active { transform:none; }
 }
+
+/* ---- fase 19: één taak per scherm (SX-6, SX-10; DESIGN §5.3) ---- */
+.taakvoet { display:none; }
+.taakweergave .taakvoet:not([hidden]) { position:sticky; bottom:0; z-index:16; display:flex; gap:.75rem; background:var(--wit); border-top:3px solid var(--zwart); padding:.6rem 0; margin-top:1.5rem; }
+.taakvoet .knop-accent { flex:1; }
+.taakweergave .klaar-voet .knop-accent { display:none; }             /* de vaste voet heeft de enige hoofdknop */
+.taakweergave .taak:not(.op-toepassen) > .verdieping { display:none; }
+.taakweergave .taak { border-top:0; margin-top:0; }
+.naar-overzicht { text-decoration:none; }
+.model-paneel { border:3px solid var(--accent); margin-top:.75rem; background:var(--wit); }
+.model-paneel > summary { cursor:pointer; font-weight:800; padding:.5rem .75rem; list-style-position:inside; }
+.model-paneel[open] > summary { border-bottom:2px solid var(--accent); }
+.model-paneel > div { padding:.25rem .75rem .5rem; }
+.taken-nav ol { list-style:none; padding:0; }
+.taak-link { display:block; padding:.6rem .75rem; border:3px solid var(--zwart); box-shadow:5px 5px 0 var(--zwart); margin:.75rem 0; text-decoration:none; }
+.kaart-tik.taak-link:hover, .taak-link:hover { background:var(--grijs); color:var(--zwart); }
+.taak-klaar { font-weight:400; }
+html { scroll-padding-bottom:5rem; }
+@media (max-width:40rem) {
+  .md-routes { grid-template-columns:1fr; }
+  body.in-taak header nav[aria-label="Hoofdmenu"] { display:none; }   /* focus: in een taak alleen de taak (DESIGN §2.1) */
+  body.in-taak { padding-bottom:0; }
+}
+.verder-kaart { background:var(--zwart); color:var(--wit); padding:1rem; margin:1rem 0; }
+.verder-kaart h2 { margin:.25rem 0; }
+.verder-kaart .nr { background:var(--wit); color:var(--zwart); }
+.verder-kaart .knop-accent { margin-top:.5rem; border-color:var(--wit); }
+/* Waarde-simulator als spel (DESIGN §7.4, fase 19) */
+.sp-keuzekaarten { display:grid; gap:.75rem; margin:.5rem 0; }
+.sp-keuzekaart { font:inherit; font-weight:700; text-align:left; min-height:4rem; padding:.75rem 1rem; cursor:pointer; color:var(--zwart); background:var(--wit); border:3px solid var(--zwart); box-shadow:5px 5px 0 var(--zwart); }
+.sp-keuzekaart:hover { background:var(--grijs); }
+.sp-keuzekaart:active { box-shadow:none; transform:translate(5px,5px); }
+.sp-voorspelrij { border-top:2px solid var(--zwart); padding:.4rem 0; }
+.sp-kapitaal { font-weight:700; display:block; }
+.sp-chips { display:flex; flex-wrap:wrap; gap:.4rem; margin-top:.25rem; }
+.sp-chip { font:inherit; font-size:.875rem; cursor:pointer; min-height:2.75rem; padding:.2rem .7rem; color:var(--zwart); background:var(--wit); border:2px solid var(--zwart); border-radius:1rem; }
+.sp-chip[aria-pressed="true"] { background:var(--zwart); color:var(--wit); }
+.sp-balken { list-style:none; padding:0; margin:.5rem 0; }
+.sp-balkrij { display:grid; grid-template-columns:minmax(7rem,1fr) 3fr; gap:.25rem .75rem; align-items:center; border-top:2px solid var(--zwart); padding:.4rem 0; }
+.sp-oordeel { grid-column:2; font-size:.875rem; }
+.sp-termijnen { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:4px; }
+.sp-balk { position:relative; display:flex; align-items:flex-end; height:3.25rem; border:2px solid var(--zwart); background:var(--wit); overflow:hidden; }
+.sp-vulling { position:absolute; left:0; right:0; bottom:0; height:0; transition:height 250ms ease-out; background:var(--grijs); }
+.sp-balk-plus .sp-vulling { background:var(--grijs); border-top:4px solid var(--zwart); }
+.sp-balk-min .sp-vulling { background:var(--roze); border-top:4px solid var(--accent); }
+.sp-balken-zichtbaar .sp-balk-plus .sp-vulling { height:85%; }
+.sp-balken-zichtbaar .sp-balk-input .sp-vulling { height:50%; }
+.sp-balken-zichtbaar .sp-balk-min .sp-vulling { height:20%; }
+.sp-balktekst { position:relative; font-size:.8125rem; font-weight:700; padding:.1rem .3rem; }
+@media (max-width:40rem) { .sp-balkrij { grid-template-columns:1fr; } .sp-oordeel { grid-column:1; } }
+.vb-prompt { border:3px solid var(--zwart); border-left:10px solid var(--accent); padding:.5rem .75rem; font-weight:700; margin:.75rem 0; }
+.vb-details { margin:.75rem 0; }
+.vb-details > summary { cursor:pointer; font-weight:700; }
+.vb-kaartje[aria-pressed="true"] .vb-tekst, .vb-kaartje:focus .vb-tekst { -webkit-line-clamp:unset; line-clamp:none; }   /* lange kaart klapt open bij tik */

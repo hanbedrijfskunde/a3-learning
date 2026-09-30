@@ -41,6 +41,7 @@ export function paginaBestanden(root, paginaNaam) {
     if (naam === 'wissel') return Boolean(b.wissel) || (b.taken ?? []).some((t) => t.toepassing?.component === 'feedbacklog');
     if (naam === 'weergave') return (b.taken ?? []).some((t) => t.toepassing?.weergave);
     if (naam === 'media') return Boolean(b.media || b.kijktips);
+    if (naam === 'kijktips') return Boolean(b.kijktips);
     if (naam === 'naklik') return false; // laadt pas na een klik van de student: geen eerste lading (ADR B81)
     if (naam === 'lb4ui') return (b.taken ?? []).some((t) => ['verbanden', 'starr'].includes(t.toepassing?.component));
     throw new Error(`gewicht-check: onbekende voorwaarde ${naam}`);
