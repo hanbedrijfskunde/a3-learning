@@ -273,3 +273,4 @@ input[type="checkbox"], input[type="radio"] { min-width:1.25rem; }
   .sp-tabel tr { border:3px solid var(--zwart); margin:.5rem 0; }
   .sp-tabel td, .sp-tabel th { border:0; border-bottom:1px solid var(--zwart); }
 }
+.han-sprite { position:absolute; }
