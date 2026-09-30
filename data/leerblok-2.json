@@ -26,8 +26,8 @@
         "bron": "concept-auteur",
         "opmerking": "Het werkboek geeft bij 3.1 alleen de opdracht en de tabel; de uitleg over kernbegrippen en de verwijzing naar Mayer (2004) zijn door de bouwer geschreven.",
         "alineas": [
-          "Een kernbegrip is het woord in je zoekvraag dat het onderwerp draagt. In „Welke factoren bepalen de klanttevredenheid bij webshops?” zijn dat klanttevredenheid en webshop. Zoek per begrip andere woorden voor hetzelfde (synoniemen en verwante termen). Zoek ook de Engelse term, want veel wetenschappelijke bronnen zijn Engelstalig. Voeg zo nodig een breder of smaller begrip toe.",
-          "Eerst een voorbeeld en dan zelf doen werkt voor beginners beter dan alles zelf ontdekken (Mayer, 2004). Probeer daarom eerst de oefening. Het modelantwoord zie je pas als je het zelf hebt geprobeerd."
+          "Een kernbegrip is het woord in je zoekvraag dat het onderwerp draagt. In „Welke factoren bepalen de klanttevredenheid bij webshops?” zijn dat klanttevredenheid en webshop. Voor elk begrip bestaan andere woorden voor hetzelfde (synoniemen en verwante termen). Veel wetenschappelijke bronnen zijn Engelstalig, dus de Engelse term hoort erbij. Soms helpt een breder of smaller begrip.",
+          "Eerst een voorbeeld en dan zelf doen werkt voor beginners beter dan alles zelf ontdekken (Mayer, 2004)."
         ]
       },
       "oefening": {
@@ -541,10 +541,10 @@
         "bron": "concept-auteur",
         "opmerking": "De vijf criteria met hun vragen, de oordelen (+, ?, –) en de twee AI-controles komen uit werkboek 4.1. De uitleg van APA en de verwijzingen naar de Publication manual en naar Roediger en Karpicke (2006) zijn door de bouwer geschreven.",
         "alineas": [
-          "AAOCC bestaat uit vijf vragen. Authority: wie is de auteur en is die deskundig? Accuracy: klopt de inhoud en is die onderbouwd? Objectivity: is de bron neutraal of heeft die een belang? Currency: is de bron actueel genoeg? Coverage: behandelt de bron het onderwerp volledig genoeg? Geef elk criterium een oordeel (+, ? of –) en een zin toelichting.",
-          "Kwam de bron van een AI-tool? Controleer twee dingen: de bron bestaat echt, en er staat in wat de AI zegt. Open de bron zelf.",
+          "AAOCC bestaat uit vijf vragen. Authority: wie is de auteur en is die deskundig? Accuracy: klopt de inhoud en is die onderbouwd? Objectivity: is de bron neutraal of heeft die een belang? Currency: is de bron actueel genoeg? Coverage: behandelt de bron het onderwerp volledig genoeg? Bij elk criterium hoort een oordeel (+, ? of –) met een zin toelichting.",
+          "Een bron van een AI-tool vraagt twee extra controles. Bestaat de bron echt? En staat erin wat de AI zegt? Dat zie je alleen als je de bron zelf opent.",
           "In APA (7e editie) staat het jaar tussen haakjes achter de auteur: Achternaam, A. (jaar). Titel. Uitgever of tijdschrift. Link. De regels staan in de Publication manual (American Psychological Association, 2020). De bronnen van deze site staan in dezelfde stijl op de bronnenpagina.",
-          "Beoordeel eerst zelf en kijk daarna pas naar het modelantwoord. Wat je zelf ophaalt en toepast, onthoud je beter dan wat je alleen herleest (Roediger & Karpicke, 2006)."
+          "Wat je zelf ophaalt en toepast, onthoud je beter dan wat je alleen herleest (Roediger & Karpicke, 2006)."
         ]
       },
       "oefening": {
@@ -1419,7 +1419,7 @@
         "bron": "concept-auteur",
         "opmerking": "Het werkboek geeft bij 4.2 alleen de stelling, de keuze en het veld voor het argument; de uitleg is door de bouwer geschreven.",
         "alineas": [
-          "Een argument is een bewering met een reden. Kies je „voor” of „tegen”? Dan is je keuze pas sterk als je kunt zeggen waarom. Denk aan wat je zelf zag bij 3.2 en 4.1. Hoe vaak klopte wat de AI zei? Wat kostte het controleren, en wat leverde het op?"
+          "Een argument is een bewering met een reden. Een keuze voor of tegen is pas sterk als je kunt zeggen waarom. Je eigen ervaring bij 3.2 en 4.1 levert argumenten op. Denk aan hoe vaak de AI klopte, wat het controleren kostte en wat het opleverde."
         ]
       },
       "oefening": {

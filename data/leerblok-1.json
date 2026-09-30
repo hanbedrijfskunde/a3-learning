@@ -83,7 +83,7 @@
         "format": "Wat is de beste oplossing voor <gebruiker> om <probleem / pain / gain>, zodat <waardecreatie volgens de six capitals>?",
         "alineas": [
           "Een vraag in dit format heet een user story: een korte beschrijving van wie iets wil bereiken en waarom. Je vult drie delen in. De gebruiker is de persoon of groep voor wie je het onderzoek doet. Een pain is een last of ergernis van die gebruiker. Een gain is een winst die hij of zij wil. De waardecreatie zegt wat het oplevert.",
-          "De six capitals (zes kapitalen) zijn zes soorten waarde die een organisatie kan opbouwen of verliezen. Het gaat om financieel, productie-, intellectueel, menselijk, sociaal en relationeel, en natuurlijk kapitaal. Kies er minstens één die niet financieel is.",
+          "De six capitals (zes kapitalen) zijn zes soorten waarde die een organisatie kan opbouwen of verliezen. Het gaat om financieel, productie-, intellectueel, menselijk, sociaal en relationeel, en natuurlijk kapitaal.",
           "Een voorbeeld uit een andere organisatie. Bij organisatie Y luidt de onderzoeksvraag: „Wat is de beste oplossing voor de controller om milieucijfers zonder handwerk te verzamelen, zodat de organisatie haar milieu-impact kan sturen?” De waarde raakt hier drie kapitalen. Natuurlijk kapitaal: de organisatie stuurt op haar milieu-impact. Menselijk kapitaal: medewerkers zijn minder tijd kwijt aan rapporteren. Sociaal en relationeel kapitaal: klanten en financiers vertrouwen de cijfers."
         ]
       },
@@ -146,7 +146,7 @@
         "opmerking": "De frames en de modellen zijn letterlijk uit werkboek 2.2; de uitleg van het woord frame is door de bouwer geschreven.",
         "alineas": [
           "Een frame is een invalshoek: een bril waarmee je naar je onderzoeksvraag kijkt. Een functioneel frame kijkt naar HR, financiën, logistiek of marketing. Je kunt ook intern of extern kijken. Of je kijkt theoretisch (wat zegt de literatuur?) of empirisch (wat zie je bij de organisatie?).",
-          "Deze modellen geven je frames: 7S, de Strategy Map, de Six Capitals en het TOM-model. De Strategy Map kijkt naar financieel, klant, interne processen, en leren en groeien. Kies als team één model dat je helpt frames te bedenken.",
+          "Deze modellen geven je frames: 7S, de Strategy Map, de Six Capitals en het TOM-model. De Strategy Map kijkt naar financieel, klant, interne processen, en leren en groeien.",
           "Begin je zoekvragen bijvoorbeeld met „Welke factoren…”, „In hoeverre…” of „Wat is de relatie tussen…”. Een zoekvraag eindigt op een vraagteken."
         ]
       },
