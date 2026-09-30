@@ -84,7 +84,7 @@ export function bouwTaakModel(taak, blok) {
     stappen: [
       { nr: 1, naam: STAPPEN[0], nummer: taak.id, waarom: taak.waarom, richttijd: taak.richttijd, klaarAls: taak.klaarAls },
       { nr: 2, naam: STAPPEN[1], stof: taak.stof },
-      { nr: 3, naam: STAPPEN[2], oefening: { opdracht: taak.oefening?.opdracht ?? null, velden: oefenVelden(taak) } },
+      { nr: 3, naam: STAPPEN[2], oefening: { opdracht: taak.oefening?.opdracht ?? null, figuur: taak.oefening?.figuur ?? null, velden: oefenVelden(taak) } },
       { nr: 4, naam: STAPPEN[3], opdracht: taak.toepassing.opdracht, velden: taak.toepassing.velden, livevoorbeeld: taak.toepassing.livevoorbeeld ?? null,
         klaarAls: taak.klaarAls, volgendeStapVraag: 'Mijn volgende stap is …' },
     ],

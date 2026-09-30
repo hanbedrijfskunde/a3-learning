@@ -10,8 +10,8 @@
 //     "taken": [ { "id": "2.1", "titel", "vorm": "Alleen"|"Team",
 //                  "richttijd": { "tekst", "minuten", "bron" },
 //                  "waarom": { "tekst", "bron" }, "klaarAls": { "tekst", "bron" },
-//                  "stof": { "bron", "alineas": [..], "format"? },
-//                  "oefening": { "opdracht": { "tekst", "bron" }, "velden"? },
+//                  "stof": { "bron", "alineas": [..], "format"?, "figuur"? },
+//                  "oefening": { "opdracht": { "tekst", "bron" }, "figuur"?, "velden"? },
 //                  "modelantwoord": { "bron", "velden": { veldId: waarde } },
 //                  "toepassing": { "opdracht": { "tekst", "bron" }, "velden": [ { "id", "label", "type", "opties"? } ], "livevoorbeeld"? },
 //                  "controles": [ { "id", "soort": "A"|"B"|"C", "type", "veld"?, "velden"?, ...parameters } ],
@@ -30,6 +30,8 @@ import { uitlegWoorden, modelRegels, MAX_WOORDEN_UITLEG, MAX_VIDEO_SECONDEN, MAX
 import { controleerSpel } from './spel-check.mjs';
 import { KAPITALEN, VPC_ONDERDELEN, SPANNING, bouwOefenKaarten, maakVerband } from '../js/verbanden.js';
 
+// De figuren die de stap stof of de oefening kan tonen (FIGUREN in js/leerblok.js).
+const FIGUUR_NAMEN = ['a3-vel', 'six-capitals', 'vpc'];
 const gevuld = (t) => typeof t === 'string' && t.trim() !== '';
 const lijstGevuld = (l) => Array.isArray(l) && l.length > 0;
 /** Een tekstveld is een tekst of een object { tekst }. */
@@ -126,10 +128,11 @@ export function controleerFormaat(inhoud, bestand) {
     if (taak.klaarAls !== undefined && gevuld(tekstVan(taak.klaarAls))) bronTekst(wie, 'klaarAls', taak.klaarAls);
 
     if (!isObject(taak.stof) || !lijstGevuld(taak.stof.alineas)) fout(wie, 'mist stof met alineas');
-    if (taak.stof?.figuur !== undefined && !['a3-vel', 'six-capitals', 'vpc'].includes(taak.stof.figuur)) fout(wie, `stof.figuur ${JSON.stringify(taak.stof.figuur)} is onbekend; kies a3-vel, six-capitals of vpc`);
+    if (taak.stof?.figuur !== undefined && !FIGUUR_NAMEN.includes(taak.stof.figuur)) fout(wie, `stof.figuur ${JSON.stringify(taak.stof.figuur)} is onbekend; kies ${FIGUUR_NAMEN.join(', ')}`);
     else bronTekst(wie, 'stof', taak.stof, { tekst: false });
     if (!isObject(taak.oefening)) fout(wie, 'mist een oefening (TK-3)');
     else bronTekst(wie, 'oefening.opdracht', taak.oefening.opdracht);
+    if (taak.oefening?.figuur !== undefined && !FIGUUR_NAMEN.includes(taak.oefening.figuur)) fout(wie, `oefening.figuur ${JSON.stringify(taak.oefening.figuur)} is onbekend; kies ${FIGUUR_NAMEN.join(', ')}`);
 
     const velden = Array.isArray(taak.toepassing?.velden) ? taak.toepassing.velden : [];
     if (!lijstGevuld(velden)) fout(wie, 'toepassing mist velden (TK-3)');

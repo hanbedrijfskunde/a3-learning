@@ -210,6 +210,8 @@ async function start() {
     const oefening = h('div', { class: 'oefening', id: `oefening-${id}` },
       h('h4', {}, taak.bewijsonderdeel && blok.oefencasus ? `Oefencasus · ${blok.oefencasus}` : 'Oefenen'),
       s3.oefening.opdracht ? h('p', {}, met(s3.oefening.opdracht.tekst)) : null,
+      // De figuur uit de stof nog eens bij de oefening (oefening.figuur), zodat de student niet terug hoeft te klikken (taak 6.1: het VPC).
+      FIGUREN[s3.oefening.figuur]?.bouw({ met }) ?? null,
       veldGebied, overslaanGebied);
     const stap3 = stap(s3, oefening);
 
