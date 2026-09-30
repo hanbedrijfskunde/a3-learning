@@ -1,0 +1,51 @@
+name: Controle en publicatie
+
+on:
+  push:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  controle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: "Controle 1: unittests"
+        run: node --test tests/
+      - name: "Controle 2: contentcontrole"
+        run: node tools/content-check.mjs
+      - name: "Controle 3: linkcontrole"
+        run: node tools/link-check.mjs
+
+  publiceren:
+    needs: controle
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      - name: Artefact samenstellen (alleen sitebestanden)
+        run: |
+          mkdir _site
+          cp -r *.html css js data LICENSE .nojekyll _site/
+          [ -d media ] && cp -r media _site/ || true
+          [ -d spellen ] && cp -r spellen _site/ || true
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deploy
+        uses: actions/deploy-pages@v4

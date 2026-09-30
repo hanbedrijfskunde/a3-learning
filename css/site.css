@@ -1,0 +1,10 @@
+:root { --accent:#E50056; --zwart:#000; --wit:#fff; --grijs:#f3f3f3; }
+* { box-sizing:border-box; }
+body { margin:0; font:16px/1.5 system-ui,sans-serif; color:var(--zwart); background:var(--wit); }
+header,main,footer { max-width:60rem; margin:0 auto; padding:1rem; }
+nav a { margin-right:1rem; color:var(--zwart); font-weight:700; }
+nav a[aria-current="page"] { color:var(--accent); }
+h1 { border-bottom:4px solid var(--accent); padding-bottom:.25rem; }
+.kaart { border:3px solid var(--zwart); box-shadow:5px 5px 0 var(--zwart); padding:1rem; margin:1rem 0; background:var(--wit); }
+footer { border-top:3px solid var(--zwart); font-size:.875rem; margin-top:2rem; }
+#pilot-banner { background:var(--accent); color:var(--wit); text-align:center; font-weight:700; padding:.25rem; }
