@@ -1,6 +1,6 @@
 // Leerblokpagina: bouwt de pagina uit data/leerblok-N.json met het vaste ritme van vier stappen per taak (TK-18, ADR B76).
 // Alleen DOM. Controles, opslag, oefenregels en de afgerond-regel zitten in sessie.js, weergave.js en afgerond.js.
-import { h, wis, statusChip, bouwVelden, tekenA3Vak, a3VelFiguur, metInvulplekken } from './dom.js';
+import { h, wis, statusChip, bouwVelden, tekenA3Vak, a3VelFiguur, sixCapitalsFiguur, metInvulplekken } from './dom.js';
 import { kiesOpslag, maakStore } from './store.js';
 import { maakSessie, volgendeStapOk } from './sessie.js';
 import { bouwTaakModel, isIngevuld } from './weergave.js';
@@ -22,6 +22,8 @@ const laadBlok = async (pad) => normaliseerBlok(await laad(pad)); // reeksen vel
 const laadBronIndex = () => laadBronnen((u) => fetch(new URL(`../${u}`, import.meta.url)))
   .then((bestanden) => maakIndex(bestanden.flatMap((b) => b.bronnen ?? []))).catch(() => new Map());
 const LB4_COMPONENTEN = ['verbanden', 'starr']; // taken met een eigen scherm in lb4-ui.js
+// De figuren in de stap stof (stof.figuur) en na welke alinea ze staan (0 = de eerste).
+const FIGUREN = { 'a3-vel': { bouw: a3VelFiguur, na: 0 }, 'six-capitals': { bouw: sixCapitalsFiguur, na: 1 } };
 const BEWAAR_NA_MS = 500; // bewaren na de laatste toetsaanslag; de controles zelf lopen direct
 const CHECKLIST_NA_MS = 600; // de „klaar als"-checklist vinkt mee na 600 ms zonder typen (SX-5)
 const BEVESTIG_MS = 1500; // kort bevestigingsmoment na „klaar" (DESIGN §7.1), geen modaal venster
@@ -138,13 +140,15 @@ async function start() {
       h('p', { class: 'klaar' }, h('strong', {}, 'Klaar als'), ' ', met(s1.klaarAls.tekst)));
 
     // stap 2: de stof
+    const alineas = s2.stof.alineas.map((a) => h('p', {}, met(a)));
     const stof = h('div', { class: 'stof' },
-      s2.stof.alineas.map((a) => h('p', {}, met(a))),
+      alineas,
       s2.stof.format ? h('p', { class: 'format' }, metInvulplekken(s2.stof.format)) : null);
     // Het format hoort bij de tweede alinea: zet het na de eerste alinea.
     if (s2.stof.format) stof.insertBefore(stof.lastChild, stof.children[1] ?? null);
-    // Een figuur (taak 1.1: het A3-vel) staat direct na de alinea die hem beschrijft.
-    if (s2.stof.figuur === 'a3-vel') stof.insertBefore(a3VelFiguur({ met }), stof.children[1] ?? null);
+    // Een figuur staat direct na de alinea die hem beschrijft: het A3-vel (taak 1.1) na alinea 1, de six capitals (taak 2.1) na alinea 2.
+    const figuur = FIGUREN[s2.stof.figuur];
+    if (figuur) alineas[figuur.na].after(figuur.bouw({ met }));
     // De routekeuze tekst, video of spel staat in de stap stof van de taak waar de media bij horen (MD-2, ADR B79).
     const stap2 = stap(s2, stof, mediaPlek && blok.media.taak === id ? mediaPlek : null);
 
