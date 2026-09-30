@@ -2,14 +2,19 @@
 //
 // Een taak kan bij `toepassing` een `weergave` hebben: een lijst `groepen` die bepaalt hoe de velden op het scherm staan.
 // De velden zelf (id, label, type) blijven in `toepassing.velden` staan, dus opslag, controles en record veranderen niet.
-//   groep  { titel?, velden?: [id], tabel?: { kolommen, rijen: [[id | { tekst }]] }, groepen?: [groep],
+//   groep  { titel?, velden?: [id], tabel?: { kolommen, rijen: [[id | { tekst }]] | reeks: { voor, aantal, suffixen } }, groepen?: [groep],
 //            alleenBij?: { veld, waarde }        alleen zichtbaar als dat veld die waarde heeft (route A of B)
 //            optioneel?, toevoegKnop?            verborgen tot iemand de knop indrukt of er al iets in staat
 //            afgeleidVan?: "3.1", kolommen?      toont alleen de waarden van een andere taak (dezelfde veld-id's)
-//            promptgenerator?: { zoekvraag, context, jaar, lijst, prompt, overnemenUit? } }   (LB-6)
+//            promptgenerator?: { zoekvraag, context, jaar, lijst, prompt, overnemenUit? }   (LB-6)
+//            raster?: { voor, aantal }            invloed/belang-raster met tekstweergave; rij i heeft de velden <voor>i + naam, soort, raakt, invloed, belang (LB-9)
+//            zoekvragenHint?                      toont de zoekvragen uit EV-02 (LB-12)
+//            hint?                                 bij afgeleidVan: eigen tekst onder de spiegeltabel }
 import { h, wis, bouwVelden } from './dom.js';
 import { bouwPrompt, verbodenWoorden } from './checks/lb2.js';
 import { splitsMetVerwijzingen } from './bronnen.js';
+import { rasterEl, zoekvragenEl } from './lb3-ui.js';
+import { stakeholderRijen, reeks } from './raster.js';
 
 /** Een tekst met in-tekstverwijzingen als links naar de bronregel op de bronnenpagina (BR-4). */
 export function metVerwijzingen(tekst, index) {
@@ -24,6 +29,9 @@ const deelVan = (taakId) => {
   if (!delen.has(taakId)) delen.set(taakId, { lees: null, luisteraars: new Set() });
   return delen.get(taakId);
 };
+
+/** De rijen van een tabel: expliciet, of als reeks (rij i heeft de velden <voor>i + suffix). */
+const tabelRijen = (g) => g.tabel?.rijen ?? (g.tabel?.reeks ? reeks(g.tabel.reeks.voor, g.tabel.reeks.aantal, g.tabel.reeks.suffixen) : []);
 
 const heeftWaarde = (w) => (Array.isArray(w) ? w.length > 0 : typeof w === 'string' ? w.trim() !== '' : w !== undefined && w !== null);
 
@@ -40,6 +48,7 @@ export function bouwWeergave(velden, voorvoegsel, waarden, bijWijziging, weergav
   const def = new Map(velden.map((v) => [v.id, v]));
   const bouwers = new Map(); // veld-id → { element, lees, zet }
   const spiegels = []; // { velden, toon }
+  const verversers = []; // tekeningen die meegaan met de velden (het raster)
   const regels = []; // { el, veld, waarde }
   let generator = null; // { p, genereer, toon } zodra een groep een promptgenerator heeft
   const hier = deelVan(ctx.taakId);
@@ -50,6 +59,7 @@ export function bouwWeergave(velden, voorvoegsel, waarden, bijWijziging, weergav
   const melding = () => {
     if (bezig) return;
     pasZichtbaarheid();
+    verversers.forEach((f) => f());
     bijWijziging();
     hier.luisteraars.forEach((f) => f());
   };
@@ -62,7 +72,7 @@ export function bouwWeergave(velden, voorvoegsel, waarden, bijWijziging, weergav
 
   // ---------------------------------------------------------------- groepen
 
-  const alleIds = (g) => [...(g.velden ?? []), ...(g.tabel?.rijen.flat().filter((c) => typeof c === 'string') ?? []), ...(g.groepen ?? []).flatMap(alleIds)];
+  const alleIds = (g) => [...(g.velden ?? []), ...(tabelRijen(g).flat().filter((c) => typeof c === 'string')), ...(g.groepen ?? []).flatMap(alleIds)];
 
   function spiegelEl(g) {
     const bron = deelVan(g.afgeleidVan);
@@ -82,12 +92,12 @@ export function bouwWeergave(velden, voorvoegsel, waarden, bijWijziging, weergav
     toon();
     return h('div', { class: 'lb2-tabel-wrap' },
       h('table', { class: 'lb2-tabel' }, h('thead', {}, h('tr', {}, kolommen.map((k) => h('th', { scope: 'col' }, k)))), tbody),
-      h('p', { class: 'klein' }, `Je vult of wijzigt deze termen bij taak ${g.afgeleidVan}.`));
+      h('p', { class: 'klein' }, g.hint ?? `Je vult of wijzigt deze termen bij taak ${g.afgeleidVan}.`));
   }
 
   function tabelEl(g) {
     const kop = h('thead', {}, h('tr', {}, g.tabel.kolommen.map((k) => h('th', { scope: 'col' }, k))));
-    const rijen = g.tabel.rijen.map((rij) => h('tr', {}, rij.map((cel, i) => (typeof cel === 'string'
+    const rijen = tabelRijen(g).map((rij) => h('tr', {}, rij.map((cel, i) => (typeof cel === 'string'
       ? h('td', { class: 'lb2-cel-veld', 'data-kolom': g.tabel.kolommen[i] }, bouwVeld(cel).element)
       : h('td', { 'data-kolom': g.tabel.kolommen[i] }, cel.tekst)))));
     return h('div', { class: 'lb2-tabel-wrap' }, h('table', { class: 'lb2-tabel' }, kop, h('tbody', {}, rijen)));
@@ -136,7 +146,13 @@ export function bouwWeergave(velden, voorvoegsel, waarden, bijWijziging, weergav
     if (g.titel) doos.append(h('h4', {}, g.titel));
     if (g.afgeleidVan) doos.append(spiegelEl(g));
     else {
+      if (g.zoekvragenHint) doos.append(zoekvragenEl(ctx.store));
       if (g.tabel) doos.append(tabelEl(g));
+      if (g.raster) {
+        const r = rasterEl(stakeholderRijen(g.raster), () => lees());
+        verversers.push(r.ververs);
+        doos.append(r.element);
+      }
       (g.velden ?? []).forEach((id) => doos.append(bouwVeld(id).element));
       if (g.promptgenerator) doos.append(promptEl(g));
       (g.groepen ?? []).forEach((k) => doos.append(groepEl(k)));
@@ -180,8 +196,10 @@ export function bouwWeergave(velden, voorvoegsel, waarden, bijWijziging, weergav
     for (const b of bouwers.values()) b.zet(w);
     bezig = false;
     pasZichtbaarheid();
+    verversers.forEach((f) => f());
     spiegels.forEach((s) => s.toon());
   };
   hier.lees = lees;
+  verversers.forEach((f) => f()); // het raster tekent de beginwaarden
   return { element, lees, zet };
 }

@@ -160,15 +160,15 @@ test('BR-5: een geciteerde bron die nog in wachtOpCitatie staat is een fout; een
 
 test('BR-1/BR-3 in content-check: verkeerde volgorde, ontbrekend manifest, ongepubliceerd zonder organisatie en fictief zonder aanduiding falen', () => {
   const map = kopieerData();
-  const b1 = lees('bronnen-1.json');
+  const b3 = lees('bronnen-3.json');
   const b2 = lees('bronnen-2.json');
   b2.bronnen.reverse();
   schrijf(map, 'bronnen-2.json', b2);
   assert.ok(controleerBronnen(map).fouten.some((f) => /niet alfabetisch/.test(f)));
   b2.bronnen.reverse();
   schrijf(map, 'bronnen-2.json', b2);
-  b1.wachtOpCitatie.find((b) => b.type === 'ongepubliceerd').apa = 'Westmoreland BV. (z.d.). *Titel*.';
-  schrijf(map, 'bronnen-1.json', b1);
+  b3.bronnen.find((b) => b.type === 'ongepubliceerd').apa = 'Westmoreland BV. (z.d.). *Titel*.';
+  schrijf(map, 'bronnen-3.json', b3);
   assert.ok(controleerBronnen(map).fouten.some((f) => /ongepubliceerd document/.test(f)));
   const map2 = kopieerData();
   const b = lees('bronnen-2.json');

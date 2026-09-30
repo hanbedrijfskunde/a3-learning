@@ -2,12 +2,13 @@
 // De docentvelden staan in data/docent-deelN.json; taak, klaar-als en modelantwoorden komen uit dezelfde
 // data/leerblok-N.json als de studentweergave (DM-2), zodat een wijziging daar in beide weergaven verschijnt.
 import { waardeTekst } from '../weergave.js';
+import { expandeerVelden } from '../blok.js';
 
 /** De taak `taakId` uit de geladen leerblokken (`blokken`: leerblok-nummer naar inhoud), of null. */
 export const taakUit = (blokken, leerblok, taakId) => blokken?.[leerblok]?.taken?.find((t) => t.id === taakId) ?? null;
 
 const tekstVan = (x) => (typeof x === 'string' ? x : x?.tekst ?? '');
-const velden = (taak) => taak?.oefening?.velden ?? taak?.toepassing?.velden ?? [];
+const velden = (taak) => expandeerVelden(taak?.oefening?.velden ?? taak?.toepassing?.velden ?? []);
 
 /** Het klaar-als van een onderdeel: uit de taak als er een is, anders uit het docentbestand. */
 export function klaarAlsVan(o, blokken) {

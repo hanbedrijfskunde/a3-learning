@@ -83,7 +83,7 @@ De controlesom loopt over alle velden behalve `controlesom`, in canonieke vorm (
 
 ## Terugblik en tussenpozen (fase 7)
 
-`js/terugblik.js` (logica, geen DOM, injecteerbare klok) en `js/terugblik-pagina.js` (DOM, het scherm „Vorige keer”). `leerblok.js` toont het scherm bij leerblok 2 en hoger; `leerblok-3.html` gebruikt tot fase 10 `js/leerblok-stub.js`. Inhoud in `data/terugblik.json` (formaat 1.0: `bandbreedtes` met minuten, `kaarten` per leerblok 2, 3, 4 met `items`, twee `kennisvragen`, `transfervraag`, `samenvatting`); `tools/content-check.mjs` controleert dat (`controleerTerugblik`).
+`js/terugblik.js` (logica, geen DOM, injecteerbare klok) en `js/terugblik-pagina.js` (DOM, het scherm „Vorige keer”). `leerblok.js` toont het scherm bij leerblok 2 en hoger. Inhoud in `data/terugblik.json` (formaat 1.0: `bandbreedtes` met minuten, `kaarten` per leerblok 2, 3, 4 met `items`, twee `kennisvragen`, `transfervraag`, `samenvatting`); `tools/content-check.mjs` controleert dat (`controleerTerugblik`).
 
 **Pauze en bandbreedte.** `pauzeInDagen(records, { leerblok, nu })` = nu min de laatste `bijgewerkt` van de records van het vorige leerblok (anders van een eerder leerblok; zonder werk `null`). `bandbreedte(dagen)`: < 2 uur `kort`, < 2 dagen `middel`, < 14 dagen `volledig`, daarna `lang`; een grens hoort bij de hogere band, `null` geeft `volledig` (ADR B65). **Opslag:** invoer in meta `terugblik:<leerblok>`, log in meta `terugblik:log` (`[{ leerblok, pauzeDagen, status: 'gedaan'|'overgeslagen' }]`); nooit een bewijsrecord (TP-5). Het log staat als `terugblik` in de export van het dossier (schema blijft 1.0; optioneel veld) en wordt bij import aangevuld waar de opslag niets heeft. `dossierControle` geeft `{ aanwezig, ontbrekend, importAanbod }`. Het aanbevolen week en dag per leerblok staat in `data/leerblokken.json` (`aanbevolen: { week, dag }`), alleen als tekst.
 
@@ -110,3 +110,19 @@ De controlesom loopt over alle velden behalve `controlesom`, in canonieke vorm (
 ```
 
 Een onderdeel met taak heeft minstens één rondloopvraag. Elke tekst die op een beoordeling of toetsantwoord lijkt (`DOCENT_VERBODEN` in `content-check`) faalt (DM-17). Klok: `maakKlok({ onderdelen, duurMinuten, nu })` met `start`, `pauze`, `reset`, `volgende`, `overslaan(id)`, `verschuif(id, ±1)`, `pasAan(id, minuten)`, `toestand()`, `exporteer()`/`herstel()`. `resterend` is de som van de nog te doen onderdelen (het actieve telt nooit negatief); `marge` is de duur van het deel min verstreken min resterend. Stapkaart: alle tekst 28 px of groter bij 1280 × 720 (`tests/docent.test.mjs`, contrast in `tools/contrast-check.mjs`, dat nu ook `css/docent.css` leest).
+
+## Leerblok 3 en docentmodus deel 2 (fase 10)
+
+`data/leerblok-3.json` (taken 5.1, 6.1, 7.1, 8.1, 9.1, 9.2). Bewijs: EV-06 op 5.1, EV-07 op 8.1 (register van feit en aanname, TOM-model), EV-08 op 9.2 (de conclusies van 9.1 zitten er via `afgeleidVan` in). Een record hoort bij één taak, dus 6.1, 7.1 en 9.1 zijn taken zonder eigen bewijsonderdeel.
+
+**Herhaalde velden (`js/blok.js`).** Een lijst `velden` mag `{ "reeks": { "voor": "s", "aantal": 7, "velden": [ { "suffix": "naam", "label": "Stakeholder {n}", "type": "tekst" } ] } }` bevatten; `expandeerVelden` / `normaliseerBlok` schrijft dat uit tot s1naam, s2naam, … Alles wat velden uit een leerblokbestand leest roept het aan (`leerblok.js`, `veldLabels` in `dossier.js`, `docent/kaarten.js`, `content-check`). Reden: PF-4.
+
+**Weergavegroepen** (bovenop die van leerblok 2): `raster: { voor, aantal }` (invloed/belang-raster met tekstweergave, `js/raster.js` en `js/lb3-ui.js`), `zoekvragenHint` (toont de zoekvragen uit EV-02), `tabel.reeks: { voor, aantal, suffixen }`, `hint` bij `afgeleidVan`.
+
+**Controles** (`js/checks/lb3.js`; parameters `voor` en `aantal` of `rijen`): `stakeholdersAantal`, `internEnExtern`, `stakeholderVelden`, `gebruikerInLijst` (EV-01 → EV-06, via `context.eigen`), `beweringenGelabeld`, `feitMetHerkomst`, `aannameMetZoekvraag` (EV-07 → EV-02, via `context.eigen`), `minGevuld`, `hardstBinnenGeraakt`, `noemtStakeholder` (EV-08 → EV-06, via `context.records`), `alleAangevinkt`. De naamvergelijking is een heuristiek: de helft van de woorden (stammen) van de kortste naam moet terugkomen.
+
+**Docentmodus deel 2.** `data/docent-deel2.json` (8 onderdelen, 3 pauzes, 145 min), aangemeld in `DELEN`; `content-check` controleert 8 + 3 en samen met deel 1 19 onderdelen (DM-18).
+
+**LI-3.** `node tools/overlap-check.mjs [bronbestand …]` zoekt reeksen van 8 woorden of meer die in de contentbestanden en in een bron uit `lits/` staan (standaard het TOM³-buildplan); de test slaat over zonder `lits/`.
+
+**Gewicht (PF-4).** `leerblok.js` laadt `wissel-paneel.js` dynamisch, alleen bij leerblok 1 en 4 (`// gewicht-alleen: wissel`, gelezen door `tools/gewicht-check.mjs`), en de gewichtscontrole telt van `terugblik-pagina.js` alleen het vorige leerblok (`${vorig}`). Leerblok 3 weegt 297,7 kB van 300 kB: nieuwe code of data op de leerblokpagina's past er niet meer bij zonder een structurele ingreep (bijvoorbeeld de controlefabrieken per leerblok laden).

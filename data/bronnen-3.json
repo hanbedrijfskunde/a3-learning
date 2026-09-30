@@ -1,0 +1,33 @@
+{
+  "formaat": "1.0",
+  "leerblok": 3,
+  "bronnen": [
+    {
+      "id": "osterwalder-pigneur-2010",
+      "citatie": "Osterwalder & Pigneur, 2010",
+      "type": "boek",
+      "apa": "Osterwalder, A. & Pigneur, Y. (2010). *Business model generation: A handbook for visionaries, game changers, and challengers*. Wiley."
+    },
+    {
+      "id": "osterwalder-2014",
+      "citatie": "Osterwalder e.a., 2014",
+      "type": "boek",
+      "apa": "Osterwalder, A., Pigneur, Y., Bernarda, G. & Smith, A. (2014). *Value proposition design: How to create products and services customers want*. Wiley."
+    },
+    {
+      "id": "strategyzer-zd",
+      "citatie": "Strategyzer, z.d.",
+      "type": "sjabloon",
+      "apa": "Strategyzer AG. (z.d.). *The value proposition canvas* [Sjabloon, versie 2.1]. Strategyzer.",
+      "link": "https://www.strategyzer.com"
+    },
+    {
+      "id": "westmoreland-zd",
+      "citatie": "Westmoreland BV, z.d.",
+      "type": "ongepubliceerd",
+      "organisatie": "Westmoreland BV",
+      "apa": "Westmoreland BV. (z.d.). *Architectuur- en implementatieblauwdruk van het TOM³-model: Van strategische alignering naar operationele borging* [Ongepubliceerd document]. Westmoreland BV."
+    }
+  ],
+  "wachtOpCitatie": []
+}

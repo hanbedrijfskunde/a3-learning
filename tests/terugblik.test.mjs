@@ -409,7 +409,7 @@ test('TP-10: een leerblok zonder aanbevolen week en dag geeft een fout in de con
 test('TP-11: leerblok 2, 3 en 4 laden het scherm „Vorige keer”; leerblok 1 niet', () => {
   const leerblokJs = readFileSync(resolve(root, 'js/leerblok.js'), 'utf8');
   assert.match(leerblokJs, /blok\.leerblok >= 2 \? await vorigeKeerSectie/);
-  assert.match(readFileSync(resolve(root, 'leerblok-3.html'), 'utf8'), /js\/leerblok-stub\.js/);
+  assert.match(readFileSync(resolve(root, 'leerblok-3.html'), 'utf8'), /js\/leerblok\.js/);
   assert.match(readFileSync(resolve(root, 'leerblok-4.html'), 'utf8'), /js\/leerblok\.js/);
   const pagina = readFileSync(resolve(root, 'js/terugblik-pagina.js'), 'utf8');
   const volgorde = ['dossiercontrole', 'terugblik', 'transfer'].map((o) => pagina.indexOf(`'data-onderdeel': '${o}'`));

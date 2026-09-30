@@ -22,6 +22,12 @@ export function paginaBestanden(root, paginaNaam) {
     if (!externe(m[1]) && !m[1].startsWith('data:')) wachtrij.push(resolve(root, m[1]));
   }
   const datamap = resolve(root, 'data');
+  const eigenBlok = () => (nummer && existsSync(resolve(datamap, `leerblok-${nummer}.json`)) ? JSON.parse(lees(resolve(datamap, `leerblok-${nummer}.json`))) : {});
+  // Voorwaarden voor `// gewicht-alleen:`; dezelfde als waarmee de pagina de module laadt (js/leerblok.js).
+  const voldoet = (naam) => {
+    if (naam === 'wissel') { const b = eigenBlok(); return Boolean(b.wissel) || (b.taken ?? []).some((t) => t.toepassing?.component === 'feedbacklog'); }
+    throw new Error(`gewicht-check: onbekende voorwaarde ${naam}`);
+  };
   const dataBestanden = (naam) => (existsSync(datamap) ? readdirSync(datamap) : []).filter((n) => n.endsWith('.json') && naam.test(n));
   while (wachtrij.length) {
     const f = wachtrij.pop();
@@ -29,15 +35,22 @@ export function paginaBestanden(root, paginaNaam) {
     set.add(f);
     if (!f.endsWith('.js')) continue;
     const bron = lees(f);
-    for (const m of bron.matchAll(/(?:\bfrom\s*|\bimport\s*\(?\s*)['"](\.[^'"]+\.js)['"]/g)) wachtrij.push(resolve(dirname(f), m[1]));
+    for (const m of bron.matchAll(/(?:\bfrom\s*|\bimport\s*\(?\s*)['"](\.[^'"]+\.js)['"]/g)) {
+      // Een dynamische import met vlak erboven `// gewicht-alleen: <voorwaarde>` telt alleen mee voor pagina's die aan de
+      // voorwaarde voldoen (PF-4); alle andere imports, ook dynamische, tellen altijd mee.
+      const voorwaarde = /\/\/ gewicht-alleen: (\w+)\s*\n[^\n]*$/.exec(bron.slice(0, m.index + m[0].length))?.[1];
+      if (voorwaarde && !voldoet(voorwaarde)) continue;
+      wachtrij.push(resolve(dirname(f), m[1]));
+    }
     for (const m of bron.matchAll(/data\/([\w-]*)(\$\{[^}]+\})?([\w-]*)\.json/g)) {
       const [, voor, sjabloon, na] = m;
       if (!sjabloon) { set.add(resolve(datamap, `${voor}.json`)); continue; }
-      // ${nummer} is het leerblok van de pagina; ${blok.wissel.leerblok} het leerblok dat de eigen data als wissel noemt;
+      // ${nummer} is het leerblok van de pagina; ${vorig} het leerblok daarvoor; ${blok.wissel.leerblok} het leerblok dat de eigen data als wissel noemt;
       // elke andere variabele telt alle bestanden met dat patroon (bovengrens)
       if (sjabloon === '${nummer}' && nummer) set.add(resolve(datamap, `${voor}${nummer}${na}.json`));
+      else if (sjabloon === '${vorig}') { if (Number(nummer) > 1) set.add(resolve(datamap, `${voor}${Number(nummer) - 1}${na}.json`)); } // het scherm „Vorige keer” leest alleen het vorige leerblok
       else if (sjabloon === '${blok.wissel.leerblok}') {
-        const eigen = nummer && existsSync(resolve(datamap, `leerblok-${nummer}.json`)) ? JSON.parse(lees(resolve(datamap, `leerblok-${nummer}.json`))) : {};
+        const eigen = eigenBlok();
         if (eigen.wissel?.leerblok) set.add(resolve(datamap, `${voor}${eigen.wissel.leerblok}${na}.json`));
       } else dataBestanden(new RegExp(`^${voor}[\\w-]*${na}\\.json$`)).forEach((n) => set.add(resolve(datamap, n)));
     }

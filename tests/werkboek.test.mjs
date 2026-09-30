@@ -10,7 +10,7 @@ import { fileURLToPath } from 'node:url';
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const pad = process.env.WERKBOEK_PAD ?? resolve(root, '../c-cluster-1/WK5/Werkboek_A3-start_week5.html');
 const bestaat = existsSync(pad);
-const blok = JSON.parse(readFileSync(resolve(root, 'data/leerblok-1.json'), 'utf8'));
+const blokken = [1, 3].map((n) => JSON.parse(readFileSync(resolve(root, `data/leerblok-${n}.json`), 'utf8')));
 
 const ENTITEITEN = { '&lt;': '<', '&gt;': '>', '&amp;': '&', '&quot;': '"', '&nbsp;': ' ', '&#39;': "'" };
 const schoon = (html) => html.replace(/<[^>]+>/g, '').replace(/&[a-z#0-9]+;/gi, (e) => ENTITEITEN[e] ?? e).replace(/\s+/g, ' ').trim();
@@ -40,9 +40,9 @@ export function leesWerkboek(html) {
 
 const opts = { skip: bestaat ? false : `werkboek niet gevonden op ${pad}` };
 
-test('TK-2: elke taak in leerblok 1 bestaat in het werkboek met dezelfde titel en vorm', opts, () => {
+test('TK-2: elke taak in leerblok 1 en 3 bestaat in het werkboek met dezelfde titel en vorm', opts, () => {
   const wb = leesWerkboek(readFileSync(pad, 'utf8'));
-  for (const t of blok.taken) {
+  for (const t of blokken.flatMap((b) => b.taken)) {
     assert.ok(wb[t.id], `taak ${t.id} staat niet in het werkboek`);
     assert.equal(t.titel, wb[t.id].titel, `titel ${t.id}`);
     assert.equal(t.vorm, wb[t.id].vorm, `vorm ${t.id}`);
@@ -52,7 +52,7 @@ test('TK-2: elke taak in leerblok 1 bestaat in het werkboek met dezelfde titel e
 test('TK-2: waarom, richttijd, klaar als en opdracht met bron werkboek zijn letterlijk gelijk aan het werkboek', opts, () => {
   const wb = leesWerkboek(readFileSync(pad, 'utf8'));
   let vergeleken = 0;
-  for (const t of blok.taken) {
+  for (const t of blokken.flatMap((b) => b.taken)) {
     const w = wb[t.id];
     if (t.waarom.bron === 'werkboek') { assert.equal(t.waarom.tekst, w.waarom, `waarom ${t.id}`); vergeleken += 1; }
     if (t.richttijd.bron === 'werkboek') { assert.equal(t.richttijd.tekst, w.tijd, `richttijd ${t.id}`); vergeleken += 1; }
@@ -65,7 +65,7 @@ test('TK-2: waarom, richttijd, klaar als en opdracht met bron werkboek zijn lett
 
 test('TK-2: een tekst die de bouwer schreef (concept-auteur) staat niet al in het werkboek; anders wordt de auteur overschreven', opts, () => {
   const wb = leesWerkboek(readFileSync(pad, 'utf8'));
-  for (const t of blok.taken) {
+  for (const t of blokken.flatMap((b) => b.taken)) {
     if (t.klaarAls.bron === 'concept-auteur') assert.equal(wb[t.id].klaarAls, undefined, `klaar als ${t.id} staat wel in het werkboek`);
     if (t.waarom.bron === 'concept-auteur') assert.equal(wb[t.id].waarom, undefined, `waarom ${t.id} staat wel in het werkboek`);
   }

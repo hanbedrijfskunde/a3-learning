@@ -7,13 +7,14 @@ import { bouwTaakModel, isIngevuld } from './weergave.js';
 import { leesProfiel } from './profiel.js';
 import { VOORBEELDEN } from './checks/index.js';
 import { maakWissel, wisselContext, EV09_TAAK } from './wissel.js';
-import { bouwWisselPaneel } from './wissel-paneel.js';
 import { geblokkeerdMelding, toonBewaarHerinnering } from './dossier-dom.js'; // fase 3: DS-2, DS-12
 import { bouwWeergave, metVerwijzingen } from './lb2-ui.js';
 import { laadBronnen, maakIndex } from './bronnen.js';
 import { vorigeKeerSectie } from './terugblik-pagina.js'; // fase 7: TP-11
+import { normaliseerBlok } from './blok.js';
 
 const laad = async (pad) => (await fetch(new URL(pad, import.meta.url))).json();
+const laadBlok = async (pad) => normaliseerBlok(await laad(pad)); // reeksen velden uitschrijven
 /** citatie → bron voor de in-tekstverwijzingen (BR-4); lukt het laden niet, dan blijven het gewone tekst. */
 const laadBronIndex = () => laadBronnen((u) => fetch(new URL(`../${u}`, import.meta.url)))
   .then((bestanden) => maakIndex(bestanden.flatMap((b) => b.bronnen ?? []))).catch(() => new Map());
@@ -33,16 +34,20 @@ function modelantwoordEl(model, velden) {
 async function start() {
   const nummer = document.body.dataset.leerblok;
   const [blok, config, overzicht, bronIndex] = await Promise.all([
-    laad(`../data/leerblok-${nummer}.json`), laad('../data/config.json'), laad('../data/leerblokken.json'), laadBronIndex(),
+    laadBlok(`../data/leerblok-${nummer}.json`), laad('../data/config.json'), laad('../data/leerblokken.json'), laadBronIndex(),
   ]);
   const met = (tekst) => metVerwijzingen(tekst, bronIndex);
+  // De Wissel-schermen (wissel-paneel.js) zijn alleen nodig bij leerblok 1 en 4; de andere pagina's laden ze niet (PF-4).
+  const heeftWissel = Boolean(blok.wissel) || blok.taken.some((t) => t.toepassing.component === 'feedbacklog');
+  // gewicht-alleen: wissel
+  const { bouwWisselPaneel } = heeftWissel ? await import('./wissel-paneel.js') : {};
   const { opslag, geblokkeerd } = kiesOpslag();
   const store = maakStore(opslag);
   const context = () => wisselContext(store); // ontvangen wisselblokken voor de kopiecontrole (WS-7)
   const sessie = maakSessie({ store, blok, elearning: config.versie, context });
   // De Wissel hoort bij leerblok 4 (taak 6.2, EV-09); in leerblok 1 staat hij na de eerste versie van EV-02 (ST-7).
   const wisselSessie = blok.wissel
-    ? maakSessie({ store, blok: await laad(`../data/leerblok-${blok.wissel.leerblok}.json`), elearning: config.versie, context })
+    ? maakSessie({ store, blok: await laadBlok(`../data/leerblok-${blok.wissel.leerblok}.json`), elearning: config.versie, context })
     : null;
   function wisselPaneel(wsessie, opties) {
     const wissel = maakWissel({ store, sessie: wsessie });

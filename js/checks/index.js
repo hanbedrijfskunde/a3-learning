@@ -4,12 +4,14 @@
 import { veldGevuld, keuzeUitLijst, eindigtOp, minWoorden, minZinnen } from './core.js';
 import { FABRIEKEN as LB1, VOORBEELDEN as VOORBEELDEN_LB1 } from './lb1.js';
 import { FABRIEKEN as LB2 } from './lb2.js';
+import { FABRIEKEN as LB3 } from './lb3.js';
 import { FABRIEKEN as LB4 } from './lb4.js';
 
 export const FABRIEKEN = Object.freeze({
   veldGevuld, keuzeUitLijst, eindigtOp, minWoorden, minZinnen,
   ...LB1,
   ...LB2,
+  ...LB3,
   ...LB4,
 });
 

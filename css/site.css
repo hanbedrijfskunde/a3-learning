@@ -145,6 +145,17 @@ body.dos-afdrukmodus main > :not(#dos-afdruk) { display:none; }
   .lb2-tabel td::before { content:attr(data-kolom) ": "; font-weight:700; font-size:.8rem; }
 }
 
+/* ---- leerblok 3: invloed/belang-raster (LB-9) en register (LB-12) ---- */
+.raster { display:grid; grid-template-columns:1fr 1fr; gap:.5rem; margin:.5rem 0; }
+.raster-vak { border:3px solid var(--zwart); padding:.25rem .6rem .5rem; min-height:6rem; background:var(--wit); }
+.raster-vak[data-vak="nauw"] { background:var(--roze); }
+.raster-vak h5 { margin:.25rem 0 0; font-size:1rem; }
+.raster-vak p { margin:0 0 .25rem; }
+.raster-leden { margin:0; padding-left:1.1rem; }
+.raster-tekst { padding-left:1.1rem; }
+.zoekvragen-hint { border-left:6px solid var(--zwart); padding:.1rem .75rem; margin:.5rem 0; }
+@media (max-width:40rem) { .raster { grid-template-columns:1fr; } }
+
 /* ---- bronnen en in-tekstverwijzingen (bron-) ---- */
 .bron-lijst { list-style:none; padding:0; }
 .bron-regel { margin:.75rem 0; padding:.25rem .5rem .25rem 2rem; text-indent:-1.5rem; border-left:6px solid var(--zwart); overflow-wrap:anywhere; }

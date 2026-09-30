@@ -1,0 +1,260 @@
+{
+  "formaat": "1.0",
+  "leerblok": 3,
+  "titel": "Het vraagstuk plaatsen",
+  "richttijd": 45,
+  "eindigtMet": "Plaatsing met conclusie en onderzoeksvraag (EV-06, EV-07, EV-08)",
+  "oefencasus": "Webshop X",
+  "taken": [
+    {
+      "id": "5.1",
+      "titel": "Stakeholders van het vraagstuk",
+      "vorm": "Team",
+      "richttijd": {"tekst":"20 min","minuten":20,"bron":"werkboek"},
+      "waarom": {"tekst":"Je plaatst het vraagstuk ten opzichte van de mensen en partijen die ermee te maken hebben. Gebruik invloed en belang uit THEO SM week 3.","bron":"werkboek"},
+      "klaarAls": {"tekst":"de map op vel 1 staat, het vraagstuk in het midden staat en bij elke stakeholder de relatie met het vraagstuk staat.","bron":"werkboek"},
+      "stof": {
+        "bron": "concept-auteur",
+        "opmerking": "Uitleg door de bouwer geschreven; het werkboek geeft alleen de opdracht en de tabel.",
+        "alineas": ["Een stakeholder is iemand of een partij die het vraagstuk merkt of er invloed op heeft. Intern zit in de organisatie, extern erbuiten. Bepaal per stakeholder de invloed op het vraagstuk (hoog of laag) en het belang dat hij erbij heeft (hoog of laag).","Invloed en belang geven vier vakken: nauw betrekken (beide hoog), tevreden houden (invloed hoog, belang laag), op de hoogte houden (invloed laag, belang hoog) en volgen (beide laag). Het raster hieronder tekent zichzelf zodra je invloed en belang kiest. Schrijf ook op hoe het vraagstuk de stakeholder raakt.","De gebruiker uit je onderzoeksvraag van leerblok 1 hoort in de lijst; de site controleert dat."]
+      },
+      "oefening": {
+        "opdracht": {"tekst":"Casus webshop X: terugkerende klanten geven lagere waarderingen dan vroeger. Noteer minstens vijf stakeholders, met intern of extern, invloed en belang. Beantwoord daarna de twee vragen uit het werkboek.","bron":"concept-auteur"},
+        "velden": [{"id":"stakeholders","label":"Stakeholders, elk met intern of extern, invloed (hoog of laag) en belang (hoog of laag)","type":"lang"},{"id":"merktEerst","label":"Wie merkt het probleem het eerst?","type":"lang"},{"id":"belangHuidig","label":"Wie heeft belang bij de huidige situatie?","type":"lang"}]
+      },
+      "modelantwoord": {
+        "bron": "concept-auteur",
+        "opmerking": "Voorbeeld door de bouwer geschreven.",
+        "velden": {"stakeholders":"Terugkerende klanten (extern): invloed laag, belang hoog. Klantenservice (intern): invloed laag, belang hoog. Directie van de webshop (intern): invloed hoog, belang hoog. Bezorgdienst (extern): invloed hoog, belang laag. Marketingafdeling (intern): invloed laag, belang laag. Concurrenten (extern): invloed laag, belang laag.","merktEerst":"De klantenservice: klachten en vragen komen daar als eerste binnen.","belangHuidig":"De bezorgdienst, als de huidige afspraken voor hen voordelig zijn."}
+      },
+      "toepassing": {
+        "opdracht": {"tekst":"Schrijf je vraagstuk in één zin en noteer je stakeholders, elk met intern of extern, de relatie met het vraagstuk, invloed en belang. Neem de map daarna over op vel 1.","bron":"concept-auteur"},
+        "velden": [{"id":"vraagstuk","label":"Ons vraagstuk in één zin","type":"lang"},{"reeks":{"voor":"s","aantal":7,"velden":[{"suffix":"naam","label":"Stakeholder {n}","type":"tekst"},{"suffix":"soort","label":"Stakeholder {n}: intern of extern","type":"lijst","opties":["intern","extern"]},{"suffix":"raakt","label":"Stakeholder {n}: relatie met het vraagstuk","type":"tekst"},{"suffix":"invloed","label":"Stakeholder {n}: invloed","type":"lijst","opties":["hoog","laag"]},{"suffix":"belang","label":"Stakeholder {n}: belang","type":"lijst","opties":["hoog","laag"]}]}},{"id":"merktEerst","label":"Wie merkt het probleem het eerst?","type":"lang"},{"id":"belangHuidig","label":"Wie heeft belang bij de huidige situatie?","type":"lang"}],
+        "weergave": {"groepen":[{"velden":["vraagstuk"]},{"titel":"Stakeholders","tabel":{"kolommen":["Stakeholder","Intern of extern","Hoe raakt het vraagstuk deze stakeholder?","Invloed","Belang"],"reeks":{"voor":"s","aantal":7,"suffixen":["naam","soort","raakt","invloed","belang"]}}},{"velden":["merktEerst","belangHuidig"]},{"titel":"Het raster van invloed en belang","raster":{"voor":"s","aantal":7}}]}
+      },
+      "controles": [
+        {"id":"vraagstuk-woorden","soort":"A","type":"minWoordenAanwezig","veld":"vraagstuk","label":"je vraagstuk in één zin","min":4},
+        {"id":"stakeholders-aantal","soort":"A","type":"stakeholdersAantal","voor":"s","aantal":7,"min":5},
+        {"id":"intern-en-extern","soort":"A","type":"internEnExtern","voor":"s","aantal":7},
+        {"id":"stakeholder-velden","soort":"A","type":"stakeholderVelden","voor":"s","aantal":7},
+        {"id":"gebruiker-in-lijst","soort":"B","type":"gebruikerInLijst","voor":"s","aantal":7}
+      ],
+      "bewijsonderdeel": "EV-06",
+      "luk": [1],
+      "bc": ["BC1"]
+    },
+    {
+      "id": "6.1",
+      "titel": "Vul het canvas in met het vraagstuk centraal",
+      "vorm": "Team",
+      "richttijd": {"tekst":"20 min","minuten":20,"bron":"werkboek"},
+      "waarom": {"tekst":"Het canvas laat zien wat de klant wil bereiken, wat hem hindert en wat hij zoekt. Zo kijk je vanuit de klant naar je vraagstuk en zie je welke pain of gain erbij hoort.","bron":"concept-auteur"},
+      "klaarAls": {"tekst":"je bij het klantprofiel de klanttaken, pains en gains hebt ingevuld, bij de waardekaart wat de organisatie nu biedt, en van de pain of gain die bij je vraagstuk hoort hebt gezegd of het een feit of een aanname is.","bron":"concept-auteur"},
+      "stof": {
+        "bron": "concept-auteur",
+        "opmerking": "Eigen samenvatting van de bouwer met de bronnen uit het LRD (LB-12).",
+        "alineas": ["Het value proposition canvas (VPC) heeft twee kanten (Osterwalder e.a., 2014). Het klantprofiel beschrijft de klant: klanttaken (wat de klant gedaan wil krijgen), pains (wat in de weg zit) en gains (wat hij graag bereikt). De waardekaart beschrijft wat de organisatie nu biedt: producten en diensten, pain relievers en gain creators.","Er is een fit als de gain creators de belangrijkste gains opleveren en de pain relievers de belangrijkste pains wegnemen. Begin rechts, bij de klant. Het officiële sjabloon staat bij Strategyzer (Strategyzer, z.d.); jullie tekenen het zelf op vel 1.","Zeg van de pain of gain die bij je vraagstuk hoort of het een feit of een aanname is. Een feit kun je aanwijzen: een meting, een document of een gesprek waarvan je de herkomst noemt. Een aanname denk je, maar je hebt het niet gecontroleerd."]
+      },
+      "oefening": {
+        "opdracht": {"tekst":"Casus webshop X: terugkerende klanten geven lagere waarderingen. Vul voor deze klant één klanttaak, één pain en één gain in, en zeg of je pain een feit of een aanname is.","bron":"concept-auteur"},
+        "velden": [{"id":"klanttaak","label":"Klanttaak","type":"tekst"},{"id":"pain","label":"Pain","type":"tekst"},{"id":"gain","label":"Gain","type":"tekst"},{"id":"painSoort","label":"Is je pain een feit of een aanname?","type":"lijst","opties":["feit","aanname"]}]
+      },
+      "modelantwoord": {
+        "bron": "concept-auteur",
+        "opmerking": "Voorbeeld door de bouwer geschreven.",
+        "velden": {"klanttaak":"Een bestelling plaatsen en die op de afgesproken dag ontvangen.","pain":"Het pakket komt te laat en de klantenservice is moeilijk te bereiken.","gain":"Weten waar mijn pakket is, zonder ernaar te hoeven vragen.","painSoort":"aanname"},
+        "tekst": "Het is een aanname zolang niemand het gemeten heeft. Het wordt een feit als je het aantoont, bijvoorbeeld met de klachtencijfers van de klantenservice."
+      },
+      "toepassing": {
+        "opdracht": {"tekst":"Vul het klantprofiel en de waardekaart in voor je eigen vraagstuk. Zeg daarna van de pain of gain die bij je vraagstuk hoort of het een feit of een aanname is.","bron":"concept-auteur"},
+        "velden": [{"id":"klanttaak","label":"Klanttaken (jobs) van de klant","type":"lang"},{"id":"pain","label":"Pains van de klant","type":"lang"},{"id":"gain","label":"Gains van de klant","type":"lang"},{"id":"aanbod","label":"Producten en diensten die de organisatie nu biedt","type":"lang"},{"id":"painReliever","label":"Pain relievers","type":"lang"},{"id":"gainCreator","label":"Gain creators","type":"lang"},{"id":"painSoort","label":"Is de pain of gain die bij je vraagstuk hoort een feit of een aanname?","type":"lijst","opties":["feit","aanname"]},{"id":"fit","label":"Waar ontbreekt de fit?","type":"lang"}],
+        "weergave": {"groepen":[{"titel":"Klantprofiel","velden":["klanttaak","pain","gain"]},{"titel":"Waardekaart","velden":["aanbod","painReliever","gainCreator"]},{"velden":["painSoort","fit"]}]}
+      },
+      "controles": [
+        {"id":"klanttaak-ingevuld","soort":"A","type":"veldGevuld","veld":"klanttaak","label":"de klanttaken"},
+        {"id":"pain-woorden","soort":"A","type":"minWoordenAanwezig","veld":"pain","label":"de pains van de klant","min":3},
+        {"id":"gain-woorden","soort":"A","type":"minWoordenAanwezig","veld":"gain","label":"de gains van de klant","min":3},
+        {"id":"aanbod-ingevuld","soort":"A","type":"veldGevuld","veld":"aanbod","label":"wat de organisatie nu biedt"},
+        {"id":"pain-soort","soort":"A","type":"keuzeUitLijst","veld":"painSoort","label":"of de pain of gain een feit of een aanname is"},
+        {"id":"fit-ingevuld","soort":"A","type":"veldGevuld","veld":"fit","label":"waar de fit ontbreekt"}
+      ],
+      "bewijsonderdeel": null,
+      "luk": [1],
+      "bc": ["BC1"]
+    },
+    {
+      "id": "7.1",
+      "titel": "Markeer het vraagstuk per bouwsteen",
+      "vorm": "Team",
+      "richttijd": {"tekst":"20 min","minuten":20,"bron":"werkboek"},
+      "waarom": {"tekst":"Het business model canvas laat zien hoe de organisatie waarde maakt. Door je vraagstuk erop te markeren zie je welke onderdelen van het bedrijf het raakt.","bron":"concept-auteur"},
+      "klaarAls": {"tekst":"je hebt aangevinkt welke bouwstenen worden geraakt, bij elke geraakte bouwsteen hebt opgeschreven wat er nu is en wat de rol van het vraagstuk is, en hebt gezegd welke bouwsteen het hardst wordt geraakt en welke andere kapitalen het vraagstuk raakt.","bron":"concept-auteur"},
+      "stof": {
+        "bron": "concept-auteur",
+        "opmerking": "Uitleg door de bouwer geschreven; het werkboek geeft alleen de opdracht.",
+        "alineas": ["Het business model canvas (BMC) heeft negen bouwstenen die samen laten zien hoe een organisatie waarde maakt (Osterwalder & Pigneur, 2010): kernpartners, kernactiviteiten, kernmiddelen, waardepropositie, klantrelaties, kanalen, klantsegmenten, kostenstructuur en inkomstenstromen. Het VPC van 6.1 is een uitvergroting van de waardepropositie en de klantsegmenten.","Vink de bouwstenen aan die je vraagstuk raakt en schrijf per bouwsteen wat er nu is en wat de rol van het vraagstuk is. Kosten en inkomsten zijn financieel kapitaal: kijk ook naar de andere kapitalen."]
+      },
+      "oefening": {
+        "opdracht": {"tekst":"Casus webshop X: de bezorgtijden lopen op en klanten klagen. Vink drie bouwstenen aan die hierdoor worden geraakt, kies de bouwsteen die het hardst wordt geraakt en zeg waarom.","bron":"concept-auteur"},
+        "velden": [{"id":"geraakt","label":"Welke bouwstenen worden geraakt?","type":"meer","opties":["Kernpartners","Kernactiviteiten","Kernmiddelen","Waardepropositie","Klantrelaties","Kanalen","Klantsegmenten","Kostenstructuur","Inkomstenstromen"]},{"id":"hardst","label":"Welke bouwsteen wordt het hardst geraakt?","type":"lijst","opties":["Kernpartners","Kernactiviteiten","Kernmiddelen","Waardepropositie","Klantrelaties","Kanalen","Klantsegmenten","Kostenstructuur","Inkomstenstromen"]},{"id":"waarom","label":"Waarom die bouwsteen?","type":"lang"}]
+      },
+      "modelantwoord": {
+        "bron": "concept-auteur",
+        "opmerking": "Voorbeeld door de bouwer geschreven.",
+        "velden": {"geraakt":["Kernpartners","Klantrelaties","Kanalen"],"hardst":"Kernpartners","waarom":"De bezorgdienst levert de bezorging. Wordt die trager, dan raakt dat direct de belofte aan de klant."}
+      },
+      "toepassing": {
+        "opdracht": {"tekst":"Vink de geraakte bouwstenen aan, schrijf per bouwsteen wat er nu is en wat de rol van het vraagstuk is, en kies de bouwsteen die het hardst wordt geraakt en de kapitalen die het vraagstuk raakt.","bron":"concept-auteur"},
+        "velden": [{"id":"geraakt","label":"Welke bouwstenen worden geraakt?","type":"meer","opties":["Kernpartners","Kernactiviteiten","Kernmiddelen","Waardepropositie","Klantrelaties","Kanalen","Klantsegmenten","Kostenstructuur","Inkomstenstromen"]},{"id":"rol","label":"Per geraakte bouwsteen: wat is er nu en wat is de rol van het vraagstuk?","type":"lang"},{"id":"hardst","label":"Welke bouwsteen wordt het hardst geraakt?","type":"lijst","opties":["Kernpartners","Kernactiviteiten","Kernmiddelen","Waardepropositie","Klantrelaties","Kanalen","Klantsegmenten","Kostenstructuur","Inkomstenstromen"]},{"id":"hardstWaarom","label":"Waarom die bouwsteen?","type":"lang"},{"id":"kapitalen","label":"Welke kapitalen raakt het vraagstuk? Kosten en inkomsten zijn financieel kapitaal.","type":"meer","opties":["financieel","productie","intellectueel","menselijk","sociaal en relationeel","natuurlijk"]}],
+        "weergave": {"groepen":[{"titel":"Bouwstenen","velden":["geraakt","rol"]},{"titel":"Het hardst geraakt","velden":["hardst","hardstWaarom"]},{"velden":["kapitalen"]}]}
+      },
+      "controles": [
+        {"id":"geraakt-gekozen","soort":"A","type":"keuzeUitLijst","veld":"geraakt","label":"minstens één bouwsteen die wordt geraakt"},
+        {"id":"rol-ingevuld","soort":"A","type":"veldGevuld","veld":"rol","label":"wat er nu is en wat de rol van het vraagstuk is"},
+        {"id":"hardst-gekozen","soort":"A","type":"keuzeUitLijst","veld":"hardst","label":"de bouwsteen die het hardst wordt geraakt"},
+        {"id":"hardst-binnen-geraakt","soort":"B","type":"hardstBinnenGeraakt","veld":"hardst","geraaktVeld":"geraakt"},
+        {"id":"hardst-waarom","soort":"A","type":"minWoordenAanwezig","veld":"hardstWaarom","label":"waarom die bouwsteen het hardst wordt geraakt","min":4},
+        {"id":"kapitaal-niet-financieel","soort":"A","type":"kapitaalNietFinancieel","veld":"kapitalen","label":"een kapitaal"}
+      ],
+      "bewijsonderdeel": null,
+      "luk": [1],
+      "bc": ["BC1"]
+    },
+    {
+      "id": "8.1",
+      "titel": "Impact van het vraagstuk per onderdeel",
+      "vorm": "Team",
+      "richttijd": {"tekst":"20 min","minuten":20,"bron":"werkboek"},
+      "waarom": {"tekst":"Met het TOM-model zie je op welk niveau van de organisatie het vraagstuk speelt: strategisch, tactisch of operationeel.","bron":"werkboek"},
+      "klaarAls": {"tekst":"je bij de cellen waar het vraagstuk iets raakt hebt opgeschreven hoe, je hebt gekozen op welk niveau het vraagstuk vooral speelt en je in het register minstens drie kernbeweringen over VPC, BMC en TOM-model als feit of aanname hebt gelabeld.","bron":"concept-auteur"},
+      "stof": {
+        "bron": "concept-auteur",
+        "opmerking": "Eigen samenvatting van de TOM³-indeling (LI-3, BR-3): geen zinnen uit het ongepubliceerde buildplan van Westmoreland BV (open punt A-1).",
+        "alineas": ["Het TOM-model laat zien op welk niveau van de organisatie een vraagstuk speelt. Je gebruikt de TOM³-indeling (Westmoreland BV, z.d.): drie lagen en vier kolommen.","De drie lagen zijn strategisch (welke koers kiest de organisatie), tactisch (hoe richt ze afdelingen, processen en rollen in om die koers te halen) en operationeel (wat er dagelijks op de werkvloer gebeurt).","De vier kolommen zijn Methode (hoe het werk is georganiseerd), Mens (wie het doet en wat die mensen kunnen), Machine (de systemen en gegevens die erbij horen) en Informatie & Rapportage (welke gegevens en terugkoppeling nodig zijn om te kunnen sturen).","Dat geeft 3 × 4 = 12 cellen. Schrijf per cel kort hoe het vraagstuk daar zichtbaar is en laat een cel leeg als het vraagstuk daar niets raakt. De template van je docent toont dezelfde indeling.","Sluit af met het register: kies uit VPC, BMC en TOM-model minstens drie beweringen waar je vraagstuk op steunt, zeg per bewering of het een feit of een aanname is en bij welk onderdeel ze hoort. Bij een feit noem je de herkomst; een aanname koppel je aan een zoekvraag uit leerblok 1, waar je uitzoekt of hij klopt."]
+      },
+      "oefening": {
+        "opdracht": {"tekst":"Casus webshop X: de bezorgtijden lopen op. Kies twee cellen van het TOM-model waar dat zichtbaar wordt, noem laag en kolom en schrijf hoe het vraagstuk daar zichtbaar is. Zeg ook op welk niveau het vraagstuk vooral speelt.","bron":"concept-auteur"},
+        "velden": [{"id":"cel1","label":"Cel 1: laag, kolom en hoe het vraagstuk daar zichtbaar is","type":"lang"},{"id":"cel2","label":"Cel 2: laag, kolom en hoe het vraagstuk daar zichtbaar is","type":"lang"},{"id":"niveau","label":"Op welk niveau speelt het vraagstuk vooral?","type":"lijst","opties":["strategisch","tactisch","operationeel"]}]
+      },
+      "modelantwoord": {
+        "bron": "concept-auteur",
+        "opmerking": "Voorbeeld door de bouwer geschreven.",
+        "velden": {"cel1":"Operationeel · Informatie & Rapportage: bezorgtijden worden per zending vastgelegd, maar niemand ziet vroeg dat ze oplopen.","cel2":"Tactisch · Methode: de afspraken over bezorging met de bezorgdienst kennen geen norm voor de doorlooptijd.","niveau":"tactisch"},
+        "tekst": "Het vraagstuk speelt vooral tactisch: de afspraken tussen afdeling en bezorgdienst zijn het probleem, niet de koers en niet het werk van één bezorger."
+      },
+      "toepassing": {
+        "opdracht": {"tekst":"Vul het TOM-model V1 in voor je vraagstuk: schrijf per cel kort hoe het vraagstuk daar zichtbaar is en laat lege cellen leeg. Kies daarna het niveau waarop het vraagstuk vooral speelt. Schrijf daarna in het register minstens drie kernbeweringen over je VPC, BMC en TOM-model, elk als feit of aanname.","bron":"concept-auteur"},
+        "velden": [{"id":"tomS1","label":"Strategisch · Methode","type":"lang"},{"id":"tomS2","label":"Strategisch · Mens","type":"lang"},{"id":"tomS3","label":"Strategisch · Machine","type":"lang"},{"id":"tomS4","label":"Strategisch · Informatie & Rapportage","type":"lang"},{"id":"tomT1","label":"Tactisch · Methode","type":"lang"},{"id":"tomT2","label":"Tactisch · Mens","type":"lang"},{"id":"tomT3","label":"Tactisch · Machine","type":"lang"},{"id":"tomT4","label":"Tactisch · Informatie & Rapportage","type":"lang"},{"id":"tomO1","label":"Operationeel · Methode","type":"lang"},{"id":"tomO2","label":"Operationeel · Mens","type":"lang"},{"id":"tomO3","label":"Operationeel · Machine","type":"lang"},{"id":"tomO4","label":"Operationeel · Informatie & Rapportage","type":"lang"},{"id":"niveau","label":"Op welk niveau speelt het vraagstuk vooral?","type":"lijst","opties":["strategisch","tactisch","operationeel"]},{"id":"niveauWaarom","label":"Waaraan zie je dat?","type":"lang"},{"reeks":{"voor":"b","aantal":5,"velden":[{"suffix":"tekst","label":"Bewering {n}","type":"tekst"},{"suffix":"label","label":"Bewering {n}: feit of aanname","type":"lijst","opties":["feit","aanname"]},{"suffix":"onderdeel","label":"Bewering {n}: onderdeel","type":"lijst","opties":["klanttaak","pain","gain","product of dienst","pain reliever","gain creator","bouwsteen","TOM-cel"]},{"suffix":"bron","label":"Bewering {n}: herkomst of bron","type":"tekst"},{"suffix":"zoek","label":"Bewering {n}: zoekvraag","type":"lijst","opties":["zoekvraag 1","zoekvraag 2","zoekvraag 3"]}]}}],
+        "weergave": {"groepen":[{"titel":"TOM-model V1 volgens TOM³: 3 lagen × 4 kolommen","tabel":{"kolommen":["Laag","Methode","Mens","Machine","Informatie & Rapportage"],"rijen":[[{"tekst":"Strategisch"},"tomS1","tomS2","tomS3","tomS4"],[{"tekst":"Tactisch"},"tomT1","tomT2","tomT3","tomT4"],[{"tekst":"Operationeel"},"tomO1","tomO2","tomO3","tomO4"]]}},{"velden":["niveau","niveauWaarom"]},{"titel":"Register van kernbeweringen bij VPC, BMC en TOM-model","zoekvragenHint":true,"tabel":{"kolommen":["Kernbewering","Feit of aanname","Onderdeel","Herkomst of bron (bij een feit)","Zoekvraag (bij een aanname)"],"reeks":{"voor":"b","aantal":5,"suffixen":["tekst","label","onderdeel","bron","zoek"]}}}]}
+      },
+      "controles": [
+        {"id":"tom-cellen","soort":"C","type":"minGevuld","velden":["tomS1","tomS2","tomS3","tomS4","tomT1","tomT2","tomT3","tomT4","tomO1","tomO2","tomO3","tomO4"],"min":4,"label":"het TOM-model: vul de cellen in waar het vraagstuk iets raakt"},
+        {"id":"niveau-gekozen","soort":"A","type":"keuzeUitLijst","veld":"niveau","label":"het niveau waarop het vraagstuk vooral speelt"},
+        {"id":"niveau-waarom","soort":"A","type":"veldGevuld","veld":"niveauWaarom","label":"waaraan je het niveau ziet"},
+        {"id":"beweringen-gelabeld","soort":"A","type":"beweringenGelabeld","voor":"b","aantal":5,"min":3},
+        {"id":"feit-met-herkomst","soort":"A","type":"feitMetHerkomst","voor":"b","aantal":5},
+        {"id":"aanname-met-zoekvraag","soort":"B","type":"aannameMetZoekvraag","voor":"b","aantal":5}
+      ],
+      "bewijsonderdeel": "EV-07",
+      "luk": [1],
+      "bc": ["BC1"]
+    },
+    {
+      "id": "9.1",
+      "titel": "Plaats het vraagstuk",
+      "vorm": "Team",
+      "richttijd": {"tekst":"15 min","minuten":15,"bron":"werkboek"},
+      "waarom": {"tekst":"Met de vier overzichten kun je zeggen waar je vraagstuk zit: ten opzichte van de mensen eromheen, de klant en de organisatie. Die eerste conclusies sturen je onderzoeksvraag.","bron":"concept-auteur"},
+      "klaarAls": {"tekst":"je bij de stakeholders, de klant en de organisatie een conclusie hebt geschreven die minstens één stakeholder uit je lijst noemt, en je in één zin hebt opgeschreven waar je vraagstuk zit.","bron":"concept-auteur"},
+      "stof": {
+        "bron": "concept-auteur",
+        "opmerking": "Uitleg door de bouwer geschreven; het werkboek geeft alleen de invulplekken.",
+        "alineas": ["Je hebt vier overzichten: stakeholdermap, VPC, BMC en TOM-model. Waar zit je vraagstuk ten opzichte van de stakeholders, de klant (VPC) en de organisatie (BMC en TOM-model)?","Noem in elk antwoord minstens één stakeholder uit je lijst, zodat je conclusie verbonden blijft met de mensen die het vraagstuk merken. Sluit af met één zin: hier zit ons vraagstuk."]
+      },
+      "oefening": {
+        "opdracht": {"tekst":"Casus webshop X: terugkerende klanten geven lagere waarderingen. Schrijf een conclusie ten opzichte van de stakeholders, de klant en de organisatie en noem in elk antwoord een stakeholder.","bron":"concept-auteur"},
+        "velden": [{"id":"conclStakeholders","label":"Ten opzichte van de stakeholders","type":"lang"},{"id":"conclKlant","label":"Ten opzichte van de klant","type":"lang"},{"id":"conclOrganisatie","label":"Ten opzichte van de organisatie","type":"lang"}]
+      },
+      "modelantwoord": {
+        "bron": "concept-auteur",
+        "opmerking": "Voorbeeld door de bouwer geschreven.",
+        "velden": {"conclStakeholders":"De klantenservice merkt het probleem het eerst en de directie heeft de meeste invloed. Het vraagstuk zit dus bij de klantenservice en bij de directie, die er nog weinig zicht op heeft.","conclKlant":"Voor de terugkerende klant ontbreekt de fit: de belofte van snelle levering wordt niet waargemaakt, en de klantenservice zou die pain moeten wegnemen.","conclOrganisatie":"In de organisatie zit het vraagstuk bij de afspraken met de bezorgdienst (kernpartners) en bij de rapportage aan de directie."}
+      },
+      "toepassing": {
+        "opdracht": {"tekst":"Schrijf een conclusie ten opzichte van je stakeholders, je klant en je organisatie. Noem in elk antwoord minstens één stakeholder uit je lijst. Schrijf daarna in één zin waar je vraagstuk zit.","bron":"concept-auteur"},
+        "velden": [{"id":"conclStakeholders","label":"Ten opzichte van de stakeholders (stakeholdermap)","type":"lang"},{"id":"conclKlant","label":"Ten opzichte van de klant (VPC)","type":"lang"},{"id":"conclOrganisatie","label":"Ten opzichte van de organisatie (BMC en TOM-model)","type":"lang"},{"id":"conclusie","label":"Conclusie: hier zit ons vraagstuk","type":"lang"}],
+        "weergave": {"groepen":[{"velden":["conclStakeholders","conclKlant","conclOrganisatie","conclusie"]}]}
+      },
+      "controles": [
+        {"id":"concl-stakeholders","soort":"A","type":"minWoordenAanwezig","veld":"conclStakeholders","label":"je conclusie ten opzichte van de stakeholders","min":5},
+        {"id":"concl-klant","soort":"A","type":"minWoordenAanwezig","veld":"conclKlant","label":"je conclusie ten opzichte van de klant","min":5},
+        {"id":"concl-organisatie","soort":"A","type":"minWoordenAanwezig","veld":"conclOrganisatie","label":"je conclusie ten opzichte van de organisatie","min":5},
+        {"id":"conclusie-ingevuld","soort":"A","type":"veldGevuld","veld":"conclusie","label":"waar je vraagstuk zit"}
+      ],
+      "bewijsonderdeel": null,
+      "luk": [1],
+      "bc": ["BC1"]
+    },
+    {
+      "id": "9.2",
+      "titel": "Onze onderzoeksvraag voor de opdrachtgever",
+      "vorm": "Team",
+      "richttijd": {"tekst":"10 min","minuten":10,"bron":"werkboek"},
+      "waarom": {"tekst":"Je onderzoeksvraag was een eerste versie. Met wat je nu over stakeholders, klant en organisatie weet, maak je hem scherper voor de opdrachtgever.","bron":"concept-auteur"},
+      "klaarAls": {"tekst":"je een herziene onderzoeksvraag in het format hebt geschreven, hebt gezegd of het een feit of een aanname is, hebt gecontroleerd of pain, gain en waarde kloppen met je VPC, en van elk van de vier producten een foto hebt gemaakt.","bron":"concept-auteur"},
+      "stof": {
+        "bron": "concept-auteur",
+        "opmerking": "Uitleg en de vinkjes voor de vier producten door de bouwer geschreven (LB-10).",
+        "alineas": ["Schrijf de onderzoeksvraag opnieuw in het format van leerblok 1. De gebruiker staat op je stakeholdermap en pain, gain en waarde kloppen met je VPC.","Wat de opdrachtgever zegt, is één waarneming vanuit één frame. Zeg daarom of je vraag een feit of een aanname is en controleer hem met gegevens en met andere betrokkenen.","Loop per product de checklist langs en vink „foto gemaakt” aan: die foto heb je nodig voor de gallery walk."]
+      },
+      "oefening": {
+        "opdracht": {"tekst":"Casus webshop X: schrijf voor de terugkerende klanten een onderzoeksvraag in het format en zeg of hij een feit of een aanname is.","bron":"concept-auteur"},
+        "velden": [{"id":"vraag","label":"Onderzoeksvraag","type":"tekst"},{"id":"vraagSoort","label":"Feit of aanname?","type":"lijst","opties":["feit","aanname"]}]
+      },
+      "modelantwoord": {
+        "bron": "concept-auteur",
+        "opmerking": "Voorbeeld door de bouwer geschreven.",
+        "velden": {"vraag":"Wat is de beste oplossing voor de klantenservice van webshop X om terugkerende klanten sneller te informeren over hun bezorging, zodat de klantrelatie herstelt?","vraagSoort":"aanname"},
+        "tekst": "Het blijft een aanname zolang niemand heeft gemeten dat de informatie over de bezorging de reden is van de lagere waarderingen."
+      },
+      "toepassing": {
+        "opdracht": {"tekst":"Schrijf je herziene onderzoeksvraag, kies feit of aanname en vink aan wat klopt met je VPC. Loop daarna de checklist per product langs en vink de foto aan zodra je hem hebt.","bron":"concept-auteur"},
+        "velden": [{"id":"conclStakeholders","label":"Ten opzichte van de stakeholders (stakeholdermap)","type":"lang"},{"id":"conclKlant","label":"Ten opzichte van de klant (VPC)","type":"lang"},{"id":"conclOrganisatie","label":"Ten opzichte van de organisatie (BMC en TOM-model)","type":"lang"},{"id":"conclusie","label":"Conclusie: hier zit ons vraagstuk","type":"lang"},{"id":"vraag","label":"Onze onderzoeksvraag","type":"lang"},{"id":"vraagSoort","label":"Gaat het om een feit of om een aanname?","type":"lijst","opties":["feit","aanname"]},{"id":"vpcCheck","label":"Vergelijk met je VPC","type":"meer","opties":["Pain of gain in mijn onderzoeksvraag klopt met mijn VPC","Waarde in mijn onderzoeksvraag klopt met mijn VPC"]},{"id":"check1","label":"Checklist Stakeholdermap","type":"meer","opties":["De map staat op vel 1","Het vraagstuk staat in het midden","Bij elke stakeholder staat de relatie"]},{"id":"foto1","label":"Foto van Stakeholdermap","type":"meer","opties":["Foto gemaakt"]},{"id":"check2","label":"Checklist Value Proposition Canvas","type":"meer","opties":["Het klantprofiel is ingevuld","De waardekaart is ingevuld","Waar de fit ontbreekt is benoemd"]},{"id":"foto2","label":"Foto van Value Proposition Canvas","type":"meer","opties":["Foto gemaakt"]},{"id":"check3","label":"Checklist Business Model Canvas","type":"meer","opties":["De negen bouwstenen staan op vel 2","De geraakte bouwstenen zijn gearceerd","Per geraakte bouwsteen staat de rol van het vraagstuk"]},{"id":"foto3","label":"Foto van Business Model Canvas","type":"meer","opties":["Foto gemaakt"]},{"id":"check4","label":"Checklist TOM-model V1","type":"meer","opties":["De drie lagen en vier kolommen staan op vel 2","Per geraakte cel staat hoe","Het niveau van het vraagstuk is benoemd"]},{"id":"foto4","label":"Foto van TOM-model V1","type":"meer","opties":["Foto gemaakt"]}],
+        "weergave": {"groepen":[{"titel":"Wat je bij 9.1 hebt geconcludeerd","afgeleidVan":"9.1","velden":["conclStakeholders","conclKlant","conclOrganisatie","conclusie"],"kolommen":["Stakeholders","Klant","Organisatie","Hier zit ons vraagstuk"],"hint":"Je vult of wijzigt deze conclusies bij taak 9.1."},{"titel":"Onze onderzoeksvraag","velden":["vraag","vraagSoort"]},{"titel":"Check op je onderzoeksvraag","velden":["vpcCheck"]},{"titel":"Product 1 · Stakeholdermap","velden":["check1","foto1"]},{"titel":"Product 2 · Value Proposition Canvas","velden":["check2","foto2"]},{"titel":"Product 3 · Business Model Canvas","velden":["check3","foto3"]},{"titel":"Product 4 · TOM-model V1","velden":["check4","foto4"]}]}
+      },
+      "controles": [
+        {"id":"vraag-woorden","soort":"A","type":"minWoordenAanwezig","veld":"vraag","label":"je onderzoeksvraag","min":8},
+        {"id":"vraag-vraagteken","soort":"A","type":"eindigtOp","veld":"vraag","label":"je onderzoeksvraag","tekens":["?"]},
+        {"id":"vraag-soort","soort":"A","type":"keuzeUitLijst","veld":"vraagSoort","label":"of je onderzoeksvraag een feit of een aanname is"},
+        {"id":"vpc-vergeleken","soort":"A","type":"alleAangevinkt","veld":"vpcCheck","label":"de vergelijking van je onderzoeksvraag met je VPC"},
+        {"id":"conclusies-noemen-stakeholder","soort":"B","type":"noemtStakeholder","velden":["conclStakeholders","conclKlant","conclOrganisatie"],"voor":"s","aantal":7,"label":"je drie conclusies"},
+        {"id":"vraag-noemt-stakeholder","soort":"B","type":"noemtStakeholder","velden":["vraag"],"voor":"s","aantal":7,"label":"je onderzoeksvraag"},
+        {"id":"foto-vinkjes","soort":"A","type":"alleAangevinkt","velden":["foto1","foto2","foto3","foto4"],"label":"de foto van elk van de vier producten","leegIs":"let op"}
+      ],
+      "bewijsonderdeel": "EV-08",
+      "luk": [1],
+      "bc": ["BC1"]
+    }
+  ],
+  "verdieping": {"tekst":"Zoek de stakeholder die je vergat: wie merkt het vraagstuk pas na drie maanden?","bron":"lrd","na":"5.1"},
+  "bewijsonderdelen": [
+    {
+      "id": "EV-06",
+      "taak": "5.1",
+      "titel": "Stakeholders",
+      "lukOnderdelen": ["LUK 1 · Betrekt stakeholders binnen en buiten het organisatieonderdeel"]
+    },
+    {
+      "id": "EV-07",
+      "taak": "8.1",
+      "titel": "Feit en aanname bij de achtergrond",
+      "lukOnderdelen": ["LUK 1 · Duidt achtergronden, oorzaken en ontwikkelingen"]
+    },
+    {
+      "id": "EV-08",
+      "taak": "9.2",
+      "titel": "Plaatsing van het vraagstuk",
+      "lukOnderdelen": ["LUK 1 · Duidt achtergronden, oorzaken en ontwikkelingen"]
+    }
+  ]
+}

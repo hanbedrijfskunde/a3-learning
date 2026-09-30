@@ -74,13 +74,6 @@
       "link": "https://doi.org/10.1007/978-1-4471-4426-7_74"
     },
     {
-      "id": "osterwalder-2014",
-      "citatie": "Osterwalder e.a., 2014",
-      "type": "boek",
-      "bedoeldVoor": "leerblok 3 (value proposition canvas)",
-      "apa": "Osterwalder, A., Pigneur, Y., Bernarda, G. & Smith, A. (2014). *Value proposition design: How to create products and services customers want*. Wiley."
-    },
-    {
       "id": "pink-2009",
       "citatie": "Pink, 2009",
       "type": "boek",
@@ -101,22 +94,6 @@
       "type": "artikel",
       "bedoeldVoor": "leerblok 1 (de A3 als denkwijze)",
       "apa": "Schwagerman, W. C., III & Ulmer, J. M. (2013). The A3 lean management and leadership thought process. *The Journal of Technology, Management, and Applied Engineering, 29*(4)."
-    },
-    {
-      "id": "strategyzer-zd",
-      "citatie": "Strategyzer, z.d.",
-      "type": "sjabloon",
-      "bedoeldVoor": "leerblok 3 (value proposition canvas; niet ingebed, B34)",
-      "apa": "Strategyzer AG. (z.d.). *The value proposition canvas* [Sjabloon, versie 2.1]. Strategyzer.",
-      "link": "https://www.strategyzer.com"
-    },
-    {
-      "id": "westmoreland-zd",
-      "citatie": "Westmoreland BV, z.d.",
-      "type": "ongepubliceerd",
-      "organisatie": "Westmoreland BV",
-      "bedoeldVoor": "leerblok 3 (TOM-model; B46, B48)",
-      "apa": "Westmoreland BV. (z.d.). *Architectuur- en implementatieblauwdruk van het TOM³-model: Van strategische alignering naar operationele borging* [Ongepubliceerd document]. Westmoreland BV."
     }
   ]
 }

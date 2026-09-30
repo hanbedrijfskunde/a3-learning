@@ -7,8 +7,8 @@ import { maakKlok, klokTekst, rondeFasen, rondeFase } from './klok.js';
 import { stapkaartModel, docentkaartModel, programmaModel, draaiboekModel, terugblikKaarten } from './kaarten.js';
 import { modusUitAdres, docentAdres } from './kies.js';
 
-/** De delen met docentvelden; fase 10 voegt deel 2 toe (zelfde formaat). */
-const DELEN = { 1: 'data/docent-deel1.json' };
+/** De delen met docentvelden (zelfde formaat): deel 1 uit fase 9, deel 2 uit fase 10 (DM-18). */
+const DELEN = { 1: 'data/docent-deel1.json', 2: 'data/docent-deel2.json' };
 const laad = async (pad) => {
   const r = await fetch(new URL(`../../${pad}`, import.meta.url));
   if (!r.ok) throw new Error(`${pad}: ${r.status}`);

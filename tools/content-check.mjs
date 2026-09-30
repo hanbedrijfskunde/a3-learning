@@ -24,6 +24,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import { bouwControle } from '../js/checks/index.js';
 import { apaJaar } from '../js/checks/lb2.js';
 import { CITATIE_RE, eersteVolgordefout } from '../js/bronnen.js';
+import { normaliseerBlok } from '../js/blok.js';
 
 const gevuld = (t) => typeof t === 'string' && t.trim() !== '';
 const lijstGevuld = (l) => Array.isArray(l) && l.length > 0;
@@ -272,6 +273,11 @@ export function controleerDocent(inhoud, blokken = [], bestand = 'docent-deel1.j
   if (!(typeof inhoud?.duurMinuten === 'number' && inhoud.duurMinuten > 0)) fout('duurMinuten moet een getal boven 0 zijn');
   else if (onderdelen.reduce((som, o) => som + (typeof o?.minuten === 'number' ? o.minuten : 0), 0) !== inhoud.duurMinuten) fout(`de minuten van de onderdelen tellen op tot ${onderdelen.reduce((som, o) => som + (o?.minuten ?? 0), 0)}, niet tot duurMinuten (${inhoud.duurMinuten})`);
   if (inhoud?.deel === 1 && onderdelen.length !== 11) fout(`deel 1 heeft 11 onderdelen (DM-18), niet ${onderdelen.length}`);
+  if (inhoud?.deel === 2) {
+    const pauzes = onderdelen.filter((o) => o?.soort === 'pauze').length;
+    if (onderdelen.length - pauzes !== 8) fout(`deel 2 heeft 8 onderdelen (DM-18), niet ${onderdelen.length - pauzes}`);
+    if (pauzes !== 3) fout(`deel 2 heeft 3 pauzes (DM-18), niet ${pauzes}`);
+  }
   const ids = new Set();
   for (const o of onderdelen) {
     const wie = `onderdeel ${o?.id ?? '(zonder id)'}: `;
@@ -474,6 +480,7 @@ export function controleerMap(map) {
   for (const naam of namen) {
     const inhoud = lees(naam);
     if (!inhoud) continue;
+    normaliseerBlok(inhoud); // reeksen velden uitschrijven (js/blok.js)
     blokken.push(inhoud);
     fouten.push(...controleerLeerblok(inhoud, naam));
     const formaat = controleerFormaat(inhoud, naam);
@@ -492,9 +499,14 @@ export function controleerMap(map) {
     const t = lees('terugblik.json');
     if (t) { const r = controleerTerugblik(t); fouten.push(...r.fouten); waarschuwingen.push(...r.waarschuwingen); }
   }
+  const docentDelen = [];
   for (const naam of existsSync(map) ? readdirSync(map).filter((n) => /^docent-deel\d\.json$/.test(n)).sort() : []) {
     const d = lees(naam);
-    if (d) { const r = controleerDocent(d, blokken, naam); fouten.push(...r.fouten); waarschuwingen.push(...r.waarschuwingen); }
+    if (d) { docentDelen.push(d); const r = controleerDocent(d, blokken, naam); fouten.push(...r.fouten); waarschuwingen.push(...r.waarschuwingen); }
+  }
+  const nietPauze = docentDelen.flatMap((d) => d.onderdelen ?? []).filter((o) => o?.soort !== 'pauze').length;
+  if (docentDelen.some((d) => d.deel === 1) && docentDelen.some((d) => d.deel === 2) && nietPauze !== 19) {
+    fouten.push(`docent-deel1.json en docent-deel2.json: samen 19 onderdelen zonder pauzes (DM-18), niet ${nietPauze}`);
   }
   const bronnen = controleerBronnen(map);
   fouten.push(...bronnen.fouten);

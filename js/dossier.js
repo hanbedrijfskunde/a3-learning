@@ -17,6 +17,7 @@ import { leesProfiel, bewaarProfiel, PROFIEL_VELDEN } from './profiel.js';
 import { ROL_ANDER_TEAM } from './wissel.js';
 import { waardeTekst } from './weergave.js';
 import { leesTerugblikLog, importeerTerugblikLog } from './terugblik.js';
+import { expandeerVelden } from './blok.js';
 
 export const FORMAAT = 'a3-bewijsdossier';
 export const ALGORITME = 'SHA-256';
@@ -342,7 +343,7 @@ export function veldLabels(blokken) {
   for (const blok of blokken.filter(Boolean)) {
     for (const ev of blok.bewijsonderdelen ?? []) {
       const taak = blok.taken.find((t) => t.id === ev.taak);
-      uit[ev.id] = { ...Object.fromEntries((taak?.toepassing?.velden ?? []).map((v) => [v.id, v.label])), volgendeStap: 'Mijn volgende stap' };
+      uit[ev.id] = { ...Object.fromEntries(expandeerVelden(taak?.toepassing?.velden).map((v) => [v.id, v.label])), volgendeStap: 'Mijn volgende stap' };
     }
   }
   return uit;
