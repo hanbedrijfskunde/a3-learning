@@ -1,6 +1,6 @@
 // Leerblokpagina: bouwt de pagina uit data/leerblok-N.json met het vaste ritme van vier stappen per taak (TK-18, ADR B76).
 // Alleen DOM. Controles, opslag, oefenregels en de afgerond-regel zitten in sessie.js, weergave.js en afgerond.js.
-import { h, wis, statusChip, bouwVelden, tekenA3Vak } from './dom.js';
+import { h, wis, statusChip, bouwVelden, tekenA3Vak, a3VelFiguur } from './dom.js';
 import { kiesOpslag, maakStore } from './store.js';
 import { maakSessie, volgendeStapOk } from './sessie.js';
 import { bouwTaakModel, isIngevuld } from './weergave.js';
@@ -143,6 +143,8 @@ async function start() {
       s2.stof.format ? h('p', { class: 'format' }, s2.stof.format) : null);
     // Het format hoort bij de tweede alinea: zet het na de eerste alinea.
     if (s2.stof.format) stof.insertBefore(stof.lastChild, stof.children[1] ?? null);
+    // Een figuur (taak 1.1: het A3-vel) staat direct na de alinea die hem beschrijft.
+    if (s2.stof.figuur === 'a3-vel') stof.insertBefore(a3VelFiguur({ hier: 1, met }), stof.children[1] ?? null);
     // De routekeuze tekst, video of spel staat in de stap stof van de taak waar de media bij horen (MD-2, ADR B79).
     const stap2 = stap(s2, stof, mediaPlek && blok.media.taak === id ? mediaPlek : null);
 

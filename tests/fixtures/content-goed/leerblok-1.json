@@ -60,22 +60,22 @@
           {
             "id": "gebruiker",
             "label": "Gebruiker",
-            "type": "tekst"
+            "type": "tekst", "hint": "Denk eerst zelf na."
           },
           {
             "id": "pain",
             "label": "Probleem / pain / gain",
-            "type": "lang", "zinstarter": "Ik denk dat …"
+            "type": "lang", "hint": "Denk eerst zelf na.", "zinstarter": "Ik denk dat …"
           },
           {
             "id": "waarde",
             "label": "Waardecreatie",
-            "type": "lang", "zinstarter": "Ik denk dat …"
+            "type": "lang", "hint": "Denk eerst zelf na.", "zinstarter": "Ik denk dat …"
           },
           {
             "id": "kapitalen",
             "label": "Welke kapitalen?",
-            "type": "meer",
+            "type": "meer", "hint": "Denk eerst zelf na.",
             "opties": [
               "financieel",
               "productie",
@@ -194,7 +194,7 @@
           {
             "id": "frame1",
             "label": "Frame van zoekvraag 1",
-            "type": "lijst",
+            "type": "lijst", "hint": "Denk eerst zelf na.",
             "opties": [
               "functioneel",
               "intern of extern",
@@ -204,12 +204,12 @@
           {
             "id": "zoekvraag1",
             "label": "Zoekvraag 1",
-            "type": "tekst"
+            "type": "tekst", "hint": "Denk eerst zelf na."
           },
           {
             "id": "frame2",
             "label": "Frame van zoekvraag 2",
-            "type": "lijst",
+            "type": "lijst", "hint": "Denk eerst zelf na.",
             "opties": [
               "functioneel",
               "intern of extern",
@@ -219,12 +219,12 @@
           {
             "id": "zoekvraag2",
             "label": "Zoekvraag 2",
-            "type": "tekst"
+            "type": "tekst", "hint": "Denk eerst zelf na."
           },
           {
             "id": "frame3",
             "label": "Frame van zoekvraag 3",
-            "type": "lijst",
+            "type": "lijst", "hint": "Denk eerst zelf na.",
             "opties": [
               "functioneel",
               "intern of extern",
@@ -234,12 +234,12 @@
           {
             "id": "zoekvraag3",
             "label": "Zoekvraag 3",
-            "type": "tekst"
+            "type": "tekst", "hint": "Denk eerst zelf na."
           },
           {
             "id": "model",
             "label": "Welk model kiest jullie team? (kies er één)",
-            "type": "keuze",
+            "type": "keuze", "hint": "Denk eerst zelf na.",
             "opties": [
               "7S",
               "Strategy Map",
@@ -250,12 +250,12 @@
           {
             "id": "verantwoording",
             "label": "Mijn verantwoording van de modelkeuze",
-            "type": "lang", "zinstarter": "Ik denk dat …"
+            "type": "lang", "hint": "Denk eerst zelf na.", "zinstarter": "Ik denk dat …"
           },
           {
             "id": "mis",
             "label": "Wat mis je als je maar één frame kiest?",
-            "type": "lang", "zinstarter": "Ik denk dat …"
+            "type": "lang", "hint": "Denk eerst zelf na.", "zinstarter": "Ik denk dat …"
           }
         ]
       },

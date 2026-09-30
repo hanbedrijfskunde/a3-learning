@@ -81,17 +81,17 @@
           {
             "id": "v1",
             "label": "Waar komt de gebruiker uit de user story terug in het VPC?",
-            "type": "lang"
+            "type": "lang", "hint": "Zoek in het klantprofiel van het canvas: bij welke onderdelen hoort de gebruiker?"
           },
           {
             "id": "v2",
             "label": "Welke kapitalen raakt de waarde, en gaan ze erin of komen ze eruit?",
-            "type": "lang"
+            "type": "lang", "hint": "Kijk naar je waardecreatie. Welke kapitalen groeien, en welke gebruik je als input?"
           },
           {
             "id": "v3",
             "label": "Welk kapitaal neemt af als de waarde wordt geleverd?",
-            "type": "lang"
+            "type": "lang", "hint": "Waarde leveren kost ook iets. Wie of wat moet er extra voor werken?"
           }
         ]
       },
@@ -314,17 +314,17 @@
           {
             "id": "zie",
             "label": "Ik zie…",
-            "type": "lang"
+            "type": "lang", "hint": "Beschrijf wat er staat, zonder oordeel. Begin met wat goed zichtbaar is."
           },
           {
             "id": "mis",
             "label": "Ik mis…",
-            "type": "lang"
+            "type": "lang", "hint": "Wat verwacht je dat er nog niet staat? Denk aan het format en de kapitalen."
           },
           {
             "id": "vraag",
             "label": "Ik vraag me af…",
-            "type": "lang"
+            "type": "lang", "hint": "Stel een echte vraag waar de ander verder mee kan, geen verkapt advies."
           }
         ]
       },
@@ -425,27 +425,27 @@
           {
             "id": "situatie",
             "label": "Situatie",
-            "type": "lang"
+            "type": "lang", "hint": "Waar en wanneer was het? Eén of twee zinnen is genoeg."
           },
           {
             "id": "taak",
             "label": "Taak",
-            "type": "lang"
+            "type": "lang", "hint": "Wat moest jij daar doen?"
           },
           {
             "id": "actie",
             "label": "Actie",
-            "type": "lang"
+            "type": "lang", "hint": "Wat deed je precies? Schrijf in de ik-vorm en noem je eigen gedrag."
           },
           {
             "id": "resultaat",
             "label": "Resultaat",
-            "type": "lang"
+            "type": "lang", "hint": "Wat was het effect bij de ander of bij het werk?"
           },
           {
             "id": "reflectie",
             "label": "Reflectie",
-            "type": "lang"
+            "type": "lang", "hint": "Wat merkte je aan jezelf, en wat pak je voortaan anders aan?"
           }
         ]
       },

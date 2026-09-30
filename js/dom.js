@@ -18,6 +18,32 @@ export function h(tag, props = {}, ...kinderen) {
 
 export const wis = (el) => { while (el.firstChild) el.removeChild(el.firstChild); return el; };
 
+/** De acht vakken van de A3 (werkboek 1.1), met de vraag die elk vak beantwoordt, gegroepeerd naar PDCA. */
+const A3_VEL = [
+  { fase: 'Plan', pijl: '→', vakken: [[1, 'Aanleiding / achtergrond', 'Waarom dit vraagstuk?'], [2, 'Huidige situatie', 'Hoe is het nu?'], [3, 'Doelen', 'Waar wil je heen?'], [4, 'Analyse', 'Wat is de oorzaak?']] },
+  { fase: 'Do', pijl: '↓', vakken: [[5, 'Toekomstige situatie', 'Hoe wordt het?'], [6, 'Implementatie', 'Wie doet wat, wanneer?']] },
+  { fase: 'Check', pijl: '↓', vakken: [[7, 'Borging en evaluatie', 'Werkt het, en blijft het zo?']] },
+  { fase: 'Act', pijl: '↩ terug naar Plan', vakken: [[8, 'Next steps', 'Wat is de volgende stap?']] },
+];
+
+/**
+ * Figuur: één A3-vel met de acht vakken en de cirkel plan, do, check, act eroverheen. Eigen weergave (HTML, geen beeld van
+ * derden, LI-1) naar het idee van Schwagerman & Ulmer (2013). `hier` is het vak waar de student begint.
+ */
+export function a3VelFiguur({ hier = 1, met = (t) => t } = {}) {
+  const groep = (g) => h('div', { class: `a3v-groep a3v-${g.fase.toLowerCase()}` },
+    h('p', { class: 'a3v-fase' }, h('span', {}, g.fase), h('span', { class: 'a3v-pijl', 'aria-hidden': 'true' }, ` ${g.pijl}`)),
+    h('ol', { class: 'a3v-vakken', start: g.vakken[0][0] }, g.vakken.map(([nr, naam, vraag]) => h('li', { class: `a3v-vak${nr === hier ? ' a3v-hier' : ''}` },
+      h('span', { class: 'a3v-nr', 'aria-hidden': 'true' }, String(nr)),
+      h('span', { class: 'a3v-naam' }, naam), h('span', { class: 'a3v-vraag' }, vraag),
+      nr === hier ? h('span', { class: 'a3v-label' }, 'Hier begin je') : null))));
+  return h('figure', { class: 'a3-vel' },
+    h('div', { class: 'a3v-blad' },
+      h('div', { class: 'a3v-links' }, groep(A3_VEL[0])),
+      h('div', { class: 'a3v-rechts' }, A3_VEL.slice(1).map(groep))),
+    h('figcaption', {}, 'Eén A3-vel: links het plan (vak 1 tot en met 4), rechts uitvoeren (do, vak 5 en 6), controleren (check, vak 7) en bijsturen (act, vak 8). Daarna begint de cirkel opnieuw. Eigen weergave naar het idee van ', met('(Schwagerman & Ulmer, 2013)'), '.'));
+}
+
 /** A3-vak 1 in vier delen (SX-12): gevulde delen in vlak, de rest alleen een rand; de stand ook als tekst (TG-4). */
 export function tekenA3Vak(el, stand) {
   wis(el);
@@ -43,6 +69,13 @@ export function statusChip(status, tekst) {
  * @param {() => void} bijWijziging wordt na elke wijziging aangeroepen
  * @returns {{element: HTMLElement, lees: () => object, zet: (w: object) => void}}
  */
+/**
+ * Een hint bij een vraag (SX-13): een knop „Hint” die de aanwijzing onder de vraag openklapt. Bewust <details> en geen
+ * mouse-over: werkt met tikken, toetsenbord en schermlezer, zonder script of polyfill (PR-1), en de student kiest zelf
+ * wanneer de hint verschijnt (eerst zelf nadenken).
+ */
+export const hintEl = (tekst) => (tekst ? h('details', { class: 'hint' }, h('summary', {}, 'Hint'), h('p', {}, tekst)) : null);
+
 export function bouwVelden(velden, voorvoegsel, waarden, bijWijziging) {
   const rij = h('div', { class: 'velden' });
   const lezers = {};
@@ -56,7 +89,7 @@ export function bouwVelden(velden, voorvoegsel, waarden, bijWijziging) {
         const input = h('input', { type: soort, id: oid, name: id, value: o, onchange: bijWijziging });
         return h('div', { class: 'optie' }, input, h('label', { for: oid }, o));
       });
-      rij.append(h('fieldset', { class: 'veld' }, h('legend', {}, v.label), opties));
+      rij.append(h('fieldset', { class: 'veld' }, h('legend', {}, v.label), hintEl(v.hint), opties));
       const inputs = () => [...rij.querySelectorAll(`input[name="${id}"]`)];
       lezers[v.id] = () => {
         const gekozen = inputs().filter((i) => i.checked).map((i) => i.value);
@@ -72,7 +105,7 @@ export function bouwVelden(velden, voorvoegsel, waarden, bijWijziging) {
       } else {
         el = h('input', { type: 'text', id, oninput: bijWijziging, autocomplete: 'off', placeholder: v.zinstarter });
       }
-      rij.append(h('div', { class: 'veld' }, h('label', { for: id }, v.label), el));
+      rij.append(h('div', { class: 'veld' }, h('label', { for: id }, v.label), hintEl(v.hint), el));
       lezers[v.id] = () => el.value;
       zetters[v.id] = (w) => { el.value = typeof w === 'string' ? w : ''; };
     }

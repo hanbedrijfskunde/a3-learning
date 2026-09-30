@@ -406,3 +406,32 @@ html { scroll-padding-bottom:5rem; }
 .vb-kaartje[aria-pressed="true"] .vb-tekst, .vb-kaartje:focus .vb-tekst { -webkit-line-clamp:unset; line-clamp:none; }   /* lange kaart klapt open bij tik */
 .a3-bezig { border-style:dashed; border-width:3px; }
 .a3-opbouw { font-size:.8125rem; }
+
+/* ---- figuur: het A3-vel met PDCA (taak 1.1; eigen weergave naar Schwagerman & Ulmer, 2013) ---- */
+.a3-vel { margin:1rem 0; }
+.a3v-blad { display:grid; grid-template-columns:1fr 1fr; gap:6px; border:3px solid var(--zwart); padding:6px; background:var(--wit); }
+.a3v-rechts { display:flex; flex-direction:column; gap:6px; }
+.a3v-groep { display:flex; flex-direction:column; gap:4px; }
+.a3v-links .a3v-groep { height:100%; }
+.a3v-fase { margin:0; font-weight:800; font-size:1rem; text-transform:uppercase; letter-spacing:.06em; border-bottom:3px solid var(--zwart); }
+.a3v-plan .a3v-fase { border-bottom-color:var(--accent); }
+.a3v-pijl { font-weight:700; text-transform:none; letter-spacing:0; }
+.a3v-vakken { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:4px; flex:1; }
+.a3v-links .a3v-vak { flex:1; }
+.a3v-vak { position:relative; border:2px solid var(--zwart); padding:.35rem .5rem .4rem 2rem; background:var(--wit); display:flex; flex-direction:column; }
+.a3v-nr { position:absolute; left:.4rem; top:.3rem; font-weight:800; font-size:1.125rem; }
+.a3v-naam { font-weight:700; font-size:.875rem; }
+.a3v-vraag { font-size:.8125rem; }
+.a3v-hier { border:3px solid var(--accent); background:var(--roze); }
+.a3v-label { align-self:flex-start; margin-top:.25rem; font-size:.8125rem; font-weight:800; background:var(--accent); color:var(--wit); padding:0 .4rem; }
+.a3-vel figcaption { font-size:.875rem; margin-top:.4rem; }
+@media (max-width:40rem) { .a3v-blad { gap:4px; padding:4px; } .a3v-vak { padding-left:1.6rem; } .a3v-nr { left:.3rem; } }
+@media print { .a3v-blad { break-inside:avoid; } }
+
+/* ---- hint bij een vraag (SX-13): uitklapbaar, geen mouse-over ---- */
+.hint { margin:.15rem 0 .35rem; }
+.hint > summary { display:inline-flex; align-items:center; min-height:2.75rem; cursor:pointer; font-weight:700; font-size:.875rem; list-style:none; text-decoration:underline; text-decoration-thickness:2px; text-underline-offset:3px; }
+.hint > summary::-webkit-details-marker { display:none; }
+.hint > summary::before { content:"?"; display:inline-flex; align-items:center; justify-content:center; width:1.4rem; height:1.4rem; margin-right:.4rem; border:2px solid var(--zwart); border-radius:50%; font-size:.8125rem; text-decoration:none; }
+.hint[open] > summary::before { background:var(--zwart); color:var(--wit); }
+.hint > p { margin:.1rem 0 .4rem; padding:.4rem .6rem; border-left:6px solid var(--accent); background:var(--grijs); font-size:.9375rem; }

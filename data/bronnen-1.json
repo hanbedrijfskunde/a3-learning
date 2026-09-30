@@ -15,6 +15,12 @@
       "type": "video",
       "apa": "MIT OpenCourseWare. (2014, 6 maart). *Ses. 3-4: A3 thinking* [Video]. YouTube.",
       "link": "https://www.youtube.com/watch?v=z1KloN7Ub0M"
+    },
+    {
+      "id": "schwagerman-ulmer-2013",
+      "citatie": "Schwagerman & Ulmer, 2013",
+      "type": "artikel",
+      "apa": "Schwagerman, W. C., III & Ulmer, J. M. (2013). The A3 lean management and leadership thought process. *The Journal of Technology, Management, and Applied Engineering, 29*(4)."
     }
   ],
   "wachtOpCitatie": [
@@ -78,13 +84,6 @@
       "bedoeldVoor": "release 3 (quick win); nog niet in deze versie van de e-learning",
       "apa": "Rodrigues, J., Sá, J. C., Silva, F. J. G., Ferreira, L. P., Jimenez, G. & Santos, G. (2020). A rapid improvement process through \"quick-win\" lean tools: A case study. *Systems, 8*(4), Artikel 55.",
       "link": "https://doi.org/10.3390/systems8040055"
-    },
-    {
-      "id": "schwagerman-ulmer-2013",
-      "citatie": "Schwagerman & Ulmer, 2013",
-      "type": "artikel",
-      "bedoeldVoor": "leerblok 1 (de A3 als denkwijze)",
-      "apa": "Schwagerman, W. C., III & Ulmer, J. M. (2013). The A3 lean management and leadership thought process. *The Journal of Technology, Management, and Applied Engineering, 29*(4)."
     }
   ]
 }

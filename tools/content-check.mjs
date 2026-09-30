@@ -126,6 +126,7 @@ export function controleerFormaat(inhoud, bestand) {
     if (taak.klaarAls !== undefined && gevuld(tekstVan(taak.klaarAls))) bronTekst(wie, 'klaarAls', taak.klaarAls);
 
     if (!isObject(taak.stof) || !lijstGevuld(taak.stof.alineas)) fout(wie, 'mist stof met alineas');
+    if (taak.stof?.figuur !== undefined && !['a3-vel'].includes(taak.stof.figuur)) fout(wie, `stof.figuur ${JSON.stringify(taak.stof.figuur)} is onbekend; kies a3-vel`);
     else bronTekst(wie, 'stof', taak.stof, { tekst: false });
     if (!isObject(taak.oefening)) fout(wie, 'mist een oefening (TK-3)');
     else bronTekst(wie, 'oefening.opdracht', taak.oefening.opdracht);
@@ -147,6 +148,14 @@ export function controleerFormaat(inhoud, bestand) {
     const oefenVelden = Array.isArray(taak.oefening?.velden) ? taak.oefening.velden : velden;
     if (taak.oefening?.velden) controleerVelden(taak.oefening.velden, 'oefening');
     const oefenIds = new Set(oefenVelden.map((v) => v.id));
+    // SX-13: elke oefenvraag heeft een hint die het modelantwoord niet verklapt (stuk van ≥ 15 tekens).
+    const modelVoorHint = JSON.stringify(taak.modelantwoord ?? '').toLowerCase();
+    for (const v of oefenVelden) {
+      if (!v?.id || v.reeks) continue;
+      if (!gevuld(v.hint)) { fout(wie, `oefenvraag ${v.id} heeft geen hint (SX-13)`); continue; }
+      const h = v.hint.toLowerCase();
+      for (let i = 0; i + 15 <= h.length; i += 5) if (modelVoorHint.includes(h.slice(i, i + 15))) { fout(wie, `de hint bij ${v.id} verklapt het modelantwoord (SX-13): „${h.slice(i, i + 15)}”`); break; }
+    }
 
     if (isObject(taak.modelantwoord)) {
       bronTekst(wie, 'modelantwoord', taak.modelantwoord, { tekst: false });

@@ -39,17 +39,17 @@
           {
             "id": "begrippen",
             "label": "Kernbegrippen",
-            "type": "lang"
+            "type": "lang", "hint": "Haal de zelfstandige naamwoorden uit je zoekvraag. Welke twee of drie woorden dragen de vraag?"
           },
           {
             "id": "synoniemen",
             "label": "Synoniemen en verwante termen",
-            "type": "lang"
+            "type": "lang", "hint": "Hoe zou iemand anders hetzelfde begrip noemen? Denk ook aan een breder woord."
           },
           {
             "id": "engels",
             "label": "Engelse termen",
-            "type": "lang"
+            "type": "lang", "hint": "Veel onderzoek is Engelstalig. Hoe heet het begrip in vakliteratuur?"
           }
         ]
       },
@@ -233,7 +233,7 @@
           {
             "id": "zoekstring",
             "label": "Zoekstring voor route A",
-            "type": "tekst"
+            "type": "tekst", "hint": "Zet synoniemen met OR tussen haakjes en verbind de begrippen met AND. Een woordgroep zet je tussen aanhalingstekens."
           }
         ]
       },
@@ -556,17 +556,17 @@
           {
             "id": "authority",
             "label": "Authority: oordeel en één zin toelichting",
-            "type": "lang"
+            "type": "lang", "hint": "Wie heeft het geschreven en waar is het verschenen? Kijk naar de functie van de auteur en het soort uitgave."
           },
           {
             "id": "currency",
             "label": "Currency: oordeel en één zin toelichting",
-            "type": "lang"
+            "type": "lang", "hint": "Van wanneer is de bron? Verandert het onderwerp snel?"
           },
           {
             "id": "apa",
             "label": "De bron in APA",
-            "type": "lang"
+            "type": "lang", "hint": "Volgorde: auteur, jaar, titel, tijdschrift met jaargang en nummer, pagina’s. Let op cursief en leestekens."
           }
         ]
       },
@@ -1431,7 +1431,7 @@
           {
             "id": "kant",
             "label": "Jouw kant",
-            "type": "keuze",
+            "type": "keuze", "hint": "Er is geen goede kant. Kies de kant die je het best kunt onderbouwen.",
             "opties": [
               "voor",
               "tegen"
@@ -1440,7 +1440,7 @@
           {
             "id": "argument",
             "label": "Mijn sterkste argument",
-            "type": "lang"
+            "type": "lang", "hint": "Maak onderscheid tussen inspiratie zoeken en een bron gebruiken. Wat mag wel en wat niet?"
           }
         ]
       },

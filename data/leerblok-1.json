@@ -20,9 +20,10 @@
         "bron": "concept-auteur", "criteria": [{"tekst": "je de drie C's kunt noemen", "controles": []}, {"tekst": "weet wat er niet op één A3 past", "controles": []}, {"tekst": "hebt opgeschreven wat je nog van de A3 wist", "controles": []}, {"tekst": "de aanleiding van je eigen vraagstuk hebt vastgelegd", "controles": ["aanleiding-woorden"]}]},
       "stof": {
         "bron": "concept-auteur",
-        "opmerking": "De acht vakken en de Lean Yellow Belt komen uit werkboek 1.1; de zin over een praatplaat en de uitleg van 3xC staan er niet en zijn door de bouwer geschreven.",
+        "opmerking": "De acht vakken en de Lean Yellow Belt komen uit werkboek 1.1; de zin over een praatplaat, de uitleg van 3xC en de indeling naar PDCA (eigen figuur naar het idee van Schwagerman & Ulmer, 2013) zijn door de bouwer geschreven.",
+        "figuur": "a3-vel",
         "alineas": [
-          "Een A3 is één vel waarop je een vraagstuk van aanleiding tot vervolgstappen beschrijft. De acht vakken: 1 · Aanleiding / achtergrond, 2 · Huidige situatie, 3 · Doelen, 4 · Analyse, 5 · Toekomstige situatie, 6 · Implementatie, 7 · Borging en evaluatie, 8 · Next steps. Vandaag begin je aan vak 1.",
+          "Een A3 is één vel waarop je een vraagstuk van aanleiding tot vervolgstappen beschrijft, in acht vakken. De linkerhelft is het plan: waarom, hoe het nu is, waar je heen wilt en wat de oorzaak is. De rechterhelft voert het plan uit, controleert het effect en stuurt bij. Zo volgt het vel de cirkel plan, do, check, act (Schwagerman & Ulmer, 2013). Vandaag begin je aan vak 1.",
           "Een A3 moet voldoen aan 3xC: drie eisen die met een C beginnen. Weet je ze niet meer, probeer ze dan eerst te bedenken en kijk daarna naar het modelantwoord."
         ]
       },
@@ -32,9 +33,9 @@
           "bron": "concept-auteur"
         },
         "velden": [
-          { "id": "drieC", "label": "De A3 moet voldoen aan 3xC. Welke drie?", "type": "lang" },
-          { "id": "pastNiet", "label": "Wat past er niet op één A3, volgens de uitleg? En wat zegt dat over je begrip?", "type": "lang" },
-          { "id": "yellowBelt", "label": "Wat weet ik nog van de A3 uit de Lean Yellow Belt-training?", "type": "lang" }
+          { "id": "drieC", "label": "De A3 moet voldoen aan 3xC. Welke drie?", "type": "lang", "hint": "Alle drie beginnen met een C. Denk aan wat een lezer met weinig tijd nodig heeft: hoeveel tekst, of alles erin staat, en of de vakken elkaar niet tegenspreken." },
+          { "id": "pastNiet", "label": "Wat past er niet op één A3, volgens de uitleg? En wat zegt dat over je begrip?", "type": "lang", "hint": "Lees de uitleg nog eens. Wat gebeurt er als een vak overloopt, en wat zegt dat over jou als schrijver?" },
+          { "id": "yellowBelt", "label": "Wat weet ik nog van de A3 uit de Lean Yellow Belt-training?", "type": "lang", "hint": "Er is geen goed of fout. Denk aan de training: welk probleem losten jullie op, en welke vakken herinner je je?" }
         ]
       },
       "modelantwoord": {
@@ -106,10 +107,10 @@
           "bron": "concept-auteur"
         },
         "velden": [
-          { "id": "gebruiker", "label": "Gebruiker", "type": "tekst" },
-          { "id": "pain", "label": "Probleem / pain / gain", "type": "lang", "zinstarter": "… (wat ze willen bereiken of kwijt willen)" },
-          { "id": "waarde", "label": "Waardecreatie", "type": "lang", "zinstarter": "… (wat het oplevert, meer dan geld)" },
-          { "id": "kapitalen", "label": "Welke kapitalen?", "type": "meer",
+          { "id": "gebruiker", "label": "Gebruiker", "type": "tekst", "hint": "Wie merkt het probleem echt? Maak het zo concreet dat je die groep zou kunnen bellen." },
+          { "id": "pain", "label": "Probleem / pain / gain", "type": "lang", "hint": "Wat wil die gebruiker bereiken of kwijt? Maak het meetbaar, bijvoorbeeld met een cijfer of een tijd.", "zinstarter": "… (wat ze willen bereiken of kwijt willen)" },
+          { "id": "waarde", "label": "Waardecreatie", "type": "lang", "hint": "Wat levert de oplossing op, en voor wie? Kijk verder dan geld: welk van de zes kapitalen groeit?", "zinstarter": "… (wat het oplevert, meer dan geld)" },
+          { "id": "kapitalen", "label": "Welke kapitalen?", "type": "meer", "hint": "Kies de kapitalen die in je waardecreatie terugkomen. Minstens één is niet financieel.",
             "opties": ["financieel", "productie", "intellectueel", "menselijk", "sociaal en relationeel", "natuurlijk"] }
         ],
         "livevoorbeeld": "onderzoeksvraag"
@@ -174,15 +175,15 @@
           "bron": "werkboek"
         },
         "velden": [
-          { "id": "frame1", "label": "Frame van zoekvraag 1", "type": "lijst", "opties": ["functioneel", "intern of extern", "theoretisch of empirisch"] },
-          { "id": "zoekvraag1", "label": "Zoekvraag 1", "type": "tekst" },
-          { "id": "frame2", "label": "Frame van zoekvraag 2", "type": "lijst", "opties": ["functioneel", "intern of extern", "theoretisch of empirisch"] },
-          { "id": "zoekvraag2", "label": "Zoekvraag 2", "type": "tekst" },
-          { "id": "frame3", "label": "Frame van zoekvraag 3", "type": "lijst", "opties": ["functioneel", "intern of extern", "theoretisch of empirisch"] },
-          { "id": "zoekvraag3", "label": "Zoekvraag 3", "type": "tekst" },
-          { "id": "model", "label": "Welk model kiest jullie team? (kies er één)", "type": "keuze", "opties": ["7S", "Strategy Map", "Six Capitals", "TOM-model"] },
-          { "id": "verantwoording", "label": "Mijn verantwoording van de modelkeuze", "type": "lang", "zinstarter": "We kiezen dit model omdat ons vraagstuk …" },
-          { "id": "mis", "label": "Wat mis je als je maar één frame kiest?", "type": "lang", "zinstarter": "Met één frame zie ik niet …" }
+          { "id": "frame1", "label": "Frame van zoekvraag 1", "type": "lijst", "hint": "Een frame is de bril waarmee je kijkt. Elke zoekvraag krijgt een andere bril.", "opties": ["functioneel", "intern of extern", "theoretisch of empirisch"] },
+          { "id": "zoekvraag1", "label": "Zoekvraag 1", "type": "tekst", "hint": "Past deze vraag bij het frame dat je koos? Een zoekvraag eindigt op een vraagteken." },
+          { "id": "frame2", "label": "Frame van zoekvraag 2", "type": "lijst", "hint": "Kies een ander frame dan bij zoekvraag 1.", "opties": ["functioneel", "intern of extern", "theoretisch of empirisch"] },
+          { "id": "zoekvraag2", "label": "Zoekvraag 2", "type": "tekst", "hint": "Welke vraag stel je als je door dit tweede frame kijkt?" },
+          { "id": "frame3", "label": "Frame van zoekvraag 3", "type": "lijst", "hint": "Het derde frame is het frame dat je nog niet gebruikte.", "opties": ["functioneel", "intern of extern", "theoretisch of empirisch"] },
+          { "id": "zoekvraag3", "label": "Zoekvraag 3", "type": "tekst", "hint": "Welke vraag stel je als je door dit derde frame kijkt?" },
+          { "id": "model", "label": "Welk model kiest jullie team? (kies er één)", "type": "keuze", "hint": "Welk model past bij de onderwerpen waar jullie vragen over gaan?", "opties": ["7S", "Strategy Map", "Six Capitals", "TOM-model"] },
+          { "id": "verantwoording", "label": "Mijn verantwoording van de modelkeuze", "type": "lang", "hint": "Noem wat het model laat zien en koppel dat aan je zoekvragen.", "zinstarter": "We kiezen dit model omdat ons vraagstuk …" },
+          { "id": "mis", "label": "Wat mis je als je maar één frame kiest?", "type": "lang", "hint": "Kies één frame en bedenk welke van je andere zoekvragen je dan nooit had gesteld.", "zinstarter": "Met één frame zie ik niet …" }
         ]
       },
       "controles": [
