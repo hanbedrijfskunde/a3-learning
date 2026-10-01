@@ -205,7 +205,7 @@ test('PF-4 (ADR B97): de figuren laden per leerblok, alleen als de data ze gebru
 
 test('B102 en SX-15: IMRAD is een eigen figuur met vier delen, als zandloper, met tekstalternatief en zonder afbeelding van buiten', () => {
   const bron = lees('js/figuren-lb2.js');
-  assert.match(bron, /export const FIGUREN = \{ imrad: \{ bouw: imradFiguur, na: 0 \}, miniartikelen: \{ bouw: miniArtikelen, na: 0 \} \}/);
+  assert.match(bron, /export const FIGUREN = \{ imrad: \{ bouw: imradFiguur, na: 0 \}, miniartikelen: \{ bouw: miniArtikelen, na: 0 \}, aisamenvatting: \{ bouw: aiSamenvatting, na: 0 \} \}/);
   for (const d of ['Inleiding', 'Methode', 'Resultaten', 'Discussie', 'theorie', 'methode', 'presentatie']) assert.match(bron, new RegExp(d));
   assert.match(bron, /role: 'img'/);
   assert.doesNotMatch(bron, /h\('img'|src:/, 'eigen SVG, geen overgenomen figuur (lits/ blijft buiten)');

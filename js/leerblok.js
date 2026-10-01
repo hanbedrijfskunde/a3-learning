@@ -27,7 +27,7 @@ const LB4_COMPONENTEN = ['verbanden', 'starr']; // taken met een eigen scherm in
 // (figuren-lb1.js, figuren-lb2.js, figuren-lb3.js, het stakeholderbord), alleen als de data ze gebruikt (PF-4, ADR B97).
 const FIGUREN = {};
 const FIGUREN_LB1 = ['a3-vel', 'six-capitals'];
-const FIGUREN_LB2 = ['imrad', 'miniartikelen'];
+const FIGUREN_LB2 = ['imrad', 'miniartikelen', 'aisamenvatting'];
 const FIGUREN_LB3 = ['vpc', 'bmc', 'tom'];
 /** Welke figuren de data van dit leerblok gebruikt (stof, oefening, toepassing). */
 const figuurNamen = (blok) => new Set(blok.taken.flatMap((t) => [t.stof?.figuur, t.oefening?.figuur, t.toepassing?.figuur]).filter(Boolean));

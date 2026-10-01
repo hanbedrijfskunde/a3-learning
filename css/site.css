@@ -428,6 +428,12 @@ html { scroll-padding-bottom:5rem; }
 .mini-artikel .fictief { font-weight:700; color:var(--grijs-tekst); margin:0; }
 .mini-figuur { margin:.5rem 0; }
 .mini-grafiek { display:block; width:100%; height:auto; }
+.ai-voorbeeld { border:var(--rand) dashed var(--zwart); background:var(--wit); padding:.75rem 1rem; margin:1rem 0; font-size:.9375rem; }
+.ai-kop { font-weight:700; margin:.75rem 0 .25rem; }
+.ai-aaocc { margin:0; }
+.ai-aaocc dt { font-weight:700; border-top:1px solid var(--zwart); padding-top:.3rem; }
+.ai-aaocc dd { margin:0 0 .3rem; }
+.ai-oordeel { display:inline-block; min-width:1.5rem; text-align:center; border:2px solid var(--zwart); margin-left:.25rem; }
 /* TOM-bord 8.1: de plek (ADR B98) */
 .tm-plek:not(.tm-geladen) { min-height:8rem; margin:1rem 0; }
 .a3-koppeling > summary { cursor:pointer; font-weight:700; min-height:2.75rem; display:flex; align-items:center; }

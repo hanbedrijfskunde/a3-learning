@@ -2316,7 +2316,7 @@
       },
       "oefening": {
         "opdracht": {
-          "tekst": "Een collega bij webshop X laat elk artikel door een AI-tool samenvatten. Die collega zegt: „Je kunt een artikel prima door AI laten ontleden.” Ben je het daarmee eens? Kies een kant en schrijf je sterkste argument in twee zinnen.",
+          "tekst": "Een collega bij webshop X laat elk artikel door een AI-tool samenvatten. Die collega zegt: „Je kunt een artikel prima door AI laten ontleden.” Als voorbeeld laat de collega de samenvatting hieronder zien. Ben je het met de stelling eens? Kies een kant en schrijf je sterkste argument in twee zinnen.",
           "bron": "concept-auteur"
         },
         "velden": [
@@ -2324,16 +2324,16 @@
             "id": "kant",
             "label": "Jouw kant",
             "type": "keuze",
-            "hint": "Beide kanten zijn te verdedigen. Kies de kant die je het best kunt onderbouwen.",
+            "hint": "Kijk ook naar wat de collega onder de samenvatting heeft gezet.",
             "hintBron": [
+              {
+                "soort": "stof",
+                "taak": "4.1",
+                "vindplaats": "alinea 1"
+              },
               {
                 "soort": "eigen werk",
                 "vindplaats": "je ervaring bij taak 4.2, met of zonder AI"
-              },
-              {
-                "soort": "stof",
-                "taak": "4.3",
-                "vindplaats": "alinea 1"
               }
             ],
             "opties": [
@@ -2345,8 +2345,13 @@
             "id": "argument",
             "label": "Mijn sterkste argument",
             "type": "lang",
-            "hint": "Maak onderscheid tussen een artikel begrijpen en een artikel gebruiken. Wat kun je zelf controleren?",
+            "hint": "Wat moest de collega regelen voordat de tool zo'n samenvatting kon maken?",
             "hintBron": [
+              {
+                "soort": "stof",
+                "taak": "4.1",
+                "vindplaats": "alinea 1 en 2"
+              },
               {
                 "soort": "stof",
                 "taak": "4.2",
@@ -2354,14 +2359,46 @@
               }
             ]
           }
-        ]
+        ],
+        "figuur": "aisamenvatting",
+        "voorbeeld": {
+          "citatie": "Bakker & De Vries, 2016",
+          "samenvatting": "Bakker en De Vries vroegen 1.200 klanten van vijf Nederlandse webshops, een week na hun bestelling, om vijf onderdelen een cijfer te geven (Methode). Retourneren scoort het laagst (6,1), betalen het hoogst (8,4). De verschillen zijn geen toeval (Resultaten, figuur 1). De auteurs raden een eenvoudiger retour aan, maar weten niet waarom klanten laag scoren (Discussie).",
+          "aaocc": [
+            [
+              "Authority",
+              "+",
+              "Twee onderzoekers van een universiteit, gepubliceerd in een vaktijdschrift."
+            ],
+            [
+              "Accuracy",
+              "+",
+              "Enquête onder 1.200 klanten; de verschillen zijn met een variantieanalyse getoetst (Methode)."
+            ],
+            [
+              "Objectivity",
+              "+",
+              "Geen webshop als opdrachtgever genoemd; vijf webshops samen onderzocht (Methode)."
+            ],
+            [
+              "Currency",
+              "?",
+              "Uit 2016. Webwinkelen en retourbeleid zijn sindsdien veranderd."
+            ],
+            [
+              "Coverage",
+              "?",
+              "Alleen cijfers per onderdeel; waarom klanten laag scoren, is niet onderzocht (Discussie)."
+            ]
+          ]
+        }
       },
       "modelantwoord": {
         "bron": "concept-auteur",
-        "opmerking": "Door de bouwer geschreven; een ander goed antwoord kiest voor.",
+        "opmerking": "Door de bouwer geschreven naar de lijn van de auteur (ADR B104); een ander goed antwoord kiest tegen, met dezelfde voorwaarde.",
         "velden": {
-          "kant": "tegen",
-          "argument": "Een AI-tool vat een artikel snel samen, maar verzint soms een methode of een citaat. Laat de AI dus helpen zoeken, en lees zelf na wat er op die plek staat."
+          "kant": "voor",
+          "argument": "Het hangt af van hoe je het doet. Deze collega dacht bij het ontwerp van de AI-tool al na over validiteit (meet de tool wat hij moet meten?) en betrouwbaarheid (geeft hij steeds dezelfde uitkomst?), en liet de tool daarop toetsen. Daarom geeft de tool bij elke samenvatting een AAOCC-oordeel met vindplaats, en is niet alles een plus."
         }
       },
       "toepassing": {

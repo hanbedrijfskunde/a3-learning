@@ -509,3 +509,22 @@ test('LB-8: de stelling staat letterlijk bij de oefening en de toepassing van 4.
   assert.ok(t.oefening.opdracht.tekst.includes(stelling.replace(/\.$/, '')), 'oefening');
   assert.ok(t.toepassing.opdracht.tekst.includes(stelling.replace(/\.$/, '')), 'toepassing');
 });
+
+test('B104: de oefening van 4.3 toont het voorbeeld van de collega: AI-samenvatting met vijf AAOCC-oordelen; de vragen blijven kant en argument', () => {
+  const t = taak('4.3');
+  assert.equal(t.oefening.figuur, 'aisamenvatting');
+  assert.deepEqual(t.oefening.velden.map((v) => v.id), ['kant', 'argument']);
+  const v = t.oefening.voorbeeld;
+  assert.ok(v.samenvatting.length > 100 && v.citatie);
+  assert.deepEqual(v.aaocc.map((r) => r[0]), ['Authority', 'Accuracy', 'Objectivity', 'Currency', 'Coverage']);
+  assert.ok(v.aaocc.every(([, oordeel, uitleg]) => ['+', '?', '–'].includes(oordeel) && uitleg.length > 10));
+  assert.ok(v.aaocc.some(([, o]) => o !== '+'), 'de collega neemt niet alles ongenuanceerd over');
+  assert.match(t.modelantwoord.velden.argument, /hangt af van hoe je het doet/);
+  assert.match(t.modelantwoord.velden.argument, /validiteit/);
+  assert.match(t.modelantwoord.velden.argument, /betrouwbaarheid/);
+});
+
+test('B104: de figuur aisamenvatting staat in figuren-lb2.js en laadt via figurenlb2', () => {
+  assert.match(readFileSync(resolve(root, 'js/figuren-lb2.js'), 'utf8'), /aisamenvatting: \{ bouw: aiSamenvatting, na: 0 \}/);
+  assert.match(readFileSync(resolve(root, 'tools/gewicht-check.mjs'), 'utf8'), /'imrad', 'miniartikelen', 'aisamenvatting'/);
+});

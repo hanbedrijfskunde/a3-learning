@@ -68,5 +68,17 @@ export function miniArtikelen({ met = (t) => t, taak } = {}) {
     a.secties.flatMap((sec) => [h('h6', {}, sec.kop), h('p', {}, met(sec.tekst)), sec.kop === 'Resultaten' && a.grafiek ? grafiekEl(a.grafiek) : null]))));
 }
 
+/** Het voorbeeld van de collega bij de oefening van 4.3 (B104): een AI-samenvatting met de AAOCC-oordelen die de tool er telkens bij geeft. */
+export function aiSamenvatting({ met = (t) => t, taak } = {}) {
+  const v = taak?.oefening?.voorbeeld;
+  if (!v) return null;
+  return h('figure', { class: 'ai-voorbeeld' },
+    h('figcaption', {}, h('strong', {}, 'Voorbeeld van de collega'), ' · AI-samenvatting van ', met(`(${v.citatie})`)),
+    h('p', {}, met(v.samenvatting)),
+    // Een lijst en geen tabel: op 360 px breekt een tabel met drie kolommen de woorden af.
+    h('p', { class: 'ai-kop' }, 'AAOCC-check die de tool bij elke samenvatting uitvoert'),
+    h('dl', { class: 'ai-aaocc' }, v.aaocc.flatMap(([c, o, u]) => [h('dt', {}, h('span', { lang: 'en' }, c), ' ', h('span', { class: 'ai-oordeel' }, o)), h('dd', {}, u)])));
+}
+
 /** Na welke alinea van de stof een figuur staat (0 = de eerste). */
-export const FIGUREN = { imrad: { bouw: imradFiguur, na: 0 }, miniartikelen: { bouw: miniArtikelen, na: 0 } };
+export const FIGUREN = { imrad: { bouw: imradFiguur, na: 0 }, miniartikelen: { bouw: miniArtikelen, na: 0 }, aisamenvatting: { bouw: aiSamenvatting, na: 0 } };

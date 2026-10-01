@@ -44,7 +44,7 @@ export function paginaBestanden(root, paginaNaam) {
     if (naam === 'weergave') return (b.taken ?? []).some((t) => t.toepassing?.weergave || t.oefening?.weergave);
     const figuren = new Set((b.taken ?? []).flatMap((t) => [t.stof?.figuur, t.oefening?.figuur, t.toepassing?.figuur]).filter(Boolean));
     if (naam === 'figurenlb1') return ['a3-vel', 'six-capitals'].some((n) => figuren.has(n));
-    if (naam === 'figurenlb2') return ['imrad', 'miniartikelen'].some((n) => figuren.has(n));
+    if (naam === 'figurenlb2') return ['imrad', 'miniartikelen', 'aisamenvatting'].some((n) => figuren.has(n));
     if (naam === 'figurenlb3') return ['vpc', 'bmc', 'tom'].some((n) => figuren.has(n));
     if (naam === 'bord') return (b.taken ?? []).some((t) => [t.toepassing?.weergave, t.oefening?.weergave].some((w) => w?.groepen?.some((g) => g.bord)));
     if (naam === 'media') return Boolean(b.media || b.kijktips);

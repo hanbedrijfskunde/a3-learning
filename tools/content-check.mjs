@@ -34,7 +34,7 @@ import { KAPITALEN, VPC_ONDERDELEN, SPANNING, bouwOefenKaarten, maakVerband } fr
 // De figuren die de stap stof of de oefening kan tonen (FIGUREN in js/leerblok.js).
 // De twaalf cellen van het TOM-model zoals ze in een veld staan („Tactisch · Mens”, LB-11).
 export const TOM_LABELS = Object.freeze(['Strategisch', 'Tactisch', 'Operationeel'].flatMap((l) => ['Methode', 'Mens', 'Machine', 'Informatie & Rapportage'].map((k) => `${l} · ${k}`)));
-export const FIGUUR_NAMEN = ['a3-vel', 'six-capitals', 'vpc', 'bmc', 'tom', 'invloed-belang', 'imrad', 'miniartikelen']; // invloed-belang: het lege raster van het stakeholderbord (SX-15, SX-16)
+export const FIGUUR_NAMEN = ['a3-vel', 'six-capitals', 'vpc', 'bmc', 'tom', 'invloed-belang', 'imrad', 'miniartikelen', 'aisamenvatting']; // invloed-belang: het lege raster van het stakeholderbord (SX-15, SX-16)
 const gevuld = (t) => typeof t === 'string' && t.trim() !== '';
 const lijstGevuld = (l) => Array.isArray(l) && l.length > 0;
 /** Een tekstveld is een tekst of een object { tekst }. */
@@ -137,6 +137,14 @@ export function controleerFormaat(inhoud, bestand) {
     else bronTekst(wie, 'oefening.opdracht', taak.oefening.opdracht);
     if (taak.toepassing?.figuur !== undefined && !FIGUUR_NAMEN.includes(taak.toepassing.figuur)) fout(wie, `toepassing.figuur ${JSON.stringify(taak.toepassing.figuur)} is onbekend; kies ${FIGUUR_NAMEN.join(', ')}`);
     if (taak.oefening?.figuur !== undefined && !FIGUUR_NAMEN.includes(taak.oefening.figuur)) fout(wie, `oefening.figuur ${JSON.stringify(taak.oefening.figuur)} is onbekend; kies ${FIGUUR_NAMEN.join(', ')}`);
+    // B104: het voorbeeld van de collega bij 4.3: een samenvatting met een citatie en de vijf AAOCC-oordelen in vaste volgorde.
+    if (taak.oefening?.figuur === 'aisamenvatting') {
+      const v = taak.oefening.voorbeeld;
+      if (!gevuld(v?.samenvatting) || !gevuld(v?.citatie)) fout(wie, 'oefening.voorbeeld mist samenvatting of citatie (B104)');
+      const rijen = Array.isArray(v?.aaocc) ? v.aaocc : [];
+      if (JSON.stringify(rijen.map((r) => r?.[0])) !== JSON.stringify(['Authority', 'Accuracy', 'Objectivity', 'Currency', 'Coverage'])) fout(wie, 'oefening.voorbeeld.aaocc moet de vijf AAOCC-criteria in volgorde hebben');
+      if (rijen.some((r) => !['+', '?', '–'].includes(r?.[1]) || !gevuld(r?.[2]))) fout(wie, 'elk AAOCC-oordeel in het voorbeeld heeft +, ? of – en een toelichting');
+    }
     // B102: de mini-artikelen van de oefening bij 4.2: twee artikelen, elk met de vier IMRAD-secties in volgorde en een citatie.
     if (taak.oefening?.figuur === 'miniartikelen') {
       const art = taak.oefening.artikelen;
