@@ -86,13 +86,13 @@ test('TK-2/QA-3: leerblok 3 heeft de 6 taken van het LRD en elke taak heeft waar
   assert.deepEqual(blok3.bewijsonderdelen.map((b) => [b.id, b.taak]), [['EV-06', '5.1'], ['EV-07', '8.1'], ['EV-08', '9.2']]);
 });
 
-test('10.1: „Waarom” en „Klaar als” die de auteur nog moet goedkeuren hebben bron concept-auteur; wat in het werkboek staat blijft werkboek', () => {
+test('10.1: „Waarom” en „Klaar als” die de bouwer schreef en de auteur goedkeurde hebben bron auteur; wat in het werkboek staat blijft werkboek', () => {
   const bron = (t, veld) => taak(t)[veld].bron;
   assert.equal(bron('5.1', 'waarom'), 'werkboek');
   assert.equal(bron('5.1', 'klaarAls'), 'werkboek');
   assert.equal(bron('8.1', 'waarom'), 'werkboek');
   for (const [t, veld] of [['6.1', 'waarom'], ['6.1', 'klaarAls'], ['7.1', 'waarom'], ['7.1', 'klaarAls'], ['8.1', 'klaarAls'], ['9.1', 'waarom'], ['9.1', 'klaarAls'], ['9.2', 'waarom'], ['9.2', 'klaarAls']]) {
-    assert.equal(bron(t, veld), 'concept-auteur', `${t} ${veld}`);
+    assert.equal(bron(t, veld), 'auteur', `${t} ${veld}`);
   }
 });
 

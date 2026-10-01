@@ -117,14 +117,14 @@ test('11.1/TK-2: leerblok 4 heeft de taken 9.4, 6.2 en 6.3, elk met waarom, klaa
   assert.deepEqual(blok4.bewijsonderdelen.map((b) => [b.id, b.taak]), [['EV-11', '9.4'], ['EV-09', '6.2'], ['EV-10', '6.3']]);
 });
 
-test('11.1: „Waarom” en „Klaar als” die niet in het werkboek staan hebben bron concept-auteur (wacht op akkoord van de auteur); 6.2 blijft zoals het was', () => {
+test('11.1: „Waarom” en „Klaar als” die niet in het werkboek staan hebben bron auteur (goedgekeurd door de auteur); 6.2 blijft zoals het was', () => {
   for (const id of ['9.4', '6.3']) {
-    assert.equal(taak(id).waarom.bron, 'concept-auteur', `${id} waarom`);
-    assert.equal(taak(id).klaarAls.bron, 'concept-auteur', `${id} klaar als`);
+    assert.equal(taak(id).waarom.bron, 'auteur', `${id} waarom`);
+    assert.equal(taak(id).klaarAls.bron, 'auteur', `${id} klaar als`);
   }
   assert.equal(taak('6.2').waarom.bron, 'werkboek');
   const c = controleerFormaat(blok4, 'leerblok-4.json');
-  assert.ok(c.waarschuwingen.some((w) => /taak 9\.4: waarom/.test(w)), 'de bouwer meldt het concept in content-check');
+  assert.ok(!c.waarschuwingen.some((w) => /taak 9\.4: waarom/.test(w)), 'na het akkoord geen conceptwaarschuwing meer');
 });
 
 test('11.17/BW-12/QA-3: alle 12 bewijsonderdelen komen in de leerblokken voor, elk met een taak met waarom en klaar als (12 van 12)', () => {

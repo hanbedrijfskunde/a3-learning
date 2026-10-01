@@ -63,11 +63,11 @@ test('TK-2: waarom, richttijd, klaar als en opdracht met bron werkboek zijn lett
   assert.ok(vergeleken >= 8, `slechts ${vergeleken} teksten vergeleken`);
 });
 
-test('TK-2: een tekst die de bouwer schreef (concept-auteur) staat niet al in het werkboek; anders wordt de auteur overschreven', opts, () => {
+test('TK-2: een tekst die de bouwer schreef (concept-auteur of, na akkoord, auteur) staat niet al in het werkboek; anders wordt de auteur overschreven', opts, () => {
   const wb = leesWerkboek(readFileSync(pad, 'utf8'));
   for (const t of blokken.flatMap((b) => b.taken)) {
-    if (t.klaarAls.bron === 'concept-auteur') assert.equal(wb[t.id].klaarAls, undefined, `klaar als ${t.id} staat wel in het werkboek`);
-    if (t.waarom.bron === 'concept-auteur') assert.equal(wb[t.id].waarom, undefined, `waarom ${t.id} staat wel in het werkboek`);
+    if (['concept-auteur', 'auteur'].includes(t.klaarAls.bron)) assert.equal(wb[t.id].klaarAls, undefined, `klaar als ${t.id} staat wel in het werkboek`);
+    if (['concept-auteur', 'auteur'].includes(t.waarom.bron)) assert.equal(wb[t.id].waarom, undefined, `waarom ${t.id} staat wel in het werkboek`);
   }
 });
 

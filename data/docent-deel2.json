@@ -21,11 +21,11 @@
       "laptop": "dicht",
       "opdracht": {
         "tekst": "Vandaag maak je vier producten voor het eigen vraagstuk: stakeholdermap, VPC, BMC en TOM-model V1, op twee flipovervellen aan jullie muur.",
-        "bron": "concept-auteur"
+        "bron": "auteur"
       },
       "klaarAls": {
         "tekst": "je weet welke vier producten je vandaag maakt en waar ze komen te hangen.",
-        "bron": "concept-auteur"
+        "bron": "auteur"
       },
       "watDocentDoet": "Laat zien dat vak 1 tien producten heeft en dat de teams er vandaag vier maken, op twee flipovervellen aan hun eigen stuk muur: vel 1 stakeholdermap (links) en VPC (rechts), vel 2 BMC (links) en TOM-model V1 (rechts). Na vel 1 oefenen ze de gallery walk. Haal het hoorcollege TOM van week 1 terug: wat was het verschil tussen waardebelofte en waardecreatie?",
       "kernboodschap": "Vandaag gebruiken de teams VPC, BMC en TOM-model uit week 1 voor hun eigen vraagstuk.",
@@ -52,7 +52,7 @@
       "laptop": "dicht",
       "opdracht": {
         "tekst": "Teken de stakeholdermap op de linkerhelft van vel 1, met het vraagstuk in het midden. Bepaal per stakeholder of hij intern of extern is en wat zijn invloed en belang zijn.",
-        "bron": "concept-auteur"
+        "bron": "auteur"
       },
       "watDocentDoet": "Product 1: stakeholdermap, op de linkerhelft van vel 1. Het vraagstuk staat in het midden. Herinner aan de indeling naar invloed en belang uit THEO SM week 3.",
       "kernboodschap": "Een stakeholder is iedereen die het vraagstuk merkt of erop kan sturen, binnen en buiten de organisatie.",
@@ -69,7 +69,7 @@
         "Invloed en belang door elkaar halen: invloed is wat iemand kan doen, belang is hoeveel het hem raakt.",
         "De opdrachtgever als enige stakeholder zien."
       ],
-      "bron": "concept-auteur"
+      "bron": "auteur"
     },
     {
       "id": "d2-03",
@@ -92,7 +92,7 @@
       "laptop": "dicht",
       "opdracht": {
         "tekst": "Vul het VPC in op de rechterhelft van vel 1, met het vraagstuk centraal. Zeg van de pain of gain die bij het vraagstuk hoort of het een feit of een aanname is.",
-        "bron": "concept-auteur"
+        "bron": "auteur"
       },
       "watDocentDoet": "Begin met 5 minuten herhaling van het VPC uit het hoorcollege TOM van week 1: het klantprofiel (klanttaken, pains, gains) en de waardekaart (producten en diensten, pain relievers, gain creators); er is een fit als de waardekaart de belangrijkste pains en gains raakt. Brug naar deel 1: pain/gain en value proposition zijn ook de delen van de onderzoeksvraag. Daarna 20 minuten invullen.",
       "kernboodschap": "Het VPC laat zien wat de klant wil, waar hij last van heeft en of wat de organisatie biedt daarbij past.",
@@ -108,7 +108,7 @@
         "Links beginnen bij wat de organisatie biedt in plaats van rechts bij de klant.",
         "Een pain die niemand heeft gemeten toch een feit noemen."
       ],
-      "bron": "concept-auteur"
+      "bron": "auteur"
     },
     {
       "id": "d2-05",
@@ -124,7 +124,7 @@
       "laptop": "dicht",
       "opdracht": {
         "tekst": "Eén teamlid blijft als host bij de eigen muur en legt vel 1 in één minuut uit. De rest schuift met de klok mee. Plak per muur minstens één post-it: Ik zie… / Ik mis… / Ik vraag me af…",
-        "bron": "concept-auteur"
+        "bron": "auteur"
       },
       "watDocentDoet": "Eén teamlid blijft als host bij de eigen muur en legt vel 1 in één minuut uit. De rest schuift met de klok mee naar de volgende muur. Na 4 minuten schuift iedereen nog een muur door en wisselt de host. Bezoekers plakken per muur minstens één post-it. De laatste 2 minuten lezen teams bij hun eigen muur de post-its. Deze ronde vervangt de pauze: studenten lopen rond.",
       "kernboodschap": "Op dag 3 gaat de gallery walk precies zo.",
@@ -159,7 +159,7 @@
       "laptop": "dicht",
       "opdracht": {
         "tekst": "Markeer op de linkerhelft van vel 2 het vraagstuk per bouwsteen: wat is er nu en wat is de rol van het vraagstuk?",
-        "bron": "concept-auteur"
+        "bron": "auteur"
       },
       "watDocentDoet": "Begin met 5 minuten herhaling van het BMC uit het hoorcollege TOM van week 1: negen bouwstenen, rechts de klantkant en links de organisatiekant. Het VPC is een uitvergroting van klantsegment en waardepropositie. Procesvraagstukken zitten vaak links. Vraag eerst: wat nemen jullie mee uit de post-its? Daarna 20 minuten invullen.",
       "kernboodschap": "Het BMC laat zien hoe de organisatie waarde maakt; het vraagstuk raakt sommige bouwstenen meer dan andere.",
@@ -174,7 +174,7 @@
         "Alle negen bouwstenen aanvinken in plaats van kiezen wat het vraagstuk echt raakt.",
         "Alleen financieel kapitaal noemen."
       ],
-      "bron": "concept-auteur"
+      "bron": "auteur"
     },
     {
       "id": "d2-07",
@@ -197,7 +197,7 @@
       "laptop": "dicht",
       "opdracht": {
         "tekst": "Werk het TOM-model V1 uit op de rechterhelft van vel 2: per cel hoe het vraagstuk daar zichtbaar is, en op welk niveau het vooral speelt.",
-        "bron": "concept-auteur"
+        "bron": "auteur"
       },
       "watDocentDoet": "Product 4: TOM-model V1, op de rechterhelft van vel 2. Kort geheugensteuntje uit het hoorcollege TOM van week 1: van waardebelofte (VPC) en waardecreatie (BMC) naar het TOM-model. In week 1 kregen de teams de opdracht om hun opdrachtgever de komende weken met het TOM-model te analyseren (dia 52): vraag wat ze al hebben.",
       "kernboodschap": "Het TOM-model laat zien op welk niveau van de organisatie het vraagstuk speelt: strategisch, tactisch of operationeel.",
@@ -212,7 +212,7 @@
         "Alle twaalf cellen invullen met algemene tekst in plaats van alleen de cellen die het vraagstuk raken.",
         "Het niveau opschrijven zonder te zeggen waaraan je het ziet."
       ],
-      "bron": "concept-auteur"
+      "bron": "auteur"
     },
     {
       "id": "d2-09",
@@ -236,7 +236,7 @@
       "laptop": "open",
       "opdracht": {
         "tekst": "Schrijf een conclusie ten opzichte van de stakeholders, de klant en de organisatie (9.1) en de onderzoeksvraag voor het eigen vraagstuk, met twee of drie zoekvragen vanuit verschillende frames (9.2).",
-        "bron": "concept-auteur"
+        "bron": "auteur"
       },
       "watDocentDoet": "Eerste conclusies. Waar zit het vraagstuk ten opzichte van de stakeholders, de klant en de organisatie? Laat elk team ook de onderzoeksvraag voor het eigen vraagstuk in het user-story-format opschrijven, met twee of drie zoekvragen vanuit verschillende frames. Check: klopt de gebruiker met de stakeholdermap, en kloppen pain/gain en waarde met het VPC?",
       "kernboodschap": "Wat de opdrachtgever zegt, is één waarneming vanuit één frame; controleer het met data en met andere betrokkenen.",
@@ -252,7 +252,7 @@
         "Een conclusie zonder stakeholder erin.",
         "Een onderzoeksvraag die een aanname als feit presenteert."
       ],
-      "bron": "concept-auteur"
+      "bron": "auteur"
     },
     {
       "id": "d2-11",
@@ -267,11 +267,11 @@
       "laptop": "dicht",
       "opdracht": {
         "tekst": "Maak de vier overzichten op de twee flipovervellen af, verwerk de post-its van de oefenronde, maak een foto en neem de vellen opgerold mee naar de gallery walk op dag 3.",
-        "bron": "concept-auteur"
+        "bron": "auteur"
       },
       "klaarAls": {
         "tekst": "je weet wat je thuis afmaakt en wat je meeneemt naar dag 3.",
-        "bron": "concept-auteur"
+        "bron": "auteur"
       },
       "watDocentDoet": "Afsluiting. Laat twee teams hun onderzoeksvraag voorlezen. Geef het huiswerk: de twee vellen afmaken, de feedback van de oefenronde verwerken, een foto maken en de vellen opgerold meenemen naar de gallery walk op dag 3. Verwijs voor thuis naar leerblok 4: verbanden ontdekken, feedback en dossier.",
       "kernboodschap": "Op dag 3 begint de gallery walk met de twee vellen van elk team.",

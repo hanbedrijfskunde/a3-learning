@@ -1,7 +1,7 @@
 {
   "formaat": "1.0",
   "opmerking": "Eigen uitwerking van de TOM³-indeling (Westmoreland BV, z.d.) voor taak 8.1: per cel een korte naam, de vraag die je daar stelt en waar je naar kijkt. Geen zinnen uit het ongepubliceerde buildplan of het dashboard (LI-3). Laadt pas als het TOM-model in beeld komt (PF-4, ADR B98).",
-  "bron": "concept-auteur",
+  "bron": "auteur",
   "lagen": [
     { "code": "S", "naam": "Strategisch", "uitleg": "koers en lange termijn" },
     { "code": "T", "naam": "Tactisch", "uitleg": "afspraken, processen en rollen" },

@@ -20,11 +20,11 @@
    "laptop": "dicht",
    "opdracht": {
     "tekst": "Gisteren pitchten jullie voor een opdrachtgever. Vanaf vandaag werken jullie voor een echte. Dagprogramma: deel 1 (90 min) A3 en onderzoeksvaardigheden, daarna coaching door de PO-docent, deel 2 (145 min) het vraagstuk plaatsen.",
-    "bron": "concept-auteur"
+    "bron": "auteur"
    },
    "klaarAls": {
     "tekst": "je weet wat we vandaag doen en wat er van je gevraagd wordt.",
-    "bron": "concept-auteur"
+    "bron": "auteur"
    },
    "watDocentDoet": "Blik terug op dinsdag: \"Gisteren pitchten jullie voor een opdrachtgever. Vanaf vandaag werken jullie voor een echte.\" Laat het dagprogramma zien.",
    "kernboodschap": "Vanaf vandaag werken de teams voor hun echte opdrachtgever.",
@@ -50,7 +50,7 @@
    "laptop": "open",
    "opdracht": {
     "tekst": "Kijk het filmpje. Beantwoord dan de drie vragen van 1.1: welke drie C's, wat past er niet op één A3, en wat weet je nog van de Lean Yellow Belt?",
-    "bron": "concept-auteur"
+    "bron": "auteur"
    },
    "watDocentDoet": "Filmpje Bureau Tromp (4:38). Daarna A3-denken (dia 4): één A3 als praatplaatje, 3xC. Laat de lege template (7) en het voorbeeld (8) zien en eindig bij vak 1 (9) met de hulpvragen (6). Bespreek na dia 4 kort de drie vragen van taak 1.1.",
    "kernboodschap": "De A3 is iteratief: jullie bespreken hem elke week met de opdrachtgever en werken hem steeds bij.",
@@ -79,11 +79,11 @@
    "laptop": "dicht",
    "opdracht": {
     "tekst": "Kies met je team een tool om bronnen te bundelen, bijvoorbeeld NotebookLM.",
-    "bron": "concept-auteur"
+    "bron": "auteur"
    },
    "klaarAls": {
     "tekst": "je team heeft een tool gekozen om bronnen te bundelen.",
-    "bron": "concept-auteur"
+    "bron": "auteur"
    },
    "watDocentDoet": "Praktijkgericht tegenover wetenschappelijk onderzoek (dia 10–12): praktijkonderzoek bestudeert één geval om een diagnose te stellen en een verbeterplan te maken. Vijf stappen van zoeken (13). Laat elk team een tool kiezen (14). Leg framing uit met het verzuimvoorbeeld (15).",
    "kernboodschap": "Welke data je nodig hebt, weet je pas na de literatuur.",
@@ -111,7 +111,7 @@
    "laptop": "open",
    "opdracht": {
     "tekst": "Maak de vraag over webshop X concreet en schrijf hem als onderzoeksvraag in het format: Wat is de beste oplossing voor <gebruiker> om <probleem / pain / gain>, zodat <waardecreatie volgens de six capitals>?",
-    "bron": "concept-auteur"
+    "bron": "auteur"
    },
    "watDocentDoet": "Brug naar week 4: daar formuleerden studenten het probleem. Nu formuleren ze de vraag die ze uiteindelijk met onderzoek beantwoorden. Laat eerst de vraag concreet maken met context (17). Introduceer dan het user-story-format en het voorbeeld van webshop X.",
    "kernboodschap": "De onderzoeksvraag is de vraag die je uiteindelijk met onderzoek beantwoordt: gebruiker, probleem en waarde, in het format.",
@@ -126,7 +126,7 @@
     "De waardecreatie alleen als geld formuleren.",
     "Een oplossing in de vraag stoppen in plaats van een probleem."
    ],
-   "bron": "concept-auteur"
+   "bron": "auteur"
   },
   {
    "id": "d1-05",
@@ -141,7 +141,7 @@
    "laptop": "open",
    "opdracht": {
     "tekst": "Deel de onderzoeksvraag op in drie zoekvragen, elk vanuit een ander frame, en kies één model: 7S, Strategy Map of Six Capitals.",
-    "bron": "concept-auteur"
+    "bron": "auteur"
    },
    "watDocentDoet": "Een onderzoeksvraag beantwoord je niet in één keer: je deelt hem op in zoekvragen die elk vanuit een ander frame kijken. Frames zijn functioneel (HR, financieel, logistiek, marketing), intern of extern, theoretisch of empirisch. Zet de timer en loop rond.",
    "kernboodschap": "Elke zoekvraag kijkt vanuit een ander frame.",
@@ -169,7 +169,7 @@
    "laptop": "dicht",
    "opdracht": {
     "tekst": "Noem je frames en zoekvragen. Wat mis je als je maar één frame kiest? Welk model hielp jullie?",
-    "bron": "concept-auteur"
+    "bron": "auteur"
    },
    "watDocentDoet": "Laat twee of drie teams hun frames en zoekvragen noemen. Er is geen beste frame.",
    "kernboodschap": "Er is geen beste frame; wie maar één frame kiest, mist de rest.",
@@ -196,7 +196,7 @@
    "laptop": "open",
    "opdracht": {
     "tekst": "Haal bij één van je zoekvragen de kernbegrippen eruit en zoek synoniemen en Engelse termen.",
-    "bron": "concept-auteur"
+    "bron": "auteur"
    },
    "watDocentDoet": "Laat het schema zien (19). Studenten bepalen de zoektermen bij één van hun zoekvragen (20).",
    "kernboodschap": "Goede zoektermen komen uit de kernbegrippen van je zoekvraag, met synoniemen en Engelse termen.",
@@ -209,7 +209,7 @@
    "veelgemaakteFouten": [
     "Alleen de woorden uit de zoekvraag overnemen, zonder synoniemen of Engelse termen."
    ],
-   "bron": "concept-auteur"
+   "bron": "auteur"
   },
   {
    "id": "d1-08",
@@ -226,7 +226,7 @@
    "laptop": "open",
    "opdracht": {
     "tekst": "Wie vindt als eerste een goede bron? Route A: databank, met een zoekstring met minstens één operator. Route B: AI-tool, met de prompt uit het werkboek. Een bron telt pas als je hem zelf hebt geopend.",
-    "bron": "concept-auteur"
+    "bron": "auteur"
    },
    "watDocentDoet": "Zoekstrategie kort: aanhalingstekens, maskeren, trunceren, AND/OR/NOT (21). Start de wedstrijd (22). Elk team splitst zich: één groepje zoekt in een databank (route A), het andere laat een AI-tool zoeken (route B). Nabespreken: welke route was sneller, welke gaf betere bronnen, en gaf de AI bronnen die niet bestaan? Tip (23): zoek ook via de LibGuide Bedrijfskunde. Waarschuw voor verzonnen bronnen en voor vertrouwelijke gegevens.",
    "kernboodschap": "Een bron telt pas als het team hem zelf heeft geopend en hij antwoord geeft op de zoekvraag. Geen namen of vertrouwelijke gegevens van de opdrachtgever in een prompt.",
@@ -258,7 +258,7 @@
    "laptop": "dicht",
    "opdracht": {
     "tekst": "Stelling: \"Je kunt prima AI gebruiken om inspiratiemateriaal te vinden.\" Voor: ga links staan. Tegen: ga rechts staan. Geef een argument.",
-    "bron": "concept-auteur"
+    "bron": "auteur"
    },
    "watDocentDoet": "Laat beide kanten argumenten geven en gebruik wat de teams net bij route B zagen. Conclusie: AI is goed om je te oriënteren en ideeën te vinden; een bron wordt het pas als je hem zelf hebt gevonden, geopend en beoordeeld (4.1).",
    "kernboodschap": "Een bron wordt het pas als je hem zelf hebt gevonden, geopend en beoordeeld.",
@@ -286,7 +286,7 @@
    "laptop": "open",
    "opdracht": {
     "tekst": "Beoordeel de bron uit de wedstrijd met de AAOCC-criteria: gebruiken of verder zoeken?",
-    "bron": "concept-auteur"
+    "bron": "auteur"
    },
    "watDocentDoet": "AAOCC-criteria (25). Opdracht (26). Loop rond en check of teams echt beoordelen en niet alleen afvinken. Sluit af met APA (27).",
    "kernboodschap": "Beoordelen is meer dan afvinken: je onderbouwt per criterium.",
@@ -314,11 +314,11 @@
    "laptop": "dicht",
    "opdracht": {
     "tekst": "Luister en vraag: wat betekent dit voor wat je opdrachtgever je vertelt?",
-    "bron": "concept-auteur"
+    "bron": "auteur"
    },
    "klaarAls": {
     "tekst": "je weet dat wat de opdrachtgever zegt één waarneming vanuit één frame is.",
-    "bron": "concept-auteur"
+    "bron": "auteur"
    },
    "watDocentDoet": "Gebruik de schietschijf. Blijf niet hangen bij de begrippen (28–29), maar ga naar de vertaling naar het project (30). Brug naar deel 2 (31).",
    "kernboodschap": "Wat de opdrachtgever zegt, is één waarneming vanuit één frame.",

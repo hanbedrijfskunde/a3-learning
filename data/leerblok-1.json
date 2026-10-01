@@ -11,16 +11,16 @@
       "titel": "De A3 in één oogopslag",
       "thema": { "tekst": "Je leert hoe de A3 in elkaar zit en waar vak 1 staat.", "bron": "auteur" },
       "vorm": "Alleen",
-      "richttijd": { "tekst": "tijdens de uitleg", "minuten": 10, "bron": "werkboek", "minutenBron": "concept-auteur" },
+      "richttijd": { "tekst": "tijdens de uitleg", "minuten": 10, "bron": "werkboek", "minutenBron": "auteur" },
       "waarom": {
         "tekst": "De A3 is jullie praatplaat voor de opdrachtgever. Jullie bespreken hem elke week en vullen hem steeds verder aan. Vandaag begin je aan vak 1.",
         "bron": "werkboek"
       },
       "klaarAls": {
         "tekst": "je de drie C's kunt noemen, weet wat er niet op één A3 past, hebt opgeschreven wat je nog van de A3 wist en de aanleiding van je eigen vraagstuk hebt vastgelegd.",
-        "bron": "concept-auteur", "criteria": [{"tekst": "je de drie C's kunt noemen", "controles": []}, {"tekst": "weet wat er niet op één A3 past", "controles": []}, {"tekst": "hebt opgeschreven wat je nog van de A3 wist", "controles": []}, {"tekst": "de aanleiding van je eigen vraagstuk hebt vastgelegd", "controles": ["aanleiding-woorden"]}]},
+        "bron": "auteur", "criteria": [{"tekst": "je de drie C's kunt noemen", "controles": []}, {"tekst": "weet wat er niet op één A3 past", "controles": []}, {"tekst": "hebt opgeschreven wat je nog van de A3 wist", "controles": []}, {"tekst": "de aanleiding van je eigen vraagstuk hebt vastgelegd", "controles": ["aanleiding-woorden"]}]},
       "stof": {
-        "bron": "concept-auteur",
+        "bron": "auteur",
         "opmerking": "De acht vakken en de Lean Yellow Belt komen uit werkboek 1.1; de zin over een praatplaat, de uitleg van 3xC en de indeling naar PDCA zijn door de bouwer geschreven; de figuur is figuur 1 uit Schwagerman & Ulmer (2013), als citaat (media/citaten.json).",
         "figuur": "a3-vel",
         "alineas": [
@@ -32,7 +32,7 @@
       "oefening": {
         "opdracht": {
           "tekst": "Bij 1.1 is er geen casus. Het gaat om wat je van de A3 weet. Beantwoord de drie vragen uit het werkboek.",
-          "bron": "concept-auteur"
+          "bron": "auteur"
         },
         "velden": [
           { "id": "drieC", "label": "De A3 moet voldoen aan 3xC. Welke drie?", "type": "lang", "hint": "Alle drie beginnen met een C. Wat heeft een lezer met weinig tijd nodig? Denk aan de hoeveelheid tekst, of alles erin staat en of de vakken elkaar tegenspreken.", "hintBron": [{"soort": "stof", "taak": "1.1", "vindplaats": "alinea 2"}] },
@@ -52,7 +52,7 @@
       "toepassing": {
         "opdracht": {
           "tekst": "Schrijf in één of twee zinnen de aanleiding van je eigen vraagstuk. Wat gebeurt er, en waarom speelt het nu? Dit is de inhoud van vak 1 van je A3.",
-          "bron": "concept-auteur"
+          "bron": "auteur"
         },
         "velden": [
           { "id": "aanleiding", "label": "Aanleiding van mijn vraagstuk (vak 1)", "type": "lang", "zinstarter": "Bij onze opdrachtgever merken we dat …" }
@@ -79,7 +79,7 @@
         "tekst": "alle drie de delen concreet zijn en de waarde verder gaat dan alleen geld.",
         "bron": "werkboek", "criteria": [{"tekst": "alle drie de delen concreet zijn", "controles": ["gebruiker-woorden", "pain-woorden", "waarde-woorden"]}, {"tekst": "de waarde verder gaat dan alleen geld", "controles": ["kapitaal-niet-financieel"]}]},
       "stof": {
-        "bron": "concept-auteur",
+        "bron": "auteur",
         "opmerking": "Het format staat in werkboek 2.1, het voorbeeld (organisatie Y) in het kader bij 0:30 van het draaiboek. De uitleg van de termen (QA-5) is door de bouwer geschreven; de figuur is die van het waardecreatieproces uit het <IR>-framework (International Integrated Reporting Council, 2021), als citaat (media/citaten.json).",
         "figuur": "six-capitals",
         "format": "Wat is de beste oplossing voor <gebruiker> om <probleem / pain / gain>, zodat <waardecreatie volgens de six capitals>?",
@@ -108,7 +108,7 @@
       "toepassing": {
         "opdracht": {
           "tekst": "Schrijf de onderzoeksvraag over je eigen vraagstuk in het format. Noem voor wie, welk probleem en welke waarde.",
-          "bron": "concept-auteur"
+          "bron": "auteur"
         },
         "velden": [
           { "id": "gebruiker", "label": "Gebruiker", "type": "tekst", "hint": "Wie merkt het probleem echt? Maak het zo concreet dat je die groep zou kunnen bellen.", "hintBron": [{"soort": "stof", "taak": "2.1", "vindplaats": "alinea 1"}, {"soort": "werkboek", "vindplaats": "Werkboek week 5, opdracht 2.1 (casus)"}] },
@@ -143,9 +143,9 @@
       },
       "klaarAls": {
         "tekst": "je drie zoekvragen hebt, elk vanuit een ander frame, één model hebt gekozen met een zin waarom, en hebt opgeschreven wat je mist als je maar één frame kiest.",
-        "bron": "concept-auteur", "criteria": [{"tekst": "je drie zoekvragen hebt", "controles": ["zoekvraag-1-vraagteken", "zoekvraag-2-vraagteken", "zoekvraag-3-vraagteken"]}, {"tekst": "elk vanuit een ander frame", "controles": ["frame-1", "frame-2", "frame-3", "frames-verschillend"]}, {"tekst": "één model hebt gekozen met een zin waarom", "controles": ["model-een", "verantwoording-zin"]}, {"tekst": "hebt opgeschreven wat je mist als je maar één frame kiest", "controles": ["mis-ingevuld"]}]},
+        "bron": "auteur", "criteria": [{"tekst": "je drie zoekvragen hebt", "controles": ["zoekvraag-1-vraagteken", "zoekvraag-2-vraagteken", "zoekvraag-3-vraagteken"]}, {"tekst": "elk vanuit een ander frame", "controles": ["frame-1", "frame-2", "frame-3", "frames-verschillend"]}, {"tekst": "één model hebt gekozen met een zin waarom", "controles": ["model-een", "verantwoording-zin"]}, {"tekst": "hebt opgeschreven wat je mist als je maar één frame kiest", "controles": ["mis-ingevuld"]}]},
       "stof": {
-        "bron": "concept-auteur",
+        "bron": "auteur",
         "opmerking": "De frames en de modellen zijn letterlijk uit werkboek 2.2; de uitleg van het woord frame is door de bouwer geschreven.",
         "alineas": [
           "Een frame is een invalshoek: een bril waarmee je naar je onderzoeksvraag kijkt. Een functioneel frame kijkt naar HR, financiën, logistiek of marketing. Je kunt ook intern of extern kijken. Of je kijkt theoretisch (wat zegt de literatuur?) of empirisch (wat zie je bij de organisatie?).",
@@ -156,11 +156,11 @@
       "oefening": {
         "opdracht": {
           "tekst": "Bij webshop X is de klanttevredenheid gedaald van een 8,1 naar een 6,3. Schrijf drie zoekvragen bij de onderzoeksvraag over die daling. Gebruik voor elke zoekvraag een ander frame. Kies ook één model.",
-          "bron": "concept-auteur"
+          "bron": "auteur"
         }
       },
       "modelantwoord": {
-        "bron": "concept-auteur",
+        "bron": "auteur",
         "opmerking": "De drie zoekvragen komen uit het kader bij 0:30 en 0:40 van het draaiboek. De indeling in frames, het model, de verantwoording en het antwoord op wat je mist zijn door de bouwer geschreven.",
         "velden": {
           "frame1": "theoretisch of empirisch",
@@ -268,7 +268,7 @@
     "taak": "2.1",
     "uitleg": {
       "titel": "Van vage vraag naar user story",
-      "bron": "concept-auteur",
+      "bron": "auteur",
       "alineas": [
         "Een A3 is een verbetermethode waarbij je het hele verhaal van een probleem op één blad zet (Bureau Tromp, 2023). Zo'n blad is goed als het concreet, compleet en consistent is.",
         "Je begint met een vage vraag, zoals „Hoe kan de klanttevredenheid verhoogd worden?” Die vraag maak je scherp met het format van de user story. Dat luidt: „Wat is de beste oplossing voor de gebruiker om het probleem op te lossen, zodat er waarde ontstaat?” Beschrijf die waarde in de zes kapitalen. Kies er minstens één die niet financieel is.",
@@ -293,7 +293,7 @@
       "duur": "2:18",
       "taal": "Nederlands",
       "waarom": "Kennisclip van het Skills Lab van de Universiteit Utrecht over zes soorten onderzoeksvragen. In de A3 werk je met de ontwerpende vraag. Voor wie je ontwerpt, welk probleem je oplost en welke waarde dat oplevert, staat in de tekst.",
-      "bron": "concept-auteur"
+      "bron": "auteur"
     },
     "spel": {
       "id": "vraagslijper",

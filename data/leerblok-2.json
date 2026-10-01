@@ -18,11 +18,11 @@
       },
       "waarom": {
         "tekst": "Een zoekvraag is een zin. Een zoekmachine zoekt op woorden. Haal daarom de kernbegrippen uit je vraag en zoek er synoniemen en Engelse termen bij. Zo mis je minder bronnen die hetzelfde anders noemen.",
-        "bron": "concept-auteur"
+        "bron": "auteur"
       },
       "klaarAls": {
         "tekst": "je van één zoekvraag uit 2.2 de kernbegrippen hebt gehaald en bij elk begrip minstens één synoniem en één Engelse term hebt opgeschreven.",
-        "bron": "concept-auteur",
+        "bron": "auteur",
         "criteria": [
           {
             "tekst": "je van één zoekvraag uit 2.2 de kernbegrippen hebt gehaald",
@@ -37,7 +37,7 @@
         ]
       },
       "stof": {
-        "bron": "concept-auteur",
+        "bron": "auteur",
         "opmerking": "Het werkboek geeft bij 3.1 alleen de opdracht en de tabel; de uitleg over kernbegrippen en de verwijzing naar Mayer (2004) zijn door de bouwer geschreven.",
         "alineas": [
           "Een kernbegrip is het woord in je zoekvraag dat het onderwerp draagt. In „Welke factoren bepalen de klanttevredenheid bij webshops?” zijn dat klanttevredenheid en webshop. Voor elk begrip bestaan andere woorden voor hetzelfde (synoniemen en verwante termen). Veel wetenschappelijke bronnen zijn Engelstalig, dus de Engelse term hoort erbij. Soms helpt een breder of smaller begrip.",
@@ -47,7 +47,7 @@
       "oefening": {
         "opdracht": {
           "tekst": "Neem de zoekvraag over webshop X: „Welke factoren bepalen de klanttevredenheid bij webshops?” Haal de kernbegrippen eruit en zoek er synoniemen en Engelse termen bij.",
-          "bron": "concept-auteur"
+          "bron": "auteur"
         },
         "velden": [
           {
@@ -104,7 +104,7 @@
         ]
       },
       "modelantwoord": {
-        "bron": "concept-auteur",
+        "bron": "auteur",
         "opmerking": "Door de bouwer geschreven op de zoekvraag uit het draaiboek (0:30).",
         "velden": {
           "begrippen": "klanttevredenheid; webshop",
@@ -259,11 +259,11 @@
       },
       "waarom": {
         "tekst": "Een goede bron vind je zelden met je eerste zoekopdracht. Je vergelijkt twee routes. In de databank bepaal jij de zoekstring. Bij een AI-tool bepaalt de prompt (de opdracht die je aan de tool geeft) wat je krijgt. Wat beter werkt, ontdek je alleen door het te doen.",
-        "bron": "concept-auteur"
+        "bron": "auteur"
       },
       "klaarAls": {
         "tekst": "je met route A een zoekstring met minstens één zoekoperator hebt, of met route B een prompt zonder namen uit je „niet noemen”-lijst, en één gevonden bron hebt opgeschreven die je zelf hebt geopend.",
-        "bron": "concept-auteur",
+        "bron": "auteur",
         "criteria": [
           {
             "tekst": "met route A een zoekstring met minstens één zoekoperator hebt, of met route B een prompt zonder namen uit je „niet noemen”-lijst",
@@ -283,7 +283,7 @@
         ]
       },
       "stof": {
-        "bron": "concept-auteur",
+        "bron": "auteur",
         "opmerking": "De teksten over route A en route B en de waarschuwing komen letterlijk uit werkboek 3.2. Het voorbeeld van een zoekstring en de verwijzing naar Hattie en Timperley (2007) zijn door de bouwer geschreven.",
         "alineas": [
           "Route A · databank. Combineer je termen met zoekoperatoren. Zet een vaste combinatie tussen \"aanhalingstekens\". Gebruik * en ? voor varianten. Verbind termen met AND, OR of NOT. Zoek in HANQuest, Google Scholar of per vaktijdschrift via de LibGuide Bedrijfskunde.",
@@ -296,7 +296,7 @@
       "oefening": {
         "opdracht": {
           "tekst": "Werk met een medestudent. Spreek af wie route A neemt en wie route B, en zoek allebei bij dezelfde zoekvraag over webshop X: „Welke factoren bepalen de klanttevredenheid bij webshops?” De opdrachtgever wil niet dat de naam webshop X buiten het team komt. Vergelijk daarna wat jullie vonden. Werk je alleen? Doe dan beide routes na elkaar.",
-          "bron": "concept-auteur"
+          "bron": "auteur"
         },
         "modelNa": [
           "zoekstring",
@@ -464,7 +464,7 @@
         }
       },
       "modelantwoord": {
-        "bron": "concept-auteur",
+        "bron": "auteur",
         "opmerking": "Door de bouwer geschreven. De zoekstring gebruikt de termen van het modelantwoord bij 3.1; de prompt is wat de promptgenerator maakt van de zoekvraag, de context en het jaar (ADR B100).",
         "velden": {
           "zoekstring": "(\"customer satisfaction\" OR \"customer experience\") AND (webshop* OR \"online retail\")",
@@ -769,11 +769,11 @@
       },
       "waarom": {
         "tekst": "Een bron is pas bruikbaar als je weet of je hem kunt vertrouwen. AAOCC geeft je vijf vragen om dat te beoordelen. Met APA laat je de lezer zien waar je het vandaan hebt.",
-        "bron": "concept-auteur"
+        "bron": "auteur"
       },
       "klaarAls": {
         "tekst": "je van één bron de vijf AAOCC-oordelen met een zin toelichting hebt, bij een AI-bron beide controles hebt gedaan, een besluit hebt genomen en de bron in APA hebt opgeschreven.",
-        "bron": "concept-auteur",
+        "bron": "auteur",
         "criteria": [
           {
             "tekst": "de vijf AAOCC-oordelen met een zin toelichting hebt",
@@ -803,7 +803,7 @@
         ]
       },
       "stof": {
-        "bron": "concept-auteur",
+        "bron": "auteur",
         "opmerking": "De vijf criteria met hun vragen, de oordelen (+, ?, –) en de twee AI-controles komen uit werkboek 4.1. De uitleg van APA en de verwijzingen naar de Publication manual en naar Roediger en Karpicke (2006) zijn door de bouwer geschreven.",
         "alineas": [
           "AAOCC bestaat uit vijf vragen. Authority: wie is de auteur en is die deskundig? Accuracy: klopt de inhoud en is die onderbouwd? Objectivity: is de bron neutraal of heeft die een belang? Currency: is de bron actueel genoeg? Coverage: behandelt de bron het onderwerp volledig genoeg? Bij elk criterium hoort een oordeel (+, ? of –) met een zin toelichting.",
@@ -816,7 +816,7 @@
       "oefening": {
         "opdracht": {
           "tekst": "Bij webshop X vind je (Bakker & De Vries, 2016). Die bron is verzonnen voor deze oefening. Het is een tijdschriftartikel van twee universitaire onderzoekers. Ze hielden een enquête onder 1.200 webshopklanten en publiceerden in 2016. Beoordeel Authority en Currency met +, ? of –, en een zin per criterium. Schrijf de bron daarna in APA.",
-          "bron": "concept-auteur"
+          "bron": "auteur"
         },
         "velden": [
           {
@@ -874,7 +874,7 @@
         ]
       },
       "modelantwoord": {
-        "bron": "concept-auteur",
+        "bron": "auteur",
         "opmerking": "Door de bouwer geschreven; de bron van Bakker en De Vries is verzonnen (lijst fictief in data/bronnen-2.json, niet op de bronnenpagina; ADR B111).",
         "velden": {
           "authority": "+ De auteurs zijn onderzoekers aan een universiteit en publiceren in een wetenschappelijk tijdschrift.",
@@ -885,7 +885,7 @@
       "toepassing": {
         "opdracht": {
           "tekst": "Beoordeel een bron die je in 3.2 vond. Vul de gegevens in. Geef elk criterium een oordeel met een zin toelichting. Schrijf de bron in APA. Heb je een tweede bron? Vul die dan ook in.",
-          "bron": "concept-auteur"
+          "bron": "auteur"
         },
         "velden": [
           {
@@ -1733,15 +1733,15 @@
       "richttijd": {
         "tekst": "15 min",
         "minuten": 15,
-        "bron": "concept-auteur"
+        "bron": "auteur"
       },
       "waarom": {
         "tekst": "Een artikel vertelt je wat er bekend is. Maar je kunt er meer uit halen: een begrip, een onderzoeksaanpak en een manier om je uitkomst te tonen. IMRAD wijst je waar je dat vindt.",
-        "bron": "concept-auteur"
+        "bron": "auteur"
       },
       "klaarAls": {
         "tekst": "je bij Inleiding, Methode en Resultaten van je artikel hebt opgeschreven wat de auteur doet, waar dat staat en of je het meeneemt, en in een korte alinea hebt opgeschreven wat je meeneemt naar je A3.",
-        "bron": "concept-auteur",
+        "bron": "auteur",
         "criteria": [
           {
             "tekst": "bij Inleiding, Methode en Resultaten van je artikel hebt opgeschreven wat de auteur doet, waar dat staat en of je het meeneemt",
@@ -1762,7 +1762,7 @@
         ]
       },
       "stof": {
-        "bron": "concept-auteur",
+        "bron": "auteur",
         "opmerking": "Door de bouwer geschreven. IMRAD naar Wu (2011), alleen geciteerd; de figuur is een eigen tekening (ADR B102).",
         "figuur": "imrad",
         "alineas": [
@@ -1774,7 +1774,7 @@
       "oefening": {
         "opdracht": {
           "tekst": "Werk met een medestudent. Hieronder staan twee korte artikelen over klanttevredenheid bij webshops. Ze zijn verzonnen voor deze oefening. Kies ieder één artikel en beantwoord de drie vragen. Vergelijk daarna samen: welk artikel levert jullie het meest op? Werk je alleen? Doe dan beide artikelen.",
-          "bron": "concept-auteur"
+          "bron": "auteur"
         },
         "figuur": "miniartikelen",
         "modelNa": [
@@ -1987,7 +1987,7 @@
         ]
       },
       "modelantwoord": {
-        "bron": "concept-auteur",
+        "bron": "auteur",
         "opmerking": "Door de bouwer geschreven bij de twee verzonnen mini-artikelen (ADR B102).",
         "velden": {
           "theorie": "Artikel 1 (Visser & El Amrani, 2021): het disconfirmatiemodel van Oliver (1980), verwachting tegenover ervaring, met een eigen definitie van klanttevredenheid. Artikel 2 (Bakker & De Vries, 2016): geen model; alleen de vraag welk onderdeel het laagst scoort.",
@@ -2002,7 +2002,7 @@
       "toepassing": {
         "opdracht": {
           "tekst": "Ontleed nu je eigen artikel uit taak 4.1. Werk alleen. Schrijf bij elk deel op wat de auteur doet, waar dat staat en of je het meeneemt.",
-          "bron": "concept-auteur"
+          "bron": "auteur"
         },
         "velden": [
           {
@@ -2294,11 +2294,11 @@
       },
       "waarom": {
         "tekst": "Een AI-tool kan een artikel in seconden samenvatten. Bij taak 4.2 heb je dat zelf gedaan, of juist niet. Als je een kant kiest en die onderbouwt, merk je wat jij ervan vindt en waarop dat rust.",
-        "bron": "concept-auteur"
+        "bron": "auteur"
       },
       "klaarAls": {
         "tekst": "je een kant hebt gekozen en in minstens twee zinnen hebt uitgelegd waarom.",
-        "bron": "concept-auteur",
+        "bron": "auteur",
         "criteria": [
           {
             "tekst": "je een kant hebt gekozen",
@@ -2315,7 +2315,7 @@
         ]
       },
       "stof": {
-        "bron": "concept-auteur",
+        "bron": "auteur",
         "opmerking": "Het werkboek heeft hier een andere stelling (AI en inspiratiemateriaal); de stelling en de uitleg in de e-learning zijn door de bouwer geschreven (ADR B102).",
         "alineas": [
           "Een argument is een bewering met een reden. Een keuze voor of tegen is pas sterk als je kunt zeggen waarom. Je eigen ervaring bij taak 4.2 levert argumenten op. Denk aan wat de AI goed samenvatte, wat je zelf moest terugzoeken en hoeveel tijd dat kostte."
@@ -2324,7 +2324,7 @@
       "oefening": {
         "opdracht": {
           "tekst": "Een collega bij webshop X laat elk artikel door een AI-tool samenvatten. Die collega zegt: „Je kunt een artikel prima door AI laten ontleden.” Als voorbeeld laat de collega de samenvatting hieronder zien. Ben je het met de stelling eens? Kies een kant en schrijf je sterkste argument in twee zinnen.",
-          "bron": "concept-auteur"
+          "bron": "auteur"
         },
         "velden": [
           {
@@ -2401,7 +2401,7 @@
         }
       },
       "modelantwoord": {
-        "bron": "concept-auteur",
+        "bron": "auteur",
         "opmerking": "Door de bouwer geschreven naar de lijn van de auteur (ADR B104); een ander goed antwoord kiest tegen, met dezelfde voorwaarde.",
         "velden": {
           "kant": "voor",
@@ -2411,7 +2411,7 @@
       "toepassing": {
         "opdracht": {
           "tekst": "Stelling: „Je kunt een artikel prima door AI laten ontleden.” Kies voor of tegen en schrijf je sterkste argument.",
-          "bron": "concept-auteur"
+          "bron": "auteur"
         },
         "velden": [
           {
@@ -2506,7 +2506,7 @@
     "taak": "4.1",
     "uitleg": {
       "titel": "Een bron beoordelen in vijf vragen",
-      "bron": "concept-auteur",
+      "bron": "auteur",
       "alineas": [
         "Een bron is pas bruikbaar als je weet of je hem kunt vertrouwen. AAOCC geeft je vijf vragen. Authority: wie schreef het en is die persoon deskundig? Accuracy: klopt het en is het onderbouwd? Objectivity: heeft de bron een belang? Currency: is het actueel genoeg? Coverage: is het volledig genoeg? Geef elk criterium een plus, een vraagteken of een min, met één zin toelichting.",
         "Een AI-tool verzint soms bronnen of citeert ze verkeerd. Controleer daarom twee dingen: de bron bestaat echt, en er staat in wat de AI zegt. Open de bron zelf.",
@@ -2530,7 +2530,7 @@
       "duur": "1:42",
       "taal": "Nederlands",
       "waarom": "Kennisclip van de HAN Bibliotheek met een checklist voor een website. Hij behandelt de auteur (Authority), het doel (Objectivity) en het nalezen van de bronnen (Accuracy). Hoe actueel en volledig een bron is (Currency en Coverage), en hoe je een bron van een AI-tool controleert, staat in de tekst.",
-      "bron": "concept-auteur"
+      "bron": "auteur"
     },
     "spel": {
       "id": "bronnen-detective",

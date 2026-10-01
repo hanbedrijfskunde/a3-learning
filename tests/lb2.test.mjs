@@ -418,8 +418,8 @@ test('TK-2: taken 3.1, 3.2, 4.1 en de stelling kloppen met het werkboek (titel, 
     assert.equal(t.vorm, w.vorm);
     if (t.richttijd.bron === 'werkboek') { assert.equal(t.richttijd.tekst, w.tijd); n += 1; }
     if (t.toepassing.opdracht.bron === 'werkboek') { assert.equal(t.toepassing.opdracht.tekst, w.stappen); n += 1; }
-    if (t.waarom.bron === 'concept-auteur') assert.equal(w.heeftWaarom, false, `waarom ${t.id} staat wel in het werkboek`);
-    if (t.klaarAls.bron === 'concept-auteur') assert.equal(w.heeftKlaar, false, `klaar als ${t.id} staat wel in het werkboek`);
+    if (['concept-auteur', 'auteur'].includes(t.waarom.bron)) assert.equal(w.heeftWaarom, false, `waarom ${t.id} staat wel in het werkboek`);
+    if (['concept-auteur', 'auteur'].includes(t.klaarAls.bron)) assert.equal(w.heeftKlaar, false, `klaar als ${t.id} staat wel in het werkboek`);
   }
   assert.ok(n >= 6, `slechts ${n} teksten vergeleken`);
 });

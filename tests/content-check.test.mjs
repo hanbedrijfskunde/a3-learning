@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { controleerLeerblok, controleerMap } from '../tools/content-check.mjs';
@@ -86,9 +86,9 @@ test('werkboekteksten geven geen waarschuwing; teksten van de bouwer wel, met ta
   assert.equal(zonderSx15(concept.waarschuwingen).length, 1);
   assert.match(zonderSx15(concept.waarschuwingen)[0], /taak 2\.1: klaarAls is een concept van de bouwer/);
   const echtBlok = controleerFormaat(echt(), 'leerblok-1.json');
-  assert.ok(echtBlok.waarschuwingen.some((w) => /taak 1\.1: klaarAls is een concept/.test(w)));
-  assert.ok(echtBlok.waarschuwingen.some((w) => /taak 2\.2: klaarAls is een concept/.test(w)));
-  assert.ok(!echtBlok.waarschuwingen.some((w) => /taak 2\.1: klaarAls/.test(w))); // die staat in het werkboek
+  // sinds het akkoord van de auteur (1-10-2026) staan de teksten van de bouwer op bron auteur: geen conceptwaarschuwing meer
+  assert.ok(!echtBlok.waarschuwingen.some((w) => /is een concept/.test(w)));
+  assert.equal(echt().taken.find((t) => t.id === '1.1').klaarAls.bron, 'auteur');
 });
 
 test('bron concept-auteur: het commando geeft een WAARSCHUWING en exit 0, geen fout', () => {
@@ -169,4 +169,13 @@ test('SX-11: een lang veld zonder zinstarter, of met een zinstarter uit het mode
   const langste = [...JSON.stringify(taak.modelantwoord).matchAll(/"([^"]*)"/g)].map((m) => m[1]).sort((x, y) => y.length - x.length)[0];
   veld.zinstarter = `${langste.slice(0, 30)} …`;
   assert.ok(controleerFormaat(inhoud, 'leerblok-1.json').fouten.some((f) => f.includes('staat in het modelantwoord')), veld.zinstarter);
+});
+
+test('Akkoord van de auteur (1-10-2026): geen tekst in data/ of spellen/ staat nog op concept-auteur, en content-check geeft geen conceptwaarschuwing', () => {
+  const bestanden = ['data', 'spellen'].flatMap((m) => readdirSync(resolve(root, m)).filter((n) => n.endsWith('.json')).map((n) => `${m}/${n}`));
+  const over = bestanden.filter((b) => readFileSync(resolve(root, b), 'utf8').includes('concept-auteur'));
+  assert.deepEqual(over, []);
+  const uit = spawnSync(process.execPath, [resolve(root, 'tools/content-check.mjs')], { cwd: root, encoding: 'utf8' });
+  assert.equal(uit.status, 0);
+  assert.doesNotMatch(uit.stdout + uit.stderr, /concept van de bouwer|korte formulering van de bouwer/);
 });
