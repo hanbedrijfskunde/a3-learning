@@ -34,7 +34,7 @@ import { KAPITALEN, VPC_ONDERDELEN, SPANNING, bouwOefenKaarten, maakVerband } fr
 // De figuren die de stap stof of de oefening kan tonen (FIGUREN in js/leerblok.js).
 // De twaalf cellen van het TOM-model zoals ze in een veld staan („Tactisch · Mens”, LB-11).
 export const TOM_LABELS = Object.freeze(['Strategisch', 'Tactisch', 'Operationeel'].flatMap((l) => ['Methode', 'Mens', 'Machine', 'Informatie & Rapportage'].map((k) => `${l} · ${k}`)));
-export const FIGUUR_NAMEN = ['a3-vel', 'six-capitals', 'vpc', 'bmc', 'tom', 'invloed-belang']; // invloed-belang: het lege raster van het stakeholderbord (SX-15, SX-16)
+export const FIGUUR_NAMEN = ['a3-vel', 'six-capitals', 'vpc', 'bmc', 'tom', 'invloed-belang', 'imrad', 'miniartikelen']; // invloed-belang: het lege raster van het stakeholderbord (SX-15, SX-16)
 const gevuld = (t) => typeof t === 'string' && t.trim() !== '';
 const lijstGevuld = (l) => Array.isArray(l) && l.length > 0;
 /** Een tekstveld is een tekst of een object { tekst }. */
@@ -137,6 +137,18 @@ export function controleerFormaat(inhoud, bestand) {
     else bronTekst(wie, 'oefening.opdracht', taak.oefening.opdracht);
     if (taak.toepassing?.figuur !== undefined && !FIGUUR_NAMEN.includes(taak.toepassing.figuur)) fout(wie, `toepassing.figuur ${JSON.stringify(taak.toepassing.figuur)} is onbekend; kies ${FIGUUR_NAMEN.join(', ')}`);
     if (taak.oefening?.figuur !== undefined && !FIGUUR_NAMEN.includes(taak.oefening.figuur)) fout(wie, `oefening.figuur ${JSON.stringify(taak.oefening.figuur)} is onbekend; kies ${FIGUUR_NAMEN.join(', ')}`);
+    // B102: de mini-artikelen van de oefening bij 4.2: twee artikelen, elk met de vier IMRAD-secties in volgorde en een citatie.
+    if (taak.oefening?.figuur === 'miniartikelen') {
+      const art = taak.oefening.artikelen;
+      if (!Array.isArray(art) || art.length !== 2) fout(wie, 'oefening.artikelen moet twee mini-artikelen hebben (B102)');
+      else for (const [i, a] of art.entries()) {
+        if (!gevuld(a?.kop) || !gevuld(a?.citatie)) fout(wie, `mini-artikel ${i + 1} mist kop of citatie`);
+        const koppen = (a?.secties ?? []).map((x) => x?.kop);
+        if (JSON.stringify(koppen) !== JSON.stringify(['Inleiding', 'Methode', 'Resultaten', 'Discussie'])) fout(wie, `mini-artikel ${i + 1} heeft niet de secties Inleiding, Methode, Resultaten, Discussie`);
+        if ((a?.secties ?? []).some((x) => !gevuld(x?.tekst))) fout(wie, `mini-artikel ${i + 1} heeft een lege sectie`);
+        if (a?.grafiek && !(gevuld(a.grafiek.titel) && Array.isArray(a.grafiek.rijen) && a.grafiek.rijen.every(([l, w]) => gevuld(l) && Number.isFinite(w)))) fout(wie, `de grafiek van mini-artikel ${i + 1} is onvolledig`);
+      }
+    }
 
     const velden = Array.isArray(taak.toepassing?.velden) ? taak.toepassing.velden : [];
     if (!lijstGevuld(velden)) fout(wie, 'toepassing mist velden (TK-3)');

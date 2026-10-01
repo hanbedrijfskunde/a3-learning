@@ -53,7 +53,7 @@ test('Figuur VPC ook bij de oefening van taak 6.1: de student hoeft niet terug n
   const t = b.taken.find((x) => x.id === '6.1');
   assert.equal(t.oefening.figuur, 'vpc');
   assert.equal(bouwTaakModel(t, b).stappen[2].oefening.figuur, 'vpc', 'het taakmodel geeft de figuur door aan stap 3');
-  assert.match(lees('js/leerblok.js'), /FIGUREN\[s3\.oefening\.figuur\]\?\.bouw\(\{ met \}\)/);
+  assert.match(lees('js/leerblok.js'), /FIGUREN\[s3\.oefening\.figuur\]\?\.bouw\(\{ met, taak \}\)/);
   t.oefening.figuur = 'swot';
   assert.match(controleerFormaat(b, 'leerblok-3.json').fouten.join('\n'), /taak 6\.1: oefening\.figuur "swot" is onbekend/);
 });
@@ -201,4 +201,12 @@ test('PF-4 (ADR B97): de figuren laden per leerblok, alleen als de data ze gebru
     assert.match(lees('tools/gewicht-check.mjs'), new RegExp(`naam === 'figurenlb${n}'`), `gewichtcontrole ${n}`);
   }
   assert.doesNotMatch(lees('js/dom.js'), /export function \w+Figuur/, 'geen figuren in dom.js');
+});
+
+test('B102 en SX-15: IMRAD is een eigen figuur met vier delen, als zandloper, met tekstalternatief en zonder afbeelding van buiten', () => {
+  const bron = lees('js/figuren-lb2.js');
+  assert.match(bron, /export const FIGUREN = \{ imrad: \{ bouw: imradFiguur, na: 0 \}, miniartikelen: \{ bouw: miniArtikelen, na: 0 \} \}/);
+  for (const d of ['Inleiding', 'Methode', 'Resultaten', 'Discussie', 'theorie', 'methode', 'presentatie']) assert.match(bron, new RegExp(d));
+  assert.match(bron, /role: 'img'/);
+  assert.doesNotMatch(bron, /h\('img'|src:/, 'eigen SVG, geen overgenomen figuur (lits/ blijft buiten)');
 });

@@ -81,6 +81,7 @@ test('PF-4: leerblok.js laadt de Wissel, de weergavegroepen en de controlefabrie
   assert.doesNotMatch(bron, /from '\.\/checks\/(index|lb\d)\.js'/);
   assert.match(bron, /\/\/ gewicht-alleen: wissel\n.*await Promise\.all\(\[import\('\.\/wissel\.js'\), import\('\.\/wissel-paneel\.js'\)\]\)/);
   assert.match(bron, /\/\/ gewicht-alleen: weergave\n.*await import\('\.\/lb2-ui\.js'\)/);
+  assert.match(bron, /\/\/ gewicht-alleen: figurenlb2\n.*await import\('\.\/figuren-lb2\.js'\)/);
   assert.match(bron, /const heeftWissel = Boolean\(blok\.wissel\) \|\| blok\.taken\.some\(\(t\) => t\.toepassing\.component === 'feedbacklog'\)/);
   assert.match(bron, /await laadControles\(\[blok\.leerblok, blok\.wissel\?\.leerblok\]\)/);
 });

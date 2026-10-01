@@ -24,9 +24,10 @@ const laadBronIndex = () => laadBronnen((u) => fetch(new URL(`../${u}`, import.m
   .then((bestanden) => maakIndex(bestanden.flatMap((b) => b.bronnen ?? []))).catch(() => new Map());
 const LB4_COMPONENTEN = ['verbanden', 'starr']; // taken met een eigen scherm in lb4-ui.js
 // De figuren in stof, oefening en toepassing (figuur) en na welke alinea van de stof ze staan. Ze komen per leerblok binnen
-// (figuren-lb1.js, figuren-lb3.js, het stakeholderbord), alleen als de data ze gebruikt (PF-4, ADR B97).
+// (figuren-lb1.js, figuren-lb2.js, figuren-lb3.js, het stakeholderbord), alleen als de data ze gebruikt (PF-4, ADR B97).
 const FIGUREN = {};
 const FIGUREN_LB1 = ['a3-vel', 'six-capitals'];
+const FIGUREN_LB2 = ['imrad', 'miniartikelen'];
 const FIGUREN_LB3 = ['vpc', 'bmc', 'tom'];
 /** Welke figuren de data van dit leerblok gebruikt (stof, oefening, toepassing). */
 const figuurNamen = (blok) => new Set(blok.taken.flatMap((t) => [t.stof?.figuur, t.oefening?.figuur, t.toepassing?.figuur]).filter(Boolean));
@@ -69,6 +70,8 @@ async function start() {
   const figuren = figuurNamen(blok);
   // gewicht-alleen: figurenlb1
   if (FIGUREN_LB1.some((n) => figuren.has(n))) Object.assign(FIGUREN, (await import('./figuren-lb1.js')).FIGUREN);
+  // gewicht-alleen: figurenlb2
+  if (FIGUREN_LB2.some((n) => figuren.has(n))) Object.assign(FIGUREN, (await import('./figuren-lb2.js')).FIGUREN);
   // gewicht-alleen: figurenlb3
   if (FIGUREN_LB3.some((n) => figuren.has(n))) Object.assign(FIGUREN, (await import('./figuren-lb3.js')).FIGUREN);
   // gewicht-alleen: bord
@@ -238,7 +241,7 @@ async function start() {
       h('h4', {}, taak.bewijsonderdeel && blok.oefencasus ? `Oefencasus · ${blok.oefencasus}` : 'Oefenen'),
       s3.oefening.opdracht ? h('p', {}, met(s3.oefening.opdracht.tekst)) : null,
       // De figuur uit de stof nog eens bij de oefening (oefening.figuur) en de toepassing (toepassing.figuur), zodat de student niet terug hoeft te klikken (taak 6.1: het VPC).
-      FIGUREN[s3.oefening.figuur]?.bouw({ met }) ?? null,
+      FIGUREN[s3.oefening.figuur]?.bouw({ met, taak }) ?? null,
       veldGebied, overslaanGebied);
     const stap3 = stap(s3, oefening);
 
