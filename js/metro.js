@@ -36,12 +36,14 @@ export function tekenMetro(model, breedte) {
     svg.append(s('text', { x: l.x, y: l.y, 'text-anchor': l.anker, class: `metro-label metro-label-${l.soort}`, 'aria-hidden': 'true' }, l.tekst));
   }
   for (const h of ind.haltes) {
-    svg.append(s('a', {
-      href: h.href, role: 'listitem', 'aria-label': h.naam, 'aria-current': h.stand === 'hier' ? 'step' : null,
-      class: `metro-halte halte-${h.stand} halte-${h.soort}${h.gestippeld ? ' halte-niet-gekozen' : ''}`,
-    },
-    s('rect', { class: 'metro-tik', x: h.tik.x, y: h.tik.y, width: h.tik.b, height: h.tik.h }),
-    s('circle', { cx: h.x, cy: h.y, r: h.r })));
+    // de rol listitem staat op een omhullende g: op de link zelf zou ze de linkrol vervangen (schermlezers, axe aria-allowed-role)
+    svg.append(s('g', { role: 'listitem' },
+      s('a', {
+        href: h.href, 'aria-label': h.naam, 'aria-current': h.stand === 'hier' ? 'step' : null,
+        class: `metro-halte halte-${h.stand} halte-${h.soort}${h.gestippeld ? ' halte-niet-gekozen' : ''}`,
+      },
+      s('rect', { class: 'metro-tik', x: h.tik.x, y: h.tik.y, width: h.tik.b, height: h.tik.h }),
+      s('circle', { cx: h.x, cy: h.y, r: h.r }))));
   }
   return svg;
 }
@@ -57,7 +59,7 @@ async function plaatsMetro() {
   // Leerblokpagina's lezen hun eigen bestand; start, dossier en bronnen dat van de laatste positie (tools/gewicht-check.mjs: ${elders}).
   const blok = normaliseerBlok(nummer ? await laad(`../data/leerblok-${nummer}.json`) : await laad(`../data/leerblok-${elders}.json`));
   const ids = blok.taken.map((t) => t.id);
-  const adres = () => (nummer ? leesAdres(location.hash, ids) : { soort: 'elders', taak: laatste.taak, stap: laatste.stap });
+  const adres = () => (nummer ? leesAdres(location.hash, ids) : { soort: 'elders', ...laatste });
 
   const doek = h('div', { class: 'metro-doek' });
   const regel = h('p', { class: 'metro-regel' });
@@ -70,10 +72,13 @@ async function plaatsMetro() {
     regel.textContent = model.tekst;
   }
   teken();
-  window.addEventListener('hashchange', teken);
-  window.addEventListener('popstate', teken);
-  document.addEventListener('a3-voortgang', teken);
-  const opnieuw = () => { if (Math.floor(doek.clientWidth) !== breedte) teken(); };
+  // Meldingen komen soms vlak na elkaar (typen, bewaren, adreswissel): één tekening per frame is genoeg.
+  let gepland = false;
+  const straks = () => { if (gepland) return; gepland = true; requestAnimationFrame(() => { gepland = false; teken(); }); };
+  window.addEventListener('hashchange', straks);
+  window.addEventListener('popstate', straks);
+  document.addEventListener('a3-voortgang', straks);
+  const opnieuw = () => { if (Math.floor(doek.clientWidth) !== breedte) straks(); };
   if (typeof ResizeObserver === 'function') new ResizeObserver(opnieuw).observe(doek); else window.addEventListener('resize', opnieuw);
 }
 

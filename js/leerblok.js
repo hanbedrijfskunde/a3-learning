@@ -123,12 +123,15 @@ async function start() {
   // ---------------------------------------------------------------- bewaren
 
   const wachtend = new Map();
+  // De metrokaart (metro.js) leest de opslag: na elke wijziging daarvan en bij elke adreswissel tekent ze opnieuw (B110).
+  const meldVoortgang = () => document.dispatchEvent(new CustomEvent('a3-voortgang'));
   function bewaarNu(id) {
     if (!wachtend.has(id)) return;
     clearTimeout(wachtend.get(id));
     wachtend.delete(id);
     try {
       sessie.bewaar(id, taken.get(id).leesInhoud());
+      meldVoortgang(); // de kaart leest de opslag, dus pas na het bewaren
       foutGebied.hidden = true;
     } catch (e) {
       foutGebied.textContent = `Bewaren is niet gelukt (${e.message}). Exporteer je werk zodra dat kan.`;
@@ -258,7 +261,9 @@ async function start() {
         // „Ga verder” wijst na klaar naar de volgende taak die nog open is, niet naar deze
         const volgendeOpen = blok.taken.map((t) => t.id).find((t) => !sessie.isKlaar(t));
         const t2 = blok.taken.find((t) => t.id === volgendeOpen);
-        try { store.setMeta(`positie:${blok.leerblok}`, t2 ? { leerblok: blok.leerblok, taak: t2.id, stap: 1, titel: t2.titel, bijgewerkt: new Date().toISOString() } : null); } catch (e) { /* zonder opslag geen „ga verder” */ }
+        try { store.setMeta(`positie:${blok.leerblok}`, t2 ? { leerblok: blok.leerblok, taak: t2.id, stap: 1, titel: t2.titel, bijgewerkt: new Date().toISOString() }
+          // alles klaar: geen „ga verder”, maar wel het laatste leerblok voor de metrokaart op start, dossier en bronnen (B110)
+          : { leerblok: blok.leerblok, taak: null, stap: null, afgesloten: true, bijgewerkt: new Date().toISOString() }); } catch (e) { /* zonder opslag geen „ga verder” */ }
       }
     } }, 'Klaar');
     const klaarBericht = h('p', { class: 'klaar-bericht', role: 'status' });
@@ -376,7 +381,7 @@ async function start() {
       gedaan.checked = v0.gedaan;
       let vt;
       tekstVeld.addEventListener('input', () => { clearTimeout(vt); vt = setTimeout(() => sessie.zetVerdieping({ tekst: tekstVeld.value }), BEWAAR_NA_MS); });
-      gedaan.addEventListener('change', () => sessie.zetVerdieping({ tekst: tekstVeld.value, gedaan: gedaan.checked }));
+      gedaan.addEventListener('change', () => { sessie.zetVerdieping({ tekst: tekstVeld.value, gedaan: gedaan.checked }); meldVoortgang(); });
       verdiepingKop.append(
         h('p', {}, model.verdieping.tekst),
         h('p', { class: 'klein' }, 'Dit is optioneel. Het telt niet mee voor je status en niet voor de tijd.'),
@@ -403,7 +408,7 @@ async function start() {
         oefeningAf: o.modelZichtbaar || o.overgeslagen,
         klaar: sessie.isKlaar(id),
       });
-      document.dispatchEvent(new CustomEvent('a3-voortgang', { detail: { taak: id } })); // de metrokaart tekent opnieuw (metro.js)
+      meldVoortgang(); // klaar, oefening en model veranderen de stand op de metrokaart
       tekenVoet();
       wis(stappenRij);
       // onderstreept is de stap die de student nu ziet; de metrokaart toont de voortgang
@@ -619,6 +624,7 @@ async function start() {
       try { store.setMeta(POSITIE, { leerblok: blok.leerblok, taak: adres.taak, stap: adres.stap, titel, bijgewerkt: new Date().toISOString() }); } catch (e) { /* zonder opslag geen „ga verder” */ }
     }
     tekenVoet();
+    meldVoortgang(); // ook na ga('#'): pushState geeft geen hashchange
     if (!focus) return;
     const doel = adres.soort === 'taak' ? document.getElementById(`stapkop-${adres.taak}-${adres.stap}`)
       : adres.soort === 'afsluiten' ? document.getElementById('afsluiten-kop') : h1;

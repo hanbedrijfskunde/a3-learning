@@ -20,14 +20,14 @@ const mediaSleutel = (n) => `media:route:${n}`;
 const STAND_TEKST = Object.freeze({ af: 'afgerond', hier: 'je bent hier', open: 'open' });
 const stand3 = (af, hier) => (hier ? 'hier' : af ? 'af' : 'open');
 
-/** Het leerblok waar de student het laatst werkte: de jongste `positie:N`; zonder positie leerblok 1 (SX-18). */
+/** Het leerblok waar de student het laatst werkte: de jongste `positie:N`; zonder positie leerblok 1 (SX-18). `afgesloten`: alle taken klaar. */
 export function laatsteLeerblok(store) {
   let laatste = null;
   for (const n of [1, 2, 3, 4]) {
     const p = store.getMeta(`positie:${n}`);
-    if (p?.bijgewerkt && (!laatste || p.bijgewerkt > laatste.bijgewerkt)) laatste = { leerblok: n, taak: p.taak ?? null, stap: p.stap ?? null, bijgewerkt: p.bijgewerkt };
+    if (p?.bijgewerkt && (!laatste || p.bijgewerkt > laatste.bijgewerkt)) laatste = { leerblok: n, taak: p.taak ?? null, stap: p.stap ?? null, afgesloten: p.afgesloten === true, bijgewerkt: p.bijgewerkt };
   }
-  return laatste ? { leerblok: laatste.leerblok, taak: laatste.taak, stap: laatste.stap } : { leerblok: 1, taak: null, stap: null };
+  return laatste ? { leerblok: laatste.leerblok, taak: laatste.taak, stap: laatste.stap, afgesloten: laatste.afgesloten } : { leerblok: 1, taak: null, stap: null, afgesloten: false };
 }
 
 /** Stand van één taak uit de opslag, zoals de taakkop hem berekent (js/leerblok.js, tekenVoortgang). */
@@ -91,7 +91,8 @@ export function metroModel({ blok, store, adres }) {
   const elders = adres.soort === 'elders' && ids.includes(adres.taak) ? adres.taak : null;
   const kolommen = [];
 
-  const beginHier = adres.soort === 'overzicht' || (adres.soort === 'elders' && !elders) || (adres.soort === 'taak' && !open);
+  const eindHier = adres.soort === 'afsluiten' || (adres.soort === 'elders' && !elders && adres.afgesloten === true);
+  const beginHier = !eindHier && (adres.soort === 'overzicht' || (adres.soort === 'elders' && !elders) || (adres.soort === 'taak' && !open));
   kolommen.push({ soort: 'begin', label: n === 1 ? 'Start' : 'Vorige keer', spoor: null, overstap: n > 1 ? n - 1 : null, haltes: [{
     id: 'begin', rij: 0, href: n === 1 ? 'index.html' : `${pagina}#overzicht`, stand: stand3(gestart, beginHier), gestippeld: false,
     naam: `${n === 1 ? 'Start' : `Vorige keer, overstap van leerblok ${n - 1}`}, ${beginHier ? STAND_TEKST.hier : gestart ? 'geweest' : 'open'}`,
@@ -127,7 +128,6 @@ export function metroModel({ blok, store, adres }) {
     }
   }
 
-  const eindHier = adres.soort === 'afsluiten';
   kolommen.push({ soort: 'eind', label: n < 4 ? 'Afsluiten' : 'Dossier', spoor: null, overstap: n < 4 ? n + 1 : null, haltes: [{
     id: 'eind', rij: 0, href: n < 4 ? `${pagina}#afsluiten` : 'dossier.html', stand: stand3(afgerond, eindHier), gestippeld: false,
     naam: `${n < 4 ? `Afsluiten, overstap naar leerblok ${n + 1}` : 'Dossier, einde van de e-learning'}, ${eindHier ? STAND_TEKST.hier : afgerond ? 'leerblok afgerond' : 'open'}`,
@@ -136,7 +136,7 @@ export function metroModel({ blok, store, adres }) {
   const taakNr = open ? ids.indexOf(open) + 1 : null;
   const label = open ? segmentLabel(taakNr, ids.length, standen.get(open).stand) : `Leerblok ${n}: ${blok.titel}`;
   const tekst = open ? `Leerblok ${n} · taak ${taakNr} van ${ids.length} · stap ${adres.stap ?? standen.get(open).stand.actief + 1} van 4`
-    : eindHier ? `Leerblok ${n} · afsluiten`
+    : eindHier ? `Leerblok ${n} · ${adres.soort === 'afsluiten' ? 'afsluiten' : 'afgesloten'}`
       : elders ? `Leerblok ${n} · laatst bij taak ${elders}`
         : `Leerblok ${n} · ${blok.titel}`;
   return { leerblok: n, kolommen, label, tekst };

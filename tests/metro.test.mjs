@@ -146,14 +146,14 @@ test('SX-18: standen: klaar maakt een taak af en het begin geweest; verdieping g
 });
 
 test('SX-18: buiten het leerblok de jongste positie, ingeklapt; zonder positie leerblok 1 met „hier” op het begin', () => {
-  assert.deepEqual(laatsteLeerblok(nepStore()), { leerblok: 1, taak: null, stap: null });
+  assert.deepEqual(laatsteLeerblok(nepStore()), { leerblok: 1, taak: null, stap: null, afgesloten: false });
   const store = nepStore({
     'positie:2': { taak: '3.2', stap: 3, bijgewerkt: '2026-10-01T10:00:00.000Z' },
     'positie:3': { taak: '6.1', stap: 2, bijgewerkt: '2026-10-01T11:00:00.000Z' },
     'positie:4': null,
   });
   const laatste = laatsteLeerblok(store);
-  assert.deepEqual(laatste, { leerblok: 3, taak: '6.1', stap: 2 });
+  assert.deepEqual(laatste, { leerblok: 3, taak: '6.1', stap: 2, afgesloten: false });
   let m = metroModel({ blok: blok(3), store, adres: { soort: 'elders', ...laatste } });
   assert.equal(m.kolommen.filter((k) => k.soort === 'stap').length, 0, 'buiten het leerblok klapt niets open');
   assert.equal(hier(m).id, '6.1');
@@ -290,4 +290,32 @@ test('SX-18: de kaart werkt onder de CSP van het dossier (style-src \'self\'): g
     assert.ok(css.includes(`.metro-kaart.lijn-${n} { --lijn:var(--lijn-${n}); }`), `klasse lijn-${n}`);
     assert.ok(css.includes(`.metro-spoor.spoor-lijn-${n} { stroke:var(--lijn-${n}); }`), `stompje lijn-${n}`);
   }
+});
+
+test('Review: de kaart tekent opnieuw na bewaren, na „verdieping gedaan” en bij elke adreswissel, ook na pushState; samengevoegd per frame', () => {
+  const lb = lees('js/leerblok.js');
+  assert.match(lb, /const meldVoortgang = \(\) => document\.dispatchEvent\(new CustomEvent\('a3-voortgang'\)\);/);
+  assert.match(lb, /sessie\.bewaar\(id, taken\.get\(id\)\.leesInhoud\(\)\);\n\s*meldVoortgang\(\); \/\/ de kaart leest de opslag/);
+  assert.match(lb, /sessie\.zetVerdieping\(\{ tekst: tekstVeld\.value, gedaan: gedaan\.checked \}\); meldVoortgang\(\);/);
+  assert.match(lb, /meldVoortgang\(\);[^\n]*\n\s*if \(!focus\) return;/, 'toonAdres meldt ook het overzicht na ga(\'#\') (pushState)');
+  assert.match(lees('js/metro.js'), /requestAnimationFrame/);
+});
+
+test('Review: na het afronden van een leerblok blijft dat leerblok het laatste; elders staat „hier” op het eindpunt', () => {
+  assert.match(lees('js/leerblok.js'), /taak: null, stap: null, afgesloten: true, bijgewerkt: new Date\(\)\.toISOString\(\)/);
+  const store = nepStore({
+    'positie:2': { taak: '4.1', stap: 1, bijgewerkt: '2026-10-01T10:00:00.000Z' },
+    'positie:3': { leerblok: 3, taak: null, stap: null, afgesloten: true, bijgewerkt: '2026-10-01T12:00:00.000Z' },
+  });
+  const laatste = laatsteLeerblok(store);
+  assert.deepEqual(laatste, { leerblok: 3, taak: null, stap: null, afgesloten: true });
+  const m = metroModel({ blok: blok(3), store, adres: { soort: 'elders', ...laatste } });
+  assert.equal(hier(m).id, 'eind');
+  assert.equal(m.tekst, 'Leerblok 3 · afgesloten');
+});
+
+test('Review: een halte is een link binnen een lijstitem (g[role=listitem] > a), zodat de linkrol blijft', () => {
+  const js = lees('js/metro.js');
+  assert.match(js, /s\('g', \{ role: 'listitem' \},\n\s*s\('a', \{/);
+  assert.doesNotMatch(js, /s\('a', \{[^}]*role:/, 'geen rol op de link');
 });
