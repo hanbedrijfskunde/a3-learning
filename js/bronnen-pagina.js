@@ -9,8 +9,7 @@ async function start() {
   for (const b of model) {
     lijst.append(h('li', { class: 'bron-regel', id: b.ankerId },
       b.delen.map((d) => (d.cursief ? h('i', {}, d.tekst) : d.tekst)),
-      b.link ? [' ', h('a', { class: 'bron-link', href: b.link, rel: 'noopener' }, b.link)] : null,
-      b.fictief ? [' ', h('span', { class: 'bron-fictief' }, 'fictief')] : null));
+      b.link ? [' ', h('a', { class: 'bron-link', href: b.link, rel: 'noopener' }, b.link)] : null));
   }
   if (model.length === 0) lijst.append(h('li', {}, 'Er zijn nog geen bronnen.'));
   // een bezochte verwijzing (bronnen.html#bron-…) springt naar de regel; laadde de pagina later dan de sprong, doe dat nu

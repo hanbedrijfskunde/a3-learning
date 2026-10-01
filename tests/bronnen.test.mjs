@@ -59,7 +59,7 @@ test('BR-3: elke niet-openbare bron heet „ongepubliceerd document" met de orga
 });
 
 test('elke bron heeft auteur, jaar en titel in de APA-regel; een link alleen als die bestaat', () => {
-  for (const b of bestanden.flatMap((x) => [...x.bronnen, ...x.wachtOpCitatie])) {
+  for (const b of bestanden.flatMap((x) => [...x.bronnen, ...x.wachtOpCitatie, ...(x.fictief ?? [])])) {
     assert.match(b.apa, /^\S[^(]+\(/, `${b.id}: begint met de auteur`);
     assert.ok(apaJaar(b.apa), `${b.id}: jaar tussen haakjes`);
     assert.ok(b.apa.replace(/\*/g, '').length > 30, `${b.id}: titel`);
@@ -67,12 +67,17 @@ test('elke bron heeft auteur, jaar en titel in de APA-regel; een link alleen als
   }
 });
 
-test('MD-15 (6.11): de fictieve bronkaart heeft fictief: true, een aanduiding in de APA-regel en geen link', () => {
-  const fictief = alleBronnen.filter((b) => b.fictief);
-  assert.ok(fictief.length >= 1);
-  for (const b of fictief) { assert.match(b.apa, /Fictieve bron/); assert.equal(b.link, undefined); }
-  const model = bouwBronnenModel(bestanden).filter((m) => m.fictief);
-  assert.equal(model.length, fictief.length);
+test('BR-1, B111: een verzonnen bron staat in fictief, niet op de bronnenpagina, en de verwijzing ernaar is gewone tekst', () => {
+  const verzonnen = bestanden.flatMap((b) => b.fictief ?? []);
+  assert.deepEqual(verzonnen.map((b) => b.id).sort(), ['bakker-de-vries-2016', 'visser-el-amrani-2021']);
+  const model = bouwBronnenModel(bestanden);
+  for (const b of verzonnen) {
+    assert.equal(b.link, undefined, `${b.id}: geen link`);
+    assert.ok(!model.some((m) => m.citatie === b.citatie), `${b.id} staat op de bronnenpagina`);
+    assert.ok(!alleBronnen.some((x) => 'fictief' in x), 'geen bron in bronnen draagt fictief');
+    const delen = splitsMetVerwijzingen(`Bij webshop X vind je (${b.citatie}).`, maakIndex(alleBronnen));
+    assert.equal(delen.filter((d) => d.href).length, 0, `(${b.citatie}) klikt naar de bronnenpagina`);
+  }
 });
 
 // ---------------------------------------------------------------- BR-4: in-tekstverwijzingen
@@ -84,10 +89,11 @@ test('BR-4: vindCitaties herkent (Auteur, jaar) en (Auteur & Ander, jaar) en (Or
   assert.equal(apaJaar('Strategyzer AG. (z.d.-a). *Titel*.'), 'z.d.');
 });
 
-test('BR-4: 100 % van de verwijzingen in leerblok 2 klikt naar een bronregel die op de bronnenpagina bestaat', () => {
+test('BR-4: 100 % van de verwijzingen naar een echte bron in leerblok 2 klikt naar een bronregel die op de bronnenpagina bestaat', () => {
   const model = bouwBronnenModel(bestanden);
   const ankers = new Set(model.map((m) => m.ankerId));
   const index = maakIndex(alleBronnen);
+  const verzonnen = new Set(bestanden.flatMap((b) => (b.fictief ?? []).map((x) => x.citatie)));
   const blok = lees('leerblok-2.json');
   const teksten = [];
   const loop = (w) => { if (typeof w === 'string') teksten.push(w); else if (Array.isArray(w)) w.forEach(loop); else if (w && typeof w === 'object') Object.entries(w).forEach(([k, x]) => k !== 'opmerking' && loop(x)); };
@@ -100,7 +106,8 @@ test('BR-4: 100 % van de verwijzingen in leerblok 2 klikt naar een bronregel die
       assert.match(stuk.href, /^bronnen\.html#bron-/);
       assert.ok(ankers.has(stuk.href.split('#')[1]), `${stuk.href} heeft geen bronregel`);
     }
-    assert.equal(vindCitaties(t).length, splitsMetVerwijzingen(t, index).filter((s) => s.href).length, `niet elke verwijzing in "${t.slice(0, 40)}…" is een link`);
+    const echt = vindCitaties(t).filter((c) => !verzonnen.has(c.citatie));
+    assert.equal(echt.length, splitsMetVerwijzingen(t, index).filter((s) => s.href).length, `niet elke verwijzing in "${t.slice(0, 40)}…" is een link`);
   }
   assert.ok(verwijzingen >= 3, `slechts ${verwijzingen} verwijzingen`);
 });
@@ -160,7 +167,7 @@ test('BR-5: een geciteerde bron die nog in wachtOpCitatie staat is een fout; een
   assert.equal(controleerBronnen(data).waarschuwingen.length, 1);
 });
 
-test('BR-1/BR-3 in content-check: verkeerde volgorde, ontbrekend manifest, ongepubliceerd zonder organisatie en fictief zonder aanduiding falen', () => {
+test('BR-1/BR-3 in content-check: verkeerde volgorde, ontbrekend manifest en ongepubliceerd zonder organisatie falen', () => {
   const map = kopieerData();
   const b3 = lees('bronnen-3.json');
   const b2 = lees('bronnen-2.json');
@@ -172,14 +179,29 @@ test('BR-1/BR-3 in content-check: verkeerde volgorde, ontbrekend manifest, ongep
   b3.bronnen.find((b) => b.type === 'ongepubliceerd').apa = 'Westmoreland BV. (z.d.). *Titel*.';
   schrijf(map, 'bronnen-3.json', b3);
   assert.ok(controleerBronnen(map).fouten.some((f) => /ongepubliceerd document/.test(f)));
-  const map2 = kopieerData();
-  const b = lees('bronnen-2.json');
-  b.bronnen.find((x) => x.fictief).apa = 'Bakker, J. & De Vries, M. (2016). Titel.';
-  schrijf(map2, 'bronnen-2.json', b);
-  assert.ok(controleerBronnen(map2).fouten.some((f) => /als fictief gemarkeerd/.test(f)));
   const map3 = mkdtempSync(join(tmpdir(), 'a3-data-'));
   writeFileSync(resolve(map3, 'bronnen-1.json'), JSON.stringify({ formaat: '1.0', leerblok: 1, bronnen: [], wachtOpCitatie: [] }));
   assert.ok(controleerBronnen(map3).fouten.some((f) => /bronnen\.json ontbreekt/.test(f)));
+});
+
+test('B111 in content-check: een verzonnen bron in bronnen of met een link faalt; zonder de lijst fictief heeft de verwijzing geen bronregel', () => {
+  assert.deepEqual(controleerBronnen(data).fouten, []);
+  const terug = lees('bronnen-2.json');
+  const [bakker] = terug.fictief.splice(0, 1);
+  terug.bronnen = sorteerBronnen([...terug.bronnen, { ...bakker, fictief: true }]);
+  const map = kopieerData();
+  schrijf(map, 'bronnen-2.json', terug);
+  assert.ok(controleerBronnen(map).fouten.some((f) => /bakker-de-vries-2016: een verzonnen bron hoort in fictief/.test(f)));
+  const metLink = lees('bronnen-2.json');
+  metLink.fictief[0].link = 'https://example.org/nep';
+  const map2 = kopieerData();
+  schrijf(map2, 'bronnen-2.json', metLink);
+  assert.ok(controleerBronnen(map2).fouten.some((f) => /een verzonnen bron heeft geen link/.test(f)));
+  const zonder = lees('bronnen-2.json');
+  delete zonder.fictief;
+  const map3 = kopieerData();
+  schrijf(map3, 'bronnen-2.json', zonder);
+  assert.ok(controleerBronnen(map3).fouten.some((f) => /\(Bakker & De Vries, 2016\) heeft geen bronregel/.test(f)));
 });
 
 // ---------------------------------------------------------------- BR-6: link-check met een dubbelganger voor fetch

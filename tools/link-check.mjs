@@ -44,7 +44,7 @@ export function controleerInterneLinks(root) {
   return fouten;
 }
 
-/** Alle externe links: uit de bronbestanden (bronnen en wachtOpCitatie, zonder fictieve) en uit de pagina's. */
+/** Alle externe links: uit de bronbestanden (bronnen en wachtOpCitatie; een verzonnen bron heeft geen link) en uit de pagina's. */
 export function verzamelExterneLinks(root) {
   const uit = new Map(); // url → waar
   const dataMap = resolve(root, 'data');
@@ -52,7 +52,7 @@ export function verzamelExterneLinks(root) {
     for (const n of readdirSync(dataMap).filter((x) => /^bronnen-\d\.json$/.test(x)).sort()) {
       const inhoud = JSON.parse(readFileSync(resolve(dataMap, n), 'utf8'));
       for (const b of [...(inhoud.bronnen ?? []), ...(inhoud.wachtOpCitatie ?? [])]) {
-        if (b.link && b.fictief !== true && !uit.has(b.link)) uit.set(b.link, `${n}: ${b.id}`);
+        if (b.link && !uit.has(b.link)) uit.set(b.link, `${n}: ${b.id}`);
       }
     }
   }

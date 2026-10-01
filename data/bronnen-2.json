@@ -10,13 +10,6 @@
       "link": "https://doi.org/10.1037/0000165-000"
     },
     {
-      "id": "bakker-de-vries-2016",
-      "citatie": "Bakker & De Vries, 2016",
-      "type": "artikel",
-      "fictief": true,
-      "apa": "Bakker, J. & De Vries, M. (2016). Klanttevredenheid in webwinkels: Een enquête onder 1.200 klanten. *Tijdschrift voor Marketingonderzoek, 12*(3), 45–61. [Fictieve bron: verzonnen voor de oefeningen bij taak 4.1 en 4.2]"
-    },
-    {
       "id": "han-bibliotheek-2023",
       "citatie": "HAN Bibliotheek, 2023",
       "type": "video",
@@ -52,13 +45,6 @@
       "link": "https://doi.org/10.1111/j.1467-9280.2006.01693.x"
     },
     {
-      "id": "visser-el-amrani-2021",
-      "citatie": "Visser & El Amrani, 2021",
-      "type": "artikel",
-      "fictief": true,
-      "apa": "Visser, L. & El Amrani, S. (2021). Verwachting en ervaring bij online winkelen. *Tijdschrift voor Marketingonderzoek, 17*(2), 12–19. [Fictieve bron: verzonnen voor de oefening bij taak 4.2]"
-    },
-    {
       "id": "wu-2011",
       "citatie": "Wu, 2011",
       "type": "artikel",
@@ -74,6 +60,20 @@
       "bedoeldVoor": "terugblik aan het begin van leerblok 2 tot en met 4 (fase 7)",
       "apa": "Cepeda, N. J., Pashler, H., Vul, E., Wixted, J. T. & Rohrer, D. (2006). Distributed practice in verbal recall tasks: A review and quantitative synthesis. *Psychological Bulletin, 132*(3), 354–380.",
       "link": "https://doi.org/10.1037/0033-2909.132.3.354"
+    }
+  ],
+  "fictief": [
+    {
+      "id": "bakker-de-vries-2016",
+      "citatie": "Bakker & De Vries, 2016",
+      "type": "artikel",
+      "apa": "Bakker, J. & De Vries, M. (2016). Klanttevredenheid in webwinkels: Een enquête onder 1.200 klanten. *Tijdschrift voor Marketingonderzoek, 12*(3), 45–61."
+    },
+    {
+      "id": "visser-el-amrani-2021",
+      "citatie": "Visser & El Amrani, 2021",
+      "type": "artikel",
+      "apa": "Visser, L. & El Amrani, S. (2021). Verwachting en ervaring bij online winkelen. *Tijdschrift voor Marketingonderzoek, 17*(2), 12–19."
     }
   ]
 }

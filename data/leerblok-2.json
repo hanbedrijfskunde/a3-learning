@@ -872,7 +872,7 @@
       },
       "modelantwoord": {
         "bron": "concept-auteur",
-        "opmerking": "Door de bouwer geschreven; de bron van Bakker en De Vries is verzonnen (fictief: true in data/bronnen-2.json).",
+        "opmerking": "Door de bouwer geschreven; de bron van Bakker en De Vries is verzonnen (lijst fictief in data/bronnen-2.json, niet op de bronnenpagina; ADR B111).",
         "velden": {
           "authority": "+ De auteurs zijn onderzoekers aan een universiteit en publiceren in een wetenschappelijk tijdschrift.",
           "currency": "? De bron is van 2016. Voor een markt die snel verandert, is dat oud. Zoek dus ook nieuwer onderzoek.",

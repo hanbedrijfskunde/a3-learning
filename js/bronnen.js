@@ -5,12 +5,13 @@
 //   { "formaat": "1.0", "leerblok": N,
 //     "bronnen":        [ bron, … ]   bronnen die in de contentbestanden worden geciteerd; ze staan op de bronnenpagina
 //     "wachtOpCitatie": [ bron, … ]   bronnen uit het LRD die nog nergens worden geciteerd (BR-5 telt ze niet als wees)
+//     "fictief":        [ bron, … ]   verzonnen bronnen voor een oefening (optioneel); niet op de bronnenpagina, de verwijzing
+//                                     blijft gewone tekst (ADR B111)
 //   }
-// Een bron: { id, citatie: "Auteur, jaar", apa: "APA-regel met *cursief*", type, link?, fictief?, organisatie?, bedoeldVoor? }
+// Een bron: { id, citatie: "Auteur, jaar", apa: "APA-regel met *cursief*", type, link?, organisatie?, bedoeldVoor? }
 //   citatie   de sleutel van de in-tekstverwijzing (Auteur, jaar), zoals die in de tekst tussen haakjes staat
 //   apa       de volledige APA-vermelding zonder link; tekst tussen sterretjes wordt cursief (titel of tijdschrift met jaargang)
 //   link      een https://-URL of DOI-link; ontbreekt als er geen openbare publicatie is (BR-2, BR-3)
-//   fictief   waar bij een verzonnen bron voor een oefening of spelkaart (MD-15)
 
 export const MANIFEST = 'data/bronnen.json';
 
@@ -90,7 +91,6 @@ export function bouwBronnenModel(bestanden) {
     citatie: b.citatie,
     delen: apaDelen(b.apa),
     link: b.link ?? null,
-    fictief: b.fictief === true,
     ongepubliceerd: b.type === 'ongepubliceerd',
   }));
 }

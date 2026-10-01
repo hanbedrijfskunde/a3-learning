@@ -571,7 +571,9 @@ function tekstenMetPad(waarde, pad = [], uit = []) {
  * Controleert de bronnen (BR-1, BR-3, BR-5) en geeft { fouten, waarschuwingen, bestanden }.
  *   BR-5  elke in-tekstverwijzing (Auteur, jaar) in de contentbestanden heeft een bronregel, en elke bronregel wordt geciteerd
  *   BR-1  elk bronbestand staat in het manifest en in alfabetische volgorde; elke bron heeft een APA-regel met het jaar van de citatie
- *   BR-3  een niet-openbare bron is „ongepubliceerd document" met de organisatie; een fictieve bron is als fictief gemarkeerd (MD-15)
+ *   BR-3  een niet-openbare bron is „ongepubliceerd document" met de organisatie
+ *   B111  een verzonnen bron staat in `fictief`, nooit in `bronnen` of `wachtOpCitatie`, en heeft geen link: de bronnenlijst
+ *         bevat alleen echte bronnen; een verwijzing naar een verzonnen bron telt als bekend
  * Bronnen in `wachtOpCitatie` (uit het LRD, nog nergens geciteerd) geven een waarschuwing; wordt zo'n bron wel geciteerd,
  * dan is dat een fout: verplaats hem naar `bronnen`.
  */
@@ -598,6 +600,7 @@ export function controleerBronnen(map) {
 
   const bronnen = [];
   const wachtend = [];
+  const verzonnen = [];
   const ids = new Set();
   const citaties = new Set();
   for (const naam of bronNamen) {
@@ -606,7 +609,8 @@ export function controleerBronnen(map) {
     const fout = (t) => fouten.push(`${naam}: ${t}`);
     if (inhoud.formaat !== '1.0') fout('formaat moet "1.0" zijn');
     if (!naam.includes(`bronnen-${inhoud.leerblok}.`)) fout(`leerblok ${inhoud.leerblok} past niet bij de bestandsnaam`);
-    for (const veld of ['bronnen', 'wachtOpCitatie']) {
+    for (const veld of ['bronnen', 'wachtOpCitatie', 'fictief']) {
+      if (veld === 'fictief' && inhoud.fictief === undefined) continue;
       if (!Array.isArray(inhoud[veld])) { fout(`${veld} moet een lijst zijn`); continue; }
       for (const b of inhoud[veld]) {
         const wie = `bron ${b?.id ?? '(zonder id)'}: `;
@@ -626,12 +630,9 @@ export function controleerBronnen(map) {
           if (!/ongepubliceerd document/i.test(b.apa ?? '')) fout(`${wie}een ongepubliceerde bron heet „ongepubliceerd document" (BR-3)`);
           if (b.link) fout(`${wie}een ongepubliceerde bron heeft geen link`);
         }
-        if (b?.fictief === true) {
-          if (!/fictie/i.test(b.apa ?? '')) fout(`${wie}een fictieve bron is in de APA-regel als fictief gemarkeerd (MD-15)`);
-          if (b.link) fout(`${wie}een fictieve bron heeft geen link`);
-          if (veld === 'wachtOpCitatie') fout(`${wie}een fictieve bron hoort in bronnen, niet in wachtOpCitatie`);
-        } else if (b?.fictief !== undefined) fout(`${wie}fictief is true of ontbreekt`);
-        (veld === 'bronnen' ? bronnen : wachtend).push({ ...b, bestand: naam });
+        if (b?.fictief !== undefined) fout(`${wie}een verzonnen bron hoort in fictief, niet in ${veld}; de bronnenlijst bevat alleen echte bronnen (B111)`);
+        if (veld === 'fictief' && b?.link !== undefined) fout(`${wie}een verzonnen bron heeft geen link (B111)`);
+        ({ bronnen, wachtOpCitatie: wachtend, fictief: verzonnen })[veld].push({ ...b, bestand: naam });
       }
     }
     const volgorde = eersteVolgordefout(inhoud.bronnen ?? []);
@@ -659,14 +660,14 @@ export function controleerBronnen(map) {
       }
     } catch (e) { fouten.push(`spellen/${naam}: geen geldige JSON (${e.message})`); }
   }
-  const inBronnen = new Set(bronnen.map((b) => b.citatie));
+  const inBronnen = new Set([...bronnen, ...verzonnen].map((b) => b.citatie));
   const inWacht = new Set(wachtend.map((b) => b.citatie));
   for (const [sleutel, plek] of geciteerd) {
     if (inBronnen.has(sleutel)) continue;
     if (inWacht.has(sleutel)) fouten.push(`${plek}: verwijzing (${sleutel}) staat in wachtOpCitatie; verplaats de bronregel naar bronnen`);
     else fouten.push(`${plek}: verwijzing (${sleutel}) heeft geen bronregel (BR-5)`);
   }
-  for (const b of bronnen) if (!geciteerd.has(b.citatie)) fouten.push(`${b.bestand}: bronregel ${b.id} (${b.citatie}) wordt nergens geciteerd (BR-5)`);
+  for (const b of [...bronnen, ...verzonnen]) if (!geciteerd.has(b.citatie)) fouten.push(`${b.bestand}: bronregel ${b.id} (${b.citatie}) wordt nergens geciteerd (BR-5)`);
   if (wachtend.length > 0) waarschuwingen.push(`bronnen: ${wachtend.length} bronnen uit het LRD wachten nog op een citatie in de content (${wachtend.map((b) => b.id).join(', ')})`);
   return { fouten, waarschuwingen, bestanden: bronNamen.length };
 }
