@@ -57,6 +57,10 @@ Losse controles die ook in `node --test` zitten: `node tools/contrast-check.mjs`
 
 **Logica zonder DOM:** `js/sessie.js` (beoordelen, bewaren, oefenen, klaar, verdieping, afsluiten), `js/weergave.js` (weergavemodellen), `js/afgerond.js` (TK-16), `js/profiel.js`. **DOM:** `js/dom.js` (`h`, `bouwVelden`, `maakWisAlles`), `js/leerblok.js` (pagina via `<body data-leerblok="N">`), `js/index-pagina.js`. Element-id's: `taak-<nr>`, `oefening-<nr>`, `uitkomst-<nr>`, `klaar-<nr>`, `afsluiten`; velden `oef-<nr>-<veld>` en `toe-<nr>-<veld>`.
 
+## Metrokaart (ADR B110)
+
+Bovenaan de zeven studentpagina's staat een metrokaart van één leerblok (SX-18, SX-19): `js/metro-model.js` (haltes, takken, stand en links, zonder DOM), `js/metro-indeling.js` (pixels: elke kolom even breed, het tikvlak is een strook van de volle hoogte, ≥ 24 × 24 px) en `js/metro.js` (SVG onder de kop). Splitsingen staan in de leerblokdata als `"spoor": { "stappen": ["oefenen"], "veld": "artikel", "takken": [{ "waarde": "<optie>", "kort": "Art. 1" }, …] }`; content-check controleert dat de takken opties van het veld zijn. De verdieping (`verdieping.na`) en de mediataak (`media.taak`) komen er vanzelf op. De kaart tekent opnieuw bij een adreswissel en bij het event `a3-voortgang`. Kleuren gaan via klassen (`lijn-N`, `spoor-lijn-N`), niet via inline stijl: de CSP van het dossier blokkeert die. Start, dossier en bronnen tonen het leerblok met de jongste `positie:N`; de gewichtscontrole telt daar alle vier leerblokbestanden (`${elders}`).
+
 ## Dossier, import en verificatie (fase 3)
 
 **Export.** `dossier.html` bewaart het dossier als `bewijsdossier-<alias>-<datum>.json` (`js/dossier.js`, `maakDossier`):
