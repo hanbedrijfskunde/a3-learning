@@ -123,7 +123,9 @@ async function start() {
     verhaalEl = h('section', { id: 'verhaal', class: 'verhaal', 'aria-labelledby': 'verhaal-kop' },
       h('h2', { id: 'verhaal-kop', class: 'eyebrow' }, verhaal.kop),
       verhaalBlokken(),
-      h('button', { type: 'button', class: 'knop knop-accent', onclick: () => invoer.alias.focus() }, verhaal.knop),
+      h('div', { class: 'verhaal-knoppen' },
+        h('a', { class: 'knop', href: 'docs/studentintroductie.html' }, verhaal.introductie.knop),
+        h('button', { type: 'button', class: 'knop knop-accent', onclick: () => invoer.alias.focus() }, verhaal.knop)),
       naarIntroductie());
   } else if (verhaal) {
     verhaalEl = h('details', { class: 'verhaal-details' }, h('summary', {}, verhaal.kop), verhaalBlokken(), naarIntroductie());

@@ -197,6 +197,8 @@ test('ST-8: het verhaal van de startpagina heeft drie blokken waarom, hoe, wat, 
   assert.match(controleerOverzicht(knop).join('\n'), /mist kop, knop of de regel naar de introductie/);
   const link = overzicht(); delete link.start.verhaal.introductie.link;
   assert.match(controleerOverzicht(link).join('\n'), /mist kop, knop of de regel naar de introductie/);
+  const leesKnop = overzicht(); delete leesKnop.start.verhaal.introductie.knop;
+  assert.match(controleerOverzicht(leesKnop).join('\n'), /mist kop, knop of de regel naar de introductie/);
   const tijd = overzicht(); tijd.leerblokken[2].richttijd = 45;
   assert.match(controleerOverzicht(tijd).join('\n'), /noemt niet de totale tijd „ongeveer 3½ uur”/);
 });

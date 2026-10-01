@@ -407,7 +407,7 @@ export function controleerOverzicht(inhoud, bestand = 'leerblokken.json') {
     const ids = vb.map((b) => b?.id).join(',');
     if (ids !== VERHAAL_BLOKKEN.join(',')) fout(`het verhaal moet precies de blokken waarom, hoe en wat hebben, in die volgorde (ST-8), niet ${ids}`);
     vb.forEach((b, i) => { if (!gevuld(b?.kop) || !gevuld(b?.tekst)) fout(`verhaalblok ${b?.id ?? i + 1} mist kop of tekst (ST-8)`); });
-    if (!gevuld(verhaal.kop) || !gevuld(verhaal.knop) || !gevuld(verhaal.introductie?.tekst) || !gevuld(verhaal.introductie?.link)) {
+    if (!gevuld(verhaal.kop) || !gevuld(verhaal.knop) || !gevuld(verhaal.introductie?.knop) || !gevuld(verhaal.introductie?.tekst) || !gevuld(verhaal.introductie?.link)) {
       fout('het verhaal mist kop, knop of de regel naar de introductie (ST-8)');
     }
     const n = vb.map((b) => (typeof b?.tekst === 'string' ? b.tekst : '')).join(' ').trim().split(/\s+/).filter(Boolean).length;
@@ -415,7 +415,7 @@ export function controleerOverzicht(inhoud, bestand = 'leerblokken.json') {
     const wat = vb.find((b) => b?.id === 'wat');
     const totaal = `ongeveer ${totaleTijdTekst(inhoud)}`;
     if (wat && !String(wat.tekst).includes(totaal)) fout(`het blok „wat” noemt niet de totale tijd „${totaal}” (B118, ST-8)`);
-    const teksten = [verhaal.kop, verhaal.knop, verhaal.introductie?.tekst, verhaal.introductie?.link, ...vb.flatMap((b) => [b?.kop, b?.tekst])].filter((t) => typeof t === 'string');
+    const teksten = [verhaal.kop, verhaal.knop, verhaal.introductie?.knop, verhaal.introductie?.tekst, verhaal.introductie?.link, ...vb.flatMap((b) => [b?.kop, b?.tekst])].filter((t) => typeof t === 'string');
     for (const re of VERHAAL_VERBODEN) {
       const treffer = teksten.map((t) => t.match(re)?.[0]).find(Boolean);
       if (treffer) fout(`het verhaal noemt „${treffer}”; dat hoort niet op het eerste scherm (ST-7, ST-8, DESIGN §8)`);

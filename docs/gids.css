@@ -18,3 +18,13 @@ body > nav { padding-top: 1rem; }
   .gids h2 { font-size: 12.5pt; }
   .gids pre { white-space: pre-wrap; overflow: visible; }
 }
+/* Knop terug naar de startpagina (studentintroductie, B113): op het scherm wel, op papier niet. */
+.gids .naar-start { margin-top: 1.25rem; }
+/* Op papier: geen knoppen, en iets krappere witruimte, zodat de studentintroductie op 1 A4 past (DL-2, B113). */
+@media print {
+  .gids .knop { display: none; }
+  .gids .naar-start { display: none; }
+  .gids h2 { margin-top: .8rem; }
+  .gids ul { margin: .3rem 0; }
+  body > footer { margin-top: .5rem; padding-top: .25rem; padding-bottom: 0; }
+}

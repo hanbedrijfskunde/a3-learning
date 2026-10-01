@@ -391,6 +391,7 @@ html { scroll-padding-bottom:5rem; }
 .verhaal-blok { margin:0; }
 .verhaal-blok h3 { margin:0 0 .4rem; }
 .verhaal-blok p { margin:0; }
+.verhaal-knoppen { display:flex; flex-wrap:wrap; gap:.75rem; margin:0 0 .5rem; }
 .verhaal-details { margin:1.5rem 0; }
 .verhaal-details > summary { cursor:pointer; font-weight:700; min-height:2.75rem; display:flex; align-items:center; }
 /* Waarde-simulator als spel (DESIGN §7.4, fase 19) */

@@ -6,6 +6,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { VELDEN } from '../js/schema.js';
+import { totaleTijdTekst } from '../tools/content-check.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const lees = (p) => readFileSync(resolve(root, p), 'utf8');
@@ -13,7 +14,7 @@ const PAGINAS = ['docs/docentgids.html', 'docs/studentintroductie.html', 'docs/d
 const hoofdtekst = (html) => html.match(/<main[\s\S]*?<\/main>/)[0];
 const koppen = (html, n) => [...hoofdtekst(html).matchAll(new RegExp(`<h${n}>(.*?)</h${n}>`, 'g'))].map((m) => m[1]);
 const woorden = (html) => hoofdtekst(html).replace(/<[^>]+>/g, ' ').replace(/&[a-z#0-9]+;/gi, ' ').split(/\s+/).filter(Boolean).length;
-const MAX_WOORDEN = { 'docs/docentgids.html': 1100, 'docs/studentintroductie.html': 450 };
+const MAX_WOORDEN = { 'docs/docentgids.html': 1100, 'docs/studentintroductie.html': 550 };
 
 test('DL-1, DL-2, DL-4, QA-4: elke documentatiepagina is Nederlands, heeft een titel en één h1, en haalt niets van buiten (CSP en bronnen)', () => {
   for (const p of PAGINAS) {
@@ -53,16 +54,32 @@ test('DL-1: de docentgids heeft een inleiding en precies 5 onderwerpen (klok en 
   assert.ok(woorden(html) <= MAX_WOORDEN['docs/docentgids.html'], `${woorden(html)} woorden`);
 });
 
-test('DL-2: de studentintroductie heeft precies 3 onderwerpen (wat je doet, waar je gegevens staan, exporteren en inleveren) en hoogstens 450 woorden', () => {
+test('DL-2: de studentintroductie heeft 4 onderwerpen (wat je doet, tijd en planning, gegevens, exporteren en inleveren) en hoogstens 550 woorden', () => {
   const html = lees('docs/studentintroductie.html');
   const h2 = koppen(html, 2);
-  assert.equal(h2.length, 3);
+  assert.equal(h2.length, 4);
   assert.match(h2[0], /wat je doet/i);
-  assert.match(h2[1], /gegevens/i);
-  assert.match(h2[2], /exporteren en inleveren/i);
+  assert.match(h2[1], /tijd en planning/i);
+  assert.match(h2[2], /gegevens/i);
+  assert.match(h2[3], /exporteren en inleveren/i);
   assert.ok(woorden(html) <= MAX_WOORDEN['docs/studentintroductie.html'], `${woorden(html)} woorden`);
   assert.match(html, /Dossier exporteren \(JSON\)/, 'de knopnaam van de site staat er letterlijk in');
   assert.match(html, /Wis alles/);
+});
+
+test('DL-2: de studentintroductie heeft een knop Start naar de startpagina, en die staat niet op papier', () => {
+  const html = lees('docs/studentintroductie.html');
+  assert.match(hoofdtekst(html), /<a class="knop knop-accent" href="\.\.\/index\.html">Start<\/a>/);
+  assert.match(lees('docs/gids.css'), /@media print \{[^}]*\.gids \.knop \{ display: none; \}/);
+});
+
+test('DL-2, B118: „Tijd en planning” noemt de richttijd van elk leerblok en de totale tijd uit de data', () => {
+  const html = lees('docs/studentintroductie.html');
+  const h2 = koppen(html, 2);
+  const tijd = html.slice(html.indexOf(h2[1]), html.indexOf(h2[2]));
+  const overzicht = JSON.parse(lees('data/leerblokken.json'));
+  for (const b of overzicht.leerblokken) assert.match(tijd, new RegExp(`Leerblok ${b.nummer}: ± ${b.richttijd} min`), `leerblok ${b.nummer}`);
+  assert.match(tijd, new RegExp(`ongeveer ${totaleTijdTekst(overzicht)}`));
 });
 
 test('DL-4: de beschrijving van schema 1.0 beschrijft alle 13 velden van js/schema.js, in dezelfde volgorde, en geen ander veld', () => {

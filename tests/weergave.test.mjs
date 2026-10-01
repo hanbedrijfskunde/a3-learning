@@ -190,6 +190,7 @@ test('ST-8/ST-9: de startpagina beslist één keer, bij het laden, en werkt zond
   assert.ok(bron.indexOf('verhaalOpen(') < bron.indexOf('const bijwerken'), 'vóór er iets bewaard kan worden');
   assert.match(bron, /if \(verhaal && eersteBezoek\)/, 'zonder start.verhaal geen verhaal en geen fout');
   assert.match(bron, /invoer\.alias\.focus\(\)/, 'de knop zet de focus in het aliasveld');
+  assert.match(bron, /h\('a', \{ class: 'knop', href: 'docs\/studentintroductie\.html' \}, verhaal\.introductie\.knop\)/, 'een knop naar de introductie (verzoek auteur)');
   assert.doesNotMatch(bron, /Nieuw hier\?/, 'de oude introductieregel is weg');
   assert.match(bron, /\.filter\(Boolean\)\)/, 'main.append krijgt geen null');
 });

@@ -22,6 +22,7 @@
       ],
       "knop": "Start met je vraagstuk",
       "introductie": {
+        "knop": "Lees dit eerst voor je start",
         "tekst": "Hoeveel tijd het kost, hoe je plant en hoe je inlevert, lees je in de",
         "link": "introductie van één pagina"
       }
