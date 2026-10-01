@@ -417,3 +417,9 @@ test('TP-11: leerblok 2, 3 en 4 laden het scherm „Vorige keer”; leerblok 1 n
   assert.match(pagina, /tekenDossier\(\);\s+teken\(\);/);
   assert.match(pagina, /dossierGebied, terugblikGebied, transferGebied\)/);
 });
+
+test('B118: de terugblik noemt de richttijd van het eigen leerblok, geen vaste 45 min', () => {
+  const bron = readFileSync(resolve(dirname(fileURLToPath(import.meta.url)), '../js/terugblik-pagina.js'), 'utf8');
+  assert.doesNotMatch(bron, /bovenop de 45 min/);
+  assert.match(bron, /bovenop de \$\{richttijd\} min van het leerblok/);
+});

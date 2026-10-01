@@ -29,6 +29,7 @@ export async function vorigeKeerSectie({ store, opslag, overzicht, leerblok, nu 
   const titels = Object.fromEntries(luk.bewijsonderdelen.map((b) => [b.id, b.titel]));
   // Veldlabels alleen uit het vorige leerblok als de student daar records heeft; dat bestand bestaat dan (geen 404).
   const vorig = leerblok - 1;
+  const richttijd = overzicht.leerblokken.find((b) => b.nummer === leerblok)?.richttijd; // B118: de som van de taken
   const heeftWerk = (overzicht.leerblokken.find((b) => b.nummer === vorig)?.bewijsonderdelen ?? []).some((id) => store.get(id));
   const labels = heeftWerk ? veldLabels([await laadOptioneel(`../data/leerblok-${vorig}.json`)]) : {};
   const tb = maakTerugblik({ store, terugblik, overzicht, leerblok, nu, titels, labels });
@@ -163,7 +164,7 @@ export async function vorigeKeerSectie({ store, opslag, overzicht, leerblok, nu 
   }
 
   function tekenKop(m) {
-    kop.textContent = `${m.pauzeTekst} Terugblik: ongeveer ${m.minuten} min, bovenop de 45 min van het leerblok.`;
+    kop.textContent = `${m.pauzeTekst} Terugblik: ongeveer ${m.minuten} min, bovenop de ${richttijd} min van het leerblok.`;
     statusRegel.textContent = { open: 'Terugblik: nog bezig.', gedaan: 'Terugblik: gedaan.', overgeslagen: 'Terugblik: overgeslagen.' }[m.status];
   }
 

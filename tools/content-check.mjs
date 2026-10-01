@@ -6,7 +6,7 @@
 // bouwer geschreven en wachten op akkoord van de auteur.
 //
 // Formaat van data/leerblok-N.json (definitief sinds fase 2, beschreven in README.md):
-//   { "formaat": "1.0", "leerblok": 1, "titel", "richttijd": 45, "eindigtMet", "oefencasus",
+//   { "formaat": "1.0", "leerblok": 1, "titel", "richttijd": 30, "eindigtMet", "oefencasus",
 //     "taken": [ { "id": "2.1", "titel", "vorm": "Alleen"|"Team",
 //                  "richttijd": { "tekst", "minuten", "bron" },
 //                  "waarom": { "tekst", "bron" }, "klaarAls": { "tekst", "bron" },
@@ -384,7 +384,7 @@ export function controleerOverzicht(inhoud, bestand = 'leerblokken.json') {
   blokken.forEach((b, i) => {
     if (b.nummer !== i + 1) fout(`leerblok ${i + 1} heeft nummer ${b.nummer}`);
     if (!gevuld(b.titel) || !gevuld(b.afgerondBewijs) || !gevuld(b.pagina)) fout(`leerblok ${i + 1} mist titel, afgerondBewijs of pagina`);
-    if (b.richttijd !== 45) fout(`leerblok ${i + 1} moet een richttijd van 45 min hebben`);
+    if (!Number.isInteger(b.richttijd) || b.richttijd <= 0) fout(`leerblok ${i + 1} mist een richttijd in hele minuten (LB-1)`);
     if (!lijstGevuld(b.bewijsonderdelen) || !b.bewijsonderdelen.every((e) => /^EV-\d{2}$/.test(e))) fout(`leerblok ${i + 1} mist bewijsonderdelen (EV-01, …)`);
     if (!gevuld(b.aanbevolen?.week) || !gevuld(b.aanbevolen?.dag)) fout(`leerblok ${i + 1} mist aanbevolen.week en aanbevolen.dag (TP-10)`);
   });
@@ -395,6 +395,25 @@ export function controleerOverzicht(inhoud, bestand = 'leerblokken.json') {
   const woorden = (inhoud?.start?.privacytekst ?? '').trim().split(/\s+/).filter(Boolean).length;
   if (woorden === 0 || woorden > 100) fout(`de privacytekst moet 1 tot en met 100 woorden hebben, heeft er ${woorden} (ST-2)`);
   return fouten;
+}
+
+/** B118: de richttijd van een leerblok is de som van de richttijden van zijn taken, zonder verdieping (PF-5, LB-1). */
+export function controleerRichttijden(overzicht, blokken) {
+  const fouten = [];
+  for (const blok of blokken) {
+    const som = (blok.taken ?? []).reduce((s, t) => s + (t.richttijd?.minuten ?? 0), 0);
+    if (blok.richttijd !== som) fouten.push(`leerblok-${blok.leerblok}.json: richttijd ${blok.richttijd} min, maar de taken tellen op tot ${som} min (B118, PF-5)`);
+    const lb = overzicht?.leerblokken?.find((b) => b.nummer === blok.leerblok);
+    if (lb && lb.richttijd !== som) fouten.push(`leerblokken.json: leerblok ${blok.leerblok} heeft richttijd ${lb.richttijd} min, maar de taken tellen op tot ${som} min (B118, LB-1)`);
+  }
+  return fouten;
+}
+
+/** De totale tijd van de vier leerblokken met terugblikken, afgerond op een half uur: „4½ uur” (B113, B118). */
+export function totaleTijdTekst(overzicht) {
+  const min = (overzicht?.leerblokken ?? []).reduce((s, b) => s + (b.richttijd ?? 0) + (b.terugblik ?? 0), 0);
+  const halven = Math.round(min / 30);
+  return `${Math.floor(halven / 2)}${halven % 2 ? '½' : ''} uur`;
 }
 
 export const TERUGBLIK_BANDEN = Object.freeze(['kort', 'middel', 'volledig', 'lang']);
@@ -836,7 +855,7 @@ export function controleerMap(map) {
   }
   if (namen.length > 0 || existsSync(resolve(map, 'leerblokken.json'))) {
     if (!existsSync(resolve(map, 'leerblokken.json'))) fouten.push('leerblokken.json ontbreekt (overzicht van de vier leerblokken)');
-    else { const o = lees('leerblokken.json'); if (o) fouten.push(...controleerOverzicht(o)); }
+    else { const o = lees('leerblokken.json'); if (o) fouten.push(...controleerOverzicht(o), ...controleerRichttijden(o, blokken)); }
   }
   if (existsSync(resolve(map, 'luk.json'))) {
     const luk = lees('luk.json');

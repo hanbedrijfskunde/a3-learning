@@ -64,7 +64,7 @@ test('QA-3: een bestand zonder taken of met kapotte JSON valt op', () => {
 
 // ------------------------------------------------------------ fase 2: formaat 1.0, bronnen en waarschuwingen
 
-import { controleerFormaat, controleerOverzicht } from '../tools/content-check.mjs';
+import { controleerFormaat, controleerOverzicht, controleerRichttijden, totaleTijdTekst } from '../tools/content-check.mjs';
 
 const echt = () => JSON.parse(readFileSync(resolve(root, 'data/leerblok-1.json'), 'utf8'));
 const overzicht = () => JSON.parse(readFileSync(resolve(root, 'data/leerblokken.json'), 'utf8'));
@@ -149,7 +149,7 @@ test('formaat: de vier fouten van QA-3 worden niet dubbel gemeld door de formaat
   assert.equal(fouten.length, 4);
 });
 
-test('LB-1/ST-1/ST-2: het overzicht heeft 4 leerblokken van 45 min, precies de vier startvelden en een privacytekst van ≤ 100 woorden', () => {
+test('LB-1/ST-1/ST-2: het overzicht heeft 4 leerblokken met een richttijd, precies de vier startvelden en een privacytekst van ≤ 100 woorden', () => {
   assert.deepEqual(controleerOverzicht(overzicht()), []);
   const a = overzicht(); a.leerblokken.pop();
   assert.match(controleerOverzicht(a).join('\n'), /moet 4 leerblokken hebben/);
@@ -157,6 +157,24 @@ test('LB-1/ST-1/ST-2: het overzicht heeft 4 leerblokken van 45 min, precies de v
   assert.match(controleerOverzicht(b).join('\n'), /precies alias, teamnummer/);
   const c = overzicht(); c.start.privacytekst = Array(101).fill('woord').join(' ');
   assert.match(controleerOverzicht(c).join('\n'), /1 tot en met 100 woorden/);
+});
+
+test('B118: de richttijd van een leerblok is de som van zijn taken, in het leerblokbestand en in het overzicht', () => {
+  const blokken = [1, 2, 3, 4].map((n) => JSON.parse(readFileSync(resolve(root, `data/leerblok-${n}.json`), 'utf8')));
+  assert.deepEqual(controleerRichttijden(overzicht(), blokken), []);
+  assert.deepEqual(blokken.map((b) => b.richttijd), [30, 45, 105, 45]);
+  const fout = structuredClone(blokken); fout[2].richttijd = 45;
+  assert.match(controleerRichttijden(overzicht(), fout).join('\n'), /leerblok-3\.json: richttijd 45 min, maar de taken tellen op tot 105 min/);
+  const o = overzicht(); o.leerblokken[0].richttijd = 45;
+  assert.match(controleerRichttijden(o, blokken).join('\n'), /leerblokken\.json: leerblok 1 heeft richttijd 45 min, maar de taken tellen op tot 30 min/);
+});
+
+test('B118: de totale tijd is de som van richttijden en terugblikken, afgerond op een half uur', () => {
+  assert.equal(totaleTijdTekst(overzicht()), '4½ uur');
+  const o = overzicht(); o.leerblokken[2].richttijd = 45;
+  assert.equal(totaleTijdTekst(o), '3½ uur');
+  o.leerblokken[2].richttijd = 75;
+  assert.equal(totaleTijdTekst(o), '4 uur');
 });
 
 test('SX-11: een lang veld zonder zinstarter, of met een zinstarter uit het modelantwoord, is een fout', () => {

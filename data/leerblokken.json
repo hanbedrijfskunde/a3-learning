@@ -32,7 +32,7 @@
     {
       "nummer": 1,
       "titel": "De A3 en je vraag",
-      "richttijd": 45,
+      "richttijd": 30,
       "terugblik": 0,
       "afgerondBewijs": "Onderzoeksvraag met zoekvragen en modelkeuze",
       "bewijsonderdelen": [
@@ -68,7 +68,7 @@
     {
       "nummer": 3,
       "titel": "Het vraagstuk plaatsen",
-      "richttijd": 45,
+      "richttijd": 105,
       "terugblik": 15,
       "afgerondBewijs": "Plaatsing met conclusie en onderzoeksvraag",
       "bewijsonderdelen": [

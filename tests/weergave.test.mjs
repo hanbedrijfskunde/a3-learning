@@ -102,12 +102,12 @@ test('TK-15: het afsluitscherm heeft status, volgende stap en bewaarmelding, ook
 
 // ------------------------------------------------------------ startpagina (LB-1, TK-1, ST-1, ST-2)
 
-test('LB-1/TK-1: de startpagina toont vier leerblokken van 45 min met het afgeronde bewijs, allemaal direct te openen', () => {
+test('LB-1/TK-1: de startpagina toont vier leerblokken met hun richttijd en het afgeronde bewijs, allemaal direct te openen', () => {
   const m = bouwIndexModel(overzicht, {});
   assert.equal(m.length, 4);
   assert.deepEqual(m.map((b) => b.nummer), [1, 2, 3, 4]);
   assert.deepEqual(m.map((b) => b.titel), ['De A3 en je vraag', 'Zoeken, beoordelen en gebruiken', 'Het vraagstuk plaatsen', 'Verbinden en reflecteren']);
-  assert.ok(m.every((b) => b.richttijdTekst.startsWith('45 min')));
+  assert.deepEqual(m.map((b) => Number.parseInt(b.richttijdTekst, 10)), [30, 45, 105, 45]); // B118: de som van de taken
   assert.ok(m.slice(1).every((b) => b.richttijdTekst.includes('hoogstens 15 min terugblik')));
   assert.ok(m.every((b) => /^leerblok-\d\.html$/.test(b.href) && b.afgerondBewijs.length > 0)); // geen voorwaarden
   assert.deepEqual(m[0].onderdelen.map((o) => o.id), ['EV-01', 'EV-02']);

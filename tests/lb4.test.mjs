@@ -560,8 +560,9 @@ test('ADR B114, MD-14: de verdieping van leerblok 4 linkt naar de zes kapitalen 
   assert.doesNotMatch(leerblok, /iframe/i);
 });
 
-test('TK-14: 0 statuswijzigingen en 0 minuten in de richttijd van 45 min door een verdiepingstaak; in het dossier alleen „verdieping gedaan”', async () => {
+test('TK-14: 0 statuswijzigingen en 0 minuten in de richttijd door een verdiepingstaak; in het dossier alleen „verdieping gedaan”', async () => {
   assert.equal(blok4.taken.reduce((som, t) => som + t.richttijd.minuten, 0), 45, 'de taken van leerblok 4 tellen op tot 45 min, zonder verdieping');
+  assert.equal(blok4.richttijd, 45, 'de richttijd van leerblok 4 is die som (B118)');
   const { sessie, store } = nieuw();
   sessie.bewaar('6.3', STARR);
   const voor = JSON.stringify(store.versions('EV-10'));
