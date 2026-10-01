@@ -7,6 +7,7 @@
 //            optioneel?, toevoegKnop?            verborgen tot iemand de knop indrukt of er al iets in staat
 //            afgeleidVan?: "3.1", kolommen?      toont alleen de waarden van een andere taak (dezelfde veld-id's)
 //            promptgenerator?: { zoekvraag, context, jaar, lijst, prompt, overnemenUit? }   (LB-6)
+//            artikelprompt?: { titel: [id] }      vaste prompt om een artikel met AI te ontleden; titel uit het eerste ingevulde veld (B103)
 //            bord?: { voor, aantal, vraagstuk?, vraagstukTekst?, voorstel? }   het stakeholderbord (LB-9, SX-16): het invloed/belang-raster als
 //                                                 invoer; rij i heeft de velden <voor>i + naam, soort, raakt, invloed en belang;
 //                                                 het vraagstuk in het midden komt uit veld `vraagstuk` of is `vraagstukTekst` (oefencasus);
@@ -16,7 +17,7 @@
 //            zoekvragenHint?                      toont de zoekvragen uit EV-02 (LB-12)
 //            hint?                                 bij afgeleidVan: eigen tekst onder de spiegeltabel }
 import { h, wis, bouwVelden, hintEl } from './dom.js';
-import { bouwPrompt, verbodenWoorden } from './checks/lb2.js';
+import { bouwPrompt, verbodenWoorden, artikelPrompt, kiesTitel } from './checks/lb2.js';
 import { zoekvragenEl } from './lb3-ui.js';
 import { stakeholderRijen, reeks } from './raster.js';
 import { tomGroepLater, tomModelLater, TOM_VELDEN } from './tom-later.js';
@@ -150,6 +151,19 @@ export function bouwWeergave(velden, voorvoegsel, waarden, bijWijziging, weergav
       h('div', { class: 'lb2-generator-acties' }, kopieer, kopieerStatus), waarschuwingen);
   }
 
+  // B103: de vaste prompt bij taak 4.2. De titel komt uit een eigen veld of uit de spiegel van 4.1 (via lees()).
+  function artikelPromptEl(a) {
+    const tekstEl = h('p', { class: 'lb2-prompt' });
+    const toon = () => { tekstEl.textContent = artikelPrompt(kiesTitel(lees(), a.titel)); };
+    verversers.push(toon);
+    const status = h('span', { class: 'klein', role: 'status' });
+    const knop = h('button', { type: 'button', class: 'knop', onclick: async () => {
+      try { await navigator.clipboard.writeText(tekstEl.textContent); status.textContent = ' Gekopieerd.'; }
+      catch (e) { status.textContent = ' Kopiëren lukt hier niet; selecteer de tekst en kopieer hem zelf.'; }
+    } }, 'Kopieer de prompt');
+    return h('div', { class: 'lb2-generator' }, tekstEl, h('div', { class: 'lb2-generator-acties' }, knop, status));
+  }
+
   function groepEl(g) {
     const doos = h('div', { class: 'lb2-groep' });
     if (g.titel) doos.append(h('h4', {}, g.titel));
@@ -170,6 +184,7 @@ export function bouwWeergave(velden, voorvoegsel, waarden, bijWijziging, weergav
       if (g.tombord) doos.append(hintEl(g.hint, g.hintBron) ?? '', tomGroepEl(g.tombord));
       (g.velden ?? []).forEach((id) => doos.append(bouwVeld(id).element));
       if (g.promptgenerator) doos.append(promptEl(g));
+      if (g.artikelprompt) doos.append(artikelPromptEl(g.artikelprompt));
       (g.groepen ?? []).forEach((k) => doos.append(groepEl(k)));
     }
     if (g.alleenBij) regels.push({ el: doos, ...g.alleenBij });

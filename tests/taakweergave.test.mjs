@@ -85,3 +85,10 @@ test('MD-2: de routekeuze staat als drie grote tegels in de stap stof van de taa
   assert.match(css, /\.md-knop \{ font-size:1rem; min-height:4\.5rem;/);
   assert.match(lees('js/leerblok.js'), /stap\(s2, stof, mediaPlek && blok\.media\.taak === id \? mediaPlek : null\)/);
 });
+
+test('B103: lb2-ui kent de groep artikelprompt: titel uit het eerste ingevulde veld, met kopieerknop', () => {
+  const bron = lees('js/lb2-ui.js');
+  assert.match(bron, /import \{[^}]*artikelPrompt[^}]*kiesTitel[^}]*\} from '\.\/checks\/lb2\.js'/);
+  assert.match(bron, /if \(g\.artikelprompt\) doos\.append\(artikelPromptEl\(g\.artikelprompt\)\)/);
+  assert.match(bron, /artikelPrompt\(kiesTitel\(lees\(\), a\.titel\)\)/);
+});
