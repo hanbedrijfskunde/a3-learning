@@ -13,6 +13,8 @@
 //                                     `inbeeld` ook niet: die laadt pas als zijn plek in beeld komt (het TOM-bord van taak 8.1, ADR B98)
 //   import(`./lb${n}.js`)             een sjabloon in het pad telt de modules van het eigen leerblok en van het leerblok van de
 //                                     Wissel (modulesVoor in js/checks/register.js); een pagina zonder leerblok telt ze allemaal
+//   data/leerblok-${elders}.json      het leerblok van de laatste positie (metrokaart, ADR B110): telt alle leerblokbestanden
+//                                     op pagina's zonder leerblok (start, dossier, bronnen) en geen op een leerblokpagina
 // Gebruik: node tools/gewicht-check.mjs
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { gzipSync } from 'node:zlib';
@@ -86,7 +88,8 @@ export function paginaBestanden(root, paginaNaam) {
       else if (sjabloon === '${blok.wissel.leerblok}') {
         const eigen = eigenBlok();
         if (eigen.wissel?.leerblok) set.add(resolve(datamap, `${voor}${eigen.wissel.leerblok}${na}.json`));
-      } else dataBestanden(new RegExp(`^${voor}[\\w-]*${na}\\.json$`)).forEach((n) => set.add(resolve(datamap, n)));
+      } else if (sjabloon === '${elders}') { if (!nummer) dataBestanden(new RegExp(`^${voor}\\d${na}\\.json$`)).forEach((n) => set.add(resolve(datamap, n))); }
+      else dataBestanden(new RegExp(`^${voor}[\\w-]*${na}\\.json$`)).forEach((n) => set.add(resolve(datamap, n)));
     }
     if (/MANIFEST\s*=\s*'data\/bronnen\.json'/.test(bron) && existsSync(resolve(datamap, 'bronnen.json'))) {
       set.add(resolve(datamap, 'bronnen.json'));

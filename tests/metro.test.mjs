@@ -9,6 +9,7 @@ import { normaliseerBlok } from '../js/blok.js';
 import { leesAdres } from '../js/taakweergave.js';
 import { metroModel, laatsteLeerblok, gekozenTak, MEDIA_TAKKEN } from '../js/metro-model.js';
 import { metroIndeling, HOOGTE, Y_LIJN, RIJ } from '../js/metro-indeling.js';
+import { paginaBestanden, gewichten, GRENS, GRENS_BRON } from '../tools/gewicht-check.mjs';
 import { controleerContrast, tokensUit, contrast, LIJNEN, MINIMUM_GRAFISCH } from '../tools/contrast-check.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -228,4 +229,35 @@ test('SX-19: takken liggen op ±18 px; dezelfde splitsing loopt parallel door; s
   assert.deepEqual(lb1.sporen.filter((s) => s.lijn !== 1).map((s) => s.lijn), [2], 'leerblok 1: alleen een stompje naar lijn 2');
   const v = metroIndeling(metroModel({ blok: blok(2), store: nepStore(), adres: { soort: 'overzicht' } }), 600);
   assert.ok(v.sporen.some((s) => s.gestippeld), 'de verdieping is gestippeld zolang ze niet gedaan is');
+});
+
+const STUDENT = ['index.html', 'leerblok-1.html', 'leerblok-2.html', 'leerblok-3.html', 'leerblok-4.html', 'dossier.html', 'bronnen.html'];
+
+test('SX-18: de kaart staat op de zeven studentpagina\'s en niet op docentmodus, verificatie en controlelab', () => {
+  for (const p of STUDENT) assert.match(lees(p), /<script type="module" src="js\/metro\.js"><\/script>/, p);
+  for (const p of ['docent.html', 'verificatie.html', 'controlelab.html']) assert.doesNotMatch(lees(p), /metro\.js/, p);
+});
+
+test('SX-18: de tekening heeft een lijst van links met aria-current, geen schaduw, beweging alleen zonder reduced motion', () => {
+  const js = lees('js/metro.js');
+  assert.match(js, /role: 'list'/);
+  assert.match(js, /role: 'listitem'/);
+  assert.match(js, /'aria-current': h\.stand === 'hier' \? 'step' : null/);
+  assert.match(js, /'aria-hidden': 'true'/, 'sporen en labels zijn decoratief; de naam staat op de link');
+  assert.match(js, /addEventListener\('a3-voortgang'/);
+  const css = lees('css/site.css');
+  const metro = css.slice(css.indexOf('/* ---- metrokaart'));
+  assert.ok(metro.length > 0 && metro.includes('.metro-spoor'), 'blok .metro in site.css');
+  assert.doesNotMatch(metro, /box-shadow|filter:\s*drop-shadow/, 'SX-7: geen schaduw');
+  assert.match(metro, /transition:fill 200ms/, 'SX-9: vullen in 200 ms');
+  assert.match(metro, /font-size:13px/, 'SX-10: labels 13 px');
+});
+
+test('PF-4: leerblokpagina\'s tellen alleen hun eigen leerblokbestand; start, dossier en bronnen tellen de vier', () => {
+  const namen = (p) => paginaBestanden(root, p).map((f) => f.replace(`${root}/`, '')).filter((f) => /^data\/leerblok-\d\.json$/.test(f)).sort();
+  // leerblok 3 leest ook leerblok 2 voor „Vorige keer” (${vorig}, TP-11); de kaart voegt leerblok 1 en 4 niet toe
+  assert.deepEqual(namen('leerblok-3.html'), ['data/leerblok-2.json', 'data/leerblok-3.json']);
+  for (const p of ['index.html', 'dossier.html', 'bronnen.html']) assert.deepEqual(namen(p), [1, 2, 3, 4].map((n) => `data/leerblok-${n}.json`), p);
+  assert.ok(paginaBestanden(root, 'index.html').some((f) => f.endsWith('js/metro-indeling.js')));
+  for (const g of gewichten(root)) assert.ok(g.gzip <= GRENS && g.bytes <= GRENS_BRON, `${g.pagina}: ${g.bytes} bytes, ${g.gzip} gzip`);
 });

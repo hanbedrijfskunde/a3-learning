@@ -1,0 +1,79 @@
+// Metrokaart bovenaan elke studentpagina (SX-18, SX-19; ADR B110; DESIGN §6 Metrokaart). Alleen DOM: het model staat in
+// metro-model.js, de maten in metro-indeling.js. Tekent opnieuw bij een adreswissel, bij `a3-voortgang` (leerblok.js,
+// media.js) en bij een andere breedte. Laadt de data niet, dan komt er geen kaart en werkt de pagina gewoon (spec §5).
+import { h, wis } from './dom.js';
+import { kiesOpslag, maakStore } from './store.js';
+import { normaliseerBlok } from './blok.js';
+import { leesAdres } from './taakweergave.js';
+import { metroModel, laatsteLeerblok } from './metro-model.js';
+import { metroIndeling } from './metro-indeling.js';
+
+const SVG = 'http://www.w3.org/2000/svg';
+/** Een SVG-element (h() in dom.js maakt HTML-elementen). */
+function s(tag, attrs = {}, ...kinderen) {
+  const el = document.createElementNS(SVG, tag);
+  for (const [k, v] of Object.entries(attrs)) if (v !== undefined && v !== null && v !== false) el.setAttribute(k, v);
+  for (const kind of kinderen.flat()) if (kind !== undefined && kind !== null) el.append(kind instanceof Node ? kind : document.createTextNode(String(kind)));
+  return el;
+}
+const laad = async (pad) => (await fetch(new URL(pad, import.meta.url))).json();
+
+/** De kaart als SVG: sporen en labels zijn decoratief, de haltes zijn links in een lijst. */
+export function tekenMetro(model, breedte) {
+  const ind = metroIndeling(model, breedte);
+  const svg = s('svg', {
+    class: 'metro-kaart', viewBox: `0 0 ${breedte} ${ind.hoogte}`, width: breedte, height: ind.hoogte,
+    role: 'list', 'aria-label': model.label, style: `--lijn: var(--lijn-${model.leerblok})`,
+  });
+  for (const sp of ind.sporen) {
+    svg.append(s('line', {
+      x1: sp.x1, y1: sp.y1, x2: sp.x2, y2: sp.y2, 'aria-hidden': 'true',
+      class: `metro-spoor${sp.gestippeld ? ' gestippeld' : ''}`, style: sp.lijn === model.leerblok ? null : `stroke: var(--lijn-${sp.lijn})`,
+    }));
+  }
+  for (const l of ind.labels) {
+    svg.append(s('text', { x: l.x, y: l.y, 'text-anchor': l.anker, class: `metro-label metro-label-${l.soort}`, 'aria-hidden': 'true' }, l.tekst));
+  }
+  for (const h of ind.haltes) {
+    svg.append(s('a', {
+      href: h.href, role: 'listitem', 'aria-label': h.naam, 'aria-current': h.stand === 'hier' ? 'step' : null,
+      class: `metro-halte halte-${h.stand} halte-${h.soort}${h.gestippeld ? ' halte-niet-gekozen' : ''}`,
+    },
+    s('rect', { class: 'metro-tik', x: h.tik.x, y: h.tik.y, width: h.tik.b, height: h.tik.h }),
+    s('circle', { cx: h.x, cy: h.y, r: h.r })));
+  }
+  return svg;
+}
+
+async function plaatsMetro() {
+  const nummer = Number(document.body.dataset.leerblok) || null;
+  const header = document.querySelector('body > header');
+  if (!header) return;
+  const { opslag } = kiesOpslag();
+  const store = maakStore(opslag);
+  const laatste = nummer ? null : laatsteLeerblok(store);
+  const elders = laatste?.leerblok;
+  // Leerblokpagina's lezen hun eigen bestand; start, dossier en bronnen dat van de laatste positie (tools/gewicht-check.mjs: ${elders}).
+  const blok = normaliseerBlok(nummer ? await laad(`../data/leerblok-${nummer}.json`) : await laad(`../data/leerblok-${elders}.json`));
+  const ids = blok.taken.map((t) => t.id);
+  const adres = () => (nummer ? leesAdres(location.hash, ids) : { soort: 'elders', taak: laatste.taak, stap: laatste.stap });
+
+  const doek = h('div', { class: 'metro-doek' });
+  const regel = h('p', { class: 'metro-regel' });
+  header.after(h('nav', { class: 'metro', 'aria-label': `Waar je bent in leerblok ${blok.leerblok}` }, doek, regel));
+  let breedte = 0;
+  function teken() {
+    breedte = Math.floor(doek.clientWidth) || 328;
+    const model = metroModel({ blok, store, adres: adres() });
+    wis(doek).append(tekenMetro(model, breedte));
+    regel.textContent = model.tekst;
+  }
+  teken();
+  window.addEventListener('hashchange', teken);
+  window.addEventListener('popstate', teken);
+  document.addEventListener('a3-voortgang', teken);
+  const opnieuw = () => { if (Math.floor(doek.clientWidth) !== breedte) teken(); };
+  if (typeof ResizeObserver === 'function') new ResizeObserver(opnieuw).observe(doek); else window.addEventListener('resize', opnieuw);
+}
+
+plaatsMetro().catch(() => { /* zonder data of opslag geen kaart; de rest van de pagina werkt (spec §5) */ });

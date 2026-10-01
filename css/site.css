@@ -455,3 +455,20 @@ html { scroll-padding-bottom:5rem; }
 .invulplek { background:var(--roze); box-shadow:inset 0 -3px 0 var(--accent); padding:0 .2em; -webkit-box-decoration-break:clone; box-decoration-break:clone; }
 .invulplek-leeg { font-weight:800; }
 .invulplek-gevuld { font-weight:700; }
+
+/* ---- metrokaart (SX-18, SX-19; DESIGN §6 Metrokaart; ADR B110) ---- */
+.metro { margin:.25rem 0 .75rem; }
+.metro-doek { width:100%; }
+.metro-kaart { display:block; max-width:100%; overflow:visible; }
+.metro-spoor { stroke:var(--lijn); stroke-width:6; stroke-linecap:round; }
+.metro-spoor.gestippeld { stroke-dasharray:6 4; stroke-linecap:butt; }
+.metro-tik { fill:transparent; }
+.metro-halte circle { fill:var(--wit); stroke:var(--lijn); stroke-width:3; transition:fill 200ms ease; }
+.metro-halte.halte-af circle { fill:var(--lijn); }
+.metro-halte.halte-hier circle { fill:var(--wit); stroke:var(--zwart); }
+.metro-halte.halte-begin circle, .metro-halte.halte-eind circle { stroke:var(--zwart); stroke-width:4; }
+.metro-halte.halte-begin.halte-af circle, .metro-halte.halte-eind.halte-af circle { fill:var(--zwart); }
+.metro-halte:focus-visible .metro-tik { stroke:var(--accent); stroke-width:4; }
+.metro-label { font-size:13px; fill:var(--grijs-tekst); }
+.metro-label-hier, .metro-label-overstap { font-weight:700; fill:var(--zwart); }
+.metro-regel { font-size:.8125rem; color:var(--grijs-tekst); margin:.25rem 0 0; }
