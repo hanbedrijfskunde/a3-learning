@@ -13,7 +13,7 @@ const PAGINAS = ['docs/docentgids.html', 'docs/studentintroductie.html', 'docs/d
 const hoofdtekst = (html) => html.match(/<main[\s\S]*?<\/main>/)[0];
 const koppen = (html, n) => [...hoofdtekst(html).matchAll(new RegExp(`<h${n}>(.*?)</h${n}>`, 'g'))].map((m) => m[1]);
 const woorden = (html) => hoofdtekst(html).replace(/<[^>]+>/g, ' ').replace(/&[a-z#0-9]+;/gi, ' ').split(/\s+/).filter(Boolean).length;
-const MAX_WOORDEN = { 'docs/docentgids.html': 900, 'docs/studentintroductie.html': 450 };
+const MAX_WOORDEN = { 'docs/docentgids.html': 1100, 'docs/studentintroductie.html': 450 };
 
 test('DL-1, DL-2, DL-4, QA-4: elke documentatiepagina is Nederlands, heeft een titel en één h1, en haalt niets van buiten (CSP en bronnen)', () => {
   for (const p of PAGINAS) {
@@ -37,8 +37,10 @@ test('DL-1, DL-2, DL-4: elke lokale link in de documentatie wijst naar een besta
   for (const p of ['README.md']) for (const [, href] of lees(p).matchAll(/\]\((docs\/[^)#]+)\)/g)) assert.ok(existsSync(resolve(root, href)), `${p}: ${href}`);
 });
 
-test('DL-1: de docentgids heeft precies 5 onderwerpen (klok en stapkaart, bewijs, dossiers inlezen, steekproef, modelantwoord) en hoogstens 900 woorden', () => {
+test('DL-1: de docentgids heeft een inleiding en precies 5 onderwerpen (klok en stapkaart, bewijs, dossiers inlezen, steekproef, modelantwoord) en hoogstens 1100 woorden', () => {
   const html = lees('docs/docentgids.html');
+  const intro = html.slice(html.indexOf('<section class="intro"'), html.indexOf('</section>'));
+  for (const kop of ['Waar het over gaat', 'Plaats in het programma', 'Leeruitkomsten', 'Inrichting', 'Hoe studenten ermee werken', 'Wat je ontvangt', 'Waar je op let']) assert.match(intro, new RegExp(`<strong>${kop}\\.</strong>`), `inleiding noemt ${kop}`);
   const h2 = koppen(html, 2);
   assert.equal(h2.length, 5);
   assert.match(h2[0], /docentmodus/i);
