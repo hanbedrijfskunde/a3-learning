@@ -167,16 +167,12 @@ test('SX-2: bij het laden staat er geen melding; na het verlaten van een veld ho
   assert.doesNotMatch(bron, /class: 'hints'/, 'geen lijst met alle meldingen tegelijk');
 });
 
-test('ST-8/ST-9: het verhaal staat alleen open bij een eerste bezoek (leeg profiel, geen werk)', () => {
-  const leeg = normaliseerProfiel({});
-  assert.equal(verhaalOpen(leeg, {}), true);
-  assert.equal(verhaalOpen(leeg, { 'EV-01': undefined, 'EV-02': null }), true, 'ids zonder record tellen niet');
-  assert.equal(verhaalOpen(normaliseerProfiel({ alias: '   ' }), {}), true, 'alleen spaties is leeg');
-  assert.equal(verhaalOpen(undefined, undefined), true, 'zonder opslag: open');
-  assert.equal(verhaalOpen(normaliseerProfiel({ alias: 'Kim' }), {}), false);
-  assert.equal(verhaalOpen(normaliseerProfiel({ teamnummer: '7' }), {}), false, 'alleen een teamnummer');
-  assert.equal(verhaalOpen(normaliseerProfiel({ voorlopig: true }), {}), false, 'alleen „nog geen scherp vraagstuk”');
-  assert.equal(verhaalOpen(leeg, { 'EV-01': rec('bijna') }), false, 'werk zonder profiel');
+test('ST-8/ST-9, B119: het verhaal staat open tot de eerste taak; een ingevuld profiel telt niet mee', () => {
+  assert.equal(verhaalOpen({}), true);
+  assert.equal(verhaalOpen({ 'EV-01': undefined, 'EV-02': null }), true, 'ids zonder record tellen niet');
+  assert.equal(verhaalOpen(undefined), true, 'zonder opslag: open');
+  assert.equal(verhaalOpen({ 'EV-01': rec('bijna') }), false, 'werk in een leerblok');
+  assert.equal(verhaalOpen({ 'EV-11': rec('compleet') }), false, 'werk in een later leerblok');
 });
 
 test('ST-8: weergave.js laadt profiel.js niet mee (bronnen en terugblik gebruiken weergave.js via metro-model.js)', () => {
@@ -184,11 +180,16 @@ test('ST-8: weergave.js laadt profiel.js niet mee (bronnen en terugblik gebruike
   assert.doesNotMatch(bron, /from '\.\/profiel\.js'/);
 });
 
-test('ST-8/ST-9: de startpagina beslist één keer, bij het laden, en werkt zonder verhaal in de data', () => {
+test('ST-8/ST-9, B119: de startpagina beslist één keer, bij het laden, zet het verhaal bovenaan en werkt zonder verhaal in de data', () => {
   const bron = readFileSync(resolve(root, 'js/index-pagina.js'), 'utf8');
   assert.equal((bron.match(/verhaalOpen\(/g) ?? []).length, 1, 'één beslissing');
   assert.ok(bron.indexOf('verhaalOpen(') < bron.indexOf('const bijwerken'), 'vóór er iets bewaard kan worden');
-  assert.match(bron, /if \(verhaal && eersteBezoek\)/, 'zonder start.verhaal geen verhaal en geen fout');
+  assert.match(bron, /verhaalOpen\(leesRecords\(store, alleIds\)\)/, 'alleen werk telt, het profiel niet (B119)');
+  assert.match(bron, /if \(verhaal && nogNietBegonnen\)/, 'zonder start.verhaal geen verhaal en geen fout');
+  assert.match(bron, /h\('details', \{ class: 'verhaal verhaal-details' \}/, 'na de eerste taak een balk op dezelfde plek (B119)');
+  assert.match(bron, /main\.append\(\.\.\.\[h1, verhaalEl, verder, a3, start1, blokken, gegevens\]\.filter\(Boolean\)\)/, 'het verhaal staat altijd bovenaan (B119)');
+  const css = readFileSync(resolve(root, 'css/site.css'), 'utf8');
+  assert.match(css, /\.verhaal \{[^}]*background:var\(--zwart\);[^}]*color:var\(--wit\);/, 'een zwart vlak met witte tekst (B119)');
   assert.match(bron, /invoer\.alias\.focus\(\)/, 'de knop zet de focus in het aliasveld');
   assert.match(bron, /h\('a', \{ class: 'knop', href: 'docs\/studentintroductie\.html' \}, verhaal\.introductie\.knop\)/, 'een knop naar de introductie (verzoek auteur)');
   assert.doesNotMatch(bron, /Nieuw hier\?/, 'de oude introductieregel is weg');

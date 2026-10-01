@@ -124,15 +124,13 @@ export function bouwAfsluitModel(blok, records, volgende = null) {
 }
 
 /**
- * Staat het verhaal van de startpagina open (eerste bezoek) of ingeklapt (ST-8, ST-9, ADR B113)? Open zolang de student
- * niets heeft ingevuld en geen werk heeft. De startpagina vraagt dit alleen bij het laden: typen in het formulier bewaart
- * het profiel bij elke toets, en het verhaal mag dan niet inklappen.
- * @param {{alias?: string, teamnummer?: string, vraagstuk?: string, waaromZin?: string, voorlopig?: boolean}} profiel zoals leesProfiel het geeft
+ * Staat het verhaal van de startpagina open of ingeklapt (ST-8, ST-9, ADR B113, B119)? Open tot de eerste taak: zolang er
+ * geen werk in een leerblok is. Een ingevuld profiel telt niet mee; wie alleen een alias invulde, is nog niet begonnen.
+ * De startpagina vraagt dit alleen bij het laden.
  * @param {Record<string, object|null|undefined>} records zoals leesRecords ze geeft
  */
-export function verhaalOpen(profiel = {}, records = {}) {
-  const ingevuld = Object.values(profiel).some((v) => v === true || (typeof v === 'string' && v.trim() !== ''));
-  return !ingevuld && !Object.values(records).some(Boolean);
+export function verhaalOpen(records = {}) {
+  return !Object.values(records ?? {}).some(Boolean);
 }
 
 /**

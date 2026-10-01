@@ -1,4 +1,4 @@
-// Startpagina: het verhaal (ST-8, ST-9), startinvoer (ST-1), privacytekst (ST-2), de vier leerblokken (LB-1, TK-1) en „Wis alles" (ST-6).
+// Startpagina: het verhaal bovenaan (ST-8, ST-9, ADR B119), startinvoer (ST-1), privacytekst (ST-2), de vier leerblokken (LB-1, TK-1) en „Wis alles" (ST-6).
 // Alleen DOM; de regels zitten in profiel.js en weergave.js. Toont bewust niets van de Wissel, verdieping,
 // „Mijn stand" of „kopieer naar A3" (ST-7).
 import { h, wis, maakWisAlles, tekenA3Vak } from './dom.js';
@@ -69,8 +69,8 @@ async function start() {
   // ---- startinvoer
   const vel = overzicht.start;
   const profiel = leesProfiel(store);
-  // ST-8, ST-9: open of ingeklapt ligt vast bij het laden; bijwerken() bewaart het profiel bij elke toets.
-  const eersteBezoek = verhaalOpen(profiel, leesRecords(store, alleIds));
+  // ST-8, ST-9, B119: open tot de eerste taak (alleen werk telt, het profiel niet); de stand ligt vast bij het laden.
+  const nogNietBegonnen = verhaalOpen(leesRecords(store, alleIds));
   const invoer = {};
   // SX-2: een melding bij een veld pas nadat de student het veld heeft verlaten; nooit bij het laden.
   const aangeraakt = new Set();
@@ -111,24 +111,27 @@ async function start() {
       h('p', { class: 'klein' }, 'Je invoer wordt automatisch bewaard in deze browser.')),
     h('div', { class: 'kaart privacy', id: 'privacy' }, h('h3', {}, 'Privacy'), h('p', {}, vel.privacytekst)));
 
-  // ---- het verhaal (ST-8, ST-9, ADR B113): waarom, hoe, wat. Bij een eerste bezoek open boven het formulier, daarna
-  // ingeklapt onder de leerblokken. Ontbreekt het in de data, dan werkt de pagina zonder.
+  // ---- het verhaal (ST-8, ST-9, ADR B113, B119): waarom, hoe, wat. Altijd als eerste onder de kop, als zwart vlak: open tot
+  // de eerste taak, daarna een balk op dezelfde plek. Ontbreekt het in de data, dan werkt de pagina zonder.
   const verhaal = overzicht.start.verhaal;
   const verhaalBlokken = () => h('div', { class: 'verhaal-blokken' },
     verhaal.blokken.map((b) => h('div', { class: 'kaart verhaal-blok' }, h('h3', {}, b.kop), h('p', {}, b.tekst))));
   const naarIntroductie = () => h('p', { class: 'klein' }, `${verhaal.introductie.tekst} `,
     h('a', { href: 'docs/studentintroductie.html' }, verhaal.introductie.link), '.');
+  const leesKnop = () => h('a', { class: 'knop', href: 'docs/studentintroductie.html' }, verhaal.introductie.knop);
   let verhaalEl = null;
-  if (verhaal && eersteBezoek) {
+  if (verhaal && nogNietBegonnen) {
     verhaalEl = h('section', { id: 'verhaal', class: 'verhaal', 'aria-labelledby': 'verhaal-kop' },
-      h('h2', { id: 'verhaal-kop', class: 'eyebrow' }, verhaal.kop),
+      h('h2', { id: 'verhaal-kop' }, verhaal.kop),
       verhaalBlokken(),
       h('div', { class: 'verhaal-knoppen' },
-        h('a', { class: 'knop', href: 'docs/studentintroductie.html' }, verhaal.introductie.knop),
+        leesKnop(),
         h('button', { type: 'button', class: 'knop knop-accent', onclick: () => invoer.alias.focus() }, verhaal.knop)),
       naarIntroductie());
   } else if (verhaal) {
-    verhaalEl = h('details', { class: 'verhaal-details' }, h('summary', {}, verhaal.kop), verhaalBlokken(), naarIntroductie());
+    // Na de eerste taak is „Ga verder” de hoofdknop (DESIGN §5.2); de balk heeft daarom geen accentknop.
+    verhaalEl = h('details', { class: 'verhaal verhaal-details' }, h('summary', {}, verhaal.kop),
+      verhaalBlokken(), h('div', { class: 'verhaal-knoppen' }, leesKnop()), naarIntroductie());
   }
 
   const gegevens = h('section', { id: 'gegevens', 'aria-labelledby': 'gegevens-kop' },
@@ -142,7 +145,7 @@ async function start() {
 
   const h1 = main.querySelector('h1');
   wis(main);
-  main.append(...[h1, verder, a3, eersteBezoek ? verhaalEl : null, start1, blokken, eersteBezoek ? null : verhaalEl, gegevens].filter(Boolean));
+  main.append(...[h1, verhaalEl, verder, a3, start1, blokken, gegevens].filter(Boolean));
   teken();
 }
 

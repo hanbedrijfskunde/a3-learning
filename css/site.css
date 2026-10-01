@@ -385,15 +385,20 @@ html { scroll-padding-bottom:5rem; }
 .verder-kaart h2 { margin:.25rem 0; }
 .verder-kaart .nr { background:var(--wit); color:var(--zwart); }
 .verder-kaart .knop-accent { margin-top:.5rem; border-color:var(--wit); }
-/* het verhaal bovenaan de startpagina (ST-8, ST-9, ADR B113): informatie, dus rand en geen schaduw (SX-7) */
-.verhaal { margin:1rem 0 1.5rem; }
+/* het verhaal bovenaan de startpagina (ST-8, ST-9, ADR B113, B119): altijd als eerste, een zwart vlak zoals „Verder waar je
+   was”; de drie blokken zijn witte informatiekaarten zonder schaduw (SX-7) */
+.verhaal { background:var(--zwart); color:var(--wit); padding:1.25rem; margin:1rem 0 1.5rem; }
+.verhaal > h2, .verhaal > summary { font-size:1.6rem; font-weight:800; line-height:1.2; margin:0 0 .75rem; }
 .verhaal-blokken { display:grid; grid-template-columns:repeat(auto-fit, minmax(14rem, 1fr)); gap:.75rem; margin:.5rem 0 1rem; }
-.verhaal-blok { margin:0; }
+.verhaal-blok { margin:0; color:var(--zwart); }
 .verhaal-blok h3 { margin:0 0 .4rem; }
 .verhaal-blok p { margin:0; }
 .verhaal-knoppen { display:flex; flex-wrap:wrap; gap:.75rem; margin:0 0 .5rem; }
-.verhaal-details { margin:1.5rem 0; }
-.verhaal-details > summary { cursor:pointer; font-weight:700; min-height:2.75rem; display:flex; align-items:center; }
+.verhaal .knop-accent { border-color:var(--wit); }
+.verhaal .klein { margin:0; }
+.verhaal .klein a { color:var(--wit); background:var(--zwart); }
+.verhaal-details:not([open]) > summary { margin:0; }
+.verhaal-details > summary { cursor:pointer; min-height:2.75rem; }
 /* Waarde-simulator als spel (DESIGN §7.4, fase 19) */
 .sp-keuzekaarten { display:grid; gap:.75rem; margin:.5rem 0; }
 .sp-keuzekaart { font:inherit; font-weight:700; text-align:left; min-height:4rem; padding:.75rem 1rem; cursor:pointer; color:var(--zwart); background:var(--wit); border:3px solid var(--zwart); box-shadow:5px 5px 0 var(--zwart); }
