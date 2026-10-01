@@ -467,3 +467,13 @@ test('SX-20: het infovenster verschijnt bij muis en focus, niet bij aanraken, sl
   assert.match(blokCss, /\.metro-info \{[^}]*font-size:13px/);
   assert.doesNotMatch(blokCss.slice(0, blokCss.indexOf('}') + 1), /box-shadow/, 'SX-7: geen schaduw op iets dat niet klikbaar is');
 });
+
+test('SX-20: de themazinnen zijn goedgekeurd door de auteur (bron auteur), en die bron geeft geen waarschuwing', () => {
+  for (const nr of [1, 2, 3, 4]) {
+    const b = ruw(nr);
+    for (const t of [...b.taken, b.verdieping]) assert.equal(t.thema.bron, 'auteur', `leerblok ${nr} ${t.id ?? 'verdieping'}`);
+    const { fouten, waarschuwingen } = controleerFormaat(blok(nr), `leerblok-${nr}.json`);
+    assert.deepEqual(fouten, []);
+    assert.equal(waarschuwingen.filter((w) => /thema/.test(w)).length, 0);
+  }
+});

@@ -37,7 +37,7 @@ Losse controles die ook in `node --test` zitten: `node tools/contrast-check.mjs`
   "taken": [ { "id": "2.1",                       // werkboeknummer
       "titel", "vorm": "Alleen" | "Team",
       "richttijd": { "tekst": "10 min", "minuten": 10, "bron": "werkboek" },
-      "waarom":   { "tekst", "bron" },            // bron: werkboek | concept-auteur | draaiboek | lrd
+      "waarom":   { "tekst", "bron" },            // bron: werkboek | concept-auteur | auteur | draaiboek | lrd
       "klaarAls": { "tekst", "bron" },
       "stof":     { "bron", "alineas": [..], "format"? },
       "oefening": { "opdracht": { "tekst", "bron" }, "velden"? },   // zonder velden: dezelfde als toepassing.velden
@@ -49,7 +49,7 @@ Losse controles die ook in `node --test` zitten: `node tools/contrast-check.mjs`
   "bewijsonderdelen": [ { "id": "EV-01", "taak": "2.1", "titel", "lukOnderdelen": [".."] } ] }
 ```
 
-`data/leerblokken.json` bevat de startinvoer (velden, privacytekst) en de vier leerblokken voor `index.html` (richttijd, terugblik, afgerond bewijs, EV-id's). Een tekst met `"bron": "concept-auteur"` geeft een WAARSCHUWING in `content-check` (geen fout): de bouwer schreef hem en de auteur moet hem goedkeuren. Teksten met bron `werkboek` moeten letterlijk in `WK5/Werkboek_A3-start_week5.html` staan (`tests/werkboek.test.mjs`, overgeslagen als dat bestand niet naast deze map staat; ander pad via `WERKBOEK_PAD`).
+`data/leerblokken.json` bevat de startinvoer (velden, privacytekst) en de vier leerblokken voor `index.html` (richttijd, terugblik, afgerond bewijs, EV-id's). Een tekst met `"bron": "concept-auteur"` geeft een WAARSCHUWING in `content-check` (geen fout): de bouwer schreef hem en de auteur moet hem goedkeuren. Na dat akkoord wordt de bron `auteur`. Teksten met bron `werkboek` moeten letterlijk in `WK5/Werkboek_A3-start_week5.html` staan (`tests/werkboek.test.mjs`, overgeslagen als dat bestand niet naast deze map staat; ander pad via `WERKBOEK_PAD`).
 
 **Controles.** Signatuur `(invoer, context) → { id, soort, resultaat, melding }`, met `context = { taak, records }`. Een controle in de data verwijst met `type` naar een fabriek in `js/checks/index.js` (`core.js` plus `lb1.js`; latere leerblokken voegen hun fabrieken daar toe). Staan `opties` bij het veld en geeft de controle geen `toegestaan`, dan zijn de opties de toegestane keuzes.
 

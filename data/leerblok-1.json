@@ -9,7 +9,7 @@
     {
       "id": "1.1",
       "titel": "De A3 in één oogopslag",
-      "thema": { "tekst": "Je leert hoe de A3 in elkaar zit en waar vak 1 staat.", "bron": "concept-auteur" },
+      "thema": { "tekst": "Je leert hoe de A3 in elkaar zit en waar vak 1 staat.", "bron": "auteur" },
       "vorm": "Alleen",
       "richttijd": { "tekst": "tijdens de uitleg", "minuten": 10, "bron": "werkboek", "minutenBron": "concept-auteur" },
       "waarom": {
@@ -68,7 +68,7 @@
     {
       "id": "2.1",
       "titel": "De onderzoeksvraag als user story",
-      "thema": { "tekst": "Je maakt van je probleem een onderzoeksvraag: voor wie, welk probleem en welke waarde.", "bron": "concept-auteur" },
+      "thema": { "tekst": "Je maakt van je probleem een onderzoeksvraag: voor wie, welk probleem en welke waarde.", "bron": "auteur" },
       "vorm": "Team",
       "richttijd": { "tekst": "10 min", "minuten": 10, "bron": "werkboek" },
       "waarom": {
@@ -134,7 +134,7 @@
     {
       "id": "2.2",
       "titel": "Zoekvragen vanuit drie frames",
-      "thema": { "tekst": "Je deelt je onderzoeksvraag op in zoekvragen, elk vanuit een ander frame.", "bron": "concept-auteur" },
+      "thema": { "tekst": "Je deelt je onderzoeksvraag op in zoekvragen, elk vanuit een ander frame.", "bron": "auteur" },
       "vorm": "Team",
       "richttijd": { "tekst": "10 min", "minuten": 10, "bron": "werkboek" },
       "waarom": {
@@ -213,7 +213,7 @@
     "tekst": "Schrijf een vierde zoekvraag vanuit een frame dat je team nog niet gebruikte. Zeg wat die vraag verandert.",
     "bron": "lrd",
     "na": "2.2",
-    "thema": { "tekst": "Je schrijft een vierde zoekvraag vanuit een frame dat je team nog niet gebruikte.", "bron": "concept-auteur" }
+    "thema": { "tekst": "Je schrijft een vierde zoekvraag vanuit een frame dat je team nog niet gebruikte.", "bron": "auteur" }
   },
   "wissel": { "zichtbaarNa": "EV-02", "leerblok": 4, "taak": "6.2" },
   "kijktips": {

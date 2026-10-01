@@ -9,7 +9,7 @@
     {
       "id": "9.4",
       "titel": "Ontdek de verbanden tussen je modellen",
-      "thema": { "tekst": "Je ontdekt hoe je user story, canvas en kapitalen samen één verhaal vertellen.", "bron": "concept-auteur" },
+      "thema": { "tekst": "Je ontdekt hoe je user story, canvas en kapitalen samen één verhaal vertellen.", "bron": "auteur" },
       "vorm": "Alleen",
       "richttijd": {
         "tekst": "20 min",
@@ -284,7 +284,7 @@
     {
       "id": "6.2",
       "titel": "Gallery walk: oefenronde en de Wissel",
-      "thema": { "tekst": "Je oefent de gallery walk en wisselt feedback uit met een ander team.", "bron": "concept-auteur" },
+      "thema": { "tekst": "Je oefent de gallery walk en wisselt feedback uit met een ander team.", "bron": "auteur" },
       "vorm": "Team",
       "richttijd": {
         "tekst": "10 min",
@@ -397,7 +397,7 @@
     {
       "id": "6.3",
       "titel": "STARR-reflectie op je eigen handelen",
-      "thema": { "tekst": "Je beschrijft met STARR een moment en wat jij er zelf in deed.", "bron": "concept-auteur" },
+      "thema": { "tekst": "Je beschrijft met STARR een moment en wat jij er zelf in deed.", "bron": "auteur" },
       "vorm": "Alleen",
       "richttijd": {
         "tekst": "15 min",
@@ -567,7 +567,7 @@
     "tekst": "Reageer schriftelijk op de feedback die je kreeg. Wat neem je niet over, en waarom? Of zoek uit welk kapitaal neemt af als je de waarde uit je user story aan iedereen levert.",
     "bron": "lrd",
     "na": "6.3",
-    "thema": { "tekst": "Je kijkt verder dan je eigen reflectie, als je daar tijd voor hebt.", "bron": "concept-auteur" }
+    "thema": { "tekst": "Je kijkt verder dan je eigen reflectie, als je daar tijd voor hebt.", "bron": "auteur" }
   },
   "bewijsonderdelen": [
     {

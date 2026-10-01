@@ -9,7 +9,7 @@
     {
       "id": "3.1",
       "titel": "Zoektermen",
-      "thema": { "tekst": "Je haalt de kernbegrippen uit je zoekvraag en zoekt er synoniemen en Engelse termen bij.", "bron": "concept-auteur" },
+      "thema": { "tekst": "Je haalt de kernbegrippen uit je zoekvraag en zoekt er synoniemen en Engelse termen bij.", "bron": "auteur" },
       "vorm": "Team",
       "richttijd": {
         "tekst": "5 min",
@@ -250,7 +250,7 @@
     {
       "id": "3.2",
       "titel": "Wedstrijd: vind een goede bron",
-      "thema": { "tekst": "Je zoekt een bron via een databank of een AI-tool en vergelijkt wat elke route oplevert.", "bron": "concept-auteur" },
+      "thema": { "tekst": "Je zoekt een bron via een databank of een AI-tool en vergelijkt wat elke route oplevert.", "bron": "auteur" },
       "vorm": "Team",
       "richttijd": {
         "tekst": "10 min",
@@ -760,7 +760,7 @@
     {
       "id": "4.1",
       "titel": "Is de bron betrouwbaar?",
-      "thema": { "tekst": "Je beoordeelt met AAOCC of je een bron kunt vertrouwen en noteert hem in APA.", "bron": "concept-auteur" },
+      "thema": { "tekst": "Je beoordeelt met AAOCC of je een bron kunt vertrouwen en noteert hem in APA.", "bron": "auteur" },
       "vorm": "Team",
       "richttijd": {
         "tekst": "10 min",
@@ -1728,7 +1728,7 @@
     {
       "id": "4.2",
       "titel": "Haal meer uit je artikel",
-      "thema": { "tekst": "Je haalt met IMRAD een begrip, een aanpak en een manier van tonen uit je artikel.", "bron": "concept-auteur" },
+      "thema": { "tekst": "Je haalt met IMRAD een begrip, een aanpak en een manier van tonen uit je artikel.", "bron": "auteur" },
       "vorm": "Alleen",
       "richttijd": {
         "tekst": "15 min",
@@ -2285,7 +2285,7 @@
     {
       "id": "4.3",
       "titel": "Stelling: \"Je kunt een artikel prima door AI laten ontleden.\"",
-      "thema": { "tekst": "Je kiest een kant in de stelling over AI en artikelen, en je onderbouwt die.", "bron": "concept-auteur" },
+      "thema": { "tekst": "Je kiest een kant in de stelling over AI en artikelen, en je onderbouwt die.", "bron": "auteur" },
       "vorm": "Alleen",
       "richttijd": {
         "tekst": "5 min",
@@ -2465,7 +2465,7 @@
     "tekst": "Beoordeel een tweede bron en zet beide naast elkaar. Welke weegt zwaarder, en waarom?",
     "bron": "lrd",
     "na": "4.1",
-    "thema": { "tekst": "Je beoordeelt een tweede bron en weegt die af tegen de eerste.", "bron": "concept-auteur" }
+    "thema": { "tekst": "Je beoordeelt een tweede bron en weegt die af tegen de eerste.", "bron": "auteur" }
   },
   "bewijsonderdelen": [
     {

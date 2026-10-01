@@ -69,7 +69,8 @@ export function controleerLeerblok(inhoud, bestand) {
   return fouten;
 }
 
-export const BRONNEN = Object.freeze(['werkboek', 'concept-auteur', 'draaiboek', 'lrd']);
+// auteur: door de bouwer geschreven en door de auteur goedgekeurd (eerst: de themazinnen van de metrokaart, B112)
+export const BRONNEN = Object.freeze(['werkboek', 'concept-auteur', 'auteur', 'draaiboek', 'lrd']);
 /** Toepassingen met een eigen scherm (js/leerblok.js): de Wissel, de verbanden-kaart en het STARR-sjabloon. */
 export const COMPONENTEN = Object.freeze(['feedbacklog', 'verbanden', 'starr']);
 /** Lange velden die een component vult en die de student niet als los tekstvak ziet (SX-11). */
