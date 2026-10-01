@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { bouwTaakModel, bouwIndexModel, bouwAfsluitModel, oefenModel, modelZichtbaar, STAPPEN, BEWAARMELDING } from '../js/weergave.js';
+import { bouwTaakModel, bouwIndexModel, bouwAfsluitModel, oefenModel, modelZichtbaar, verhaalOpen, STAPPEN, BEWAARMELDING } from '../js/weergave.js';
 import { isAfgerond, onderdeelTelt } from '../js/afgerond.js';
 import { normaliseerProfiel, beoordeelProfiel, zichtbareMeldingen, PROFIEL_VELDEN } from '../js/profiel.js';
 
@@ -165,6 +165,23 @@ test('SX-2: bij het laden staat er geen melding; na het verlaten van een veld ho
   assert.match(bron, /zichtbareMeldingen\(/, 'de startpagina toont meldingen via zichtbareMeldingen');
   assert.match(bron, /onblur: \(\) => \{ aangeraakt\.add\(v\.id\)/, 'een veld telt pas als aangeraakt na blur');
   assert.doesNotMatch(bron, /class: 'hints'/, 'geen lijst met alle meldingen tegelijk');
+});
+
+test('ST-8/ST-9: het verhaal staat alleen open bij een eerste bezoek (leeg profiel, geen werk)', () => {
+  const leeg = normaliseerProfiel({});
+  assert.equal(verhaalOpen(leeg, {}), true);
+  assert.equal(verhaalOpen(leeg, { 'EV-01': undefined, 'EV-02': null }), true, 'ids zonder record tellen niet');
+  assert.equal(verhaalOpen(normaliseerProfiel({ alias: '   ' }), {}), true, 'alleen spaties is leeg');
+  assert.equal(verhaalOpen(undefined, undefined), true, 'zonder opslag: open');
+  assert.equal(verhaalOpen(normaliseerProfiel({ alias: 'Kim' }), {}), false);
+  assert.equal(verhaalOpen(normaliseerProfiel({ teamnummer: '7' }), {}), false, 'alleen een teamnummer');
+  assert.equal(verhaalOpen(normaliseerProfiel({ voorlopig: true }), {}), false, 'alleen „nog geen scherp vraagstuk”');
+  assert.equal(verhaalOpen(leeg, { 'EV-01': rec('bijna') }), false, 'werk zonder profiel');
+});
+
+test('ST-8: weergave.js laadt profiel.js niet mee (bronnen en terugblik gebruiken weergave.js via metro-model.js)', () => {
+  const bron = readFileSync(resolve(root, 'js/weergave.js'), 'utf8');
+  assert.doesNotMatch(bron, /from '\.\/profiel\.js'/);
 });
 
 test('LB-1: titel en kop van elke leerblokpagina noemen de titel uit leerblokken.json (ADR B102: leerblok 2 kreeg een nieuwe naam)', () => {
