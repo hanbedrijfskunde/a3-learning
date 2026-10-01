@@ -177,6 +177,30 @@ test('B118: de totale tijd is de som van richttijden en terugblikken, afgerond o
   assert.equal(totaleTijdTekst(o), '4 uur');
 });
 
+test('ST-8: het verhaal van de startpagina heeft drie blokken waarom, hoe, wat, ≤ 150 woorden en geen verboden termen', () => {
+  assert.deepEqual(controleerOverzicht(overzicht()), []);
+  const geen = overzicht(); delete geen.start.verhaal;
+  assert.match(controleerOverzicht(geen).join('\n'), /mist start\.verhaal/);
+  const volgorde = overzicht(); volgorde.start.verhaal.blokken.reverse();
+  assert.match(controleerOverzicht(volgorde).join('\n'), /precies de blokken waarom, hoe en wat/);
+  const twee = overzicht(); twee.start.verhaal.blokken.pop();
+  assert.match(controleerOverzicht(twee).join('\n'), /precies de blokken waarom, hoe en wat/);
+  const leeg = overzicht(); leeg.start.verhaal.blokken[1].tekst = ' ';
+  assert.match(controleerOverzicht(leeg).join('\n'), /verhaalblok hoe mist kop of tekst/);
+  const lang = overzicht(); lang.start.verhaal.blokken[2].tekst = Array(151).fill('woord').join(' ');
+  assert.match(controleerOverzicht(lang).join('\n'), /hoogstens 150/);
+  for (const term of ['de Wissel', 'een verdieping', 'Mijn stand', 'Kopieer naar A3', 'LUK 1', 'BC1', 'EV-01', 'je bewijsonderdeel', 'de richttijd', 'de Golden Circle', 'Sinek']) {
+    const v = overzicht(); v.start.verhaal.blokken[0].tekst += ` ${term}.`;
+    assert.match(controleerOverzicht(v).join('\n'), /hoort niet op het eerste scherm/, term);
+  }
+  const knop = overzicht(); knop.start.verhaal.knop = '';
+  assert.match(controleerOverzicht(knop).join('\n'), /mist kop, knop of de regel naar de introductie/);
+  const link = overzicht(); delete link.start.verhaal.introductie.link;
+  assert.match(controleerOverzicht(link).join('\n'), /mist kop, knop of de regel naar de introductie/);
+  const tijd = overzicht(); tijd.leerblokken[2].richttijd = 45;
+  assert.match(controleerOverzicht(tijd).join('\n'), /noemt niet de totale tijd „ongeveer 3½ uur”/);
+});
+
 test('SX-11: een lang veld zonder zinstarter, of met een zinstarter uit het modelantwoord, is een fout', () => {
   const inhoud = JSON.parse(readFileSync(resolve(fixtures('content-goed'), 'leerblok-1.json'), 'utf8'));
   assert.deepEqual(controleerFormaat(inhoud, 'leerblok-1.json').fouten, []);

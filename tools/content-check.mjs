@@ -375,7 +375,13 @@ function controleerVerbandenOefening(taak, wie, fout) {
   }
 }
 
-/** Controleert data/leerblokken.json: de vier leerblokken van de startpagina (LB-1) en de startinvoer (ST-1, ST-2). */
+/** Het verhaal bovenaan de startpagina (ST-8, ADR B113): drie blokken in deze volgorde. */
+export const VERHAAL_BLOKKEN = Object.freeze(['waarom', 'hoe', 'wat']);
+export const VERHAAL_MAX_WOORDEN = 150;
+/** Wat niet op het eerste scherm hoort: onderdelen die pas later aan de beurt zijn (ST-7), systeemtaal (DESIGN §8) en het model achter de opbouw (B113). */
+export const VERHAAL_VERBODEN = Object.freeze([/wissel/i, /verdieping/i, /mijn stand/i, /kopieer naar a3/i, /\bLUK\b/, /\bBC\d*\b/, /\bEV-/, /bewijsonderdeel/i, /richttijd/i, /golden circle/i, /sinek/i]);
+
+/** Controleert data/leerblokken.json: de vier leerblokken van de startpagina (LB-1), de startinvoer (ST-1, ST-2) en het verhaal (ST-8). */
 export function controleerOverzicht(inhoud, bestand = 'leerblokken.json') {
   const fouten = [];
   const fout = (t) => fouten.push(`${bestand}: ${t}`);
@@ -394,6 +400,27 @@ export function controleerOverzicht(inhoud, bestand = 'leerblokken.json') {
   if (!gevuld(inhoud?.start?.voorlopigLabel)) fout('mist het label voor „nog geen scherp vraagstuk" (ST-1)');
   const woorden = (inhoud?.start?.privacytekst ?? '').trim().split(/\s+/).filter(Boolean).length;
   if (woorden === 0 || woorden > 100) fout(`de privacytekst moet 1 tot en met 100 woorden hebben, heeft er ${woorden} (ST-2)`);
+  const verhaal = inhoud?.start?.verhaal;
+  if (!verhaal) fout('mist start.verhaal, het verhaal bovenaan de startpagina (ST-8)');
+  else {
+    const vb = Array.isArray(verhaal.blokken) ? verhaal.blokken : [];
+    const ids = vb.map((b) => b?.id).join(',');
+    if (ids !== VERHAAL_BLOKKEN.join(',')) fout(`het verhaal moet precies de blokken waarom, hoe en wat hebben, in die volgorde (ST-8), niet ${ids}`);
+    vb.forEach((b, i) => { if (!gevuld(b?.kop) || !gevuld(b?.tekst)) fout(`verhaalblok ${b?.id ?? i + 1} mist kop of tekst (ST-8)`); });
+    if (!gevuld(verhaal.kop) || !gevuld(verhaal.knop) || !gevuld(verhaal.introductie?.tekst) || !gevuld(verhaal.introductie?.link)) {
+      fout('het verhaal mist kop, knop of de regel naar de introductie (ST-8)');
+    }
+    const n = vb.map((b) => (typeof b?.tekst === 'string' ? b.tekst : '')).join(' ').trim().split(/\s+/).filter(Boolean).length;
+    if (n > VERHAAL_MAX_WOORDEN) fout(`het verhaal heeft ${n} woorden lopende tekst, hoogstens ${VERHAAL_MAX_WOORDEN} (ST-8)`);
+    const wat = vb.find((b) => b?.id === 'wat');
+    const totaal = `ongeveer ${totaleTijdTekst(inhoud)}`;
+    if (wat && !String(wat.tekst).includes(totaal)) fout(`het blok „wat” noemt niet de totale tijd „${totaal}” (B118, ST-8)`);
+    const teksten = [verhaal.kop, verhaal.knop, verhaal.introductie?.tekst, verhaal.introductie?.link, ...vb.flatMap((b) => [b?.kop, b?.tekst])].filter((t) => typeof t === 'string');
+    for (const re of VERHAAL_VERBODEN) {
+      const treffer = teksten.map((t) => t.match(re)?.[0]).find(Boolean);
+      if (treffer) fout(`het verhaal noemt „${treffer}”; dat hoort niet op het eerste scherm (ST-7, ST-8, DESIGN §8)`);
+    }
+  }
   return fouten;
 }
 

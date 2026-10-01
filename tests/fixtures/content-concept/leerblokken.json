@@ -1,6 +1,31 @@
 {
   "formaat": "1.0",
   "start": {
+    "verhaal": {
+      "kop": "Waar gaat dit over?",
+      "blokken": [
+        {
+          "id": "waarom",
+          "kop": "Waarom dit?",
+          "tekst": "Je opdrachtgever komt met een vraagstuk dat nog vaag is. Begin je meteen aan een oplossing, dan los je misschien het verkeerde probleem op. Hier maak je van dat vraagstuk een onderzoeksvraag waar je team mee verder kan. Die bespreek je met je opdrachtgever op je A3."
+        },
+        {
+          "id": "hoe",
+          "kop": "Hoe werk je?",
+          "tekst": "Bij elke taak oefen je eerst op een voorbeeld, webshop X. Daarna doe je dezelfde opdracht voor je eigen vraagstuk. Je ziet steeds wanneer je klaar bent, en de site controleert meteen of alles erin staat. Je hebt geen account nodig: alles blijft in deze browser."
+        },
+        {
+          "id": "wat",
+          "kop": "Wat heb je aan het eind?",
+          "tekst": "Je doet vier leerblokken, samen ongeveer 3½ uur. Daarna is het eerste vak van je A3 gevuld. Daarin staan je onderzoeksvraag, betrouwbare bronnen en de mensen en de organisatie rond je vraagstuk. En je hebt een dossier met al je werk, dat je inlevert voor je portfolio."
+        }
+      ],
+      "knop": "Start met je vraagstuk",
+      "introductie": {
+        "tekst": "Hoeveel tijd het kost, hoe je plant en hoe je inlevert, lees je in de",
+        "link": "introductie van één pagina"
+      }
+    },
     "titel": "Begin met je eigen vraagstuk",
     "intro": "Vul dit één keer in. Je oefent daarna alles op je eigen vraagstuk, en wat je typt blijft bewaard in deze browser.",
     "velden": [
