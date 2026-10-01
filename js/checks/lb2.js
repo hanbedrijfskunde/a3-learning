@@ -240,9 +240,79 @@ export function besluitGenomen({ id, veld, toegestaan, blok, optioneel = false }
   }, { id, soort: 'A', blok, optioneel });
 }
 
+// ---------------------------------------------------------------- ontleed artikel (EV-12, ADR B102/B103)
+
+export const AI_ONTLEDEN = 'ja, om het te ontleden';
+
+const SECTIES = /\b(inleiding|introductie|introduction|theoretisch kader|theorie|literatuur(?:overzicht)?|literature review|background|achtergrond|methoden?|methodologie|method(?:s|ology)?|resultaten|results|bevindingen|findings|discussie|discussion|conclusies?|conclusions?|abstract|samenvatting)\b/i;
+const MET_GETAL = /\b(p|pp|pag|pagina|blz|sectie|section|tabel|table|figuur|figure|fig|hoofdstuk|h)\.?\s*\d+/i;
+
+/** Ziet de tekst eruit als een plek in een artikel: een sectienaam, of p./blz./§/tabel/figuur/sectie/hoofdstuk/H met een getal (EV-12). */
+export function isVindplaats(t) {
+  const s = tekst(t);
+  return s !== '' && (SECTIES.test(s) || MET_GETAL.test(s) || /§\s*\d/.test(s));
+}
+
+/** Bij Inleiding, Methode en Resultaten staat wat de auteur doet (EV-12). */
+export function imradIngevuld({ id, velden, labels }) {
+  return (invoer) => {
+    const mist = velden.filter((v) => tekst(invoer?.[v]) === '').map((v) => labels[velden.indexOf(v)]);
+    if (mist.length > 0) return resultaat(id, 'A', 'mist', `Schrijf op wat de auteur doet bij: ${mist.join(', ')}.`);
+    return resultaat(id, 'A', 'ok');
+  };
+}
+
+/** Elke vindplaats is ingevuld (anders `mist`) en ziet eruit als een sectie of pagina (anders `let op`) (EV-12, B103). */
+export function imradVindplaats({ id, velden, labels }) {
+  return (invoer) => {
+    const leeg = velden.filter((v) => tekst(invoer?.[v]) === '').map((v) => labels[velden.indexOf(v)]);
+    if (leeg.length > 0) return resultaat(id, 'A', 'mist', `Geef de vindplaats (sectie of pagina) bij: ${leeg.join(', ')}.`);
+    const vaag = velden.filter((v) => !isVindplaats(invoer?.[v])).map((v) => labels[velden.indexOf(v)]);
+    if (vaag.length > 0) return resultaat(id, 'A', 'let op', `Noem een sectie of pagina, bijvoorbeeld „Methode” of „p. 4”, bij: ${vaag.join(', ')}.`);
+    return resultaat(id, 'A', 'ok');
+  };
+}
+
+/** Bij Inleiding, Methode en Resultaten is gekozen of de student het meeneemt (EV-12). */
+export function imradMeenemen({ id, velden, labels, toegestaan = ['ja', 'deels', 'nee'] }) {
+  return (invoer) => {
+    const mist = velden.filter((v) => !toegestaan.includes([].concat(invoer?.[v] ?? [])[0])).map((v) => labels[velden.indexOf(v)]);
+    if (mist.length > 0) return resultaat(id, 'A', 'mist', `Kies ${toegestaan.join(', ')} bij „Neem ik dit mee?” voor: ${mist.join(', ')}.`);
+    return resultaat(id, 'A', 'ok');
+  };
+}
+
+/** Is AI gebruikt om te ontleden, dan staat het controlevinkje (EV-12, B103). Geen keuze over AI: `mist`. */
+export function aiGeverifieerd({ id, veld, aiVeld, waarde }) {
+  return (invoer) => {
+    const ai = [].concat(invoer?.[aiVeld] ?? [])[0];
+    if (isLeeg(ai)) return resultaat(id, 'A', 'mist', 'Geef aan of je AI hebt gebruikt.');
+    if (ai !== waarde) return resultaat(id, 'A', 'ok');
+    if ([].concat(invoer?.[veld] ?? []).length === 0) {
+      return resultaat(id, 'A', 'mist', 'Zoek elk citaat en elke vindplaats van de AI-tool zelf op in het artikel. Zet het vinkje als je ze hebt teruggevonden.');
+    }
+    return resultaat(id, 'A', 'ok');
+  };
+}
+
+/** De eerste ingevulde titel uit `ids` (een eigen ander artikel gaat voor de bron uit 4.1), of ''. */
+export const kiesTitel = (waarden, ids) => ids.map((id) => tekst(waarden?.[id])).find((t) => t !== '') ?? '';
+
+/** De vaste prompt om een artikel met een AI-tool te ontleden (B103). */
+export function artikelPrompt(titel) {
+  return `Ik lees dit artikel: ${tekst(titel) || '[titel van je artikel]'}. `
+    + 'Geef voor de Inleiding, de Methode en de Resultaten apart: (1) in één of twee zinnen wat de auteurs daar doen; '
+    + '(2) één letterlijk citaat dat dat laat zien, met paginanummer. '
+    + 'Bij de Inleiding: welke modellen, begrippen of definities gebruiken ze, en van wie komen die? '
+    + 'Bij de Methode: hoe verzamelden en verwerkten ze de data? '
+    + 'Bij de Resultaten: in welke vorm tonen ze de uitkomst (tabel, grafiek, model)? '
+    + 'Verzin niets. Staat iets niet in het artikel, zeg dat dan.';
+}
+
 /** Fabrieken van dit bestand, op naam (gebruikt door `checks/index.js`). */
 export const FABRIEKEN = {
   zoekOperator, termenPerBegrip, toolBijRouteB, promptZonderVerboden,
   bronGegevens, aaoccOordelen, aaoccToelichtingen, verificatieBijRouteB, apaFormaat, apaJaarGelijk, linkVorm, besluitGenomen,
+  imradIngevuld, imradVindplaats, imradMeenemen, aiGeverifieerd,
 };
 

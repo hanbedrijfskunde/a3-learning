@@ -7,6 +7,7 @@ import {
   zoekOperator, heeftOperator, termenPerBegrip, toolBijRouteB, promptZonderVerboden, bouwPrompt, verbodenWoorden,
   bronGegevens, aaoccOordelen, aaoccToelichtingen, verificatieBijRouteB, apaFormaat, apaJaarGelijk, apaJaar, linkVorm, besluitGenomen,
   ROUTE_A, ROUTE_B,
+  isVindplaats, imradIngevuld, imradVindplaats, imradMeenemen, aiGeverifieerd, artikelPrompt, kiesTitel, AI_ONTLEDEN,
 } from '../js/checks/lb2.js';
 import { bouwControles } from '../js/checks/index.js';
 import { voerUit } from '../js/checks/core.js';
@@ -148,6 +149,58 @@ const CONTROLES = {
     goed: [[{ besluit: 'we gebruiken deze bron' }, 'ok'], [{ besluit: 'we zoeken verder' }, 'ok'], [{ besluit: ['we zoeken verder'] }, 'ok']],
     zwak: [[{}, 'mist', 'Kies je besluit'], [{ besluit: 'misschien' }, 'mist', 'Kies je besluit'], [{ besluit: '' }, 'mist', 'Kies je besluit']],
   },
+  imradIngevuld: {
+    controle: imradIngevuld({ id: 'i', velden: ['iWat', 'mWat', 'rWat'], labels: ['Inleiding', 'Methode', 'Resultaten'] }), soort: 'A',
+    goed: [
+      [{ iWat: 'Bouwt op Oliver.', mWat: 'Acht interviews.', rWat: 'In lopende tekst.' }, 'ok'],
+      [{ iWat: 'Twee modellen.', mWat: 'Enquête, n = 300.', rWat: 'Eén tabel.' }, 'ok'],
+      [{ iWat: 'Definitie van TOM.', mWat: 'Casestudy.', rWat: 'Een model als figuur.' }, 'ok'],
+    ],
+    zwak: [
+      [{}, 'mist', 'Inleiding, Methode, Resultaten'],
+      [{ iWat: 'x x x', mWat: '' }, 'mist', 'Methode, Resultaten'],
+      [{ iWat: 'Ja.', mWat: 'Ja.', rWat: '   ' }, 'mist', 'Resultaten'],
+    ],
+  },
+  imradVindplaats: {
+    controle: imradVindplaats({ id: 'w', velden: ['iWaar', 'mWaar', 'rWaar'], labels: ['Inleiding', 'Methode', 'Resultaten'] }), soort: 'A',
+    goed: [
+      [{ iWaar: 'Inleiding', mWaar: 'Methode', rWaar: 'p. 7' }, 'ok'],
+      [{ iWaar: 'Introduction, p. 2', mWaar: '§ 3.2', rWaar: 'Table 2' }, 'ok'],
+      [{ iWaar: 'blz 3', mWaar: 'Methods', rWaar: 'figuur 1' }, 'ok'],
+    ],
+    zwak: [
+      [{ iWaar: 'Inleiding', mWaar: '', rWaar: 'p. 7' }, 'mist', 'Methode'],
+      [{ iWaar: 'ergens vooraan', mWaar: 'Methode', rWaar: 'p. 7' }, 'let op', 'Inleiding'],
+      [{}, 'mist', 'Inleiding, Methode, Resultaten'],
+    ],
+  },
+  imradMeenemen: {
+    controle: imradMeenemen({ id: 'm', velden: ['iMee', 'mMee', 'rMee'], labels: ['Inleiding', 'Methode', 'Resultaten'] }), soort: 'A',
+    goed: [
+      [{ iMee: 'ja', mMee: 'deels', rMee: 'nee' }, 'ok'],
+      [{ iMee: 'nee', mMee: 'nee', rMee: 'nee' }, 'ok'],
+      [{ iMee: ['ja'], mMee: 'ja', rMee: 'deels' }, 'ok'],
+    ],
+    zwak: [
+      [{}, 'mist', 'Inleiding, Methode, Resultaten'],
+      [{ iMee: 'ja', mMee: 'misschien', rMee: 'ja' }, 'mist', 'Methode'],
+      [{ iMee: 'ja', mMee: 'ja' }, 'mist', 'Resultaten'],
+    ],
+  },
+  aiGeverifieerd: {
+    controle: aiGeverifieerd({ id: 'a', veld: 'aiCheck', aiVeld: 'ai', waarde: AI_ONTLEDEN }), soort: 'A',
+    goed: [
+      [{ ai: 'nee' }, 'ok'],
+      [{ ai: 'ja, om het te begrijpen' }, 'ok'],
+      [{ ai: AI_ONTLEDEN, aiCheck: ['Ik heb elk citaat en elke vindplaats zelf in het artikel teruggevonden.'] }, 'ok'],
+    ],
+    zwak: [
+      [{}, 'mist', 'AI'],
+      [{ ai: AI_ONTLEDEN }, 'mist', 'teruggevonden'],
+      [{ ai: AI_ONTLEDEN, aiCheck: [] }, 'mist', 'teruggevonden'],
+    ],
+  },
 };
 
 for (const [naam, c] of Object.entries(CONTROLES)) {
@@ -188,6 +241,33 @@ test('apaJaar leest het jaar uit een APA-regel', () => {
   assert.equal(apaJaar('A. (z.d.). T.'), 'z.d.');
   assert.equal(apaJaar('Anderson, L. W. (Red.). (2001). T.'), '2001');
   assert.equal(apaJaar('Geen jaar'), undefined);
+});
+
+test('EV-12: isVindplaats herkent sectienamen, pagina’s, paragrafen, tabellen en figuren', () => {
+  for (const s of ['Inleiding', 'introductie', 'Introduction', 'Theoretisch kader', 'Literature review', 'Methode', 'methoden', 'Method',
+    'Methods section', 'Methodology', 'Resultaten', 'Results', 'Bevindingen', 'Discussie', 'Discussion', 'Conclusie', 'Abstract',
+    'Samenvatting', 'p. 4', 'p.4', 'pp. 4-6', 'pag. 12', 'pagina 3', 'blz 12', 'blz. 12', '§ 3.2', '§3', 'tabel 2', 'Table 1', 'figuur 1',
+    'Fig. 3', 'sectie 2', 'section 4', 'H3', 'hoofdstuk 2']) assert.ok(isVindplaats(s), s);
+  for (const s of ['', '   ', 'ergens vooraan', 'pagina vier', 'in het artikel', 'zie boven']) assert.ok(!isVindplaats(s), s);
+});
+
+test('EV-12: aiGeverifieerd negeert een achtergebleven vinkje als AI niet om te ontleden is gebruikt', () => {
+  const c = aiGeverifieerd({ id: 'a', veld: 'aiCheck', aiVeld: 'ai', waarde: AI_ONTLEDEN });
+  assert.equal(c({ ai: 'nee', aiCheck: ['x'] }).resultaat, 'ok');
+});
+
+test('EV-12: de artikelprompt vult de titel in, vraagt per deel een citaat met pagina en zegt „verzin niets”', () => {
+  const p = artikelPrompt('Klanttevredenheid in webwinkels');
+  assert.match(p, /^Ik lees dit artikel: Klanttevredenheid in webwinkels\. /);
+  assert.match(p, /letterlijk citaat .*paginanummer/);
+  assert.match(p, /Verzin niets\. Staat iets niet in het artikel, zeg dat dan\.$/);
+  assert.match(artikelPrompt(''), /^Ik lees dit artikel: \[titel van je artikel\]\. /);
+});
+
+test('EV-12: kiesTitel neemt de eerste ingevulde titel', () => {
+  assert.equal(kiesTitel({ anderArtikel: '  ', b1titel: 'A' }, ['anderArtikel', 'b1titel']), 'A');
+  assert.equal(kiesTitel({ anderArtikel: 'B', b1titel: 'A' }, ['anderArtikel', 'b1titel']), 'B');
+  assert.equal(kiesTitel({}, ['anderArtikel', 'b1titel']), '');
 });
 
 // LB-6: 6 testprompts, elk met de woorden die de waarschuwing moet vinden (0 gemist, 0 vals alarm)
