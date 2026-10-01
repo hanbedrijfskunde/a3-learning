@@ -2316,7 +2316,7 @@
       },
       "oefening": {
         "opdracht": {
-          "tekst": "Een collega bij webshop X laat elk artikel door een AI-tool samenvatten. Die collega vindt de stelling waar. Kies een kant en schrijf je sterkste argument in twee zinnen.",
+          "tekst": "Een collega bij webshop X laat elk artikel door een AI-tool samenvatten. Die collega zegt: „Je kunt een artikel prima door AI laten ontleden.” Ben je het daarmee eens? Kies een kant en schrijf je sterkste argument in twee zinnen.",
           "bron": "concept-auteur"
         },
         "velden": [
@@ -2366,7 +2366,7 @@
       },
       "toepassing": {
         "opdracht": {
-          "tekst": "Kies voor of tegen en schrijf je sterkste argument.",
+          "tekst": "Stelling: „Je kunt een artikel prima door AI laten ontleden.” Kies voor of tegen en schrijf je sterkste argument.",
           "bron": "concept-auteur"
         },
         "velden": [

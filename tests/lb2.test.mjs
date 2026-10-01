@@ -501,3 +501,11 @@ test('B102 en SX-15: taak 4.2 toont IMRAD in de stof en de twee mini-artikelen b
   assert.deepEqual(g.artikelprompt.titel, ['anderArtikel', 'b1titel']);
   assert.ok(taak('4.1').toepassing.velden.some((v) => v.id === 'b1soort'), '4.1 vraagt de soort bron');
 });
+
+test('LB-8: de stelling staat letterlijk bij de oefening en de toepassing van 4.3, zodat de student niet terug hoeft', () => {
+  const t = taak('4.3');
+  const stelling = t.titel.match(/"([^"]+)"/)[1];
+  assert.match(stelling, /^Je kunt een artikel prima door AI laten ontleden\.$/);
+  assert.ok(t.oefening.opdracht.tekst.includes(stelling.replace(/\.$/, '')), 'oefening');
+  assert.ok(t.toepassing.opdracht.tekst.includes(stelling.replace(/\.$/, '')), 'toepassing');
+});
