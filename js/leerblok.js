@@ -382,8 +382,12 @@ async function start() {
       let vt;
       tekstVeld.addEventListener('input', () => { clearTimeout(vt); vt = setTimeout(() => sessie.zetVerdieping({ tekst: tekstVeld.value }), BEWAAR_NA_MS); });
       gedaan.addEventListener('change', () => { sessie.zetVerdieping({ tekst: tekstVeld.value, gedaan: gedaan.checked }); meldVoortgang(); });
+      // een link naar een pagina van derden is een gewone link in een nieuw tabblad, zoals de kijktips (MD-14, ADR B114)
+      const { link } = model.verdieping;
       verdiepingKop.append(
-        h('p', {}, model.verdieping.tekst),
+        h('p', {}, met(model.verdieping.tekst)),
+        link ? h('p', {}, h('a', { href: link.url, target: '_blank', rel: 'noopener noreferrer' }, link.titel), ' (opent in een nieuw tabblad)') : null,
+        link ? h('p', { class: 'klein' }, 'Bron: ', met(link.verwijzing), ` · Taal: ${link.taal}`) : null,
         h('p', { class: 'klein' }, 'Dit is optioneel. Het telt niet mee voor je status en niet voor de tijd.'),
         h('div', { class: 'veld' }, h('label', { for: `verdieping-${id}` }, 'Jouw antwoord (optioneel)'), tekstVeld),
         h('div', { class: 'optie' }, gedaan, h('label', { for: `verdieping-gedaan-${id}` }, 'Verdieping gedaan')));

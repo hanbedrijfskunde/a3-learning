@@ -8,6 +8,13 @@
       "type": "web",
       "apa": "International Integrated Reporting Council. (2021). *International <IR> framework*. IFRS Foundation.",
       "link": "https://www.ifrs.org/issued-standards/integrated-reporting/"
+    },
+    {
+      "id": "mitsubishi-corporation-2023",
+      "citatie": "Mitsubishi Corporation, 2023",
+      "type": "web",
+      "apa": "Mitsubishi Corporation. (2023). *The six capitals*. Integrated Report 2023.",
+      "link": "https://www.mitsubishicorp.com/jp/en/ir/library/ar/online2023/six-capitals/"
     }
   ],
   "wachtOpCitatie": []

@@ -564,10 +564,16 @@
     }
   ],
   "verdieping": {
-    "tekst": "Reageer schriftelijk op de feedback die je kreeg. Wat neem je niet over, en waarom? Of zoek uit welk kapitaal neemt af als je de waarde uit je user story aan iedereen levert.",
+    "tekst": "Reageer schriftelijk op de feedback die je kreeg. Wat neem je niet over, en waarom? Of lees hoe Mitsubishi Corporation zijn zes kapitalen beschrijft. Het bedrijf verdient onder meer aan aardgas, mijnbouw en zalmkweek. Welk kapitaal neemt daardoor af? Vergelijk hoe de pagina over dat kapitaal schrijft met het stuk over financieel kapitaal. Denk aan Objectivity uit leerblok 2: heeft de bron een belang?",
     "bron": "lrd",
     "na": "6.3",
-    "thema": { "tekst": "Je kijkt verder dan je eigen reflectie, als je daar tijd voor hebt.", "bron": "auteur" }
+    "thema": { "tekst": "Je kijkt verder dan je eigen reflectie, als je daar tijd voor hebt.", "bron": "auteur" },
+    "link": {
+      "titel": "The Six Capitals",
+      "verwijzing": "(Mitsubishi Corporation, 2023)",
+      "taal": "Engels",
+      "url": "https://www.mitsubishicorp.com/jp/en/ir/library/ar/online2023/six-capitals/"
+    }
   },
   "bewijsonderdelen": [
     {

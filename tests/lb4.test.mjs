@@ -138,7 +138,7 @@ test('11.17/BW-12/QA-3: alle 12 bewijsonderdelen komen in de leerblokken voor, e
 
 test('11.16/LI-2: bronnen-4.json bevat het IIRC-kader, staat in het manifest en de content-check laat het niet als wees staan', () => {
   const b4 = json('data/bronnen-4.json');
-  assert.deepEqual(b4.bronnen.map((b) => b.id), ['iirc-2021']);
+  assert.deepEqual(b4.bronnen.map((b) => b.id), ['iirc-2021', 'mitsubishi-corporation-2023']); // Mitsubishi: verdieping (ADR B114)
   assert.ok(json('data/bronnen.json').bestanden.includes('bronnen-4.json'));
   const r = controleerMap(resolve(root, 'data'));
   assert.ok(!r.waarschuwingen.some((w) => /iirc/i.test(w) && /wachten nog/.test(w)));
@@ -542,8 +542,22 @@ test('TK-13: elk van de vier leerblokken heeft 1 verdiepingstaak bij een bestaan
   for (const b of blokken) assert.ok(b.taken.some((t) => t.id === b.verdieping.na), `leerblok ${b.leerblok}: verdieping hoort bij een bestaande taak`);
   assert.equal(blok4.verdieping.na, '6.3');
   assert.equal(blok4.verdieping.bron, 'lrd');
-  assert.match(blok4.verdieping.tekst, /welk kapitaal neemt af/i);
+  assert.match(blok4.verdieping.tekst, /welk kapitaal neemt daardoor af/i);
   assert.ok(!('richttijd' in blok4.verdieping) && !('minuten' in blok4.verdieping));
+});
+
+test('ADR B114, MD-14: de verdieping van leerblok 4 linkt naar de zes kapitalen van Mitsubishi Corporation, in een nieuw tabblad en met bronregel', () => {
+  const { link } = blok4.verdieping;
+  assert.match(link.url, /^https:\/\/www\.mitsubishicorp\.com\/.+\/six-capitals\/$/);
+  assert.equal(link.verwijzing, '(Mitsubishi Corporation, 2023)');
+  assert.equal(link.taal, 'Engels');
+  assert.ok(json('data/bronnen-4.json').bronnen.some((b) => b.citatie === 'Mitsubishi Corporation, 2023' && b.link === link.url),
+    'de bronregel in bronnen-4.json heeft dezelfde link, zodat de linkcontrole hem meeneemt (BR-2, BR-6)');
+  const leerblok = lees('js/leerblok.js');
+  assert.match(leerblok, /h\('a', \{ href: link\.url, target: '_blank', rel: 'noopener noreferrer' \}, link\.titel\)/);
+  assert.match(leerblok, /met\(link\.verwijzing\)/, 'de verwijzing klikt naar de bronnenpagina (BR-4)');
+  assert.match(leerblok, /met\(model\.verdieping\.tekst\)/, 'een verwijzing in de tekst van de verdieping klikt ook (BR-4)');
+  assert.doesNotMatch(leerblok, /iframe/i);
 });
 
 test('TK-14: 0 statuswijzigingen en 0 minuten in de richttijd van 45 min door een verdiepingstaak; in het dossier alleen „verdieping gedaan”', async () => {

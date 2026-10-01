@@ -115,6 +115,19 @@ test('formaat: ontbrekend waarom, verdieping of formaatnummer is een fout (TK-2,
   assert.match(controleerFormaat(c, 'leerblok-1.json').fouten.join('\n'), /formaat moet "1\.0" zijn/);
 });
 
+test('formaat: een link bij de verdieping is een https-link met titel, taal en verwijzing (Auteur, jaar) (MD-14, BR-4, B114)', () => {
+  const goed = echt();
+  goed.verdieping.link = { titel: 'The Six Capitals', verwijzing: '(Mitsubishi Corporation, 2023)', taal: 'Engels', url: 'https://www.mitsubishicorp.com/x/' };
+  assert.deepEqual(controleerFormaat(goed, 'leerblok-1.json').fouten.filter((f) => /verdieping/.test(f)), []);
+  const kapot = echt();
+  kapot.verdieping.link = { titel: '', verwijzing: 'Mitsubishi', url: 'http://www.mitsubishicorp.com/x/' };
+  const f = controleerFormaat(kapot, 'leerblok-1.json').fouten.join('\n');
+  assert.match(f, /verdieping\.link: url moet een https-link zijn/);
+  assert.match(f, /verdieping\.link mist titel/);
+  assert.match(f, /verdieping\.link mist taal/);
+  assert.match(f, /verdieping\.link: verwijzing heeft de vorm \(Auteur, jaar\)/);
+});
+
 test('formaat: een controle met onbekend type, onbekend veld of foute parameters wordt gemeld', () => {
   const a = echt(); taakVan(a, '2.1').controles[0].type = 'bestaatNiet';
   assert.match(controleerFormaat(a, 'leerblok-1.json').fouten.join('\n'), /onbekend type bestaatNiet/);

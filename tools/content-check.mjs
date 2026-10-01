@@ -16,7 +16,7 @@
 //                  "toepassing": { "opdracht": { "tekst", "bron" }, "figuur"?, "velden": [ { "id", "label", "type", "opties"? } ], "livevoorbeeld"? },
 //                  "controles": [ { "id", "soort": "A"|"B"|"C", "type", "veld"?, "velden"?, ...parameters } ],
 //                  "bewijsonderdeel": "EV-01" | null, "luk": [1], "bc": ["BC1"] } ],
-//     "verdieping": { "tekst", "bron", "na": "2.2" },
+//     "verdieping": { "tekst", "bron", "na": "2.2", "link"?: { "titel", "verwijzing", "taal", "url" } },
 //     "bewijsonderdelen": [ { "id": "EV-01", "taak": "2.1", "titel", "lukOnderdelen": ["…"] } ] }
 import { readdirSync, readFileSync, existsSync, statSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
@@ -310,6 +310,13 @@ export function controleerFormaat(inhoud, bestand) {
   else {
     bronTekst('', 'verdieping', inhoud.verdieping);
     if (!ids.has(inhoud.verdieping.na)) fout('', `verdieping hoort na taak ${inhoud.verdieping.na}, die niet bestaat`);
+    // ADR B114: een pagina van derden is een gewone https-link met bronregel, zoals een kijktip (MD-14, BR-4)
+    const link = inhoud.verdieping.link;
+    if (link !== undefined) {
+      if (!/^https:\/\//.test(link?.url ?? '')) fout('', 'verdieping.link: url moet een https-link zijn (MD-14)');
+      for (const veld of ['titel', 'verwijzing', 'taal']) if (!gevuld(link?.[veld])) fout('', `verdieping.link mist ${veld}`);
+      if (!/^\(.+, \d{4}\)$/.test(link?.verwijzing ?? '')) fout('', 'verdieping.link: verwijzing heeft de vorm (Auteur, jaar) (BR-4)');
+    }
   }
 
   for (const ev of onderdelen) {
