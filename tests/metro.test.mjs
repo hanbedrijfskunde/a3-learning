@@ -8,6 +8,7 @@ import { controleerFormaat, SPOOR_STAPPEN } from '../tools/content-check.mjs';
 import { normaliseerBlok } from '../js/blok.js';
 import { leesAdres } from '../js/taakweergave.js';
 import { metroModel, laatsteLeerblok, gekozenTak, MEDIA_TAKKEN } from '../js/metro-model.js';
+import { metroIndeling, HOOGTE, Y_LIJN, RIJ } from '../js/metro-indeling.js';
 import { controleerContrast, tokensUit, contrast, LIJNEN, MINIMUM_GRAFISCH } from '../tools/contrast-check.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -166,4 +167,65 @@ test('SX-18: lege opslag en onbekende ankers: alles open, „hier” op het begi
   const m = metroModel({ blok: b, store: nepStore(), adres });
   assert.equal(hier(m).id, 'begin');
   assert.ok(alleHaltes(m).every((h) => h.stand !== 'af'));
+});
+
+/** Alle adressen van een leerblok: overzicht, afsluiten, elke taak met elke stap, en elders. */
+const adressen = (b) => [{ soort: 'overzicht' }, { soort: 'afsluiten' }, { soort: 'elders', taak: b.taken[0].id, stap: 1 },
+  ...b.taken.flatMap((t) => [1, 2, 3, 4].map((stap) => ({ soort: 'taak', taak: t.id, stap })))];
+const keuzes = nepStore({ 'media:route:1': 'video', 'media:route:2': 'spel', 'oefening:3.2': { invoer: { route: 'B · AI-tool' } } });
+
+test('SX-18: op 328, 600 en 1024 px elke halte binnen de kaart, tikvlakken ≥ 24 × 24 px en zonder overlap', () => {
+  for (const n of [1, 2, 3, 4]) {
+    const b = blok(n);
+    for (const store of [nepStore(), keuzes]) {
+      for (const adres of adressen(b)) {
+        for (const breedte of [328, 600, 1024]) {
+          const ind = metroIndeling(metroModel({ blok: b, store, adres }), breedte);
+          const wie = `leerblok ${n} ${JSON.stringify(adres)} ${breedte}px`;
+          assert.ok(HOOGTE >= 44, 'de kaart is minstens 44 px hoog');
+          for (const h of ind.haltes) {
+            assert.ok(h.x - h.r >= 0 && h.x + h.r <= breedte, `${wie}: ${h.id} binnen de breedte`);
+            assert.ok(h.tik.b >= 24 && h.tik.h >= 24, `${wie}: tikvlak van ${h.id} is ${h.tik.b.toFixed(1)} × ${h.tik.h.toFixed(1)}`);
+            assert.ok(h.tik.x >= 0 && h.tik.x + h.tik.b <= breedte + 1e-6 && h.tik.y >= 0 && h.tik.y + h.tik.h <= HOOGTE + 1e-6, `${wie}: tikvlak ${h.id} binnen de kaart`);
+          }
+          for (let i = 0; i < ind.haltes.length; i += 1) {
+            for (let j = i + 1; j < ind.haltes.length; j += 1) {
+              const a = ind.haltes[i].tik; const c = ind.haltes[j].tik;
+              const ox = Math.min(a.x + a.b, c.x + c.b) - Math.max(a.x, c.x);
+              const oy = Math.min(a.y + a.h, c.y + c.h) - Math.max(a.y, c.y);
+              assert.ok(ox <= 0.01 || oy <= 0.01, `${wie}: ${ind.haltes[i].id} en ${ind.haltes[j].id} overlappen`);
+            }
+          }
+          assert.equal(ind.labels.filter((l) => l.soort === 'hier').length, 1, `${wie}: één label „hier”`);
+        }
+      }
+    }
+  }
+});
+
+test('SX-18: het smalste geval, leerblok 3 met 5.1 open, heeft 12 kolommen; onder 28 px alleen labels van „hier” en de overstappunten', () => {
+  const m = metroModel({ blok: blok(3), store: nepStore(), adres: { soort: 'taak', taak: '5.1', stap: 2 } });
+  assert.equal(m.kolommen.length, 12);
+  const smal = metroIndeling(m, 328);
+  assert.equal(smal.smal, true);
+  assert.ok(smal.labels.every((l) => l.soort === 'overstap' || l.soort === 'hier'));
+  assert.deepEqual(smal.labels.filter((l) => l.soort === 'overstap').map((l) => [l.tekst, l.anker, l.x]), [['Vorige keer', 'start', 0], ['Afsluiten', 'end', 328]]);
+  const breed = metroIndeling(m, 1024);
+  assert.equal(breed.smal, false);
+  assert.ok(breed.labels.some((l) => l.soort === 'kolom' && l.tekst === '6.1'));
+  assert.ok(breed.labels.some((l) => l.soort === 'tak' && l.tekst === 'V'));
+});
+
+test('SX-19: takken liggen op ±18 px; dezelfde splitsing loopt parallel door; stompjes in de kleur van de vorige en volgende lijn', () => {
+  const m = metroModel({ blok: blok(2), store: nepStore(), adres: { soort: 'taak', taak: '3.2', stap: 4 } });
+  const ind = metroIndeling(m, 1024);
+  const takA = ind.haltes.filter((h) => h.id.endsWith('-A'));
+  assert.deepEqual(takA.map((h) => h.y), [Y_LIJN - RIJ, Y_LIJN - RIJ], 'tak A van oefenen en toepassen');
+  const [o, t] = takA;
+  assert.ok(ind.sporen.some((s) => s.x1 === o.x && s.x2 === t.x && s.y1 === o.y && s.y2 === t.y), 'tak A loopt recht door van O naar T');
+  assert.deepEqual(ind.sporen.filter((s) => s.lijn !== 2).map((s) => s.lijn), [1, 3]);
+  const lb1 = metroIndeling(metroModel({ blok: blok(1), store: nepStore(), adres: { soort: 'overzicht' } }), 600);
+  assert.deepEqual(lb1.sporen.filter((s) => s.lijn !== 1).map((s) => s.lijn), [2], 'leerblok 1: alleen een stompje naar lijn 2');
+  const v = metroIndeling(metroModel({ blok: blok(2), store: nepStore(), adres: { soort: 'overzicht' } }), 600);
+  assert.ok(v.sporen.some((s) => s.gestippeld), 'de verdieping is gestippeld zolang ze niet gedaan is');
 });
