@@ -22,7 +22,7 @@ node tools/link-check.mjs
 
 De workflow `.github/workflows/pages.yml` draait deze drie bij elke push en publiceert alleen als alle drie slagen.
 
-Losse controles die ook in `node --test` zitten: `node tools/contrast-check.mjs` (TG-3: tekstparen uit `css/site.css` en de `<style>`-blokken, minimaal 4,5:1) en `node tools/gewicht-check.mjs` (PF-4: de eerste lading per pagina, en 0 verwijzingen naar een ander domein). Sinds fase 11 (ADR B69) zijn er twee grenzen: 300 kB gecomprimeerd (gzip per bestand, zoals GitHub Pages levert) en 400 kB ongecomprimeerd. Het telt alle modules en databestanden die die pagina laadt; dynamische imports tellen alleen mee voor pagina's die ze echt laden (zie hieronder).
+Losse controles die ook in `node --test` zitten: `node tools/contrast-check.mjs` (TG-3: tekstparen uit `css/site.css` en de `<style>`-blokken, minimaal 4,5:1) en `node tools/gewicht-check.mjs` (PF-4: de eerste lading per pagina, en 0 verwijzingen naar een ander domein). Sinds fase 11 (ADR B69) zijn er twee grenzen: 300 kB gecomprimeerd (gzip per bestand, zoals GitHub Pages levert) en 500 kB ongecomprimeerd (400 kB tot ADR B99). Het telt alle modules en databestanden die die pagina laadt; dynamische imports tellen alleen mee voor pagina's die ze echt laden (zie hieronder). Het TOM-bord van taak 8.1 (`js/tombord.js`, `js/tom.js`, `css/tombord.css`, `data/tom.json`) laadt pas als zijn plek in beeld komt (`js/tom-later.js`, voorwaarde `inbeeld`, ADR B98) en telt dus niet mee; leerblok 3 zit daarmee op 399,97 kB bron.
 
 ## Huisstijl, toegankelijkheid en offline (fase 8)
 

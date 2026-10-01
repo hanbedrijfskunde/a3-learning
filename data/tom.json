@@ -1,0 +1,30 @@
+{
+  "formaat": "1.0",
+  "opmerking": "Eigen uitwerking van de TOM³-indeling (Westmoreland BV, z.d.) voor taak 8.1: per cel een korte naam, de vraag die je daar stelt en waar je naar kijkt. Geen zinnen uit het ongepubliceerde buildplan of het dashboard (LI-3). Laadt pas als het TOM-model in beeld komt (PF-4, ADR B98).",
+  "bron": "concept-auteur",
+  "lagen": [
+    { "code": "S", "naam": "Strategisch", "uitleg": "koers en lange termijn" },
+    { "code": "T", "naam": "Tactisch", "uitleg": "afspraken, processen en rollen" },
+    { "code": "O", "naam": "Operationeel", "uitleg": "het dagelijkse werk" }
+  ],
+  "kolommen": [
+    { "code": "1", "naam": "Methode", "uitleg": "hoe het werk loopt" },
+    { "code": "2", "naam": "Mens", "uitleg": "wie het doet en wat ze kunnen" },
+    { "code": "3", "naam": "Machine", "uitleg": "systemen en gegevens" },
+    { "code": "4", "naam": "Informatie & Rapportage", "uitleg": "cijfers om mee te sturen" }
+  ],
+  "cellen": {
+    "S1": { "naam": "Waardeketen", "vraag": "Welke waarde levert de organisatie, en langs welke stappen komt die bij de klant?", "kijk": ["de klantreis", "de kernactiviteiten", "de belofte aan de klant"] },
+    "S2": { "naam": "Structuur en mandaat", "vraag": "Hoe is de organisatie ingedeeld, en wie mag waarover beslissen?", "kijk": ["het organogram", "mandaten", "het overleg tussen directie en afdelingen"] },
+    "S3": { "naam": "IT-koers", "vraag": "Welke keuzes voor systemen en data gelden voor de komende jaren?", "kijk": ["het IT-beleid", "keuzes voor eigen beheer of de cloud", "grote investeringen"] },
+    "S4": { "naam": "Doelen in cijfers", "vraag": "Aan welke cijfers ziet de directie of de koers werkt?", "kijk": ["kpi's in het jaarplan", "een balanced scorecard", "streefwaarden"] },
+    "T1": { "naam": "Processen en afspraken", "vraag": "Hoe loopt het werk van afdeling naar afdeling, en welke afspraken gelden bij elke overdracht?", "kijk": ["processchema's", "overdrachtsmomenten", "contracten en normen"] },
+    "T2": { "naam": "Rollen en taken", "vraag": "Wie doet wat, wie beslist en wie moet het weten?", "kijk": ["een RACI", "functieprofielen", "de taakverdeling"] },
+    "T3": { "naam": "Systemen en data", "vraag": "Welk systeem hoort bij welke processtap, en welke gegevens gaan erin?", "kijk": ["het overzicht van applicaties", "afspraken over gegevens", "koppelingen of juist handwerk ertussen"] },
+    "T4": { "naam": "Stuurinformatie", "vraag": "Met welke overzichten stuurt het middenmanagement bij?", "kijk": ["weekrapportages", "doorlooptijden", "servicenormen"] },
+    "O1": { "naam": "Werkinstructies", "vraag": "Staat ergens hoe het werk precies moet?", "kijk": ["werkinstructies", "checklists", "protocollen"] },
+    "O2": { "naam": "Kennis en kunde", "vraag": "Kunnen medewerkers het werk, en hoe leren nieuwe mensen het?", "kijk": ["het inwerkprogramma", "trainingen", "wie waar verstand van heeft"] },
+    "O3": { "naam": "Schermen en apparaten", "vraag": "Helpen de schermen en apparaten bij het werk, of zitten ze in de weg?", "kijk": ["invoerschermen", "scanners en terminals", "foutmeldingen"] },
+    "O4": { "naam": "Registratie", "vraag": "Wat wordt er op de werkvloer vastgelegd over wat er gebeurt?", "kijk": ["logboeken", "meldingen van storingen", "de overdracht tussen diensten"] }
+  }
+}

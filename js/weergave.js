@@ -39,13 +39,15 @@ export const verdiepingBijTaak = (blok, taakId) => (blok.verdieping?.na === taak
 
 /**
  * Het modelantwoord is pas zichtbaar als de student in minstens één veld iets heeft ingevuld (TK-6); bij `modelNa: 'lijn'` (taak 9.4)
- * pas na minstens één getrokken lijn in de verbanden-kaart (VB-2).
+ * pas na minstens één getrokken lijn in de verbanden-kaart (VB-2); bij een lijst veld-id's (taak 3.2, ADR B100) pas als een van
+ * die velden iets bevat, zodat alleen een routekeuze het model nog niet toont.
  * Wie de oefening overslaat, krijgt het modelantwoord niet: die stap is dan niet gedaan.
  */
 export function modelZichtbaar(velden, invoer = {}, overgeslagen = false, modelNa = 'veld') {
   if (overgeslagen) return false;
   // Taak 9.4 (VB-2): het modelvoorbeeld komt pas na minstens één getrokken lijn, niet al na een ingevuld antwoord.
   if (modelNa === 'lijn') return Array.isArray(invoer.verbanden) && invoer.verbanden.length > 0;
+  if (Array.isArray(modelNa)) return modelNa.some((id) => heeftWaarde(invoer[id]));
   return velden.some((v) => heeftWaarde(invoer[v.id]));
 }
 

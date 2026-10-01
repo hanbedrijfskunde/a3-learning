@@ -9,11 +9,11 @@ import { GRENS, GRENS_BRON, externeBronnen, gewichten } from '../tools/gewicht-c
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 
-test('PF-4: elke pagina laadt ≤ 300 kB gecomprimeerd en ≤ 400 kB ongecomprimeerd (zonder video), 100 % van de pagina\'s', () => {
+test('PF-4: elke pagina laadt ≤ 300 kB gecomprimeerd en ≤ 500 kB ongecomprimeerd (ADR B99) (zonder video), 100 % van de pagina\'s', () => {
   const lijst = gewichten(root);
   assert.ok(lijst.length >= 10, 'te weinig pagina\'s gemeten');
   assert.equal(GRENS, 300_000);
-  assert.equal(GRENS_BRON, 400_000);
+  assert.equal(GRENS_BRON, 500_000);
   for (const g of lijst) {
     assert.ok(g.gzip <= GRENS, `${g.pagina}: ${g.gzip} bytes gzip > ${GRENS}`);
     assert.ok(g.bytes <= GRENS_BRON, `${g.pagina}: ${g.bytes} bytes > ${GRENS_BRON}`);

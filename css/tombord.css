@@ -1,0 +1,81 @@
+/* TOM-bord van taak 8.1 (LB-11, SX-15, ADR B98): alleen geladen als het bord in beeld komt (PF-4). Kleuren: tokens uit site.css.
+   Het raster blijft 3 × 4, ook op 360 px: laagkoppen links, vier kolommen, rechts de lus van de vierde kolom. */
+.tm-raster { display:grid; grid-template-columns:minmax(4.5rem,.9fr) repeat(4,minmax(0,1fr)) 1.75rem; grid-template-rows:auto repeat(3,minmax(4rem,auto));
+  border:var(--rand) solid var(--zwart); background:var(--wit); font-size:.8125rem; line-height:1.25; hyphens:auto; overflow-wrap:anywhere; }
+.tm-kop { display:flex; flex-direction:column; gap:.15rem; padding:.4rem; border:1px solid var(--zwart); }
+.tm-kop span { color:var(--grijs-tekst); }
+.tm-laag { grid-column:1; background:var(--grijs); }
+.tm-ir { background:var(--roze); border-left:3px solid var(--accent); }
+.tm-lus { grid-column:6; grid-row:2 / 5; display:flex; flex-direction:column; justify-content:space-around; align-items:center; padding:.4rem 0; border-left:1px solid var(--zwart); }
+.tm-pijl { flex:1; display:flex; flex-direction:column; align-items:center; font-size:1rem; color:var(--accent-donker); line-height:1; }
+.tm-lijn { flex:1; width:3px; min-height:1rem; background:var(--accent-donker); }
+.tm-pijl small { writing-mode:vertical-rl; font-size:.8125rem; color:var(--zwart); margin:.2rem 0; hyphens:none; }
+.tm-pijl:first-child small { transform:rotate(180deg); }
+
+/* een cel: een knop (verkennen, oefenen, toepassen) of een vak (modelantwoord) */
+.tm-cel { display:flex; flex-direction:column; align-items:flex-start; gap:.25rem; min-height:4rem; padding:.4rem; font:inherit; text-align:left; color:var(--zwart);
+  background:var(--wit); border:1px solid var(--zwart); }
+.tm-cel.tm-ir { background:var(--roze); }
+button.tm-cel { cursor:pointer; }
+button.tm-cel:hover { background:var(--grijs); }
+.tm-celnaam { font-weight:800; }
+.tm-celtekst { color:var(--grijs-tekst); display:-webkit-box; -webkit-line-clamp:3; line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+.tm-gevuld { background:var(--zwart) !important; color:var(--wit); }
+.tm-gevuld .tm-celtekst { color:var(--wit); background:var(--zwart); }
+/* de gekozen cel en de twee kijkrichtingen: de kolom erboven en de laag opzij */
+.tm-cel.tm-kies { outline:4px solid var(--accent); outline-offset:-4px; }
+.tm-cel { position:relative; }
+.tm-omhoog { box-shadow:inset 0 -4px 0 var(--accent); }
+.tm-opzij { box-shadow:inset 0 -4px 0 var(--zwart); }
+.tm-omhoog::after, .tm-opzij::after { position:absolute; right:.3rem; top:.2rem; font-size:1rem; font-weight:800; color:var(--accent-donker); }
+.tm-omhoog::after { content:"↑"; }
+.tm-opzij::after { content:"↔"; color:var(--zwart); }
+/* de laag van het gekozen niveau */
+.tm-laag.tm-niveau { background:var(--zwart); color:var(--wit); }
+.tm-laag.tm-niveau span, .tm-hier { color:var(--wit); background:var(--zwart); }
+.tm-hier { overflow-wrap:normal; hyphens:none; font-style:normal; font-weight:700; text-transform:uppercase; letter-spacing:.04em; }
+.tm-cel.tm-niveau { border-top:3px solid var(--zwart); border-bottom:3px solid var(--zwart); }
+.tm-telling { font-weight:700; }
+
+.tm-paneel, .tm-editor { border:var(--rand) solid var(--zwart); border-top:0; padding:.6rem .9rem; background:var(--wit); }
+.tm-leeg { margin:0; color:var(--grijs-tekst); }
+.tm-celkop { margin:0 0 .35rem; font-size:1.125rem; }
+.tm-vraag { font-weight:700; margin:.25rem 0; }
+.tm-richting { margin:.25rem 0; }
+.tm-tekst { margin:.75rem 0; }
+.tm-tekst > summary { cursor:pointer; font-weight:700; min-height:2.75rem; display:flex; align-items:center; }
+.tm-tips { list-style:none; margin:.75rem 0; padding:.5rem .75rem; border-left:6px solid var(--accent); background:var(--grijs); display:grid; gap:.35rem; }
+
+/* oefenen: signalen oppakken en in een cel zetten */
+.tm-signalen { list-style:none; margin:.5rem 0 .75rem; padding:0; display:grid; gap:.5rem; }
+.tm-signaal { display:grid; grid-template-columns:auto 1fr; column-gap:.6rem; align-items:start; width:100%; min-height:2.75rem; padding:.45rem .6rem; font:inherit; text-align:left;
+  color:var(--zwart); background:var(--wit); border:2px solid var(--zwart); box-shadow:3px 3px 0 var(--zwart); cursor:pointer; }
+.tm-signaal:active { box-shadow:none; transform:translate(3px,3px); }
+.tm-signaal .tm-waar { grid-column:2; font-size:.875rem; color:var(--grijs-tekst); }
+.tm-signaal.tm-geplaatst .tm-waar { color:var(--zwart); font-weight:700; }
+.tm-opgepakt { border-color:var(--accent); box-shadow:3px 3px 0 var(--accent); }
+.tm-bezig button.tm-cel { outline:2px dashed var(--accent); outline-offset:-5px; }
+.tm-status { min-height:1.5em; }
+.tm-chips { display:flex; flex-wrap:wrap; gap:.2rem; }
+.tm-chip { display:inline-flex; align-items:center; justify-content:center; min-width:1.5rem; height:1.5rem; padding:0 .25rem; font-size:.8125rem; font-weight:800;
+  color:var(--zwart); background:var(--wit); border:2px solid var(--zwart); border-radius:50%; }
+.tm-chip-goed { background:var(--zwart); color:var(--wit); }
+.tm-chip-bijna { border-style:dashed; }
+.tm-legenda { display:flex; flex-wrap:wrap; align-items:center; gap:.3rem; }
+.tm-vergelijking { padding-left:1.25rem; }
+.tm-vergelijking li { margin:.3rem 0; }
+
+@media (max-width:480px) {
+  .tm-raster { grid-template-columns:3.6rem repeat(4,minmax(0,1fr)) 1.4rem; }
+  .tm-kop, .tm-cel { padding:.25rem; }
+  .tm-kop > span:not(.tm-telling) { display:none; }
+  .tm-celtekst { -webkit-line-clamp:2; line-clamp:2; }
+}
+@media print {
+  .tm-raster { break-inside:avoid; }
+  .tm-celtekst { display:block; -webkit-line-clamp:unset; line-clamp:none; overflow:visible; }
+  .tm-editor, .tm-tips { display:none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tm-signaal:active { transform:none; }
+}

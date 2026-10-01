@@ -11,6 +11,8 @@ import {
 import { bouwControles } from '../js/checks/index.js';
 import { voerUit } from '../js/checks/core.js';
 import { bepaalStatus } from '../js/status.js';
+import { oefenModel } from '../js/weergave.js';
+import { controleerFormaat } from '../tools/content-check.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const blok = JSON.parse(readFileSync(resolve(root, 'data/leerblok-2.json'), 'utf8'));
@@ -330,4 +332,43 @@ test('TK-2: taken 3.1, 3.2, 4.1 en 4.2 kloppen met het werkboek (titel, vorm, ti
     if (t.klaarAls.bron === 'concept-auteur') assert.equal(w.heeftKlaar, false, `klaar als ${t.id} staat wel in het werkboek`);
   }
   assert.ok(n >= 6, `slechts ${n} teksten vergeleken`);
+});
+
+// ---------------------------------------------------------------- oefencasus 3.2: twee routes in tweetallen (ADR B100)
+
+test('ADR B100: de oefening van 3.2 heeft dezelfde twee routes als de toepassing, een promptgenerator en een vergelijking', () => {
+  const t = taak('3.2');
+  const ids = t.oefening.velden.map((v) => v.id);
+  assert.deepEqual(t.oefening.velden.find((v) => v.id === 'route').opties, t.toepassing.velden.find((v) => v.id === 'route').opties);
+  const groepen = t.oefening.weergave.groepen;
+  assert.deepEqual(groepen.filter((g) => g.alleenBij).map((g) => g.alleenBij.waarde), [ROUTE_A, ROUTE_B]);
+  const gezien = groepen.flatMap((g) => g.velden ?? []);
+  assert.deepEqual([...gezien].sort(), [...ids].sort(), 'elk oefenveld staat precies één keer op het scherm');
+  const p = groepen.find((g) => g.promptgenerator).promptgenerator;
+  for (const id of [p.zoekvraag, p.context, p.jaar, p.lijst, p.prompt]) assert.ok(ids.includes(id), id);
+  assert.ok(ids.includes('vergelijking'));
+});
+
+test('ADR B100 en TK-6: alleen een route kiezen toont het modelantwoord nog niet; eigen werk in een route of de vergelijking wel', () => {
+  const t = taak('3.2');
+  assert.equal(oefenModel(t, { invoer: { route: ROUTE_B } }).modelZichtbaar, false);
+  assert.equal(oefenModel(t, { invoer: { route: ROUTE_A, zoekstring: 'webshop*' } }).modelZichtbaar, true);
+  assert.equal(oefenModel(t, { invoer: { route: ROUTE_B, context: 'webshops in Nederland' } }).modelZichtbaar, true);
+  assert.equal(oefenModel(t, { invoer: { vergelijking: 'Route A vond meer.' } }).modelZichtbaar, true);
+  assert.equal(oefenModel(t, { invoer: { context: 'x' }, overgeslagen: true }).modelZichtbaar, false);
+});
+
+test('ADR B100: de modelprompt is wat de promptgenerator maakt en noemt geen naam uit de niet-noemen-lijst', () => {
+  const m = taak('3.2').modelantwoord.velden;
+  assert.equal(m.prompt, bouwPrompt({ zoekvraag: 'Welke factoren bepalen de klanttevredenheid bij webshops?', context: m.context, jaar: m.jaar }));
+  assert.deepEqual(verbodenWoorden(m.prompt, m.nietNoemen), []);
+});
+
+test('QA-3 (sabotage): de contentcontrole meldt een modelNa met een onbekend veld of een onbekende waarde', () => {
+  const fouten = (b) => controleerFormaat(b, 'leerblok-2.json').fouten.join('\n');
+  assert.equal(fouten(blok), '');
+  const a = JSON.parse(JSON.stringify(blok)); a.taken.find((t) => t.id === '3.2').oefening.modelNa = ['bestaatniet'];
+  assert.match(fouten(a), /modelNa noemt bestaatniet/);
+  const b = JSON.parse(JSON.stringify(blok)); b.taken.find((t) => t.id === '3.2').oefening.modelNa = 'later';
+  assert.match(fouten(b), /modelNa "later" is onbekend/);
 });

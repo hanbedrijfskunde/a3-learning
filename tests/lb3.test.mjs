@@ -11,6 +11,8 @@ import {
 } from '../js/checks/lb3.js';
 import { stakeholdersUit, bouwRaster, rasterTekst, KWADRANTEN, reeks, stakeholderRijen } from '../js/raster.js';
 import { expandeerVelden, normaliseerBlok } from '../js/blok.js';
+import { CELLEN } from '../js/tom.js';
+import { TOM_VELDEN } from '../js/tom-later.js';
 import { maakStore, geheugenOpslag } from '../js/store.js';
 import { maakSessie } from '../js/sessie.js';
 import { wisselContext } from '../js/wissel.js';
@@ -281,9 +283,10 @@ test('LB-11: het TOM-model V1 volgt TOM³: 3 lagen × 4 kolommen = 12 cellen, en
   for (const laag of ['Strategisch', 'Tactisch', 'Operationeel']) for (const kolom of ['Methode', 'Mens', 'Machine', 'Informatie & Rapportage']) {
     assert.ok(cellen.some((c) => c.label === `${laag} · ${kolom}`), `${laag} · ${kolom}`);
   }
-  const tabel = taak('8.1').toepassing.weergave.groepen.find((g) => g.tabel?.kolommen.includes('Methode')).tabel;
-  assert.deepEqual(tabel.kolommen, ['Laag', 'Methode', 'Mens', 'Machine', 'Informatie & Rapportage']);
-  assert.equal(tabel.rijen.length, 3);
+  // het TOM-bord (ADR B98) schrijft precies deze twaalf velden, in leesvolgorde
+  assert.deepEqual(TOM_VELDEN, cellen.map((c) => c.id));
+  assert.deepEqual(CELLEN.map((c) => [c.veld, c.label]), cellen.map((c) => [c.id, c.label]));
+  assert.ok(taak('8.1').toepassing.weergave.groepen.some((g) => g.tombord?.niveau === 'niveau'), 'het raster is de invoer');
   assert.ok(!velden.some((v) => (v.type === 'keuze' || v.type === 'lijst') && v.opties.some((o) => /zachman|togaf|target operating|tom-model|tom model/i.test(o))), 'geen keuze uit andere modellen');
 });
 

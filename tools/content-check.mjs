@@ -1,4 +1,4 @@
-// Contentcontrole: valideert data/leerblok-*.json, data/leerblokken.json en data/luk.json (QA-3, BW-12, TK-2, TK-13, QA-1, BW-13).
+// Contentcontrole: valideert data/leerblok-*.json, data/leerblokken.json, data/luk.json en data/tom.json (QA-3, BW-12, TK-2, TK-13, QA-1, BW-13).
 // Bronnen (BR-1, BR-3, BR-5): data/bronnen.json en data/bronnen-N.json, zie js/bronnen.js voor het formaat.
 //
 // Gebruik: node tools/content-check.mjs [datamap]   (standaard: data/)
@@ -32,6 +32,8 @@ import { controleerSpel } from './spel-check.mjs';
 import { KAPITALEN, VPC_ONDERDELEN, SPANNING, bouwOefenKaarten, maakVerband } from '../js/verbanden.js';
 
 // De figuren die de stap stof of de oefening kan tonen (FIGUREN in js/leerblok.js).
+// De twaalf cellen van het TOM-model zoals ze in een veld staan („Tactisch · Mens”, LB-11).
+export const TOM_LABELS = Object.freeze(['Strategisch', 'Tactisch', 'Operationeel'].flatMap((l) => ['Methode', 'Mens', 'Machine', 'Informatie & Rapportage'].map((k) => `${l} · ${k}`)));
 export const FIGUUR_NAMEN = ['a3-vel', 'six-capitals', 'vpc', 'bmc', 'tom', 'invloed-belang']; // invloed-belang: het lege raster van het stakeholderbord (SX-15, SX-16)
 const gevuld = (t) => typeof t === 'string' && t.trim() !== '';
 const lijstGevuld = (l) => Array.isArray(l) && l.length > 0;
@@ -155,10 +157,15 @@ export function controleerFormaat(inhoud, bestand) {
     const oefenIds = new Set(oefenVelden.map((v) => v.id));
     // SX-13: elke oefenvraag heeft een hint die het modelantwoord niet verklapt (stuk van ≥ 15 tekens).
     const modelVoorHint = JSON.stringify(taak.modelantwoord ?? '').toLowerCase();
-    // Een stakeholderbord bij de oefening (SX-16) is één vraag: de hint staat op de groep, niet op elk van de 35 velden.
-    const borden = (taak.oefening?.weergave?.groepen ?? []).filter((g) => g?.bord);
-    const bordIds = new Set(borden.flatMap((g) => stakeholderRijen(g.bord).flat()));
-    const oefenVragen = [...oefenVelden.filter((v) => !bordIds.has(v?.id)), ...borden.map((g) => ({ id: `bord ${g.bord.voor}`, hint: g.hint, hintBron: g.hintBron }))];
+    // Een stakeholderbord (SX-16) of een TOM-bord met signalen (ADR B98) bij de oefening is één vraag: de hint staat op de groep,
+    // niet op elk veld van het bord.
+    const borden = (taak.oefening?.weergave?.groepen ?? []).filter((g) => g?.bord || g?.tombord?.signalen);
+    const bordIds = new Set(borden.flatMap((g) => (g.bord ? stakeholderRijen(g.bord).flat() : g.tombord.signalen)));
+    const oefenVragen = [...oefenVelden.filter((v) => !bordIds.has(v?.id)), ...borden.map((g) => ({ id: g.bord ? `bord ${g.bord.voor}` : 'TOM-bord', hint: g.hint, hintBron: g.hintBron }))];
+    for (const g of borden.filter((x) => x.tombord)) {
+      for (const id of g.tombord.signalen) if (!oefenVelden.some((v) => v?.id === id)) fout(wie, `het TOM-bord noemt signaal ${id}, maar dat veld staat niet in de oefening`);
+      for (const [id, w] of Object.entries(taak.modelantwoord?.velden ?? {})) if (g.tombord.signalen.includes(id) && !TOM_LABELS.includes(w)) fout(wie, `het modelantwoord zet ${id} in „${w}”; dat is geen cel van het TOM-model`);
+    }
     for (const v of oefenVragen) {
       if (!v?.id || v.reeks) continue;
       if (!gevuld(v.hint)) { fout(wie, `oefenvraag ${v.id} heeft geen hint (SX-13)`); continue; }
@@ -179,6 +186,11 @@ export function controleerFormaat(inhoud, bestand) {
       const h = v.hint.toLowerCase();
       for (let i = 0; i + 15 <= h.length; i += 5) if (modelVoorHint.includes(h.slice(i, i + 15))) { fout(wie, `de hint bij ${v.id} verklapt het modelantwoord (SX-13): „${h.slice(i, i + 15)}”`); break; }
     }
+
+    // TK-6, ADR B100: modelNa is "veld", "lijn" of een lijst oefenvelden waarvan er één gevuld moet zijn.
+    const na = taak.oefening?.modelNa;
+    if (Array.isArray(na)) { for (const id of na) if (!oefenIds.has(id)) fout(wie, `oefening.modelNa noemt ${id}, maar dat veld staat niet in de oefening`); }
+    else if (na !== undefined && !['veld', 'lijn'].includes(na)) fout(wie, `oefening.modelNa ${JSON.stringify(na)} is onbekend; kies "veld", "lijn" of een lijst velden`);
 
     if (isObject(taak.modelantwoord)) {
       bronTekst(wie, 'modelantwoord', taak.modelantwoord, { tekst: false });
@@ -361,6 +373,31 @@ export function controleerTerugblik(inhoud, bestand = 'terugblik.json') {
     else if (!BRONNEN.includes(k.samenvatting.bron)) fout(`${wie}samenvatting heeft bron ${JSON.stringify(k.samenvatting.bron)}; kies uit ${BRONNEN.join(', ')}`);
     else if (k.samenvatting.bron === 'concept-auteur') waarschuwingen.push(`${bestand}: ${wie}de samenvatting is een concept van de bouwer (bron concept-auteur), wacht op akkoord van de auteur`);
   }
+  return { fouten, waarschuwingen };
+}
+
+/**
+ * Controleert data/tom.json (LB-11, ADR B98): de celteksten van het TOM-bord. Drie lagen en vier kolommen met een uitleg, en
+ * per cel (S1 … O4) een naam, een vraag en minstens twee dingen om naar te kijken. Bron `concept-auteur` geeft een waarschuwing.
+ * @returns {{fouten: string[], waarschuwingen: string[]}}
+ */
+export function controleerTom(inhoud, bestand = 'tom.json') {
+  const fouten = [];
+  const waarschuwingen = [];
+  const fout = (t) => fouten.push(`${bestand}: ${t}`);
+  if (inhoud?.formaat !== '1.0') fout('formaat moet "1.0" zijn');
+  if (!BRONNEN.includes(inhoud?.bron)) fout(`bron ${JSON.stringify(inhoud?.bron)}; kies uit ${BRONNEN.join(', ')}`);
+  else if (inhoud.bron === 'concept-auteur') waarschuwingen.push(`${bestand}: de celteksten zijn een concept van de bouwer (bron concept-auteur), wacht op akkoord van de auteur`);
+  const namen = (lijst) => (Array.isArray(lijst) ? lijst.map((x) => (gevuld(x?.uitleg) ? x.naam : `${x?.naam} (zonder uitleg)`)).join(', ') : '');
+  if (namen(inhoud?.lagen) !== 'Strategisch, Tactisch, Operationeel') fout('lagen moeten Strategisch, Tactisch en Operationeel zijn, elk met een uitleg (LB-11)');
+  if (namen(inhoud?.kolommen) !== 'Methode, Mens, Machine, Informatie & Rapportage') fout('kolommen moeten Methode, Mens, Machine en Informatie & Rapportage zijn, elk met een uitleg (LB-11)');
+  const codes = ['S', 'T', 'O'].flatMap((l) => [1, 2, 3, 4].map((k) => `${l}${k}`));
+  for (const code of codes) {
+    const c = inhoud?.cellen?.[code];
+    if (!gevuld(c?.naam) || !gevuld(c?.vraag)) fout(`cel ${code} mist een naam of een vraag`);
+    else if (!(Array.isArray(c.kijk) && c.kijk.length >= 2 && c.kijk.every(gevuld))) fout(`cel ${code}: noem minstens twee dingen om naar te kijken`);
+  }
+  for (const code of Object.keys(inhoud?.cellen ?? {})) if (!codes.includes(code)) fout(`cel ${code} bestaat niet in het TOM-model`);
   return { fouten, waarschuwingen };
 }
 
@@ -746,6 +783,10 @@ export function controleerMap(map) {
   if (existsSync(resolve(map, 'terugblik.json'))) {
     const t = lees('terugblik.json');
     if (t) { const r = controleerTerugblik(t); fouten.push(...r.fouten); waarschuwingen.push(...r.waarschuwingen); }
+  }
+  if (existsSync(resolve(map, 'tom.json'))) {
+    const t = lees('tom.json');
+    if (t) { const r = controleerTom(t); fouten.push(...r.fouten); waarschuwingen.push(...r.waarschuwingen); }
   }
   const docentDelen = [];
   for (const naam of existsSync(map) ? readdirSync(map).filter((n) => /^docent-deel\d\.json$/.test(n)).sort() : []) {

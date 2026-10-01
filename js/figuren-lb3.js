@@ -1,6 +1,7 @@
-// De figuren van leerblok 3 (het VPC, het BMC en het TOM-model), als citaat met bronvermelding (ADR B84). Alleen geladen op een pagina
+// De figuren van leerblok 3: VPC en BMC als citaat (ADR B84), het TOM-model uit tombord.js (ADR B98). Alleen geladen op een pagina
 // waarvan de data ze gebruikt (`// gewicht-alleen: figurenlb3` in leerblok.js, PF-4); FIGUREN zegt na welke alinea ze staan.
 import { h } from './dom.js';
+import { tomFiguurLater } from './tom-later.js';
 
 /** De zes vakken van het VPC uit de figuur van Strategyzer, met de naam uit de stof van taak 6.1. */
 const VPC_VAKKEN = [
@@ -53,31 +54,5 @@ export function bmcFiguur({ met = (t) => t } = {}) {
           h('tbody', {}, BMC_BOUWSTENEN.map(([plek, en, nl]) => h('tr', {}, h('td', {}, plek), h('td', { lang: 'en' }, en), h('td', {}, nl))))))));
 }
 
-/** De lagen en kolommen van de TOM³-indeling (Westmoreland BV, z.d.), met eigen korte uitleg (geen zinnen uit het ongepubliceerde document, LI-3). */
-const TOM_LAGEN = [['Strategisch', 'koers en lange termijn'], ['Tactisch', 'afspraken, processen en rollen'], ['Operationeel', 'het dagelijkse werk']];
-const TOM_KOLOMMEN = [['Methode', 'hoe het werk loopt'], ['Mens', 'wie het doet en wat ze kunnen'], ['Machine', 'systemen en gegevens'], ['Informatie & Rapportage', 'cijfers om mee te sturen']];
-
-/**
- * Figuur: eigen weergave van de TOM³-indeling naar Westmoreland BV (z.d.), in HTML en CSS zodat hij meeschaalt en de labels tekst blijven.
- * Drie lagen × vier kolommen; de vierde kolom verbindt de lagen: cijfers gaan omhoog, doelen gaan omlaag (ADR B93). Er is geen gepubliceerd
- * beeld van het model om te citeren; de licentie van de site geldt voor deze weergave.
- */
-export function tomFiguur({ met = (t) => t } = {}) {
-  const kop = ([naam, uitleg], extra = '') => h('div', { class: `tom-kop ${extra}`.trim() }, h('strong', {}, naam), h('span', {}, uitleg));
-  return h('figure', { class: 'a3-vel tom-figuur' },
-    h('div', {
-      class: 'tom-raster', role: 'img',
-      'aria-label': 'Het TOM-model als raster van drie lagen en vier kolommen. De lagen van boven naar beneden: strategisch (koers en lange termijn), tactisch (afspraken, processen en rollen) en operationeel (het dagelijkse werk). De kolommen: Methode (hoe het werk loopt), Mens (wie het doet en wat ze kunnen), Machine (systemen en gegevens) en Informatie & Rapportage (cijfers om mee te sturen). De vierde kolom is gekleurd en loopt door alle lagen. Een pijl omhoog: cijfers van de werkvloer gaan naar boven. Een pijl omlaag: doelen gaan naar beneden. Samen twaalf cellen.',
-    },
-      h('div', { class: 'tom-hoek' }),
-      TOM_KOLOMMEN.map((k, i) => kop(k, i === 3 ? 'tom-ir' : '')),
-      TOM_LAGEN.flatMap((laag, i) => [kop(laag, 'tom-laag'), ...[0, 1, 2].map(() => h('div', { class: 'tom-cel' })), h('div', { class: `tom-cel tom-ir tom-rij-${i + 2}` })]),
-      h('div', { class: 'tom-lus', 'aria-hidden': 'true' },
-        h('span', { class: 'tom-pijl' }, '▲', h('span', { class: 'tom-lijn' }), h('small', {}, 'cijfers')),
-        h('span', { class: 'tom-pijl' }, h('small', {}, 'doelen'), h('span', { class: 'tom-lijn' }), '▼'))),
-    h('figcaption', {},
-      h('p', {}, 'Figuur: twaalf cellen. De vierde kolom verbindt de lagen: cijfers gaan omhoog, doelen gaan omlaag. Eigen weergave van de TOM³-indeling naar ', met('(Westmoreland BV, z.d.)'), '.')));
-}
-
 /** Na welke alinea van de stof een figuur staat (0 = de eerste). */
-export const FIGUREN = { vpc: { bouw: vpcFiguur, na: 0 }, bmc: { bouw: bmcFiguur, na: 0 }, tom: { bouw: tomFiguur, na: 0 } };
+export const FIGUREN = { vpc: { bouw: vpcFiguur, na: 0 }, bmc: { bouw: bmcFiguur, na: 0 }, tom: { bouw: tomFiguurLater, na: 0 } };

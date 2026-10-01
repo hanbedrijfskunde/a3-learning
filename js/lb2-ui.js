@@ -12,12 +12,14 @@
 //                                                 het vraagstuk in het midden komt uit veld `vraagstuk` of is `vraagstukTekst` (oefencasus);
 //                                                 `voorstel` is een bewijsonderdeel (EV-01) waarvan de gebruiker als voorstel in de bak ligt.
 //                                                 Met `hint` en `hintBron` op de groep (SX-13). De module komt via ctx.bord (alleen leerblok 3).
+//            tombord?: { niveau? } | { signalen }  TOM-bord van 8.1 (ADR B98): invoer voor tomS1 … tomO4, of signalen om te plaatsen
 //            zoekvragenHint?                      toont de zoekvragen uit EV-02 (LB-12)
 //            hint?                                 bij afgeleidVan: eigen tekst onder de spiegeltabel }
 import { h, wis, bouwVelden, hintEl } from './dom.js';
 import { bouwPrompt, verbodenWoorden } from './checks/lb2.js';
 import { zoekvragenEl } from './lb3-ui.js';
 import { stakeholderRijen, reeks } from './raster.js';
+import { tomGroepLater, tomModelLater, TOM_VELDEN } from './tom-later.js';
 
 export { metVerwijzingen } from './verwijzing.js';
 
@@ -165,6 +167,7 @@ export function bouwWeergave(velden, voorvoegsel, waarden, bijWijziging, weergav
         verversers.push(b.ververs);
         doos.append(b.element);
       }
+      if (g.tombord) doos.append(hintEl(g.hint, g.hintBron) ?? '', tomGroepEl(g.tombord));
       (g.velden ?? []).forEach((id) => doos.append(bouwVeld(id).element));
       if (g.promptgenerator) doos.append(promptEl(g));
       (g.groepen ?? []).forEach((k) => doos.append(groepEl(k)));
@@ -177,6 +180,16 @@ export function bouwWeergave(velden, voorvoegsel, waarden, bijWijziging, weergav
     doos.hidden = !begonnen;
     knop.hidden = begonnen;
     return h('div', { class: 'lb2-optioneel' }, knop, doos);
+  }
+
+  const signaalLijst = (ids) => ids.map((id) => ({ id, tekst: def.get(id)?.label ?? id }));
+  function tomGroepEl(t) {
+    const b = tomGroepLater({ ids: t.signalen ?? TOM_VELDEN, waarden, maak: (m, w) => (t.signalen
+      ? m.signaalBord({ signalen: signaalLijst(t.signalen), waarden: w, bijWijziging: melding })
+      : m.tomBord({ voorvoegsel, waarden: w, bijWijziging: melding, niveau: () => eigenWaarde(t.niveau) ?? '', zinstarter: def.get(TOM_VELDEN[0])?.zinstarter })) });
+    bouwers.set(`tombord:${t.signalen ? 'oefening' : 'toepassing'}`, b);
+    verversers.push(b.ververs);
+    return b.element;
   }
 
   function veldWijziging(id) {
@@ -213,5 +226,8 @@ export function bouwWeergave(velden, voorvoegsel, waarden, bijWijziging, weergav
   };
   hier.lees = lees;
   verversers.forEach((f) => f()); // het raster tekent de beginwaarden
-  return { element, lees, zet };
+  // Het modelantwoord van een oefening met signalen staat op het TOM-bord, naast de plek die de student koos (TK-6).
+  const sig = alleGroepen.find((g) => g.tombord?.signalen)?.tombord.signalen;
+  const modelFiguur = sig && ((model, eigen) => tomModelLater(sig, (m) => m.modelSignaalBord({ signalen: signaalLijst(sig), model: model?.velden, eigen })));
+  return { element, lees, zet, modelFiguur };
 }

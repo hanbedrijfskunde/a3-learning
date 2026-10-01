@@ -88,31 +88,35 @@ test('Figuur BMC: taak 7.1 toont het business model canvas van Strategyzer (z.d.
   assert.match(lees('js/figuren-lb3.js'), /bmc: \{ bouw: bmcFiguur, na: 0 \}/);
 });
 
-test('Figuur TOM-model: taak 8.1 toont een eigen weergave van de TOM³-indeling in stof, oefenen en toepassen; de vierde kolom verbindt de lagen (ADR B93)', () => {
+test('Figuur TOM-model: taak 8.1 toont een eigen weergave van de TOM³-indeling om te verkennen; oefenen en toepassen gebeuren in het bord zelf (ADR B93, B98)', () => {
   const b = blok(3);
   const t = b.taken.find((x) => x.id === '8.1');
-  for (const stap of [t.stof, t.oefening, t.toepassing]) assert.equal(stap.figuur, 'tom');
-  assert.equal(bouwTaakModel(t, b).stappen[3].figuur, 'tom');
+  assert.equal(t.stof.figuur, 'tom');
+  assert.equal(t.oefening.figuur, undefined, 'het oefenbord is de figuur (SX-15)');
+  assert.equal(t.toepassing.figuur, undefined, 'het invulbord is de figuur (SX-15)');
+  assert.deepEqual(t.toepassing.weergave.groepen[0].tombord, { niveau: 'niveau' });
   assert.match(t.stof.alineas[0], /\(Westmoreland BV, z\.d\.\)/);
+  assert.match(t.stof.alineas[0], /Tik in de figuur op een cel/, 'de stof wijst op het verkennen');
   assert.match(t.stof.alineas[1], /van boven naar beneden/, 'de stof legt uit hoe je het raster leest');
   assert.match(t.stof.alineas[2], /omhoog.*omlaag/s, 'de stof licht de lus van de vierde kolom toe');
+  assert.match(t.stof.alineas[3], /Omhoog:.*Opzij:/s, 'de twee kijkrichtingen');
+  assert.match(t.stof.alineas[4], /Waar je het vraagstuk ziet, is vaak niet waar het zit/);
   assert.doesNotMatch(t.stof.alineas.join(' '), /Methode is hoe|De drie lagen zijn/, 'de figuur toont de lagen en kolommen; de stof definieert ze niet een voor een');
-  const dom = lees('js/figuren-lb3.js');
+  const dom = lees('js/tombord.js');
   assert.match(dom, /export function tomFiguur/);
-  assert.match(dom, /role: 'img',\s*'aria-label': 'Het TOM-model als raster/);
-  for (const naam of ['Strategisch', 'Tactisch', 'Operationeel', 'Methode', 'Mens', 'Machine', 'Informatie & Rapportage']) assert.ok(dom.includes(`['${naam}'`), naam);
   assert.match(dom, /Eigen weergave van de TOM³-indeling naar ', met\('\(Westmoreland BV, z\.d\.\)'\)/);
-  const css = lees('css/site.css');
-  assert.match(css, /\.tom-lus \{ grid-column:5; grid-row:2 \/ 5;/, 'de pijlen lopen door alle drie de lagen');
-  assert.match(css, /\.tom-cel\.tom-ir \{ grid-column:5; \}/, 'de cellen van kolom 4 staan expliciet onder de pijlen');
-  assert.match(lees('js/figuren-lb3.js'), /tom: \{ bouw: tomFiguur, na: 0 \}/);
+  assert.match(dom, /h\('summary', \{\}, 'Het model in tekst'\)/, 'een tekstweergave naast de figuur (TG-4)');
+  const css = lees('css/tombord.css');
+  assert.match(css, /\.tm-lus \{ grid-column:6; grid-row:2 \/ 5;/, 'de pijlen lopen naast de vierde kolom door alle drie de lagen');
+  assert.match(css, /\.tm-ir \{ background:var\(--roze\); border-left:3px solid var\(--accent\); \}/, 'de vierde kolom in accentkleur');
+  assert.match(lees('js/figuren-lb3.js'), /tom: \{ bouw: tomFiguurLater, na: 0 \}/);
 });
 
-/** De vragen van een oefening; een stakeholderbord (SX-16) is één vraag met de hint op de groep (zoals de contentcontrole). */
+/** De vragen van een oefening; een stakeholderbord (SX-16) of TOM-bord met signalen (ADR B98) is één vraag met de hint op de groep (zoals de contentcontrole). */
 function oefenVragen(t) {
-  const borden = (t.oefening?.weergave?.groepen ?? []).filter((g) => g.bord);
-  const ids = new Set(borden.flatMap((g) => stakeholderRijen(g.bord).flat()));
-  return [...(t.oefening?.velden ?? t.toepassing.velden).filter((v) => !v.reeks && !ids.has(v.id)), ...borden.map((g) => ({ id: `bord ${g.bord.voor}`, hint: g.hint, hintBron: g.hintBron }))];
+  const borden = (t.oefening?.weergave?.groepen ?? []).filter((g) => g.bord || g.tombord?.signalen);
+  const ids = new Set(borden.flatMap((g) => (g.bord ? stakeholderRijen(g.bord).flat() : g.tombord.signalen)));
+  return [...(t.oefening?.velden ?? t.toepassing.velden).filter((v) => !v.reeks && !ids.has(v.id)), ...borden.map((g) => ({ id: g.bord ? `bord ${g.bord.voor}` : 'TOM-bord', hint: g.hint, hintBron: g.hintBron }))];
 }
 
 test('SX-13: elke oefenvraag van de vier leerblokken heeft een hint; de hint staat achter een knop (details), niet op mouse-over', () => {
@@ -122,7 +126,7 @@ test('SX-13: elke oefenvraag van de vier leerblokken heeft een hint; de hint sta
       for (const v of oefenVragen(t)) { assert.ok(v.hint?.length > 10, `${t.id} ${v.id}`); n += 1; }
     }
   }
-  assert.equal(n, 54);
+  assert.equal(n, 60); // 3.2: acht oefenvragen in twee routes (ADR B100), eerder één; 8.1: het TOM-bord en het niveau (ADR B98)
   const dom = lees('js/dom.js');
   assert.match(dom, /h\('details', \{ class: 'hint' \}, h\('summary', \{\}, 'Hint'\)/);
   assert.doesNotMatch(dom, /onmouse|onpointerenter|interestfor/);

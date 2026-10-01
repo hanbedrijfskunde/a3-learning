@@ -59,7 +59,7 @@ test('TK-6: het modelantwoord is een uitklappaneel „Zo zou het kunnen”, pas 
 });
 
 test('SX-10: inhoudstekst is minstens 13 px; alleen labels mogen kleiner; kaartjes op de verbanden-kaart minstens 15 px, ook op 360 px', () => {
-  const css = (lees('css/site.css') + lees('css/stakeholderbord.css')).replace(/\/\*[\s\S]*?\*\//g, '');
+  const css = (lees('css/site.css') + lees('css/stakeholderbord.css') + lees('css/tombord.css')).replace(/\/\*[\s\S]*?\*\//g, '');
   const LABELS = /eyebrow|vb-gekozen|lb2-cel-veld|lb2-tabel td::before|sb-as|sb-vaknaam|sb-baknaam|sb-soort/; // sb-: labels van het stakeholderbord (DESIGN §3, 12 px)
   const klein = [];
   for (const m of css.matchAll(/([^{}]+)\{([^{}]*)\}/g)) {

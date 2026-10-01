@@ -226,22 +226,184 @@
       },
       "oefening": {
         "opdracht": {
-          "tekst": "Schrijf een zoekstring voor route A, met minstens één zoekoperator. Gebruik de zoekvraag over webshop X: „Welke factoren bepalen de klanttevredenheid bij webshops?”",
+          "tekst": "Werk met een medestudent. Spreek af wie route A neemt en wie route B, en zoek allebei bij dezelfde zoekvraag over webshop X: „Welke factoren bepalen de klanttevredenheid bij webshops?” De opdrachtgever wil niet dat de naam webshop X buiten het team komt. Vergelijk daarna wat jullie vonden. Werk je alleen? Doe dan beide routes na elkaar.",
           "bron": "concept-auteur"
         },
+        "modelNa": [
+          "zoekstring",
+          "context",
+          "vergelijking"
+        ],
         "velden": [
+          {
+            "id": "route",
+            "label": "Welke route neem jij?",
+            "type": "keuze",
+            "opties": [
+              "A · databank",
+              "B · AI-tool"
+            ],
+            "hint": "Kies de route die je medestudent niet neemt. Samen hebben jullie dan allebei de routes.",
+            "hintBron": [
+              {
+                "soort": "stof",
+                "taak": "3.2",
+                "vindplaats": "alinea 1 en 2"
+              }
+            ]
+          },
           {
             "id": "zoekstring",
             "label": "Zoekstring voor route A",
-            "type": "tekst", "hint": "Zet synoniemen met OR tussen haakjes en verbind de begrippen met AND. Een woordgroep zet je tussen aanhalingstekens.", "hintBron": [{"soort": "stof", "taak": "3.2", "vindplaats": "alinea 3 en 1"}]
+            "type": "tekst",
+            "hint": "Zet synoniemen met OR tussen haakjes en verbind de begrippen met AND. Een woordgroep zet je tussen aanhalingstekens.",
+            "hintBron": [
+              {
+                "soort": "stof",
+                "taak": "3.2",
+                "vindplaats": "alinea 3 en 1"
+              }
+            ]
+          },
+          {
+            "id": "zoekvraag",
+            "label": "Zoekvraag",
+            "type": "tekst",
+            "hint": "Neem de zoekvraag over uit de opdracht hierboven.",
+            "hintBron": [
+              {
+                "soort": "stof",
+                "taak": "3.2",
+                "vindplaats": "alinea 2"
+              }
+            ]
+          },
+          {
+            "id": "context",
+            "label": "Context: sector, land, soort organisatie",
+            "type": "tekst",
+            "hint": "Beschrijf wat voor organisatie het is en waar ze zit, zonder haar naam.",
+            "hintBron": [
+              {
+                "soort": "stof",
+                "taak": "3.2",
+                "vindplaats": "alinea 4"
+              }
+            ]
+          },
+          {
+            "id": "jaar",
+            "label": "Alleen bronnen van na (jaar)",
+            "type": "tekst",
+            "hint": "Hoe oud mag een bron zijn over iets dat online snel verandert?",
+            "hintBron": [
+              {
+                "soort": "stof",
+                "taak": "3.2",
+                "vindplaats": "alinea 2"
+              }
+            ]
+          },
+          {
+            "id": "nietNoemen",
+            "label": "„Niet noemen”-lijst (gescheiden door komma’s)",
+            "type": "tekst",
+            "hint": "Welke naam mag volgens de opdracht niet buiten het team komen?",
+            "hintBron": [
+              {
+                "soort": "stof",
+                "taak": "3.2",
+                "vindplaats": "alinea 4"
+              }
+            ]
+          },
+          {
+            "id": "prompt",
+            "label": "Prompt voor route B",
+            "type": "lang",
+            "zinstarter": "Zoek wetenschappelijke bronnen over …",
+            "hint": "De prompt vult zichzelf uit de velden hierboven. Lees hem na voordat je hem kopieert: staat er een naam in die er niet in mag?",
+            "hintBron": [
+              {
+                "soort": "stof",
+                "taak": "3.2",
+                "vindplaats": "alinea 2 en 4"
+              }
+            ]
+          },
+          {
+            "id": "vergelijking",
+            "label": "Wat vonden jullie, en wat werkte beter?",
+            "type": "lang",
+            "zinstarter": "Met route A vond ik …; met route B vond mijn medestudent …",
+            "hint": "Open samen de bronnen die jullie vonden. Bestaat elke bron echt, en geeft hij antwoord op de zoekvraag? Kijk ook hoeveel werk elke route kostte.",
+            "hintBron": [
+              {
+                "soort": "stof",
+                "taak": "3.2",
+                "vindplaats": "alinea 4"
+              }
+            ]
           }
-        ]
+        ],
+        "weergave": {
+          "groepen": [
+            {
+              "titel": "Kies je route",
+              "velden": [
+                "route"
+              ]
+            },
+            {
+              "titel": "Route A · databank",
+              "alleenBij": {
+                "veld": "route",
+                "waarde": "A · databank"
+              },
+              "velden": [
+                "zoekstring"
+              ]
+            },
+            {
+              "titel": "Route B · AI",
+              "alleenBij": {
+                "veld": "route",
+                "waarde": "B · AI-tool"
+              },
+              "velden": [
+                "zoekvraag",
+                "context",
+                "jaar",
+                "nietNoemen",
+                "prompt"
+              ],
+              "promptgenerator": {
+                "zoekvraag": "zoekvraag",
+                "context": "context",
+                "jaar": "jaar",
+                "lijst": "nietNoemen",
+                "prompt": "prompt"
+              }
+            },
+            {
+              "titel": "Vergelijk met je medestudent",
+              "velden": [
+                "vergelijking"
+              ]
+            }
+          ]
+        }
       },
       "modelantwoord": {
         "bron": "concept-auteur",
-        "opmerking": "Door de bouwer geschreven op de termen van het modelantwoord bij 3.1.",
+        "opmerking": "Door de bouwer geschreven. De zoekstring gebruikt de termen van het modelantwoord bij 3.1; de prompt is wat de promptgenerator maakt van de zoekvraag, de context en het jaar (ADR B100).",
         "velden": {
-          "zoekstring": "(\"customer satisfaction\" OR \"customer experience\") AND (webshop* OR \"online retail\")"
+          "zoekstring": "(\"customer satisfaction\" OR \"customer experience\") AND (webshop* OR \"online retail\")",
+          "context": "webshops in Nederland die aan consumenten verkopen",
+          "jaar": "2018",
+          "nietNoemen": "webshop X",
+          "prompt": "Zoek wetenschappelijke artikelen of vakpublicaties bij deze vraag: Welke factoren bepalen de klanttevredenheid bij webshops? Context: webshops in Nederland die aan consumenten verkopen. Alleen bronnen van na 2018, in het Nederlands of Engels. Geef per bron in één zin waarom hij bij de vraag past. Sluit af met een bronnenlijst volgens APA (7e editie), met DOI of link. Verzin geen bronnen. Vind je niets, zeg dat dan.",
+          "vergelijking": "Met route A vond ik in Google Scholar veel Engelse artikelen over customer satisfaction in e-commerce. Ik moest zelf uitzoeken welke bij de vraag passen. Met route B kreeg mijn medestudent meteen vijf bronnen met uitleg, maar één bron bestond niet en bij een andere klopte het jaar niet. Route A kost meer zoekwerk, route B meer controlewerk."
         }
       },
       "toepassing": {

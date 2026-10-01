@@ -82,15 +82,15 @@ test('SX-3: de studentweergave noemt geen interne codes: samenvattingen zonder E
 const regels = (css) => [...css.replace(/\/\*[\s\S]*?\*\//g, '').matchAll(/([^{}]+)\{([^{}]*)\}/g)].map((m) => [m[1].trim(), m[2]]);
 
 test('SX-7: een harde schaduw staat alleen op iets wat je kunt aantikken; informatieve kaarten hebben geen schaduw', () => {
-  const css = lees('css/site.css') + lees('css/stakeholderbord.css');
-  const tikbaar = /knop|kaart-tik|taak-link|keuzekaart|summary|vb-weg|md-knop|bestandkiezer|sb-kaart|sb-opgepakt|:root/;
+  const css = lees('css/site.css') + lees('css/stakeholderbord.css') + lees('css/tombord.css');
+  const tikbaar = /knop|kaart-tik|taak-link|keuzekaart|summary|vb-weg|md-knop|bestandkiezer|sb-kaart|sb-opgepakt|tm-signaal|tm-opgepakt|:root/;
   const fout = regels(css).filter(([sel, d]) => /box-shadow\s*:(?![^;]*\binset\b)(?!\s*none)/.test(d) && !tikbaar.test(sel)).map(([sel]) => sel);
   assert.deepEqual(fout, []);
   assert.doesNotMatch(regels(css).find(([sel]) => sel === '.kaart')[1], /box-shadow/);
 });
 
 test('SX-9: transities duren 150–250 ms en vervallen bij prefers-reduced-motion', () => {
-  const css = lees('css/site.css') + lees('css/stakeholderbord.css');
+  const css = lees('css/site.css') + lees('css/stakeholderbord.css') + lees('css/tombord.css');
   const duren = [...css.matchAll(/transition:[^;]*?(\d+)ms/g)].map((m) => Number(m[1]));
   assert.ok(duren.length >= 2);
   for (const d of duren) assert.ok(d >= 150 && d <= 250, `${d} ms`);

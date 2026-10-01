@@ -2,13 +2,15 @@
 // scripts (ook de modules die ze importeren) en de JSON-bestanden die die scripts ophalen.
 // Twee grenzen (ADR B69):
 //   GRENS       300 kB gecomprimeerd (gzip, elk bestand apart, zoals GitHub Pages ze levert): wat de student echt binnenhaalt
-//   GRENS_BRON  400 kB ongecomprimeerd: begrenst het parseerwerk en voorkomt dat de gzip-marge wordt opgegeten door herhaling
+//   GRENS_BRON  500 kB ongecomprimeerd: begrenst het parseerwerk en voorkomt dat de gzip-marge wordt opgegeten door herhaling
+//               (400 kB in B69, verhoogd in B99; zware onderdelen laden nog steeds later)
 // Tweede controle: 0 afbeeldingen, scripts, stylesheets of lettertypen van een ander domein.
 //
 // Dynamische imports tellen alleen mee voor de pagina's die ze echt laden (ADR B69):
 //   // gewicht-alleen: <voorwaarde>   vlak boven de import: de import telt alleen mee als de eigen leerblokdata aan de voorwaarde
 //                                     voldoet (wissel, weergave, figurenlb1, figurenlb3, bord, lb4ui of media; dezelfde voorwaarden als in js/leerblok.js);
-//                                     `naklik` telt nooit mee: die module laadt pas na een klik (spel, kopieer naar A3)
+//                                     `naklik` telt nooit mee: die module laadt pas na een klik (spel, kopieer naar A3);
+//                                     `inbeeld` ook niet: die laadt pas als zijn plek in beeld komt (het TOM-bord van taak 8.1, ADR B98)
 //   import(`./lb${n}.js`)             een sjabloon in het pad telt de modules van het eigen leerblok en van het leerblok van de
 //                                     Wissel (modulesVoor in js/checks/register.js); een pagina zonder leerblok telt ze allemaal
 // Gebruik: node tools/gewicht-check.mjs
@@ -19,7 +21,7 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 export const GRENS = 300_000; // gzip
-export const GRENS_BRON = 400_000; // ongecomprimeerd
+export const GRENS_BRON = 500_000; // ongecomprimeerd
 
 const lees = (p) => readFileSync(p, 'utf8');
 const externe = (u) => /^(https?:)?\/\//i.test(u);
@@ -47,6 +49,7 @@ export function paginaBestanden(root, paginaNaam) {
     if (naam === 'media') return Boolean(b.media || b.kijktips);
     if (naam === 'kijktips') return Boolean(b.kijktips);
     if (naam === 'naklik') return false; // laadt pas na een klik van de student: geen eerste lading (ADR B81)
+    if (naam === 'inbeeld') return false; // laadt pas als de student de taak opent en de plek in beeld komt (ADR B98)
     if (naam === 'lb4ui') return (b.taken ?? []).some((t) => ['verbanden', 'starr'].includes(t.toepassing?.component));
     throw new Error(`gewicht-check: onbekende voorwaarde ${naam}`);
   };

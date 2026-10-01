@@ -179,6 +179,10 @@ async function start() {
         ? bouwWeergave(s3.oefening.velden, `oef-${id}`, sessie.oefening(id).invoer, bijOefening, taak.oefening.weergave,
           { taakId: `oef-${id}`, store, bord, leesToepassing: () => ({}) })
         : bouwVelden(s3.oefening.velden, `oef-${id}`, sessie.oefening(id).invoer, bijOefening);
+    // Het modelantwoord op het bord: het stakeholderbord (5.1) of het TOM-bord (8.1, ADR B98).
+    const modelBordVan = (m) => (bord && bordGroep(taak.oefening.weergave)
+      ? bord.modelBord(m.modelantwoord.velden ?? {}, bordGroep(taak.oefening.weergave).bord)
+      : oefVelden.modelFiguur?.(m.modelantwoord, m.invoer) ?? null);
     const modelGebied = h('div', { class: 'model', 'aria-live': 'polite' });
     // Het modelantwoord als beloning na de eigen poging (TK-6, DESIGN §5.3): een uitklappaneel „Zo zou het kunnen”.
     let modelOpen = false;
@@ -191,7 +195,7 @@ async function start() {
         // modelExtra bestaat alleen bij 9.4 en kan null geven; native append zou dat als tekst tonen
         const paneel = h('details', { class: 'model-paneel', id: `model-${id}` },
           h('summary', {}, 'Zo zou het kunnen'),
-          ...[modelantwoordEl(m.modelantwoord, m.velden, bord && bordGroep(taak.oefening.weergave) ? bord.modelBord(m.modelantwoord.velden ?? {}, bordGroep(taak.oefening.weergave).bord) : null), oefVelden.modelExtra && oefVelden.modelExtra(m.modelantwoord)].filter(Boolean));
+          ...[modelantwoordEl(m.modelantwoord, m.velden, modelBordVan(m)), oefVelden.modelExtra && oefVelden.modelExtra(m.modelantwoord)].filter(Boolean));
         paneel.open = modelOpen;
         paneel.addEventListener('toggle', () => { modelOpen = paneel.open; tekenVoet(); });
         modelGebied.append(paneel);

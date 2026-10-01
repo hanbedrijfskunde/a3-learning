@@ -8,7 +8,7 @@ import { tokensUit } from '../tools/contrast-check.mjs';
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const lees = (p) => readFileSync(resolve(root, p), 'utf8');
 const paginas = readdirSync(root).filter((n) => n.endsWith('.html')).sort();
-const css = lees('css/site.css') + lees('css/stakeholderbord.css'); // het stakeholderbord heeft een eigen stylesheet (PF-4)
+const css = lees('css/site.css') + lees('css/stakeholderbord.css') + lees('css/tombord.css'); // het stakeholderbord heeft een eigen stylesheet (PF-4)
 
 test('QA-6: elke pagina gebruikt css/site.css; het accent is #E50056 en kleuren staan als token in :root', () => {
   assert.ok(paginas.length >= 10);
