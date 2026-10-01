@@ -210,3 +210,13 @@ test('B102 en SX-15: IMRAD is een eigen figuur met vier delen, als zandloper, me
   assert.match(bron, /role: 'img'/);
   assert.doesNotMatch(bron, /h\('img'|src:/, 'eigen SVG, geen overgenomen figuur (lits/ blijft buiten)');
 });
+
+test('B102 (eindreview): de IMRAD-figuur past op een telefoon: viewBox 320 breed, elke regel ≤ 38 tekens, wat je eruit haalt onder de vorm', async () => {
+  const { IMRAD_DELEN } = await import('../js/figuren-lb2.js');
+  assert.match(lees('js/figuren-lb2.js'), /viewBox: `0 0 320 /);
+  assert.equal(IMRAD_DELEN.length, 4);
+  for (const d of IMRAD_DELEN) {
+    assert.deepEqual(Object.keys(d), ['deel', 'vraag', 'haalt', 'uitleg', 'vorm']);
+    for (const r of [d.vraag, `→ ${d.haalt}`, d.uitleg]) assert.ok(r.length <= 38, `${d.deel}: „${r}” is te lang voor 320 eenheden`);
+  }
+});

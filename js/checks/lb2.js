@@ -244,8 +244,9 @@ export function besluitGenomen({ id, veld, toegestaan, blok, optioneel = false }
 
 export const AI_ONTLEDEN = 'ja, om het te ontleden';
 
-const SECTIES = /\b(inleiding|introductie|introduction|theoretisch kader|theorie|literatuur(?:overzicht)?|literature review|background|achtergrond|methoden?|methodologie|method(?:s|ology)?|resultaten|results|bevindingen|findings|discussie|discussion|conclusies?|conclusions?|abstract|samenvatting)\b/i;
-const MET_GETAL = /\b(p|pp|pag|pagina|blz|sectie|section|tabel|table|figuur|figure|fig|hoofdstuk|h)\.?\s*\d+/i;
+// Sectienamen in het Nederlands en Engels; zonder \b aan het eind, zodat samenstellingen als „methodesectie” ook tellen.
+const SECTIES = /\b(inleiding|introductie|introduction|theor(?:ie|y|etisch kader|etical framework)|literatu(?:ur|re)|background|achtergrond|method|methode|methodologie|onderzoeksopzet|research design|data ?collection|dataverzameling|analys(?:e|is)|resultaten|results|bevindingen|findings|discussie|discussion|conclusie|conclusion|abstract|samenvatting)/i;
+const MET_GETAL = /\b(p|pp|pag|page|pagina|blz|bladzijde|par|paragraaf|sectie|section|chapter|tabel|table|figuur|figure|fig|hoofdstuk|h)\.?\s*\d+/i;
 
 /** Ziet de tekst eruit als een plek in een artikel: een sectienaam, of p./blz./§/tabel/figuur/sectie/hoofdstuk/H met een getal (EV-12). */
 export function isVindplaats(t) {

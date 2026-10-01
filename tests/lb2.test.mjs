@@ -251,6 +251,12 @@ test('EV-12: isVindplaats herkent sectienamen, pagina’s, paragrafen, tabellen 
   for (const s of ['', '   ', 'ergens vooraan', 'pagina vier', 'in het artikel', 'zie boven']) assert.ok(!isVindplaats(s), s);
 });
 
+test('EV-12 (eindreview): isVindplaats kent ook Engelse koppen, page/bladzijde/paragraaf/chapter en samenstellingen', () => {
+  for (const s of ['page 4', 'Page 4', 'bladzijde 4', 'paragraaf 3', 'par. 3', 'chapter 3', 'Theoretical framework', 'Theory', 'Literature',
+    'Analysis', 'Analyse', 'Data collection', 'Research design', 'Onderzoeksopzet', 'Dataverzameling', 'methodesectie']) assert.ok(isVindplaats(s), s);
+  for (const s of ['ergens vooraan', 'pagina vier', 'in het artikel']) assert.ok(!isVindplaats(s), s);
+});
+
 test('EV-12: aiGeverifieerd negeert een achtergebleven vinkje als AI niet om te ontleden is gebruikt', () => {
   const c = aiGeverifieerd({ id: 'a', veld: 'aiCheck', aiVeld: 'ai', waarde: AI_ONTLEDEN });
   assert.equal(c({ ai: 'nee', aiCheck: ['x'] }).resultaat, 'ok');

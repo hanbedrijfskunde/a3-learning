@@ -11,29 +11,33 @@ const s = (tag, attrs = {}, ...kids) => {
   return el;
 };
 
-/** De vier delen: naam, vraag van het deel, wat jij eruit haalt, en de vorm (breed naar smal, smal, smal, smal naar breed). */
+/** De vier delen: naam, vraag van het deel, wat jij eruit haalt (kort en uitgelegd) en de vorm van het blok in de zandloper. */
 export const IMRAD_DELEN = [
-  ['Inleiding', 'Waarom dit onderzoek?', 'theorie: modellen, begrippen, definities', 'trechter'],
-  ['Methode', 'Hoe precies?', 'methode: hoe data verzameld en verwerkt zijn', 'smal'],
-  ['Resultaten', 'Wat gevonden?', 'presentatie: tabel, grafiek of model', 'smal'],
-  ['Discussie', 'Wat betekent het?', 'betekenis en beperkingen', 'omgekeerd'],
+  { deel: 'Inleiding', vraag: 'Waarom dit onderzoek?', haalt: 'theorie', uitleg: 'modellen, begrippen, definities', vorm: 'trechter' },
+  { deel: 'Methode', vraag: 'Hoe precies?', haalt: 'methode', uitleg: 'hoe data verzameld en verwerkt zijn', vorm: 'smal' },
+  { deel: 'Resultaten', vraag: 'Wat gevonden?', haalt: 'presentatie', uitleg: 'tabel, grafiek of model', vorm: 'smal' },
+  { deel: 'Discussie', vraag: 'Wat betekent het?', haalt: 'betekenis', uitleg: 'en de beperkingen van het onderzoek', vorm: 'omgekeerd' },
 ];
 
-const VORM = { trechter: '20,0 300,0 230,70 90,70', smal: '90,0 230,0 230,70 90,70', omgekeerd: '90,0 230,0 300,70 20,70' };
+// 320 eenheden breed: op een telefoon van 360 px is de schaal ongeveer 1, dus de letters blijven 13 tot 16 px (eindreview).
+const BLOK = 112;
+const VORM = { trechter: '10,0 310,0 230,58 90,58', smal: '90,0 230,0 230,58 90,58', omgekeerd: '90,0 230,0 310,58 10,58' };
 
-/** Figuur: de IMRAD-zandloper met per deel de vraag en wat jij eruit haalt (B102). */
+/** Figuur: de IMRAD-zandloper; in elk blok de vraag van het deel, eronder wat jij eruit haalt (B102). */
 export function imradFiguur({ met = (t) => t } = {}) {
-  const svg = s('svg', { viewBox: '0 0 640 340', role: 'img', 'aria-labelledby': 'imrad-titel imrad-uitleg', class: 'imrad' },
+  const svg = s('svg', { viewBox: `0 0 320 ${IMRAD_DELEN.length * BLOK}`, role: 'img', 'aria-labelledby': 'imrad-titel', 'aria-describedby': 'imrad-uitleg', class: 'imrad' },
     s('title', { id: 'imrad-titel' }, 'IMRAD: de vier delen van een onderzoeksartikel'),
-    s('desc', { id: 'imrad-uitleg' }, IMRAD_DELEN.map(([d, v, w]) => `${d}: ${v} Jij haalt eruit: ${w}.`).join(' ')));
-  IMRAD_DELEN.forEach(([deel, vraag, wat, vorm], i) => {
-    svg.append(s('g', { transform: `translate(0, ${i * 82 + 8})` },
-      s('polygon', { points: VORM[vorm], style: `fill:${i < 3 ? 'var(--wit)' : 'var(--grijs)'}; stroke:var(--zwart); stroke-width:3` }),
-      s('text', { x: 160, y: 32, 'text-anchor': 'middle', style: 'font:700 18px var(--f)' }, deel),
-      s('text', { x: 160, y: 54, 'text-anchor': 'middle', style: 'font:14px var(--f)' }, vraag),
-      s('text', { x: 318, y: 42, style: `font:700 15px var(--f); fill:${i < 3 ? 'var(--accent-donker)' : 'var(--grijs-tekst)'}` }, `→ ${wat}`)));
+    s('desc', { id: 'imrad-uitleg' }, IMRAD_DELEN.map((d) => `${d.deel}: ${d.vraag} Jij haalt eruit: ${d.haalt}, ${d.uitleg}.`).join(' ')));
+  IMRAD_DELEN.forEach((d, i) => {
+    const kleur = i < 3 ? 'var(--accent-donker)' : 'var(--grijs-tekst)';
+    svg.append(s('g', { transform: `translate(0, ${i * BLOK + 4})` },
+      s('polygon', { points: VORM[d.vorm], style: `fill:${i < 3 ? 'var(--wit)' : 'var(--grijs)'}; stroke:var(--zwart); stroke-width:3` }),
+      s('text', { x: 160, y: 24, 'text-anchor': 'middle', style: 'font:700 16px var(--f)' }, d.deel),
+      s('text', { x: 160, y: 44, 'text-anchor': 'middle', style: 'font:13px var(--f)' }, d.vraag),
+      s('text', { x: 160, y: 80, 'text-anchor': 'middle', style: `font:700 14px var(--f); fill:${kleur}` }, `→ ${d.haalt}`),
+      s('text', { x: 160, y: 98, 'text-anchor': 'middle', style: 'font:13px var(--f)' }, d.uitleg)));
   });
-  return h('figure', { class: 'a3-vel' }, svg,
+  return h('figure', { class: 'a3-vel imrad-figuur' }, svg,
     h('figcaption', {}, h('p', {}, 'Figuur: IMRAD. De Inleiding begint breed, bij wat al bekend is, en eindigt smal, bij de eigen vraag. De Discussie gaat van de eigen uitkomst weer naar het brede beeld. Naar ', met('(Wu, 2011)'), '.')));
 }
 
