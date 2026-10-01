@@ -184,6 +184,16 @@ test('ST-8: weergave.js laadt profiel.js niet mee (bronnen en terugblik gebruike
   assert.doesNotMatch(bron, /from '\.\/profiel\.js'/);
 });
 
+test('ST-8/ST-9: de startpagina beslist één keer, bij het laden, en werkt zonder verhaal in de data', () => {
+  const bron = readFileSync(resolve(root, 'js/index-pagina.js'), 'utf8');
+  assert.equal((bron.match(/verhaalOpen\(/g) ?? []).length, 1, 'één beslissing');
+  assert.ok(bron.indexOf('verhaalOpen(') < bron.indexOf('const bijwerken'), 'vóór er iets bewaard kan worden');
+  assert.match(bron, /if \(verhaal && eersteBezoek\)/, 'zonder start.verhaal geen verhaal en geen fout');
+  assert.match(bron, /invoer\.alias\.focus\(\)/, 'de knop zet de focus in het aliasveld');
+  assert.doesNotMatch(bron, /Nieuw hier\?/, 'de oude introductieregel is weg');
+  assert.match(bron, /\.filter\(Boolean\)\)/, 'main.append krijgt geen null');
+});
+
 test('LB-1: titel en kop van elke leerblokpagina noemen de titel uit leerblokken.json (ADR B102: leerblok 2 kreeg een nieuwe naam)', () => {
   const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
   const lijst = JSON.parse(readFileSync(resolve(root, 'data/leerblokken.json'), 'utf8')).leerblokken;
