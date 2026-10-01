@@ -166,3 +166,13 @@ test('SX-2: bij het laden staat er geen melding; na het verlaten van een veld ho
   assert.match(bron, /onblur: \(\) => \{ aangeraakt\.add\(v\.id\)/, 'een veld telt pas als aangeraakt na blur');
   assert.doesNotMatch(bron, /class: 'hints'/, 'geen lijst met alle meldingen tegelijk');
 });
+
+test('LB-1: titel en kop van elke leerblokpagina noemen de titel uit leerblokken.json (ADR B102: leerblok 2 kreeg een nieuwe naam)', () => {
+  const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+  const lijst = JSON.parse(readFileSync(resolve(root, 'data/leerblokken.json'), 'utf8')).leerblokken;
+  for (const lb of lijst) {
+    const html = readFileSync(resolve(root, lb.pagina), 'utf8');
+    assert.ok(html.includes(`<title>Leerblok ${lb.nummer} · ${lb.titel} ·`), `${lb.pagina}: title`);
+    assert.ok(html.includes(`<h1>Leerblok ${lb.nummer} · ${lb.titel}</h1>`), `${lb.pagina}: h1`);
+  }
+});
