@@ -543,11 +543,14 @@ async function start() {
   // Media (fase 12): leerblok 2 en 4 bieden drie routes met dezelfde „klaar als”; leerblok 1 toont de kijktips als gewone links.
   const mediaPlek = blok.media ? h('div', { class: 'media-plek' }) : null;
   let mediaSectie = null;
-  async function toonMedia() {
-    if (mediaSectie || !mediaPlek) return;
-    const { bouwMediaSectie } = await laadMedia();
-    mediaSectie = bouwMediaSectie({ blok, store, met, bord, modelZichtbaar: () => sessie.oefening(blok.media.taak).modelZichtbaar });
-    mediaPlek.append(mediaSectie.element);
+  let mediaLaden = null;
+  // Eén lading per pagina: popstate en hashchange roepen toonAdres bij dezelfde navigatie allebei aan, terwijl de eerste nog laadt.
+  function toonMedia() {
+    if (!mediaPlek) return;
+    mediaLaden ??= laadMedia().then(({ bouwMediaSectie }) => {
+      mediaSectie = bouwMediaSectie({ blok, store, met, bord, modelZichtbaar: () => sessie.oefening(blok.media.taak).modelZichtbaar });
+      mediaPlek.append(mediaSectie.element);
+    }).catch(() => mediaPlek.append(h('p', { class: 'klein' }, 'De keuze tussen tekst, video en spel kon niet laden; de tekst hierboven is genoeg om verder te gaan (MD-12).')));
   }
   if (mediaPlek) document.addEventListener('a3-oefening', (e) => { if (e.detail.taak === blok.media.taak) mediaSectie?.ververs(); });
   const kijktips = blok.kijktips ? mediaDirect.bouwKijktips({ kijktips: blok.kijktips, met }) : null;
@@ -616,7 +619,7 @@ async function start() {
     });
     if (adres.soort === 'overzicht') tekenTakenLijst();
     if (adres.soort === 'taak') taken.get(adres.taak).tekenVoortgang();
-    if (adres.soort === 'taak' && adres.stap === 2 && adres.taak === blok.media?.taak) toonMedia().catch(() => mediaPlek.append(h('p', { class: 'klein' }, 'De keuze tussen tekst, video en spel kon niet laden; de tekst hierboven is genoeg om verder te gaan (MD-12).')));
+    if (adres.soort === 'taak' && adres.stap === 2 && adres.taak === blok.media?.taak) toonMedia();
     if (adres.soort === 'taak') {
       const titel = blok.taken.find((t) => t.id === adres.taak)?.titel;
       try { store.setMeta(POSITIE, { leerblok: blok.leerblok, taak: adres.taak, stap: adres.stap, titel, bijgewerkt: new Date().toISOString() }); } catch (e) { /* zonder opslag geen „ga verder” */ }

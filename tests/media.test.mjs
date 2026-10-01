@@ -66,6 +66,12 @@ test('MD-2: de pagina toont drie knoppen en één „klaar als” buiten de rout
   assert.match(bron('js/leerblok.js'), /mediaSectie = bouwMediaSectie\(\{ blok, store, met,/);
 });
 
+test('MD-2: de mediasectie staat één keer in de stap stof, ook als popstate en hashchange allebei toonMedia aanroepen', () => {
+  const pagina = bron('js/leerblok.js');
+  assert.match(pagina, /mediaLaden \?\?= laadMedia\(\)/, 'de lopende lading is de guard; een guard op mediaSectie laat een tweede aanroep door tijdens de await');
+  assert.doesNotMatch(pagina, /toonMedia\(\)\.catch/, 'de foutmelding hoort bij de ene lading, niet bij elke aanroep');
+});
+
 // ---------------------------------------------------------------- MD-3
 
 test('MD-3: de uitleg heeft hoogstens 300 woorden, met een voorbeeld en het modelantwoord van de oefencasus uit de taak', () => {
