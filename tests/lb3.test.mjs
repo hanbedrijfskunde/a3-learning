@@ -474,7 +474,7 @@ test('LB-11/BR-3: de TOM³-uitleg noemt de bron als (Westmoreland BV, z.d.); die
   assert.match(w.apa, /\[Ongepubliceerd document\]/);
   assert.ok(!w.link);
   assert.ok(json('data/bronnen.json').bestanden.includes('bronnen-3.json'), 'bronnen-3.json staat in het manifest');
-  assert.equal(b3.bronnen.length, 5); // met het BMC-sjabloon van Strategyzer (ADR B92)
+  assert.equal(b3.bronnen.length, 6); // met het BMC-sjabloon van Strategyzer (ADR B92) en de video van Bureau Tromp bij V3 (ADR B109)
 });
 
 test('10.9: content-check op de echte data is groen met bronnen-3 en meldt geen enkele bron in bronnen-3 als wees', () => {

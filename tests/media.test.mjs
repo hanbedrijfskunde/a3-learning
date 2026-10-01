@@ -86,13 +86,13 @@ test('MD-3, BR-4: de uitleg noemt bronnen als (Auteur, jaar)', () => {
 
 // ---------------------------------------------------------------- MD-4, MD-5, MD-6, MD-7
 
-// B105: V2 is een externe video (een link naar YouTube); V1, V3 en V4 zijn eigen video's.
+// B105, B108, B109: V1, V2 en V3 zijn externe video's (een link naar YouTube); V4 is de enige eigen video.
 const EIGEN = MET_MEDIA.filter((b) => !b.media.video.url);
-test('MD-4: er zijn drie eigen video\'s (V1, V3, V4), elk hoogstens 3 minuten en hoogstens 20 MB (ffprobe, anders metadata)', () => {
+test('MD-4: er is één eigen video (V4), hoogstens 3 minuten en hoogstens 20 MB (ffprobe, anders metadata)', () => {
   const meta = json('media/metadata.json');
   assert.deepEqual(MET_MEDIA.map((b) => b.media.video.id), ['V1', 'V2', 'V3', 'V4']);
-  assert.deepEqual(EIGEN.map((b) => b.media.video.id), ['V1', 'V3', 'V4']);
-  assert.equal(Object.keys(meta).length, 3, 'metadata voor precies drie eigen video\'s');
+  assert.deepEqual(EIGEN.map((b) => b.media.video.id), ['V4']);
+  assert.equal(Object.keys(meta).length, 1, 'metadata voor precies één eigen video');
   for (const b of EIGEN) {
     assert.deepEqual(controleerVideo(resolve(root, b.media.video.bestand), meta[b.media.video.bestand], b.media.video.id).fouten, [], `controleerVideo ${b.media.video.id}`);
     const v = b.media.video;
@@ -125,8 +125,8 @@ test('MD-4: de videocontrole faalt bij een echte video van 4 minuten, een bestan
   writeFileSync(groot, Buffer.alloc(MAX_VIDEO_BYTES + 1));
   assert.match(controleerVideo(groot, { duurSeconden: 60, bytes: MAX_VIDEO_BYTES + 1 }, 'groot').fouten.join('\n'), /is meer dan 20 MB/);
   assert.match(controleerVideo(join(map, 'kort.mp4'), {}, 'kort').fouten.join('\n'), /bestaat niet/);
-  const echteVideo = resolve(root, blok(1).media.video.bestand);
-  assert.match(controleerVideo(echteVideo, { duurSeconden: 200, bytes: statSync(echteVideo).size }, 'V1').fouten.join('\n'), /metadata zegt 200 s/, 'metadata boven 3 minuten faalt ook');
+  const echteVideo = resolve(root, EIGEN[0].media.video.bestand);
+  assert.match(controleerVideo(echteVideo, { duurSeconden: 200, bytes: statSync(echteVideo).size }, EIGEN[0].media.video.id).fouten.join('\n'), /metadata zegt 200 s/, 'metadata boven 3 minuten faalt ook');
 });
 
 test('MD-5: elke eigen video heeft WebVTT-ondertitels en een transcript dat uit dezelfde spreektekst komt', () => {
@@ -152,7 +152,8 @@ test('MD-5: het transcript en de uitleg horen bij elkaar (voorbeeld, modelantwoo
   const r = controleerMedia(resolve(root, 'data'), MET_MEDIA);
   assert.deepEqual(r.fouten, []);
   const kapot = structuredClone(MET_MEDIA);
-  kapot[0].media.video.dias = kapot[0].media.video.dias.filter((d) => d.titel !== 'Voorbeeld');
+  const eigen = kapot.find((b) => !b.media.video.url).media.video;
+  eigen.dias = eigen.dias.filter((d) => d.titel !== 'Voorbeeld');
   assert.match(controleerMedia(resolve(root, 'data'), kapot).fouten.join('\n'), /transcript bevat voorbeeld/);
 });
 
@@ -437,7 +438,7 @@ test('BR-5: een verwijzing in een spel zonder bronregel faalt', () => {
   assert.match(json('spellen/waarde-simulator.json').intro, /\(International Integrated Reporting Council, 2021\)/);
 });
 
-// ---------------------------------------------------------------- B105: externe video (V2)
+// ---------------------------------------------------------------- B105, B108, B109: externe video's (V2, V1, V3)
 
 test('B105: V2 is de kennisclip Betrouwbaarheid van de HAN Bibliotheek, als gewone link met afzender, duur, taal en bron', () => {
   const v = blok(2).media.video;
@@ -447,6 +448,29 @@ test('B105: V2 is de kennisclip Betrouwbaarheid van de HAN Bibliotheek, als gewo
   for (const k of ['titel', 'duur', 'taal', 'waarom']) assert.ok(v[k], k);
   for (const k of ['bestand', 'ondertitels', 'dias']) assert.equal(v[k], undefined, `geen ${k}: geen eigen video meer`);
   assert.ok(!existsSync(resolve(root, 'media/v2-bronnen-beoordelen.mp4')), 'het oude bestand is weg');
+});
+
+test('B108: V1 is de kennisclip Zo formuleer je een onderzoeksvraag van de Universiteit Utrecht, met de ontwerpende vraag en een verwijzing naar de tekst', () => {
+  const v = blok(1).media.video;
+  assert.equal(v.url, 'https://www.youtube.com/watch?v=nfq6K9MWY3A');
+  assert.equal(v.kanaal, 'Universiteit Utrecht');
+  assert.equal(v.verwijzing, '(Universiteit Utrecht, 2023)');
+  assert.match(v.waarom, /ontwerpende vraag/);
+  assert.match(v.waarom, /staat in de tekst/, 'gebruiker, probleem en waarde staan niet in de clip');
+  for (const k of ['bestand', 'ondertitels', 'dias']) assert.equal(v[k], undefined, `geen ${k}: geen eigen video meer`);
+  assert.ok(!existsSync(resolve(root, 'media/v1-user-story.mp4')), 'het oude bestand is weg');
+});
+
+test('B109: V3 is de video over de stakeholderanalyse van Bureau Tromp (uitzondering op de afzendereis van MD-17), met afzender en kader genoemd', () => {
+  const v = blok(3).media.video;
+  assert.equal(v.url, 'https://www.youtube.com/watch?v=Bd2f0hzjfb8');
+  assert.equal(v.kanaal, 'Bureau Tromp');
+  assert.equal(v.verwijzing, '(Bureau Tromp, 2021)');
+  assert.match(v.waarom, /opleidingsbureau/, 'de student ziet dat de afzender geen onderwijsinstelling is (AAOCC: Authority)');
+  assert.match(v.waarom, /Lean Six Sigma/);
+  assert.match(v.waarom, /TOM³ staan in de tekst/);
+  for (const k of ['bestand', 'ondertitels', 'dias']) assert.equal(v[k], undefined, `geen ${k}: geen eigen video meer`);
+  assert.ok(!existsSync(resolve(root, 'media/v3-vraagstuk-plaatsen.mp4')), 'het oude bestand is weg');
 });
 
 test('B105, MD-14: een externe video is een link in een nieuw tabblad, nooit een iframe of videoelement', () => {

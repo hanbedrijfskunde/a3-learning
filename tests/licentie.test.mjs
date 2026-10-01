@@ -48,7 +48,7 @@ test('LI-1: geen bestandsnaam wijst op Brightspace-materiaal, PhoneVentures, sli
 test('LI-1: elke video is een eigen video (metadata met stem en bron) en elk videobestand heeft ondertitels', () => {
   const meta = JSON.parse(readFileSync(resolve(root, 'media/metadata.json'), 'utf8'));
   const videos = bestanden().filter((f) => f.endsWith('.mp4'));
-  assert.equal(videos.length, 3); // V1, V3, V4; V2 is een link naar de HAN Bibliotheek op YouTube, geen bestand op de site (B105)
+  assert.equal(videos.length, 1); // V4; V1, V2 en V3 zijn links naar YouTube, geen bestand op de site (B105, B108, B109)
   for (const v of videos) {
     assert.ok(meta[v], `${v}: staat in media/metadata.json`);
     assert.ok(meta[v].stem, `${v}: metadata noemt hoe het is gemaakt`);
@@ -69,7 +69,7 @@ test('LI-1: de controle vindt een verboden bestand (sabotage op de patronen)', (
   for (const naam of ['Werkboek Copy.pdf', 'slides-week5.pptx', 'PhoneVentures-handleiding.md', 'brightspace-export.json', 'logo.png']) {
     assert.match(naam, VERBODEN_NAAM, `${naam} moet worden afgekeurd`);
   }
-  for (const naam of ['leerblok-1.json', 'v1-user-story.mp4', 'docentgids.html']) assert.doesNotMatch(naam, VERBODEN_NAAM);
+  for (const naam of ['leerblok-1.json', 'v4-verbanden.mp4', 'docentgids.html']) assert.doesNotMatch(naam, VERBODEN_NAAM);
 });
 
 test('LI-1 en ADR B84: een citaat van derden staat in het register, verwijst naar een bron uit de bronnenlijst en bestaat; niets anders staat in media/citaten/', () => {

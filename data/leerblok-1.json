@@ -282,93 +282,14 @@
     },
     "video": {
       "id": "V1",
-      "titel": "De A3 in drie minuten: van vage vraag naar user story en zoekvragen",
-      "concept": true,
-      "bron": "concept-auteur",
-      "bestand": "media/v1-user-story.mp4",
-      "ondertitels": "media/v1-user-story.vtt",
-      "dias": [
-        {
-          "titel": "De A3 in drie minuten",
-          "punten": [
-            "Leerblok 1 · De A3 en je vraag",
-            "Concept-video met computerstem"
-          ],
-          "spreektekst": "Dit is een conceptvideo met een computerstem. De docent kan later een eigen opname maken. In twee minuten ga je van een vage vraag naar een user story en naar zoekvragen."
-        },
-        {
-          "titel": "Een A3 op één blad",
-          "punten": [
-            "Het hele verhaal op één blad",
-            "Concreet",
-            "Compleet",
-            "Consistent"
-          ],
-          "spreektekst": "Een A3 is een verbetermethode waarbij je het hele verhaal van een probleem op één blad zet (Bureau Tromp, 2023). Zo'n blad is goed als het concreet, compleet en consistent is."
-        },
-        {
-          "titel": "Begin bij een vage vraag",
-          "punten": [
-            "Hoe kan de klanttevredenheid verhoogd worden?",
-            "Voor wie? Welk probleem? Welke waarde?"
-          ],
-          "spreektekst": "Je begint met een vage vraag, zoals „Hoe kan de klanttevredenheid verhoogd worden?” Die vraag maak je scherp met het format van de user story. Dat luidt: „Wat is de beste oplossing voor de gebruiker om het probleem op te lossen, zodat er waarde ontstaat?” Beschrijf die waarde in de zes kapitalen. Kies er minstens één die niet financieel is."
-        },
-        {
-          "titel": "Waarde in zes kapitalen",
-          "punten": [
-            "Financieel, productie, intellectueel",
-            "Menselijk, sociaal en relationeel",
-            "Natuurlijk",
-            "Minstens één niet financieel"
-          ],
-          "spreektekst": "De zes kapitalen zijn financieel, productie, intellectueel, menselijk, sociaal en relationeel, en natuurlijk. Alleen geld is te smal."
-        },
-        {
-          "titel": "Drie zoekvragen",
-          "punten": [
-            "Elk vanuit een ander frame",
-            "Theoretisch",
-            "Functioneel",
-            "Intern"
-          ],
-          "spreektekst": "Daarna splits je de vraag in drie zoekvragen. Elke zoekvraag komt uit een ander frame, bijvoorbeeld theoretisch, functioneel of intern. Zo kijk je vanuit meer dan één kant naar het probleem."
-        },
-        {
-          "titel": "Voorbeeld",
-          "punten": [
-            "Organisatie Y",
-            "Vage vraag: duurzamer rapporteren",
-            "Gebruiker: de controller"
-          ],
-          "spreektekst": "Een voorbeeld uit een andere organisatie. Organisatie Y begint met de vage vraag „Hoe rapporteren we duurzamer?” Als user story wordt dat: „Wat is de beste oplossing voor de controller om milieucijfers zonder handwerk te verzamelen, zodat de organisatie haar milieu-impact kan sturen?” De waarde zit hier vooral in natuurlijk kapitaal."
-        },
-        {
-          "titel": "Nu jij",
-          "punten": [
-            "Pauzeer de video",
-            "Doe taak 2.1 op webshop X",
-            "Maak van de vage vraag een user story"
-          ],
-          "spreektekst": "Nu ben jij aan de beurt. Pauzeer de video en doe de oefening bij taak 2.1 op webshop X. Maak van de vage vraag een user story. Kijk daarna pas verder.",
-          "pauzeNa": 4
-        },
-        {
-          "titel": "Modelantwoord voor webshop X",
-          "punten": [
-            "Gebruiker: terugkerende klanten",
-            "Pain: weer een 8 geven",
-            "Waarde: sociaal en financieel"
-          ],
-          "spreektekst": "Het modelantwoord voor webshop X. Gebruiker: terugkerende klanten van webshop X. Pain: weer een aankoopervaring te krijgen die ze minstens een 8 geven (nu een 6,3). Waardecreatie: de klantrelatie herstelt (sociaal en relationeel kapitaal) en de omzet uit herhaalaankopen stijgt (financieel kapitaal)."
-        },
-        {
-          "titel": "Klaar als",
-          "punten": [],
-          "spreektekst": "Je bent klaar als alle drie de delen concreet zijn en de waarde verder gaat dan alleen geld.",
-          "klaarAls": true
-        }
-      ]
+      "titel": "Zo formuleer je een onderzoeksvraag",
+      "url": "https://www.youtube.com/watch?v=nfq6K9MWY3A",
+      "kanaal": "Universiteit Utrecht",
+      "verwijzing": "(Universiteit Utrecht, 2023)",
+      "duur": "2:18",
+      "taal": "Nederlands",
+      "waarom": "Kennisclip van het Skills Lab van de Universiteit Utrecht over zes soorten onderzoeksvragen. In de A3 werk je met de ontwerpende vraag. Voor wie je ontwerpt, welk probleem je oplost en welke waarde dat oplevert, staat in de tekst.",
+      "bron": "concept-auteur"
     },
     "spel": {
       "id": "vraagslijper",

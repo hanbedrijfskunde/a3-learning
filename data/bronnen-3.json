@@ -3,6 +3,13 @@
   "leerblok": 3,
   "bronnen": [
     {
+      "id": "bureau-tromp-2021",
+      "citatie": "Bureau Tromp, 2021",
+      "type": "video",
+      "apa": "Bureau Tromp. (2021, 2 maart). *Het gebruik van een stakeholderanalyse* [Video]. YouTube.",
+      "link": "https://www.youtube.com/watch?v=Bd2f0hzjfb8"
+    },
+    {
       "id": "osterwalder-pigneur-2010",
       "citatie": "Osterwalder & Pigneur, 2010",
       "type": "boek",

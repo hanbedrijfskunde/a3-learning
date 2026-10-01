@@ -297,82 +297,14 @@
     },
     "video": {
       "id": "V3",
-      "titel": "Het vraagstuk plaatsen: stakeholders, VPC, BMC en TOM-model",
-      "concept": true,
-      "bron": "concept-auteur",
-      "bestand": "media/v3-vraagstuk-plaatsen.mp4",
-      "ondertitels": "media/v3-vraagstuk-plaatsen.vtt",
-      "dias": [
-        {
-          "titel": "Het vraagstuk plaatsen",
-          "punten": [
-            "Leerblok 3 · Het vraagstuk plaatsen",
-            "Concept-video met computerstem"
-          ],
-          "spreektekst": "Dit is een conceptvideo met een computerstem. De docent kan later een eigen opname maken. In twee minuten plaats je een vraagstuk bij de stakeholders, de klant en de organisatie."
-        },
-        {
-          "titel": "Wie is een stakeholder?",
-          "punten": [
-            "Merkt het vraagstuk of heeft invloed",
-            "Intern: in de organisatie",
-            "Extern: erbuiten"
-          ],
-          "spreektekst": "Een stakeholder is een persoon of partij die het vraagstuk merkt of er invloed op heeft. Een interne stakeholder zit in de organisatie, een externe erbuiten. Je bepaalt per stakeholder de invloed (hoog of laag) en het belang (hoog of laag)."
-        },
-        {
-          "titel": "Invloed en belang",
-          "punten": [
-            "Nauw betrekken: beide hoog",
-            "Tevreden houden: invloed hoog, belang laag",
-            "Op de hoogte houden: invloed laag, belang hoog",
-            "Volgen: beide laag"
-          ],
-          "spreektekst": "Invloed en belang geven vier vakken: nauw betrekken, tevreden houden, op de hoogte houden en volgen. Een klant heeft meestal weinig invloed en veel belang. Een partij die regels stelt maar het vraagstuk nauwelijks merkt, heeft veel invloed en weinig belang."
-        },
-        {
-          "titel": "Drie modellen om te plaatsen",
-          "punten": [
-            "VPC: de klant",
-            "BMC: de organisatie",
-            "TOM³: drie lagen, vier kolommen"
-          ],
-          "spreektekst": "Daarna plaats je het vraagstuk in drie modellen. Het value proposition canvas gaat over de klant (Osterwalder e.a., 2014). Het business model canvas gaat over de organisatie (Osterwalder & Pigneur, 2010). Het TOM³-model heeft drie lagen en vier kolommen (Westmoreland BV, z.d.)."
-        },
-        {
-          "titel": "Voorbeeld",
-          "punten": [
-            "Organisatie Y",
-            "Controller: intern, hoog en hoog",
-            "Accountant: extern, invloed hoog, belang laag"
-          ],
-          "spreektekst": "Een voorbeeld uit een andere organisatie. Bij het rapportagevraagstuk van organisatie Y is de controller intern, met hoge invloed en hoog belang. Hem betrek je dus nauw. De accountant is extern, met hoge invloed en laag belang. Hem houd je dus tevreden."
-        },
-        {
-          "titel": "Nu jij",
-          "punten": [
-            "Pauzeer de video",
-            "Doe taak 5.1 op webshop X",
-            "Minstens vijf stakeholders"
-          ],
-          "spreektekst": "Nu ben jij aan de beurt. Pauzeer de video en doe de oefening bij taak 5.1 op webshop X. Noteer minstens vijf stakeholders en beantwoord de twee vragen. Kijk daarna pas verder.",
-          "pauzeNa": 4
-        },
-        {
-          "titel": "Modelantwoord voor webshop X",
-          "punten": [
-            "Klantenservice merkt het eerst",
-            "Bezorgdienst: belang bij de huidige situatie"
-          ],
-          "spreektekst": "Het modelantwoord voor webshop X. Stakeholders: Terugkerende klanten (extern): invloed laag, belang hoog. Klantenservice (intern): invloed laag, belang hoog. Directie van de webshop (intern): invloed hoog, belang hoog. Bezorgdienst (extern): invloed hoog, belang laag. Marketingafdeling (intern): invloed laag, belang laag. Concurrenten (extern): invloed laag, belang laag. Wie merkt het probleem het eerst? De klantenservice. Daar komen klachten en vragen als eerste binnen. Wie heeft belang bij de huidige situatie? De bezorgdienst, als de huidige afspraken voor hen voordelig zijn."
-        },
-        {
-          "titel": "Klaar als",
-          "punten": [],
-          "spreektekst": "Je bent klaar als de map op vel 1 staat, het vraagstuk in het midden staat en bij elke stakeholder de relatie met het vraagstuk staat.",
-          "klaarAls": true
-        }
-      ]
+      "titel": "Het gebruik van een stakeholderanalyse",
+      "url": "https://www.youtube.com/watch?v=Bd2f0hzjfb8",
+      "kanaal": "Bureau Tromp",
+      "verwijzing": "(Bureau Tromp, 2021)",
+      "duur": "5:32",
+      "taal": "Nederlands",
+      "waarom": "Video van opleidingsbureau Bureau Tromp over de stakeholderanalyse in een verbeterproject. Hij behandelt wie belang heeft, hoe je met weerstand omgaat en vanaf 3:01 de matrix met invloed en belang. Termen uit Lean Six Sigma, zoals Define-fase en SIPOC, heb je hier niet nodig. Intern en extern, de vier vakken en het plaatsen in VPC, BMC en TOM³ staan in de tekst.",
+      "bron": "concept-auteur"
     },
     "spel": {
       "id": "stakeholder-radar",
