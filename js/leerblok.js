@@ -12,7 +12,7 @@ import { metVerwijzingen } from './verwijzing.js';
 import { laadBronnen, maakIndex } from './bronnen.js';
 import { vorigeKeerSectie } from './terugblik-pagina.js'; // fase 7: TP-11
 import { normaliseerBlok } from './blok.js';
-import { klaarAlsLijst, stapStand, segmentLabel, a3Stand } from './voortgang.js'; // fase 17: SX-4, SX-5, SX-12
+import { klaarAlsLijst, stapStand, a3Stand } from './voortgang.js'; // fase 17: SX-5, SX-12; SX-4 staat op de metrokaart (B110)
 import { isAfgerond, leesRecords } from './afgerond.js';
 import { leesAdres, maakAdres, voetActies } from './taakweergave.js'; // fase 19: SX-6
 import { zetStellingOm } from './migratie.js';
@@ -393,8 +393,7 @@ async function start() {
       tekenVoortgang();
     }
 
-    // vaste kop: taaknummer in het leerblok, segmentbalk van de vier stappen en de stappenrij (SX-4)
-    const segmenten = h('div', { class: 'segmenten', role: 'img' });
+    // vaste kop: taaknummer in het leerblok en de stappenrij; de vier stappen staan als haltes op de metrokaart (SX-4, B110)
     const stappenRij = h('ol', { class: 'stappenrij' });
     function tekenVoortgang() {
       const o = sessie.oefening(id);
@@ -404,14 +403,10 @@ async function start() {
         oefeningAf: o.modelZichtbaar || o.overgeslagen,
         klaar: sessie.isKlaar(id),
       });
-      segmenten.setAttribute('aria-label', segmentLabel(taakNr, blok.taken.length, stand));
+      document.dispatchEvent(new CustomEvent('a3-voortgang', { detail: { taak: id } })); // de metrokaart tekent opnieuw (metro.js)
       tekenVoet();
-      wis(segmenten);
-      // DESIGN §5.3: voltooid zwart, de stap waar je bent in accent, de rest grijs
-      const hierStap = adres.soort === 'taak' && adres.taak === id ? adres.stap : stand.actief + 1;
-      stand.stappen.forEach((st, i) => segmenten.append(h('span', { class: `segment segment-${i + 1 === hierStap ? 'actief' : st.stand === 'voltooid' ? 'voltooid' : 'open'}` })));
       wis(stappenRij);
-      // onderstreept is de stap die de student nu ziet; de segmenten tonen de voortgang
+      // onderstreept is de stap die de student nu ziet; de metrokaart toont de voortgang
       const hier = adres.soort === 'taak' && adres.taak === id ? adres.stap : stand.actief + 1;
       stand.stappen.forEach((st, i) => stappenRij.append(h('li', {},
         h('a', { href: maakAdres(id, i + 1), 'aria-current': i + 1 === hier ? 'step' : null, class: `stap-link stap-${st.stand}` }, st.naam))));
@@ -421,7 +416,6 @@ async function start() {
     const kop = [
       h('div', { class: 'taakbalk' },
         h('p', { class: 'eyebrow' }, h('a', { href: '#', class: 'naar-overzicht' }, `← Leerblok ${blok.leerblok}`), ` · Taak ${taakNr} van ${blok.taken.length}`),
-        segmenten,
         h('nav', { 'aria-label': `Stappen van taak ${id}` }, stappenRij)),
       h('h2', { id: `kop-${id}` }, h('span', { class: 'nr' }, id), ` ${taak.titel}`),
       h('p', { class: 'meta' }, h('span', { class: 'vorm' }, taak.vorm), ' · ', h('span', { class: 'tijd' }, tijd))];

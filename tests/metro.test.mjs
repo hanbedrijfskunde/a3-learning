@@ -261,3 +261,12 @@ test('PF-4: leerblokpagina\'s tellen alleen hun eigen leerblokbestand; start, do
   assert.ok(paginaBestanden(root, 'index.html').some((f) => f.endsWith('js/metro-indeling.js')));
   for (const g of gewichten(root)) assert.ok(g.gzip <= GRENS && g.bytes <= GRENS_BRON, `${g.pagina}: ${g.bytes} bytes, ${g.gzip} gzip`);
 });
+
+test('SX-4: de taakkop heeft geen segmentbalk meer; voortgang en routekeuze laten de kaart opnieuw tekenen', () => {
+  const lb = lees('js/leerblok.js');
+  assert.doesNotMatch(lb, /class: 'segmenten'/);
+  assert.doesNotMatch(lb, /segmentLabel/, 'het tekstalternatief staat op de kaart (metro-model.js)');
+  assert.match(lb, /dispatchEvent\(new CustomEvent\('a3-voortgang'/);
+  assert.match(lees('js/media.js'), /dispatchEvent\(new CustomEvent\('a3-voortgang'/);
+  assert.match(lees('js/metro-model.js'), /segmentLabel\(taakNr, ids\.length/);
+});

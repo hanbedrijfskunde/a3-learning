@@ -65,7 +65,7 @@ test('SX-4: de segmentbalk heeft vier stappen (TK-18) en een tekstalternatief; e
   const klaar = stapStand({ klaar: true });
   assert.ok(klaar.klaar);
   assert.equal(segmentLabel(1, 3, klaar), 'Taak 1 van 3, klaar');
-  assert.match(lees('js/leerblok.js'), /segmenten\.setAttribute\('aria-label', segmentLabel\(/);
+  assert.match(lees('js/metro-model.js'), /segmentLabel\(/, 'SX-4: het tekstalternatief staat op de metrokaart (ADR B110)');
 });
 
 test('SX-3: de studentweergave noemt geen interne codes: samenvattingen zonder EV-nummer, geen code in de tegels of lijsten', () => {

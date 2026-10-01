@@ -198,6 +198,7 @@ export function bouwMediaSectie({ blok, store, met = (t) => t, modelZichtbaar = 
   function toon(nieuw, { bewaar = false } = {}) {
     route = nieuw;
     if (bewaar) { try { bewaarRoute(store, blok.leerblok, route); } catch (e) { /* zonder opslag werkt alles, alleen de keuze blijft niet staan */ } }
+    if (bewaar) globalThis.document?.dispatchEvent(new CustomEvent('a3-voortgang')); // de metrokaart toont de gekozen route (SX-19)
     for (const [r, knop] of knoppen) knop.setAttribute('aria-pressed', String(r === route));
     wis(paneel);
     paneel.append(bouwers[route]());
