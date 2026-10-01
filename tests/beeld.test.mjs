@@ -126,7 +126,7 @@ test('SX-13: elke oefenvraag van de vier leerblokken heeft een hint; de hint sta
       for (const v of oefenVragen(t)) { assert.ok(v.hint?.length > 10, `${t.id} ${v.id}`); n += 1; }
     }
   }
-  assert.equal(n, 60); // 3.2: acht oefenvragen in twee routes (ADR B100), eerder één; 8.1: het TOM-bord en het niveau (ADR B98)
+  assert.equal(n, 68); // 4.2: acht oefenvragen bij de mini-artikelen (ADR B102); 3.2: acht oefenvragen in twee routes (ADR B100), eerder één; 8.1: het TOM-bord en het niveau (ADR B98)
   const dom = lees('js/dom.js');
   assert.match(dom, /h\('details', \{ class: 'hint' \}, h\('summary', \{\}, 'Hint'\)/);
   assert.doesNotMatch(dom, /onmouse|onpointerenter|interestfor/);

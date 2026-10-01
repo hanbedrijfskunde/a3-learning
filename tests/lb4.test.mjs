@@ -127,9 +127,9 @@ test('11.1: „Waarom” en „Klaar als” die niet in het werkboek staan hebbe
   assert.ok(c.waarschuwingen.some((w) => /taak 9\.4: waarom/.test(w)), 'de bouwer meldt het concept in content-check');
 });
 
-test('11.17/BW-12/QA-3: alle 11 bewijsonderdelen komen in de leerblokken voor, elk met een taak met waarom en klaar als (11 van 11)', () => {
+test('11.17/BW-12/QA-3: alle 12 bewijsonderdelen komen in de leerblokken voor, elk met een taak met waarom en klaar als (12 van 12)', () => {
   const alle = blokken.flatMap((b) => b.bewijsonderdelen.map((e) => ({ ...e, taakDef: b.taken.find((t) => t.id === e.taak) })));
-  assert.deepEqual(alle.map((e) => e.id).sort(), Array.from({ length: 11 }, (_, i) => `EV-${String(i + 1).padStart(2, '0')}`));
+  assert.deepEqual(alle.map((e) => e.id).sort(), Array.from({ length: 12 }, (_, i) => `EV-${String(i + 1).padStart(2, '0')}`));
   for (const e of alle) assert.ok(e.taakDef?.waarom?.tekst && e.taakDef?.klaarAls?.tekst && e.lukOnderdelen.length > 0, e.id);
   const r = controleerMap(resolve(root, 'data'));
   assert.deepEqual(r.fouten, []);
@@ -641,7 +641,7 @@ test('AC-40: een leeg dossier levert 0 records, 0 fouten en een tekstblok van 4 
   assert.equal(d.a3Zin, '');
   assert.equal((await controleerDossier(d)).status, 'ongewijzigd');
   const stand = bouwMijnStand(luk, {});
-  assert.equal(stand.length, 11);
+  assert.equal(stand.length, 12);
   assert.equal(zwaksteOnderdeel(stand).id, 'EV-01');
   assert.equal(maakA3Tekst({ records: {}, profiel: leesProfiel(store) }).delen.length, 4);
   assert.deepEqual(bouwVersieVergelijking(store), []);

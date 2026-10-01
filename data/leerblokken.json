@@ -48,16 +48,17 @@
     },
     {
       "nummer": 2,
-      "titel": "Zoeken en beoordelen",
+      "titel": "Zoeken, beoordelen en gebruiken",
       "richttijd": 45,
       "terugblik": 15,
-      "afgerondBewijs": "Een beoordeelde bron in APA",
+      "afgerondBewijs": "Een beoordeeld en ontleed artikel",
       "bewijsonderdelen": [
         "EV-03",
         "EV-04",
+        "EV-12",
         "EV-05"
       ],
-      "el": "EL4, EL5",
+      "el": "EL4, EL5, EL10",
       "pagina": "leerblok-2.html",
       "aanbevolen": {
         "week": "Week 5",

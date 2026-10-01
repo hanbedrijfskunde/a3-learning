@@ -282,12 +282,12 @@ test('DS-3: alle vier ongewijzigde fixtures zijn te importeren, elk met 0 fouten
 
 const fixtureResultaten = async () => Promise.all(NAMEN.map(async (n) => ({ bestand: `${n}.json`, uitkomst: await controleerDossier(fixtureTekst(n)) })));
 
-test('DS-9: 5 dossiers tegelijk: per student 11 bewijsonderdelen en 3 leeruitkomsten', async () => {
+test('DS-9: 5 dossiers tegelijk: per student 12 bewijsonderdelen en 3 leeruitkomsten', async () => {
   const m = bouwVerificatie(await fixtureResultaten(), luk);
   assert.equal(m.studenten.length, 5);
   assert.equal(m.afgekeurd.length, 0);
   for (const s of m.studenten) {
-    assert.equal(s.cellen.length, 11, s.alias);
+    assert.equal(s.cellen.length, 12, s.alias);
     assert.equal(s.leeruitkomsten.length, 3, s.alias);
     assert.deepEqual(s.leeruitkomsten.map((l) => l.luk), [1, 2, 5]);
   }
@@ -300,10 +300,10 @@ test('DS-9: de studenten met de meeste ontbrekende onderdelen staan bovenaan en 
   assert.deepEqual(aantallen, [...aantallen].sort((a, b) => b - a));
   assert.deepEqual(m.studenten.map((s) => s.alias), ['Chris', 'Eva', 'Bram', 'Anna', 'Dana']);
   const bram = m.studenten.find((s) => s.alias === 'Bram');
-  assert.deepEqual(bram.ontbreekt, ['EV-04', 'EV-05', 'EV-06', 'EV-07', 'EV-08', 'EV-09', 'EV-10', 'EV-11']); // EV-03 is „bijna": telt niet als ontbrekend
+  assert.deepEqual(bram.ontbreekt, ['EV-04', 'EV-05', 'EV-06', 'EV-07', 'EV-08', 'EV-09', 'EV-10', 'EV-11', 'EV-12']); // EV-03 is „bijna": telt niet als ontbrekend
   const chris = m.studenten.find((s) => s.alias === 'Chris');
   assert.equal(chris.cellen[0].voorlopig, true);
-  assert.equal(chris.ontbreekt.length, 11);
+  assert.equal(chris.ontbreekt.length, 12);
 });
 
 test('DS-8/DS-9: het gewijzigde dossier is in de tabel gemarkeerd en de andere niet', async () => {
@@ -336,11 +336,11 @@ test('DS-9: slechtsteStatus volgt de statusregel: nog niet gaat voor bijna, bijn
   assert.equal(slechtsteStatus([]), 'nog niet');
 });
 
-test('DS-11: Mijn stand heeft 11 statussen en 0 inhoudsvelden', () => {
+test('DS-11: Mijn stand heeft 12 statussen en 0 inhoudsvelden', () => {
   const { store } = gevuld();
   const records = Object.fromEntries(luk.bewijsonderdelen.map((b) => [b.id, store.get(b.id)]));
   const stand = bouwMijnStand(luk, records);
-  assert.equal(stand.length, 11);
+  assert.equal(stand.length, 12);
   assert.deepEqual(stand.filter((c) => c.heeftRecord).map((c) => [c.id, c.status]), [['EV-01', 'compleet'], ['EV-02', 'compleet']].map(([id]) => [id, stand.find((c) => c.id === id).status]));
   assert.deepEqual(Object.keys(stand[0]).sort(), ['heeftRecord', 'id', 'ontbreekt', 'status', 'statusTekst', 'titel', 'voorlopig']);
   const tekst = JSON.stringify(stand);
@@ -369,7 +369,7 @@ test('DS-7: 3 afdrukbare pagina\'s (LUK 1, 2 en 5), elk met status, inhoud en de
   const d = await maakDossier(store, { elearning: '0.1.0', nu: NU });
   const paginas = bouwAfdruk(d, luk, veldLabels([blok1]));
   assert.deepEqual(paginas.map((p) => p.luk), [1, 2, 5]);
-  assert.deepEqual(paginas.map((p) => p.onderdelen.length), [9, 1, 2]);
+  assert.deepEqual(paginas.map((p) => p.onderdelen.length), [10, 1, 2]);
   for (const p of paginas) assert.equal(p.controlesom, d.controlesom.waarde);
   const ev01 = paginas[0].onderdelen.find((o) => o.id === 'EV-01');
   assert.equal(ev01.statusTekst, 'Compleet');
@@ -491,8 +491,8 @@ test('3.10: er zijn 5 testdossiers, 1 met gewijzigde inhoud', () => {
   assert.deepEqual(bestanden, NAMEN.map((n) => `${n}.json`).sort());
 });
 
-test('3.1: luk.json heeft 11 bewijsonderdelen en 13 onderdelen en slaagt voor de contentcontrole met leerblok 1', () => {
-  assert.equal(luk.bewijsonderdelen.length, 11);
+test('3.1: luk.json heeft 12 bewijsonderdelen en 13 onderdelen en slaagt voor de contentcontrole met leerblok 1', () => {
+  assert.equal(luk.bewijsonderdelen.length, 12);
   assert.equal(luk.onderdelen.length, 13);
   assert.deepEqual(controleerLuk(luk, 'luk.json', [blok1]), []);
   assert.deepEqual(controleerMap(resolve(root, 'data')).fouten, []);
@@ -516,8 +516,8 @@ test('3.1: de contentcontrole vangt een luk.json met een onbekend bewijsonderdee
   assert.ok(controleerLuk(luk, 'luk.json', [b]).some((f) => f.includes('claimt LUK 2')));
 });
 
-test('BW-13/DS-9: bouwLeeruitkomsten geeft LUK 1, 2 en 5 met 9, 1 en 2 onderdelen', () => {
+test('BW-13/DS-9: bouwLeeruitkomsten geeft LUK 1, 2 en 5 met 10, 1 en 2 onderdelen', () => {
   const l = bouwLeeruitkomsten(luk, {});
-  assert.deepEqual(l.map((x) => [x.luk, x.ids.length]), [[1, 9], [2, 1], [5, 2]]);
+  assert.deepEqual(l.map((x) => [x.luk, x.ids.length]), [[1, 10], [2, 1], [5, 2]]);
   assert.ok(l.every((x) => x.status === 'nog niet' && x.ontbreekt.length === x.ids.length));
 });

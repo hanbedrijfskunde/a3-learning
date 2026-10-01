@@ -12,7 +12,8 @@
     { "id": "EV-08", "titel": "Plaatsing van het vraagstuk" },
     { "id": "EV-09", "titel": "Feedback ontvangen en gegeven" },
     { "id": "EV-10", "titel": "Reflectie (STARR)" },
-    { "id": "EV-11", "titel": "Verbanden tussen modellen" }
+    { "id": "EV-11", "titel": "Verbanden tussen modellen" },
+    { "id": "EV-12", "titel": "Ontleed artikel" }
   ],
   "onderdelen": [
     { "luk": 1, "label": "LUK 1 · Signaleert knelpunten in een intern proces", "dekking": "deels", "toelichting": "de probleemzin krijg je aangereikt; die wordt niet getoetst", "bewijs": ["EV-01"] },
@@ -20,7 +21,7 @@
     { "luk": 1, "label": "LUK 1 · Analyseert het probleem methodisch", "dekking": "deels", "toelichting": "zoekvragen en zoekstrategie", "bewijs": ["EV-02", "EV-03"] },
     { "luk": 1, "label": "LUK 1 · Stelt een onderbouwde diagnose", "dekking": "buiten scope", "toelichting": "", "bewijs": [] },
     { "luk": 1, "label": "LUK 1 · Selecteert relevante theorieën en modellen en voegt ze samen", "dekking": "gedekt", "toelichting": "", "bewijs": ["EV-02", "EV-11"] },
-    { "luk": 1, "label": "LUK 1 · Gebruikt en beoordeelt bronnen", "dekking": "gedekt", "toelichting": "", "bewijs": ["EV-03", "EV-04", "EV-05"] },
+    { "luk": 1, "label": "LUK 1 · Gebruikt en beoordeelt bronnen", "dekking": "gedekt", "toelichting": "", "bewijs": ["EV-03", "EV-04", "EV-12", "EV-05"] },
     { "luk": 1, "label": "LUK 1 · Duidt achtergronden, oorzaken en ontwikkelingen", "dekking": "deels", "toelichting": "achtergrond, geen oorzaken", "bewijs": ["EV-07", "EV-08"] },
     { "luk": 1, "label": "LUK 1 · Betrekt stakeholders binnen en buiten het organisatieonderdeel", "dekking": "gedekt", "toelichting": "", "bewijs": ["EV-06"] },
     { "luk": 1, "label": "LUK 1 · Ziet kansen en bedreigingen uit externe ontwikkelingen", "dekking": "deels", "toelichting": "alleen via het frame „extern”", "bewijs": ["EV-02"] },

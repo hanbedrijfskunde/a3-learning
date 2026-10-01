@@ -35,15 +35,17 @@
         "De vijf AAOCC-criteria.",
         "De controle van een AI-bron: openen, auteur, jaar en titel nakijken.",
         "De onderdelen van een APA-vermelding.",
-        "Je beoordeelde bron."
+        "Je beoordeelde bron.",
+        "De vier delen van IMRAD en wat je uit Inleiding, Methode en Resultaten haalt.",
+        "Je ontlede artikel."
       ],
       "kennisvragen": [
         "Noem de vijf AAOCC-criteria.",
-        "Hoe controleer je een bron die een AI-tool je geeft?"
+        "Noem de vier delen van IMRAD. Wat haal je uit de Inleiding, de Methode en de Resultaten?"
       ],
       "transfervraag": "Welke bron uit leerblok 2 gebruik je om het vraagstuk te plaatsen, en waarom is hij betrouwbaar genoeg?",
       "samenvatting": {
-        "tekst": "In leerblok 2 zocht je bronnen bij je zoekvragen. Eén bron beoordeelde je met de vijf AAOCC-criteria: Authority, Accuracy, Objectivity, Currency en Coverage. Een bron van een AI-tool controleer je door hem te openen. Daarna kijk je de auteur, het jaar en de titel na. Je schreef de bron op als APA-vermelding.",
+        "tekst": "In leerblok 2 zocht je bronnen bij je zoekvragen. Eén bron beoordeelde je met de vijf AAOCC-criteria: Authority, Accuracy, Objectivity, Currency en Coverage. Een bron van een AI-tool controleer je door hem te openen. Daarna kijk je de auteur, het jaar en de titel na. Je schreef de bron op als APA-vermelding. Daarna ontleedde je een onderzoeksartikel met IMRAD. Uit de Inleiding haalde je theorie, uit de Methode een aanpak en uit de Resultaten een manier van tonen.",
         "bron": "concept-auteur"
       }
     },

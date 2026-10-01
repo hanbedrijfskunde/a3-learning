@@ -129,7 +129,7 @@
       "record": {
         "schema": "1.0",
         "id": "EV-05",
-        "taak": "4.2",
+        "taak": "4.3",
         "leerblok": 2,
         "luk": [
           1
@@ -327,11 +327,44 @@
         "elearning": "0.1.0"
       },
       "eerdereVersies": 0
+    },
+    {
+      "record": {
+        "schema": "1.0",
+        "id": "EV-12",
+        "taak": "4.2",
+        "leerblok": 2,
+        "luk": [
+          1
+        ],
+        "bc": [
+          "BC1"
+        ],
+        "inhoud": {
+          "antwoord": "Antwoord van Dana bij EV-12: de planners van de afdeling willen sneller roosteren."
+        },
+        "controles": [
+          {
+            "id": "velden-gevuld",
+            "resultaat": "ok"
+          }
+        ],
+        "status": "compleet",
+        "voorlopig": false,
+        "versie": 1,
+        "bijgewerkt": "2026-10-01T10:00:00+02:00",
+        "elearning": "0.1.0"
+      },
+      "eerdereVersies": 0
     }
   ],
+  "terugblik": [],
+  "a3Zin": "",
+  "a3Kopieerlog": [],
+  "verdiepingGedaan": [],
   "controlesom": {
     "algoritme": "SHA-256",
-    "waarde": "60afa0130766065c21be12e5f5e451c3db7328b15e0b8f538e09a143686bef86",
+    "waarde": "eb710a21afafffe75f5433d58cf5198823a1f27f0c8681236f7f26ebcf0a9b21",
     "over": "alle velden behalve controlesom, met gesorteerde sleutels"
   }
 }

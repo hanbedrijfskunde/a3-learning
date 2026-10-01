@@ -17,13 +17,14 @@ const EV = {
   'EV-02': { taak: '2.2', leerblok: 1, luk: [1], bc: ['BC1'] },
   'EV-03': { taak: '3.1', leerblok: 2, luk: [1], bc: ['BC1'] },
   'EV-04': { taak: '4.1', leerblok: 2, luk: [1], bc: ['BC1'] },
-  'EV-05': { taak: '4.2', leerblok: 2, luk: [1], bc: ['BC1'] },
+  'EV-05': { taak: '4.3', leerblok: 2, luk: [1], bc: ['BC1'] },
   'EV-06': { taak: '5.1', leerblok: 3, luk: [1], bc: ['BC1'] },
   'EV-07': { taak: '6.1', leerblok: 3, luk: [1], bc: ['BC1'] },
   'EV-08': { taak: '9.1', leerblok: 3, luk: [1], bc: ['BC1'] },
   'EV-09': { taak: '6.2', leerblok: 4, luk: [5], bc: ['BC5'] },
   'EV-10': { taak: '9.3', leerblok: 4, luk: [5], bc: ['BC5'] },
   'EV-11': { taak: '9.4', leerblok: 4, luk: [1], bc: ['BC1'] },
+  'EV-12': { taak: '4.2', leerblok: 2, luk: [1], bc: ['BC1'] },
 };
 
 /** Bewaart een record dat `versies` keer is aangepast (dus versie = versies). */

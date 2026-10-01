@@ -495,8 +495,8 @@ export function controleerLuk(inhoud, bestand = 'luk.json', blokken = []) {
   if (inhoud?.formaat !== '1.0') fout('formaat moet "1.0" zijn');
   const evs = Array.isArray(inhoud?.bewijsonderdelen) ? inhoud.bewijsonderdelen : [];
   const rijen = Array.isArray(inhoud?.onderdelen) ? inhoud.onderdelen : [];
-  const verwacht = Array.from({ length: 11 }, (_, i) => `EV-${String(i + 1).padStart(2, '0')}`);
-  if (evs.map((e) => e.id).join(',') !== verwacht.join(',')) fout(`bewijsonderdelen moeten ${verwacht[0]} t/m ${verwacht[10]} zijn, in volgorde (blueprint §6.7)`);
+  const verwacht = Array.from({ length: 12 }, (_, i) => `EV-${String(i + 1).padStart(2, '0')}`); // EV-12: ontleed artikel (ADR B102)
+  if (evs.map((e) => e.id).join(',') !== verwacht.join(',')) fout(`bewijsonderdelen moeten ${verwacht[0]} t/m ${verwacht.at(-1)} zijn, in volgorde (blueprint §6.7)`);
   for (const e of evs) if (!gevuld(e.titel)) fout(`bewijsonderdeel ${e.id} mist een titel`);
   if (rijen.length !== 13) fout(`moet 13 onderdelen van de leeruitkomsten hebben (blueprint §4.3), heeft er ${rijen.length}`);
   const ids = new Set(evs.map((e) => e.id));

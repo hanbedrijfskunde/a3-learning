@@ -14,7 +14,7 @@
       "citatie": "Bakker & De Vries, 2016",
       "type": "artikel",
       "fictief": true,
-      "apa": "Bakker, J. & De Vries, M. (2016). Klanttevredenheid in webwinkels: Een enquête onder 1.200 klanten. *Tijdschrift voor Marketingonderzoek, 12*(3), 45–61. [Fictieve bron: verzonnen voor de oefening bij taak 4.1]"
+      "apa": "Bakker, J. & De Vries, M. (2016). Klanttevredenheid in webwinkels: Een enquête onder 1.200 klanten. *Tijdschrift voor Marketingonderzoek, 12*(3), 45–61. [Fictieve bron: verzonnen voor de oefeningen bij taak 4.1 en 4.2]"
     },
     {
       "id": "hattie-timperley-2007",
@@ -31,11 +31,32 @@
       "link": "https://doi.org/10.1037/0003-066X.59.1.14"
     },
     {
+      "id": "oliver-1980",
+      "citatie": "Oliver, 1980",
+      "type": "artikel",
+      "apa": "Oliver, R. L. (1980). A cognitive model of the antecedents and consequences of satisfaction decisions. *Journal of Marketing Research, 17*(4), 460–469.",
+      "link": "https://doi.org/10.1177/002224378001700405"
+    },
+    {
       "id": "roediger-karpicke-2006",
       "citatie": "Roediger & Karpicke, 2006",
       "type": "artikel",
       "apa": "Roediger, H. L., III & Karpicke, J. D. (2006). Test-enhanced learning: Taking memory tests improves long-term retention. *Psychological Science, 17*(3), 249–255.",
       "link": "https://doi.org/10.1111/j.1467-9280.2006.01693.x"
+    },
+    {
+      "id": "visser-el-amrani-2021",
+      "citatie": "Visser & El Amrani, 2021",
+      "type": "artikel",
+      "fictief": true,
+      "apa": "Visser, L. & El Amrani, S. (2021). Verwachting en ervaring bij online winkelen. *Tijdschrift voor Marketingonderzoek, 17*(2), 12–19. [Fictieve bron: verzonnen voor de oefening bij taak 4.2]"
+    },
+    {
+      "id": "wu-2011",
+      "citatie": "Wu, 2011",
+      "type": "artikel",
+      "apa": "Wu, J. (2011). Improving the writing of research papers: IMRAD and beyond. *Landscape Ecology, 26*(10), 1345–1349.",
+      "link": "https://doi.org/10.1007/s10980-011-9674-3"
     }
   ],
   "wachtOpCitatie": [

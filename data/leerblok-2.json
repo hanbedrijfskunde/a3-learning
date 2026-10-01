@@ -1,9 +1,9 @@
 {
   "formaat": "1.0",
   "leerblok": 2,
-  "titel": "Zoeken en beoordelen",
+  "titel": "Zoeken, beoordelen en gebruiken",
   "richttijd": 45,
-  "eindigtMet": "Een beoordeelde bron in APA",
+  "eindigtMet": "Een beoordeeld en ontleed artikel",
   "oefencasus": "Webshop X",
   "taken": [
     {
@@ -21,7 +21,20 @@
       },
       "klaarAls": {
         "tekst": "je van één zoekvraag uit 2.2 de kernbegrippen hebt gehaald en bij elk begrip minstens één synoniem en één Engelse term hebt opgeschreven.",
-        "bron": "concept-auteur", "criteria": [{"tekst": "je van één zoekvraag uit 2.2 de kernbegrippen hebt gehaald", "controles": []}, {"tekst": "bij elk begrip minstens één synoniem en één Engelse term hebt opgeschreven", "controles": ["termen-per-begrip"]}]},
+        "bron": "concept-auteur",
+        "criteria": [
+          {
+            "tekst": "je van één zoekvraag uit 2.2 de kernbegrippen hebt gehaald",
+            "controles": []
+          },
+          {
+            "tekst": "bij elk begrip minstens één synoniem en één Engelse term hebt opgeschreven",
+            "controles": [
+              "termen-per-begrip"
+            ]
+          }
+        ]
+      },
       "stof": {
         "bron": "concept-auteur",
         "opmerking": "Het werkboek geeft bij 3.1 alleen de opdracht en de tabel; de uitleg over kernbegrippen en de verwijzing naar Mayer (2004) zijn door de bouwer geschreven.",
@@ -39,17 +52,53 @@
           {
             "id": "begrippen",
             "label": "Kernbegrippen",
-            "type": "lang", "hint": "Haal de zelfstandige naamwoorden uit je zoekvraag. Welke twee of drie woorden dragen de vraag?", "hintBron": [{"soort": "stof", "taak": "3.1", "vindplaats": "alinea 1"}, {"soort": "werkboek", "vindplaats": "Werkboek week 5, opdracht 3.1"}]
+            "type": "lang",
+            "hint": "Haal de zelfstandige naamwoorden uit je zoekvraag. Welke twee of drie woorden dragen de vraag?",
+            "hintBron": [
+              {
+                "soort": "stof",
+                "taak": "3.1",
+                "vindplaats": "alinea 1"
+              },
+              {
+                "soort": "werkboek",
+                "vindplaats": "Werkboek week 5, opdracht 3.1"
+              }
+            ]
           },
           {
             "id": "synoniemen",
             "label": "Synoniemen en verwante termen",
-            "type": "lang", "hint": "Hoe zou iemand anders hetzelfde begrip noemen? Denk ook aan een breder woord.", "hintBron": [{"soort": "stof", "taak": "3.1", "vindplaats": "alinea 1"}, {"soort": "werkboek", "vindplaats": "Werkboek week 5, opdracht 3.1 (tabel)"}]
+            "type": "lang",
+            "hint": "Hoe zou iemand anders hetzelfde begrip noemen? Denk ook aan een breder woord.",
+            "hintBron": [
+              {
+                "soort": "stof",
+                "taak": "3.1",
+                "vindplaats": "alinea 1"
+              },
+              {
+                "soort": "werkboek",
+                "vindplaats": "Werkboek week 5, opdracht 3.1 (tabel)"
+              }
+            ]
           },
           {
             "id": "engels",
             "label": "Engelse termen",
-            "type": "lang", "hint": "Veel onderzoek is Engelstalig. Hoe heet het begrip in de vakliteratuur?", "hintBron": [{"soort": "stof", "taak": "3.1", "vindplaats": "alinea 1"}, {"soort": "werkboek", "vindplaats": "Werkboek week 5, opdracht 3.1 (tabel)"}]
+            "type": "lang",
+            "hint": "Veel onderzoek is Engelstalig. Hoe heet het begrip in de vakliteratuur?",
+            "hintBron": [
+              {
+                "soort": "stof",
+                "taak": "3.1",
+                "vindplaats": "alinea 1"
+              },
+              {
+                "soort": "werkboek",
+                "vindplaats": "Werkboek week 5, opdracht 3.1 (tabel)"
+              }
+            ]
           }
         ]
       },
@@ -212,7 +261,25 @@
       },
       "klaarAls": {
         "tekst": "je met route A een zoekstring met minstens één zoekoperator hebt, of met route B een prompt zonder namen uit je „niet noemen”-lijst, en één gevonden bron hebt opgeschreven die je zelf hebt geopend.",
-        "bron": "concept-auteur", "criteria": [{"tekst": "met route A een zoekstring met minstens één zoekoperator hebt, of met route B een prompt zonder namen uit je „niet noemen”-lijst", "controles": ["route-gekozen", "zoekstring-operator", "tool-gekozen", "prompt-zonder-verboden"]}, {"tekst": "één gevonden bron hebt opgeschreven die je zelf hebt geopend", "controles": ["bron-gevonden"]}]},
+        "bron": "concept-auteur",
+        "criteria": [
+          {
+            "tekst": "met route A een zoekstring met minstens één zoekoperator hebt, of met route B een prompt zonder namen uit je „niet noemen”-lijst",
+            "controles": [
+              "route-gekozen",
+              "zoekstring-operator",
+              "tool-gekozen",
+              "prompt-zonder-verboden"
+            ]
+          },
+          {
+            "tekst": "één gevonden bron hebt opgeschreven die je zelf hebt geopend",
+            "controles": [
+              "bron-gevonden"
+            ]
+          }
+        ]
+      },
       "stof": {
         "bron": "concept-auteur",
         "opmerking": "De teksten over route A en route B en de waarschuwing komen letterlijk uit werkboek 3.2. Het voorbeeld van een zoekstring en de verwijzing naar Hattie en Timperley (2007) zijn door de bouwer geschreven.",
@@ -495,7 +562,8 @@
           {
             "id": "zoekvraag",
             "label": "Zoekvraag uit 2.2",
-            "type": "lang", "zinstarter": "Welke …"
+            "type": "lang",
+            "zinstarter": "Welke …"
           },
           {
             "id": "context",
@@ -510,12 +578,14 @@
           {
             "id": "nietNoemen",
             "label": "„Niet noemen”-lijst: namen en vertrouwelijke termen die niet in de prompt mogen (gescheiden door komma’s)",
-            "type": "lang", "zinstarter": "naam opdrachtgever, productnaam, …"
+            "type": "lang",
+            "zinstarter": "naam opdrachtgever, productnaam, …"
           },
           {
             "id": "prompt",
             "label": "Prompt voor route B",
-            "type": "lang", "zinstarter": "Zoek wetenschappelijke bronnen over …"
+            "type": "lang",
+            "zinstarter": "Zoek wetenschappelijke bronnen over …"
           },
           {
             "id": "bron",
@@ -525,7 +595,8 @@
           {
             "id": "werkte",
             "label": "Route A of B: wat werkte wel, wat niet?",
-            "type": "lang", "zinstarter": "Goed ging: …; minder goed ging: …"
+            "type": "lang",
+            "zinstarter": "Goed ging: …; minder goed ging: …"
           }
         ],
         "weergave": {
@@ -698,7 +769,35 @@
       },
       "klaarAls": {
         "tekst": "je van één bron de vijf AAOCC-oordelen met een zin toelichting hebt, bij een AI-bron beide controles hebt gedaan, een besluit hebt genomen en de bron in APA hebt opgeschreven.",
-        "bron": "concept-auteur", "criteria": [{"tekst": "de vijf AAOCC-oordelen met een zin toelichting hebt", "controles": ["bron-oordelen", "bron-toelichting"]}, {"tekst": "bij een AI-bron beide controles hebt gedaan", "controles": ["bron-verificatie"]}, {"tekst": "een besluit hebt genomen", "controles": ["bron-besluit"]}, {"tekst": "de bron in APA hebt opgeschreven", "controles": ["bron-apa"]}]},
+        "bron": "concept-auteur",
+        "criteria": [
+          {
+            "tekst": "de vijf AAOCC-oordelen met een zin toelichting hebt",
+            "controles": [
+              "bron-oordelen",
+              "bron-toelichting"
+            ]
+          },
+          {
+            "tekst": "bij een AI-bron beide controles hebt gedaan",
+            "controles": [
+              "bron-verificatie"
+            ]
+          },
+          {
+            "tekst": "een besluit hebt genomen",
+            "controles": [
+              "bron-besluit"
+            ]
+          },
+          {
+            "tekst": "de bron in APA hebt opgeschreven",
+            "controles": [
+              "bron-apa"
+            ]
+          }
+        ]
+      },
       "stof": {
         "bron": "concept-auteur",
         "opmerking": "De vijf criteria met hun vragen, de oordelen (+, ?, –) en de twee AI-controles komen uit werkboek 4.1. De uitleg van APA en de verwijzingen naar de Publication manual en naar Roediger en Karpicke (2006) zijn door de bouwer geschreven.",
@@ -706,7 +805,8 @@
           "AAOCC bestaat uit vijf vragen. Authority: wie is de auteur en is die deskundig? Accuracy: klopt de inhoud en is die onderbouwd? Objectivity: is de bron neutraal of heeft die een belang? Currency: is de bron actueel genoeg? Coverage: behandelt de bron het onderwerp volledig genoeg? Bij elk criterium hoort een oordeel (+, ? of –) met een zin toelichting.",
           "Een bron van een AI-tool vraagt twee extra controles. Bestaat de bron echt? En staat erin wat de AI zegt? Dat zie je alleen als je de bron zelf opent.",
           "In APA (7e editie) staat het jaar tussen haakjes achter de auteur: Achternaam, A. (jaar). Titel. Uitgever of tijdschrift. Link. De regels staan in de Publication manual (American Psychological Association, 2020). De bronnen van deze site staan in dezelfde stijl op de bronnenpagina.",
-          "Wat je zelf ophaalt en toepast, onthoud je beter dan wat je alleen herleest (Roediger & Karpicke, 2006)."
+          "Wat je zelf ophaalt en toepast, onthoud je beter dan wat je alleen herleest (Roediger & Karpicke, 2006).",
+          "Kies voor taak 4.2 een onderzoeksartikel: een artikel met een methode en resultaten."
         ]
       },
       "oefening": {
@@ -718,17 +818,54 @@
           {
             "id": "authority",
             "label": "Authority: oordeel en één zin toelichting",
-            "type": "lang", "hint": "Wie heeft het geschreven en waar is het verschenen? Kijk naar de functie van de auteur en het soort uitgave.", "hintBron": [{"soort": "stof", "taak": "4.1", "vindplaats": "alinea 1"}, {"soort": "stof", "taak": "4.1", "vindplaats": "uitleg onder de knop Tekst, voorbeeld"}]
+            "type": "lang",
+            "hint": "Wie heeft het geschreven en waar is het verschenen? Kijk naar de functie van de auteur en het soort uitgave.",
+            "hintBron": [
+              {
+                "soort": "stof",
+                "taak": "4.1",
+                "vindplaats": "alinea 1"
+              },
+              {
+                "soort": "stof",
+                "taak": "4.1",
+                "vindplaats": "uitleg onder de knop Tekst, voorbeeld"
+              }
+            ]
           },
           {
             "id": "currency",
             "label": "Currency: oordeel en één zin toelichting",
-            "type": "lang", "hint": "Van wanneer is de bron? Verandert het onderwerp snel?", "hintBron": [{"soort": "stof", "taak": "4.1", "vindplaats": "alinea 1"}, {"soort": "werkboek", "vindplaats": "Werkboek week 5, opdracht 4.1 (tabel)"}]
+            "type": "lang",
+            "hint": "Van wanneer is de bron? Verandert het onderwerp snel?",
+            "hintBron": [
+              {
+                "soort": "stof",
+                "taak": "4.1",
+                "vindplaats": "alinea 1"
+              },
+              {
+                "soort": "werkboek",
+                "vindplaats": "Werkboek week 5, opdracht 4.1 (tabel)"
+              }
+            ]
           },
           {
             "id": "apa",
             "label": "De bron in APA",
-            "type": "lang", "hint": "Volgorde: auteur, jaar, titel, tijdschrift met jaargang en nummer, pagina’s. Let op cursief en leestekens.", "hintBron": [{"soort": "stof", "taak": "4.1", "vindplaats": "alinea 3"}, {"soort": "werkboek", "vindplaats": "de bronnenpagina van deze site: daar staat elke bron in APA"}]
+            "type": "lang",
+            "hint": "Volgorde: auteur, jaar, titel, tijdschrift met jaargang en nummer, pagina’s. Let op cursief en leestekens.",
+            "hintBron": [
+              {
+                "soort": "stof",
+                "taak": "4.1",
+                "vindplaats": "alinea 3"
+              },
+              {
+                "soort": "werkboek",
+                "vindplaats": "de bronnenpagina van deze site: daar staat elke bron in APA"
+              }
+            ]
           }
         ]
       },
@@ -766,6 +903,16 @@
             "id": "b1link",
             "label": "Bron 1: link of DOI",
             "type": "tekst"
+          },
+          {
+            "id": "b1soort",
+            "label": "Soort bron",
+            "type": "keuze",
+            "opties": [
+              "onderzoeksartikel",
+              "vakartikel",
+              "anders"
+            ]
           },
           {
             "id": "b1route",
@@ -829,27 +976,32 @@
           {
             "id": "b1t1",
             "label": "Bron 1: toelichting Authority",
-            "type": "lang", "zinstarter": "De auteur is … en is deskundig omdat …"
+            "type": "lang",
+            "zinstarter": "De auteur is … en is deskundig omdat …"
           },
           {
             "id": "b1t2",
             "label": "Bron 1: toelichting Accuracy",
-            "type": "lang", "zinstarter": "De inhoud is onderbouwd met …"
+            "type": "lang",
+            "zinstarter": "De inhoud is onderbouwd met …"
           },
           {
             "id": "b1t3",
             "label": "Bron 1: toelichting Objectivity",
-            "type": "lang", "zinstarter": "De bron heeft wel of geen belang bij …"
+            "type": "lang",
+            "zinstarter": "De bron heeft wel of geen belang bij …"
           },
           {
             "id": "b1t4",
             "label": "Bron 1: toelichting Currency",
-            "type": "lang", "zinstarter": "De bron is van … en dat is actueel genoeg omdat …"
+            "type": "lang",
+            "zinstarter": "De bron is van … en dat is actueel genoeg omdat …"
           },
           {
             "id": "b1t5",
             "label": "Bron 1: toelichting Coverage",
-            "type": "lang", "zinstarter": "De bron behandelt … maar niet …"
+            "type": "lang",
+            "zinstarter": "De bron behandelt … maar niet …"
           },
           {
             "id": "b1ver",
@@ -872,7 +1024,8 @@
           {
             "id": "b1apa",
             "label": "Bron 1 in APA",
-            "type": "lang", "zinstarter": "Achternaam, V. (jaar). Titel. Uitgever of tijdschrift."
+            "type": "lang",
+            "zinstarter": "Achternaam, V. (jaar). Titel. Uitgever of tijdschrift."
           },
           {
             "id": "b2auteur",
@@ -956,27 +1109,32 @@
           {
             "id": "b2t1",
             "label": "Bron 2: toelichting Authority",
-            "type": "lang", "zinstarter": "De auteur is … en is deskundig omdat …"
+            "type": "lang",
+            "zinstarter": "De auteur is … en is deskundig omdat …"
           },
           {
             "id": "b2t2",
             "label": "Bron 2: toelichting Accuracy",
-            "type": "lang", "zinstarter": "De inhoud is onderbouwd met …"
+            "type": "lang",
+            "zinstarter": "De inhoud is onderbouwd met …"
           },
           {
             "id": "b2t3",
             "label": "Bron 2: toelichting Objectivity",
-            "type": "lang", "zinstarter": "De bron heeft wel of geen belang bij …"
+            "type": "lang",
+            "zinstarter": "De bron heeft wel of geen belang bij …"
           },
           {
             "id": "b2t4",
             "label": "Bron 2: toelichting Currency",
-            "type": "lang", "zinstarter": "De bron is van … en dat is actueel genoeg omdat …"
+            "type": "lang",
+            "zinstarter": "De bron is van … en dat is actueel genoeg omdat …"
           },
           {
             "id": "b2t5",
             "label": "Bron 2: toelichting Coverage",
-            "type": "lang", "zinstarter": "De bron behandelt … maar niet …"
+            "type": "lang",
+            "zinstarter": "De bron behandelt … maar niet …"
           },
           {
             "id": "b2ver",
@@ -999,7 +1157,8 @@
           {
             "id": "b2apa",
             "label": "Bron 2 in APA",
-            "type": "lang", "zinstarter": "Achternaam, V. (jaar). Titel. Uitgever of tijdschrift."
+            "type": "lang",
+            "zinstarter": "Achternaam, V. (jaar). Titel. Uitgever of tijdschrift."
           }
         ],
         "weergave": {
@@ -1013,6 +1172,7 @@
                     "b1jaar",
                     "b1titel",
                     "b1link",
+                    "b1soort",
                     "b1route"
                   ]
                 },
@@ -1563,7 +1723,562 @@
     },
     {
       "id": "4.2",
-      "titel": "Stelling: \"Je kunt prima AI gebruiken om inspiratiemateriaal te vinden.\"",
+      "titel": "Haal meer uit je artikel",
+      "vorm": "Alleen",
+      "richttijd": {
+        "tekst": "15 min",
+        "minuten": 15,
+        "bron": "concept-auteur"
+      },
+      "waarom": {
+        "tekst": "Een artikel vertelt je wat er bekend is. Maar je kunt er meer uit halen: een begrip, een onderzoeksaanpak en een manier om je uitkomst te tonen. IMRAD wijst je waar je dat vindt.",
+        "bron": "concept-auteur"
+      },
+      "klaarAls": {
+        "tekst": "je bij Inleiding, Methode en Resultaten van je artikel hebt opgeschreven wat de auteur doet, waar dat staat en of je het meeneemt, en in een korte alinea hebt opgeschreven wat je meeneemt naar je A3.",
+        "bron": "concept-auteur",
+        "criteria": [
+          {
+            "tekst": "bij Inleiding, Methode en Resultaten van je artikel hebt opgeschreven wat de auteur doet, waar dat staat en of je het meeneemt",
+            "controles": [
+              "imr-ingevuld",
+              "imr-vindplaats",
+              "imr-meenemen",
+              "ai-geverifieerd"
+            ]
+          },
+          {
+            "tekst": "in een korte alinea hebt opgeschreven wat je meeneemt naar je A3",
+            "controles": [
+              "oogst-gevuld",
+              "oogst-zinnen"
+            ]
+          }
+        ]
+      },
+      "stof": {
+        "bron": "concept-auteur",
+        "opmerking": "Door de bouwer geschreven. IMRAD naar Wu (2011), alleen geciteerd; de figuur is een eigen tekening (ADR B102).",
+        "figuur": "imrad",
+        "alineas": [
+          "Bijna elk onderzoeksartikel heeft vier delen: Inleiding, Methode, Resultaten en Discussie. Samen heet dat IMRAD (Wu, 2011). Elk deel beantwoordt een eigen vraag. Daardoor weet je waar je moet zoeken.",
+          "Lees een artikel niet van voor naar achter. Begin met de samenvatting. Kijk dan naar de figuren en tabellen. Lees daarna de methode, en pas dan de rest.",
+          "Je mag een AI-tool laten helpen. Gebruik dan de prompt bij deze taak. Een AI-tool verzint soms een citaat of een methode. Zoek daarom alles wat hij zegt zelf op in het artikel. Schrijf bij elk antwoord de vindplaats op: de sectie of de pagina."
+        ]
+      },
+      "oefening": {
+        "opdracht": {
+          "tekst": "Werk met een medestudent. Hieronder staan twee korte artikelen over klanttevredenheid bij webshops. Ze zijn verzonnen voor deze oefening. Kies ieder één artikel en beantwoord de drie vragen. Vergelijk daarna samen: welk artikel levert jullie het meest op? Werk je alleen? Doe dan beide artikelen.",
+          "bron": "concept-auteur"
+        },
+        "figuur": "miniartikelen",
+        "modelNa": [
+          "theorie",
+          "methode",
+          "presentatie",
+          "vergelijking"
+        ],
+        "artikelen": [
+          {
+            "kop": "Verwachting en ervaring bij online winkelen",
+            "citatie": "Visser & El Amrani, 2021",
+            "secties": [
+              {
+                "kop": "Inleiding",
+                "tekst": "Waarom zijn klanten van webshops tevreden of juist niet? Wij gebruiken het disconfirmatiemodel (Oliver, 1980). Volgens dat model vergelijken klanten wat ze verwachtten met wat ze ervaren. Is de ervaring beter dan de verwachting, dan zijn ze tevreden. Is ze slechter, dan zijn ze ontevreden. Klanttevredenheid is dus het oordeel na die vergelijking. Verwachtingen komen uit eerdere aankopen, reclame en verhalen van anderen. Onze vraag: welke verwachtingen van webshopklanten worden het vaakst niet waargemaakt?"
+              },
+              {
+                "kop": "Methode",
+                "tekst": "We spraken acht klanten van drie webshops. Ze vertelden over hun laatste aankoop."
+              },
+              {
+                "kop": "Resultaten",
+                "tekst": "De meeste klanten noemden de levertijd. Ze hadden levering binnen een dag verwacht. Ook het retourneren viel tegen. Over de prijs was bijna niemand ontevreden."
+              },
+              {
+                "kop": "Discussie",
+                "tekst": "Webshops kunnen beter sturen op verwachtingen: beloof alleen wat je waarmaakt. Met acht klanten weten we niet hoe vaak dit voorkomt."
+              }
+            ]
+          },
+          {
+            "kop": "Klanttevredenheid in webwinkels: een enquête onder 1.200 klanten",
+            "citatie": "Bakker & De Vries, 2016",
+            "secties": [
+              {
+                "kop": "Inleiding",
+                "tekst": "Webshops willen weten waar ze de klanttevredenheid het best kunnen verbeteren. Wij onderzochten welke onderdelen van een bestelling klanten het laagst waarderen."
+              },
+              {
+                "kop": "Methode",
+                "tekst": "We stuurden een online enquête naar klanten van vijf Nederlandse webshops, een week na hun bestelling. 1.200 klanten vulden hem in, een respons van 24 procent. Ze gaven een cijfer van 1 tot 10 voor vijf onderdelen. We berekenden per onderdeel het gemiddelde. Met een variantieanalyse toetsten we of de verschillen toeval kunnen zijn."
+              },
+              {
+                "kop": "Resultaten",
+                "tekst": "Retourneren krijgt het laagste cijfer, betalen het hoogste. De verschillen zijn geen toeval (figuur 1)."
+              },
+              {
+                "kop": "Discussie",
+                "tekst": "Webshops winnen het meest met een eenvoudiger retour. We vroegen niet waarom klanten een laag cijfer gaven. Daarvoor is ander onderzoek nodig."
+              }
+            ],
+            "grafiek": {
+              "titel": "Figuur 1. Retourneren scoort het laagst",
+              "eenheid": "gemiddeld cijfer, n = 1.200",
+              "laagste": "Retourneren",
+              "rijen": [
+                [
+                  "Betalen",
+                  8.4
+                ],
+                [
+                  "Website",
+                  7.9
+                ],
+                [
+                  "Verpakking",
+                  7.6
+                ],
+                [
+                  "Levertijd",
+                  6.8
+                ],
+                [
+                  "Retourneren",
+                  6.1
+                ]
+              ]
+            }
+          }
+        ],
+        "velden": [
+          {
+            "id": "artikel",
+            "label": "Welk artikel neem jij?",
+            "type": "keuze",
+            "opties": [
+              "Artikel 1 · Visser & El Amrani",
+              "Artikel 2 · Bakker & De Vries"
+            ],
+            "hint": "Neem het artikel dat je medestudent niet neemt. Dan kunnen jullie straks vergelijken.",
+            "hintBron": [
+              {
+                "soort": "stof",
+                "taak": "4.2",
+                "vindplaats": "alinea 1"
+              }
+            ]
+          },
+          {
+            "id": "theorie",
+            "label": "Inleiding: waar komt de theorie vandaan?",
+            "type": "tekst",
+            "hint": "Zoek een model, een begrip of een definitie, en de auteur van wie het komt.",
+            "hintBron": [
+              {
+                "soort": "stof",
+                "taak": "4.2",
+                "vindplaats": "figuur en alinea 1"
+              }
+            ]
+          },
+          {
+            "id": "theorieWaar",
+            "label": "Vindplaats",
+            "type": "lijst",
+            "opties": [
+              "Inleiding",
+              "Methode",
+              "Resultaten",
+              "Discussie"
+            ],
+            "hint": "In welk deel van het artikel zag je dit staan?",
+            "hintBron": [
+              {
+                "soort": "stof",
+                "taak": "4.2",
+                "vindplaats": "figuur"
+              }
+            ]
+          },
+          {
+            "id": "methode",
+            "label": "Methode: hoe zijn de data verzameld en verwerkt?",
+            "type": "tekst",
+            "hint": "Wie deden er mee, hoeveel, en wat deden de auteurs daarna met de antwoorden?",
+            "hintBron": [
+              {
+                "soort": "stof",
+                "taak": "4.2",
+                "vindplaats": "figuur en alinea 2"
+              }
+            ]
+          },
+          {
+            "id": "methodeWaar",
+            "label": "Vindplaats",
+            "type": "lijst",
+            "opties": [
+              "Inleiding",
+              "Methode",
+              "Resultaten",
+              "Discussie"
+            ],
+            "hint": "In welk deel van het artikel zag je dit staan?",
+            "hintBron": [
+              {
+                "soort": "stof",
+                "taak": "4.2",
+                "vindplaats": "figuur"
+              }
+            ]
+          },
+          {
+            "id": "presentatie",
+            "label": "Resultaten: in welke vorm staat de uitkomst?",
+            "type": "tekst",
+            "hint": "Staat de uitkomst in lopende tekst, een tabel, een grafiek of een model? Wat valt je op?",
+            "hintBron": [
+              {
+                "soort": "stof",
+                "taak": "4.2",
+                "vindplaats": "figuur en alinea 2"
+              }
+            ]
+          },
+          {
+            "id": "presentatieWaar",
+            "label": "Vindplaats",
+            "type": "lijst",
+            "opties": [
+              "Inleiding",
+              "Methode",
+              "Resultaten",
+              "Discussie"
+            ],
+            "hint": "In welk deel van het artikel zag je dit staan?",
+            "hintBron": [
+              {
+                "soort": "stof",
+                "taak": "4.2",
+                "vindplaats": "figuur"
+              }
+            ]
+          },
+          {
+            "id": "vergelijking",
+            "label": "Samen: welk artikel levert jullie het meest voor theorie, voor methode en voor presentatie?",
+            "type": "lang",
+            "zinstarter": "Voor theorie …; voor methode …; voor presentatie …",
+            "hint": "Leg jullie antwoorden naast elkaar. Elk artikel is sterk in iets anders.",
+            "hintBron": [
+              {
+                "soort": "stof",
+                "taak": "4.2",
+                "vindplaats": "figuur"
+              }
+            ]
+          }
+        ]
+      },
+      "modelantwoord": {
+        "bron": "concept-auteur",
+        "opmerking": "Door de bouwer geschreven bij de twee verzonnen mini-artikelen (ADR B102).",
+        "velden": {
+          "theorie": "Artikel 1 (Visser & El Amrani, 2021): het disconfirmatiemodel van Oliver (1980), verwachting tegenover ervaring, met een eigen definitie van klanttevredenheid. Artikel 2 (Bakker & De Vries, 2016): geen model; alleen de vraag welk onderdeel het laagst scoort.",
+          "theorieWaar": "Inleiding",
+          "methode": "Artikel 1: acht gesprekken met klanten, zonder uitleg hoe die zijn verwerkt. Artikel 2: een enquête onder 1.200 klanten van vijf webshops, gemiddelden per onderdeel en een variantieanalyse.",
+          "methodeWaar": "Methode",
+          "presentatie": "Artikel 1: alleen lopende tekst. Artikel 2: een staafdiagram, gesorteerd van hoog naar laag, met de kernboodschap in de titel en de laagste staaf in kleur.",
+          "presentatieWaar": "Resultaten",
+          "vergelijking": "Voor theorie artikel 1: het model en de definitie kunnen we in onze analyse gebruiken. Voor methode artikel 2: een korte enquête met cijfers per onderdeel past ook bij ons vraagstuk. Voor presentatie artikel 2: één grafiek met de boodschap in de titel kunnen we op de A3 overnemen."
+        }
+      },
+      "toepassing": {
+        "opdracht": {
+          "tekst": "Ontleed nu je eigen artikel uit taak 4.1. Werk alleen. Schrijf bij elk deel op wat de auteur doet, waar dat staat en of je het meeneemt.",
+          "bron": "concept-auteur"
+        },
+        "velden": [
+          {
+            "id": "b1titel",
+            "label": "Titel (uit 4.1)",
+            "type": "tekst",
+            "afgeleidVan": "4.1"
+          },
+          {
+            "id": "b1soort",
+            "label": "Soort bron (uit 4.1)",
+            "type": "tekst",
+            "afgeleidVan": "4.1"
+          },
+          {
+            "id": "anderArtikel",
+            "label": "Ander artikel voor deze taak: auteur, jaar en titel (alleen als je bron uit 4.1 geen onderzoeksartikel is)",
+            "type": "tekst"
+          },
+          {
+            "id": "ai",
+            "label": "Heb je AI gebruikt bij deze taak?",
+            "type": "keuze",
+            "opties": [
+              "nee",
+              "ja, om het te begrijpen",
+              "ja, om het te ontleden"
+            ]
+          },
+          {
+            "id": "aiCheck",
+            "label": "Controle",
+            "type": "meer",
+            "opties": [
+              "Ik heb elk citaat en elke vindplaats zelf in het artikel teruggevonden."
+            ]
+          },
+          {
+            "id": "iWat",
+            "label": "Wat doet de auteur in de Inleiding? Welke theorie, modellen of begrippen gebruikt de auteur, en van wie komen ze?",
+            "type": "lang",
+            "zinstarter": "De auteur bouwt op …"
+          },
+          {
+            "id": "iWaar",
+            "label": "Vindplaats (sectie of pagina)",
+            "type": "tekst"
+          },
+          {
+            "id": "iMee",
+            "label": "Neem ik dit mee?",
+            "type": "keuze",
+            "opties": [
+              "ja",
+              "deels",
+              "nee"
+            ]
+          },
+          {
+            "id": "iWaarom",
+            "label": "Waarom wel of niet?",
+            "type": "tekst"
+          },
+          {
+            "id": "mWat",
+            "label": "Wat doet de auteur in de Methode? Hoe zijn de data verzameld en verwerkt?",
+            "type": "lang",
+            "zinstarter": "De auteurs verzamelden data door …"
+          },
+          {
+            "id": "mWaar",
+            "label": "Vindplaats (sectie of pagina)",
+            "type": "tekst"
+          },
+          {
+            "id": "mMee",
+            "label": "Neem ik dit mee?",
+            "type": "keuze",
+            "opties": [
+              "ja",
+              "deels",
+              "nee"
+            ]
+          },
+          {
+            "id": "mWaarom",
+            "label": "Waarom wel of niet?",
+            "type": "tekst"
+          },
+          {
+            "id": "rWat",
+            "label": "Hoe toont de auteur de Resultaten? Tabel, grafiek, model of tekst, en wat valt op?",
+            "type": "lang",
+            "zinstarter": "De uitkomst staat in …"
+          },
+          {
+            "id": "rWaar",
+            "label": "Vindplaats (sectie of pagina)",
+            "type": "tekst"
+          },
+          {
+            "id": "rMee",
+            "label": "Neem ik dit mee?",
+            "type": "keuze",
+            "opties": [
+              "ja",
+              "deels",
+              "nee"
+            ]
+          },
+          {
+            "id": "rWaarom",
+            "label": "Waarom wel of niet?",
+            "type": "tekst"
+          },
+          {
+            "id": "oogst",
+            "label": "Dit neem ik mee naar mijn A3: theorie, methode en presentatie samen",
+            "type": "lang",
+            "zinstarter": "Voor mijn A3 neem ik mee: …"
+          }
+        ],
+        "weergave": {
+          "groepen": [
+            {
+              "titel": "Je artikel (uit 4.1)",
+              "afgeleidVan": "4.1",
+              "kolommen": [
+                "Titel",
+                "Soort bron"
+              ],
+              "velden": [
+                "b1titel",
+                "b1soort"
+              ],
+              "hint": "Je vult dit in bij taak 4.1. Is het geen onderzoeksartikel, met een methode en resultaten? Kies dan een ander artikel uit 3.2 en vul het hieronder in."
+            },
+            {
+              "velden": [
+                "anderArtikel"
+              ]
+            },
+            {
+              "titel": "AI",
+              "velden": [
+                "ai"
+              ]
+            },
+            {
+              "titel": "Prompt voor de AI-tool",
+              "alleenBij": {
+                "veld": "ai",
+                "waarde": "ja, om het te ontleden"
+              },
+              "artikelprompt": {
+                "titel": [
+                  "anderArtikel",
+                  "b1titel"
+                ]
+              },
+              "velden": [
+                "aiCheck"
+              ]
+            },
+            {
+              "titel": "I · Inleiding: theorie",
+              "velden": [
+                "iWat",
+                "iWaar",
+                "iMee",
+                "iWaarom"
+              ]
+            },
+            {
+              "titel": "M · Methode: aanpak",
+              "velden": [
+                "mWat",
+                "mWaar",
+                "mMee",
+                "mWaarom"
+              ]
+            },
+            {
+              "titel": "R · Resultaten: presentatie",
+              "velden": [
+                "rWat",
+                "rWaar",
+                "rMee",
+                "rWaarom"
+              ]
+            },
+            {
+              "titel": "Dit neem ik mee naar mijn A3",
+              "velden": [
+                "oogst"
+              ]
+            }
+          ]
+        }
+      },
+      "controles": [
+        {
+          "id": "imr-ingevuld",
+          "soort": "A",
+          "type": "imradIngevuld",
+          "velden": [
+            "iWat",
+            "mWat",
+            "rWat"
+          ],
+          "labels": [
+            "Inleiding",
+            "Methode",
+            "Resultaten"
+          ]
+        },
+        {
+          "id": "imr-vindplaats",
+          "soort": "A",
+          "type": "imradVindplaats",
+          "velden": [
+            "iWaar",
+            "mWaar",
+            "rWaar"
+          ],
+          "labels": [
+            "Inleiding",
+            "Methode",
+            "Resultaten"
+          ]
+        },
+        {
+          "id": "imr-meenemen",
+          "soort": "A",
+          "type": "imradMeenemen",
+          "velden": [
+            "iMee",
+            "mMee",
+            "rMee"
+          ],
+          "labels": [
+            "Inleiding",
+            "Methode",
+            "Resultaten"
+          ]
+        },
+        {
+          "id": "ai-geverifieerd",
+          "soort": "A",
+          "type": "aiGeverifieerd",
+          "veld": "aiCheck",
+          "aiVeld": "ai",
+          "waarde": "ja, om het te ontleden"
+        },
+        {
+          "id": "oogst-gevuld",
+          "soort": "A",
+          "type": "veldGevuld",
+          "veld": "oogst",
+          "label": "wat je meeneemt naar je A3"
+        },
+        {
+          "id": "oogst-zinnen",
+          "soort": "C",
+          "type": "minZinnen",
+          "veld": "oogst",
+          "label": "wat je meeneemt naar je A3",
+          "min": 3
+        }
+      ],
+      "bewijsonderdeel": "EV-12",
+      "luk": [
+        1
+      ],
+      "bc": [
+        "BC1"
+      ]
+    },
+    {
+      "id": "4.3",
+      "titel": "Stelling: \"Je kunt een artikel prima door AI laten ontleden.\"",
       "vorm": "Alleen",
       "richttijd": {
         "tekst": "5 min",
@@ -1571,29 +2286,56 @@
         "bron": "werkboek"
       },
       "waarom": {
-        "tekst": "Over AI als zoekhulp zijn de meningen verdeeld. Als je een kant kiest en die onderbouwt, merk je wat jij eigenlijk vindt. Je ziet ook waarop dat rust.",
+        "tekst": "Een AI-tool kan een artikel in seconden samenvatten. Bij taak 4.2 heb je dat zelf gedaan, of juist niet. Als je een kant kiest en die onderbouwt, merk je wat jij ervan vindt en waarop dat rust.",
         "bron": "concept-auteur"
       },
       "klaarAls": {
         "tekst": "je een kant hebt gekozen en in minstens twee zinnen hebt uitgelegd waarom.",
-        "bron": "concept-auteur", "criteria": [{"tekst": "je een kant hebt gekozen", "controles": ["kant-een"]}, {"tekst": "in minstens twee zinnen hebt uitgelegd waarom", "controles": ["argument-zinnen"]}]},
+        "bron": "concept-auteur",
+        "criteria": [
+          {
+            "tekst": "je een kant hebt gekozen",
+            "controles": [
+              "kant-een"
+            ]
+          },
+          {
+            "tekst": "in minstens twee zinnen hebt uitgelegd waarom",
+            "controles": [
+              "argument-zinnen"
+            ]
+          }
+        ]
+      },
       "stof": {
         "bron": "concept-auteur",
-        "opmerking": "Het werkboek geeft bij 4.2 alleen de stelling, de keuze en het veld voor het argument; de uitleg is door de bouwer geschreven.",
+        "opmerking": "Het werkboek heeft hier een andere stelling (AI en inspiratiemateriaal); de stelling en de uitleg in de e-learning zijn door de bouwer geschreven (ADR B102).",
         "alineas": [
-          "Een argument is een bewering met een reden. Een keuze voor of tegen is pas sterk als je kunt zeggen waarom. Je eigen ervaring bij 3.2 en 4.1 levert argumenten op. Denk aan hoe vaak de AI klopte, wat het controleren kostte en wat het opleverde."
+          "Een argument is een bewering met een reden. Een keuze voor of tegen is pas sterk als je kunt zeggen waarom. Je eigen ervaring bij taak 4.2 levert argumenten op. Denk aan wat de AI goed samenvatte, wat je zelf moest terugzoeken en hoeveel tijd dat kostte."
         ]
       },
       "oefening": {
         "opdracht": {
-          "tekst": "Een collega bij webshop X vindt de stelling waar. Kies een kant en schrijf je sterkste argument in twee zinnen.",
+          "tekst": "Een collega bij webshop X laat elk artikel door een AI-tool samenvatten. Die collega vindt de stelling waar. Kies een kant en schrijf je sterkste argument in twee zinnen.",
           "bron": "concept-auteur"
         },
         "velden": [
           {
             "id": "kant",
             "label": "Jouw kant",
-            "type": "keuze", "hint": "Beide kanten zijn te verdedigen. Kies de kant die je het best kunt onderbouwen.", "hintBron": [{"soort": "eigen werk", "vindplaats": "je eigen ervaring met route B bij taak 3.2 en je beoordeling bij taak 4.1"}, {"soort": "stof", "taak": "4.2", "vindplaats": "alinea 1"}],
+            "type": "keuze",
+            "hint": "Beide kanten zijn te verdedigen. Kies de kant die je het best kunt onderbouwen.",
+            "hintBron": [
+              {
+                "soort": "eigen werk",
+                "vindplaats": "je ervaring bij taak 4.2, met of zonder AI"
+              },
+              {
+                "soort": "stof",
+                "taak": "4.3",
+                "vindplaats": "alinea 1"
+              }
+            ],
             "opties": [
               "voor",
               "tegen"
@@ -1602,16 +2344,24 @@
           {
             "id": "argument",
             "label": "Mijn sterkste argument",
-            "type": "lang", "hint": "Maak onderscheid tussen inspiratie zoeken en een bron gebruiken. Wat mag wel en wat niet?", "hintBron": [{"soort": "stof", "taak": "3.2", "vindplaats": "alinea 4"}]
+            "type": "lang",
+            "hint": "Maak onderscheid tussen een artikel begrijpen en een artikel gebruiken. Wat kun je zelf controleren?",
+            "hintBron": [
+              {
+                "soort": "stof",
+                "taak": "4.2",
+                "vindplaats": "alinea 3"
+              }
+            ]
           }
         ]
       },
       "modelantwoord": {
         "bron": "concept-auteur",
-        "opmerking": "Door de bouwer geschreven; een ander goed antwoord kiest tegen.",
+        "opmerking": "Door de bouwer geschreven; een ander goed antwoord kiest voor.",
         "velden": {
-          "kant": "voor",
-          "argument": "Voor inspiratie hoeft nog niet alles te kloppen. Een AI-tool geeft snel richtingen en zoektermen die je zelf niet bedacht. Daarna zoek je de echte bronnen op en controleer je ze."
+          "kant": "tegen",
+          "argument": "Een AI-tool vat een artikel snel samen, maar verzint soms een methode of een citaat. Laat de AI dus helpen zoeken, en lees zelf na wat er op die plek staat."
         }
       },
       "toepassing": {
@@ -1632,7 +2382,8 @@
           {
             "id": "argument",
             "label": "Mijn sterkste argument",
-            "type": "lang", "zinstarter": "Mijn sterkste argument is dat …, omdat …"
+            "type": "lang",
+            "zinstarter": "Mijn sterkste argument is dat …, omdat …"
           }
         ]
       },
@@ -1690,8 +2441,16 @@
       ]
     },
     {
-      "id": "EV-05",
+      "id": "EV-12",
       "taak": "4.2",
+      "titel": "Ontleed artikel",
+      "lukOnderdelen": [
+        "LUK 1 · Gebruikt en beoordeelt bronnen"
+      ]
+    },
+    {
+      "id": "EV-05",
+      "taak": "4.3",
       "titel": "Oordeel over AI-bronnen",
       "lukOnderdelen": [
         "LUK 1 · Gebruikt en beoordeelt bronnen"

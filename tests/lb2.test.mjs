@@ -337,8 +337,8 @@ test('EV-04: één volledige bron is Compleet; bron 2 half ingevuld is Bijna; AI
   assert.equal(status(t, { ...BRON('b1'), b1link: 'www.a.nl' }), 'bijna');
 });
 
-test('EV-05 en LB-8: twee kanten, één argumentveld, argument van twee zinnen', () => {
-  const t = taak('4.2');
+test('EV-05 en LB-8: twee kanten, één argumentveld, argument van twee zinnen (stelling in 4.3, ADR B102)', () => {
+  const t = taak('4.3');
   assert.deepEqual(t.toepassing.velden.find((v) => v.id === 'kant').opties, ['voor', 'tegen']);
   assert.equal(t.toepassing.velden.filter((v) => v.type === 'lang').length, 1);
   assert.equal(status(t, { kant: 'voor', argument: 'Eerste zin. Tweede zin.' }), 'compleet');
@@ -374,10 +374,10 @@ test('LB-5: leerblok 2 heeft 1 zoektermentabel, 1 zoekstringveld en 2 routes', (
   assert.equal(t32.toepassing.velden.find((v) => v.id === 'route').opties.length, 2);
 });
 
-test('TK-2: elke taak van leerblok 2 heeft waarom en klaar als; EV-03 tot en met EV-05 staan bij 3.2, 4.1 en 4.2', () => {
-  assert.equal(blok.taken.length, 4);
+test('TK-2: elke taak van leerblok 2 heeft waarom en klaar als; EV-03, EV-04, EV-12 en EV-05 staan bij 3.2, 4.1, 4.2 en 4.3', () => {
+  assert.equal(blok.taken.length, 5);
   for (const t of blok.taken) { assert.ok(t.waarom.tekst); assert.ok(t.klaarAls.tekst); }
-  assert.deepEqual(blok.bewijsonderdelen.map((b) => [b.id, b.taak]), [['EV-03', '3.2'], ['EV-04', '4.1'], ['EV-05', '4.2']]);
+  assert.deepEqual(blok.bewijsonderdelen.map((b) => [b.id, b.taak]), [['EV-03', '3.2'], ['EV-04', '4.1'], ['EV-12', '4.2'], ['EV-05', '4.3']]);
 });
 
 // ---- TK-2: teksten met bron werkboek staan letterlijk in het werkboek (overgeslagen zonder het bestand)
@@ -399,13 +399,17 @@ function leesWerkboek(html) {
   }
   return uit;
 }
-test('TK-2: taken 3.1, 3.2, 4.1 en 4.2 kloppen met het werkboek (titel, vorm, tijd, opdracht met bron werkboek)', opts, () => {
+// ADR B102: taak 4.2 (IMRAD) staat alleen in de e-learning; de stelling heet in het werkboek 4.2 en heeft daar een andere tekst.
+const ALLEEN_ELEARNING = ['4.2'];
+const WERKBOEK_NR = { '4.3': '4.2' };
+test('TK-2: taken 3.1, 3.2, 4.1 en de stelling kloppen met het werkboek (titel, vorm, tijd, opdracht met bron werkboek)', opts, () => {
   const wb = leesWerkboek(readFileSync(pad, 'utf8'));
   let n = 0;
-  for (const t of blok.taken) {
-    const w = wb[t.id];
+  for (const t of blok.taken.filter((x) => !ALLEEN_ELEARNING.includes(x.id))) {
+    const w = wb[WERKBOEK_NR[t.id] ?? t.id];
     assert.ok(w, `taak ${t.id} staat niet in het werkboek`);
-    assert.equal(t.titel, w.titel); assert.equal(t.vorm, w.vorm);
+    if (!WERKBOEK_NR[t.id]) assert.equal(t.titel, w.titel);
+    assert.equal(t.vorm, w.vorm);
     if (t.richttijd.bron === 'werkboek') { assert.equal(t.richttijd.tekst, w.tijd); n += 1; }
     if (t.toepassing.opdracht.bron === 'werkboek') { assert.equal(t.toepassing.opdracht.tekst, w.stappen); n += 1; }
     if (t.waarom.bron === 'concept-auteur') assert.equal(w.heeftWaarom, false, `waarom ${t.id} staat wel in het werkboek`);
@@ -451,4 +455,43 @@ test('QA-3 (sabotage): de contentcontrole meldt een modelNa met een onbekend vel
   assert.match(fouten(a), /modelNa noemt bestaatniet/);
   const b = JSON.parse(JSON.stringify(blok)); b.taken.find((t) => t.id === '3.2').oefening.modelNa = 'later';
   assert.match(fouten(b), /modelNa "later" is onbekend/);
+});
+
+// ---------------------------------------------------------------- taak 4.2: een artikel ontleden met IMRAD (EV-12, ADR B102, B103)
+
+const EV12_GOED = {
+  ai: 'nee', iWat: 'Bouwt op Oliver (1980).', iWaar: 'Inleiding', iMee: 'ja', iWaarom: 'Past bij onze analyse.',
+  mWat: 'Enquête onder 300 klanten.', mWaar: 'p. 4', mMee: 'deels', mWaarom: 'Te groot voor ons.',
+  rWat: 'Eén staafdiagram.', rWaar: 'Figuur 1', rMee: 'ja', rWaarom: 'Past op de A3.',
+  oogst: 'Ik neem het model mee. Ik doe een kleine enquête. Ik toon de uitkomst in één grafiek.',
+};
+test('EV-12: volledig is Compleet; vage vindplaats Bijna; AI om te ontleden zonder vinkje Te doen; lege oogst Te doen', () => {
+  const t = taak('4.2');
+  assert.equal(status(t, EV12_GOED), 'compleet');
+  assert.equal(status(t, { ...EV12_GOED, mWaar: 'ergens' }), 'bijna');
+  assert.equal(status(t, { ...EV12_GOED, ai: AI_ONTLEDEN }), 'nog niet');
+  assert.equal(status(t, { ...EV12_GOED, ai: AI_ONTLEDEN, aiCheck: ['Ik heb elk citaat en elke vindplaats zelf in het artikel teruggevonden.'] }), 'compleet');
+  assert.equal(status(t, { ...EV12_GOED, oogst: '' }), 'nog niet');
+  assert.equal(status(t, { ...EV12_GOED, oogst: 'Alleen het model.' }), 'compleet', 'te kort: soort C, alleen feedback (BW-11)');
+});
+
+test('B102: de oefening van 4.2 toont het model pas na eigen werk, niet na alleen een artikelkeuze', () => {
+  const t = taak('4.2');
+  assert.equal(oefenModel(t, { invoer: { artikel: 'Artikel 1 · Visser & El Amrani' } }).modelZichtbaar, false);
+  assert.equal(oefenModel(t, { invoer: { methode: 'acht gesprekken' } }).modelZichtbaar, true);
+});
+
+test('B102: richttijden van leerblok 2 zijn samen 45 minuten', () => {
+  assert.deepEqual(blok.taken.map((t) => [t.id, t.richttijd.minuten]), [['3.1', 5], ['3.2', 10], ['4.1', 10], ['4.2', 15], ['4.3', 5]]);
+});
+
+test('B102 en SX-15: taak 4.2 toont IMRAD in de stof en de twee mini-artikelen bij de oefening; de AI-prompt hangt aan de keuze „om te ontleden”', () => {
+  const t = taak('4.2');
+  assert.equal(t.stof.figuur, 'imrad');
+  assert.equal(t.oefening.figuur, 'miniartikelen');
+  assert.equal(t.oefening.artikelen.length, 2);
+  const g = t.toepassing.weergave.groepen.find((x) => x.artikelprompt);
+  assert.deepEqual(g.alleenBij, { veld: 'ai', waarde: AI_ONTLEDEN });
+  assert.deepEqual(g.artikelprompt.titel, ['anderArtikel', 'b1titel']);
+  assert.ok(taak('4.1').toepassing.velden.some((v) => v.id === 'b1soort'), '4.1 vraagt de soort bron');
 });

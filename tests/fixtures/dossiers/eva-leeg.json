@@ -9,9 +9,13 @@
   "waaromZin": "Medewerkers hebben last van late roosters.",
   "voorlopig": false,
   "records": [],
+  "terugblik": [],
+  "a3Zin": "",
+  "a3Kopieerlog": [],
+  "verdiepingGedaan": [],
   "controlesom": {
     "algoritme": "SHA-256",
-    "waarde": "e4bec34f489f4ead35e35f473e0a210b754e2a5403d99bd96ef749420694ba70",
+    "waarde": "9b9448281306aaeb374de53e8cdc30f03219e6953ade05774a64ec2f8c4a64ef",
     "over": "alle velden behalve controlesom, met gesorteerde sleutels"
   }
 }

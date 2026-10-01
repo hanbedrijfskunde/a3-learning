@@ -152,7 +152,7 @@ test('klokTekst: minuten en seconden, uren alleen als nodig', () => {
 test('DM-18 en 9.2: deel 1 heeft 11 onderdelen van samen 90 minuten in de volgorde van het programma (LRD 8.2)', () => {
   assert.equal(deel.onderdelen.length, 11);
   assert.equal(deel.onderdelen.reduce((s, o) => s + o.minuten, 0), 90);
-  assert.deepEqual(deel.onderdelen.map((o) => o.taak), [null, '1.1', null, '2.1', '2.2', '2.2', '3.1', '3.2', '4.2', '4.1', null]);
+  assert.deepEqual(deel.onderdelen.map((o) => o.taak), [null, '1.1', null, '2.1', '2.2', '2.2', '3.1', '3.2', '4.3', '4.1', null]);
 });
 
 test('data/docent-deel1.json valideert; een voorbeeldonderdeel zonder velden of met dubbele content wordt afgekeurd', () => {
@@ -209,8 +209,8 @@ test('DM-3: elke stapkaart heeft 7 elementen: taaknummer, opdracht, klaar als, t
     assert.ok(Object.values(m).every((v) => typeof v === 'string' && v.trim() !== ''), o.id);
     assert.match(m.laptop, /^Laptop (open|dicht)$/);
   }
-  const m = stapkaartModel(deel.onderdelen.find((o) => o.taak === '4.2'), blokken);
-  assert.equal(m.laptop, 'Laptop dicht'); assert.equal(m.taaknummer, 'Taak 4.2'); assert.equal(m.tijd, 'Richttijd 5 min');
+  const m = stapkaartModel(deel.onderdelen.find((o) => o.taak === '4.3'), blokken);
+  assert.equal(m.laptop, 'Laptop dicht'); assert.equal(m.taaknummer, 'Taak 4.3'); assert.equal(m.tijd, 'Richttijd 5 min');
   assert.equal(stapkaartModel(deel.onderdelen[1], blokken, { minuten: 12 }).tijd, 'Richttijd 12 min');
 });
 

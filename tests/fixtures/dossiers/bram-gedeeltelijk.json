@@ -126,9 +126,13 @@
       "eerdereVersies": 0
     }
   ],
+  "terugblik": [],
+  "a3Zin": "",
+  "a3Kopieerlog": [],
+  "verdiepingGedaan": [],
   "controlesom": {
     "algoritme": "SHA-256",
-    "waarde": "5e862eeb793ed3b0f599b6de5f678cda878b074cb0cf921b97e848ea6d8c069d",
+    "waarde": "ad7eee50a5ad9216337fe994be741dcbd82d33d262f5e6d2ea0cd4eb350343ec",
     "over": "alle velden behalve controlesom, met gesorteerde sleutels"
   }
 }

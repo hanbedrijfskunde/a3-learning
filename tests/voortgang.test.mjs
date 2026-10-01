@@ -43,7 +43,7 @@ test('SX-5: elke taak van de vier leerblokken heeft criteria die letterlijk in d
       n += 1;
     }
   }
-  assert.equal(n, 16);
+  assert.equal(n, 17); // leerblok 2 kreeg taak 4.2 (ADR B102)
 });
 
 test('SX-5 (sabotage): een criterium dat niet in de regel staat of naar een onbekende controle wijst, is een fout', () => {

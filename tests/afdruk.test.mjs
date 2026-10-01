@@ -39,8 +39,8 @@ test('DM-12: de „klaar als” van het werkboek is dezelfde tekst als die van d
   }
 });
 
-test('DM-12: het werkboek van deel 1 heeft de taken 1.1 tot en met 4.2 en dat van deel 2 de taken van leerblok 3 en 4', () => {
-  assert.deepEqual(werkboekModel(DELEN[0], blokken).taken.map((t) => t.nummer), ['1.1', '2.1', '2.2', '3.1', '3.2', '4.1', '4.2']);
+test('DM-12: het werkboek van deel 1 heeft de taken 1.1 tot en met 4.3 (4.2 IMRAD en de stelling 4.3, ADR B102) en dat van deel 2 de taken van leerblok 3 en 4', () => {
+  assert.deepEqual(werkboekModel(DELEN[0], blokken).taken.map((t) => t.nummer), ['1.1', '2.1', '2.2', '3.1', '3.2', '4.1', '4.2', '4.3']);
   const d2 = werkboekModel(DELEN[1], blokken).taken.map((t) => t.nummer);
   for (const nr of ['5.1', '6.1', '7.1', '8.1', '9.1', '9.2']) assert.ok(d2.includes(nr), `deel 2 heeft taak ${nr}`);
 });

@@ -22,7 +22,7 @@ const luk = lees('data/luk.json');
 const titels = Object.fromEntries(luk.bewijsonderdelen.map((b) => [b.id, b.titel]));
 
 const NU = Date.parse('2026-10-20T12:00:00+02:00');
-const EV = { 'EV-01': ['2.1', 1], 'EV-02': ['2.2', 1], 'EV-03': ['3.1', 2], 'EV-04': ['4.1', 2], 'EV-05': ['4.2', 2] };
+const EV = { 'EV-01': ['2.1', 1], 'EV-02': ['2.2', 1], 'EV-03': ['3.1', 2], 'EV-04': ['4.1', 2], 'EV-12': ['4.2', 2], 'EV-05': ['4.3', 2] };
 
 /** Een record van een leerblok, laatst bijgewerkt `geleden` ms vóór NU. */
 function record(id, geleden, inhoud = { antwoord: `Mijn ${id}` }) {
@@ -359,14 +359,14 @@ test('TP-9: na het leegmaken van de opslag 1 importaanbod en 1 lijst met ontbrek
   const leeg = dossierControle({ store, overzicht, leerblok: 3, titels });
   assert.equal(leeg.aanwezig, false);
   assert.equal(leeg.importAanbod, true);
-  assert.deepEqual(leeg.ontbrekend.map((o) => o.id), ['EV-01', 'EV-02', 'EV-03', 'EV-04', 'EV-05']);
+  assert.deepEqual(leeg.ontbrekend.map((o) => o.id), ['EV-01', 'EV-02', 'EV-03', 'EV-04', 'EV-12', 'EV-05']);
   assert.equal(leeg.ontbrekend[0].titel, titels['EV-01']);
 
   const u = await controleerDossier(tekst);
   importeerDossier({ store, opslag }, u.dossier);
   const na = dossierControle({ store, overzicht, leerblok: 3, titels });
   assert.equal(na.aanwezig, true);
-  assert.deepEqual(na.ontbrekend.map((o) => o.id), ['EV-04', 'EV-05']); // die zaten niet in het dossier
+  assert.deepEqual(na.ontbrekend.map((o) => o.id), ['EV-04', 'EV-12', 'EV-05']); // die zaten niet in het dossier
   assert.equal(na.importAanbod, true);
   for (const id of bron.store.ids()) assert.deepEqual(store.get(id), bron.store.get(id), `${id} onveranderd`);
   assert.equal(store.ids().length, bron.store.ids().length);
