@@ -67,6 +67,13 @@ test('DL-2: de studentintroductie heeft 4 onderwerpen (wat je doet, tijd en plan
   assert.match(html, /Wis alles/);
 });
 
+test('DL-1, B118: de docentgids noemt de richttijd van elk leerblok uit de data', () => {
+  const html = lees('docs/docentgids.html');
+  for (const b of JSON.parse(lees('data/leerblokken.json')).leerblokken) {
+    assert.match(html, new RegExp(`${b.nummer} ${b.titel} \\(${b.richttijd} min\\)`), `leerblok ${b.nummer}`);
+  }
+});
+
 test('DL-2: de studentintroductie heeft een knop Start naar de startpagina, en die staat niet op papier', () => {
   const html = lees('docs/studentintroductie.html');
   assert.match(hoofdtekst(html), /<a class="knop knop-accent" href="\.\.\/index\.html">Start<\/a>/);
