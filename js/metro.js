@@ -47,6 +47,8 @@ export function tekenMetro(model, breedte, ind = metroIndeling(model, breedte)) 
     svg.append(s('g', { role: 'listitem' },
       s('a', {
         href: h.href, 'aria-label': h.naam, 'aria-current': h.stand === 'hier' ? 'step' : null,
+        // voor het infovenster (SX-20): titel, thema en de plek van de halte in de breedte
+        'data-titel': h.info.titel, 'data-thema': h.info.thema, 'data-x': h.x,
         class: `metro-halte halte-${h.stand} halte-${h.soort}${h.gestippeld ? ' halte-niet-gekozen' : ''}`,
       },
       s('rect', { class: 'metro-tik', x: h.tik.x, y: h.tik.y, width: h.tik.b, height: h.tik.h }),
@@ -70,7 +72,48 @@ async function plaatsMetro() {
 
   const doek = h('div', { class: 'metro-doek' });
   const regel = h('p', { class: 'metro-regel' });
-  header.after(h('nav', { class: 'metro', 'aria-label': `Waar je bent in leerblok ${blok.leerblok}` }, doek, regel));
+  // Eén gedeeld infovenster (SX-20, ADR B112): titel en thema van de halte waar de muis of de focus op staat.
+  const infoTitel = h('strong', {});
+  const infoThema = h('span', {});
+  const info = h('div', { class: 'metro-info', id: 'metro-info', role: 'tooltip', hidden: true }, infoTitel, infoThema);
+  const nav = h('nav', { class: 'metro', 'aria-label': `Waar je bent in leerblok ${blok.leerblok}` }, doek, regel, info);
+  header.after(nav);
+  let bij = null; // de halte waar het venster nu bij hoort
+  let sluitStraks = null;
+  function sluitInfo() {
+    clearTimeout(sluitStraks);
+    info.hidden = true;
+    bij?.removeAttribute('aria-describedby');
+    bij = null;
+  }
+  function toonInfo(a) {
+    clearTimeout(sluitStraks);
+    if (bij && bij !== a) bij.removeAttribute('aria-describedby');
+    bij = a;
+    infoTitel.textContent = a.dataset.titel;
+    infoThema.textContent = a.dataset.thema;
+    a.setAttribute('aria-describedby', 'metro-info');
+    info.hidden = false;
+    // onder de kaart, bij de halte en binnen de breedte van de kaart: over de kaart zou het venster de tikstroken bedekken.
+    // Positie via CSSOM, dat de CSP van het dossier toestaat.
+    const kaart = doek.firstElementChild.getBoundingClientRect();
+    const basis = nav.getBoundingClientRect();
+    const links = kaart.left - basis.left;
+    const midden = links + Number(a.dataset.x);
+    const b = info.offsetWidth;
+    info.style.left = `${Math.max(links, Math.min(midden - b / 2, links + kaart.width - b))}px`;
+    info.style.top = `${kaart.bottom - basis.top + 4}px`;
+  }
+  const halteVan = (el) => el?.closest?.('a.metro-halte') ?? null;
+  const planSluit = () => { clearTimeout(sluitStraks); sluitStraks = setTimeout(sluitInfo, 150); };
+  doek.addEventListener('pointerover', (e) => { if (e.pointerType === 'touch') return; const a = halteVan(e.target); if (a) toonInfo(a); });
+  doek.addEventListener('pointerout', (e) => { if (e.pointerType !== 'touch' && halteVan(e.target)) planSluit(); });
+  // het venster blijft staan zolang de muis erop staat (WCAG 1.4.13)
+  info.addEventListener('pointerenter', () => clearTimeout(sluitStraks));
+  info.addEventListener('pointerleave', planSluit);
+  doek.addEventListener('focusin', (e) => { const a = halteVan(e.target); if (a) toonInfo(a); });
+  doek.addEventListener('focusout', (e) => { if (!halteVan(e.relatedTarget)) sluitInfo(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !info.hidden) sluitInfo(); });
   let breedte = 0;
   let vorm = null;
   function teken() {
@@ -79,7 +122,7 @@ async function plaatsMetro() {
     const ind = metroIndeling(model, breedte);
     const nieuw = tekenMetro(model, breedte, ind);
     const sleutel = vormSleutel(ind);
-    if (doek.firstElementChild && sleutel === vorm) werkBij(doek.firstElementChild, nieuw); else wis(doek).append(nieuw);
+    if (doek.firstElementChild && sleutel === vorm) werkBij(doek.firstElementChild, nieuw); else { sluitInfo(); wis(doek).append(nieuw); }
     vorm = sleutel;
     regel.textContent = model.tekst;
   }

@@ -49,14 +49,14 @@ export function gekozenTak(spoor, toepassing = {}, oefening = {}) {
   return null;
 }
 
-/** Eén halte op de hoofdlijn. */
-function enkel({ id, naam, href, af, hier }) {
+/** Eén halte op de hoofdlijn. `info`: titel en thema voor het infovenster (SX-20). */
+function enkel({ id, naam, href, af, hier, info }) {
   const stand = stand3(af, hier);
-  return { id, rij: 0, href, stand, gestippeld: false, naam: `${naam}, ${STAND_TEKST[stand]}` };
+  return { id, rij: 0, href, stand, gestippeld: false, naam: `${naam}, ${STAND_TEKST[stand]}`, info };
 }
 
-/** Haltes van een kolom met takken. De ring „hier” staat op de gekozen tak, zonder keuze op de eerste. */
-function takHaltes(takken, keuze, { id, naam, href, af, hier }) {
+/** Haltes van een kolom met takken. De ring „hier” staat op de gekozen tak, zonder keuze op de eerste. `infoVan(tak)`: SX-20. */
+function takHaltes(takken, keuze, { id, naam, href, af, hier }, infoVan) {
   const ring = hier ? (takken.find((t) => t.waarde === keuze) ?? takken[0]).waarde : null;
   return takken.map((t, i) => {
     const stand = stand3(af, t.waarde === ring);
@@ -65,6 +65,7 @@ function takHaltes(takken, keuze, { id, naam, href, af, hier }) {
       id: `${id}-${t.kort}`, rij: RIJEN[takken.length][i], label: t.woord ?? t.kort, href, stand,
       gestippeld: keuze !== null && t.waarde !== keuze,
       naam: `${naam}, ${t.naam ?? t.waarde}${t.waarde === keuze ? ' (gekozen)' : ''}, ${STAND_TEKST[stand]}`,
+      info: infoVan(t),
     };
   });
 }
@@ -94,12 +95,20 @@ export function metroModel({ blok, store: bron, adres }) {
   const open = adres.soort === 'taak' && ids.includes(adres.taak) ? adres.taak : null;
   const elders = adres.soort === 'elders' && ids.includes(adres.taak) ? adres.taak : null;
   const kolommen = [];
+  // Vaste themazinnen voor de stappen (SX-20); het thema van een taak staat in de data.
+  const stapThema = (t, j) => [
+    'Waarom deze taak ertoe doet en wanneer je klaar bent.',
+    blok.media?.taak === t.id ? 'De uitleg, als tekst, video of spel.' : 'De uitleg die je voor deze taak nodig hebt.',
+    `Je oefent op ${blok.oefencasus ?? 'de oefencasus'} en ziet daarna een modelantwoord.`,
+    t.bewijsonderdeel ? 'Je past het toe op je eigen vraagstuk, en dat komt in je dossier.' : 'Je past het toe op je eigen vraagstuk.',
+  ][j];
 
   const eindHier = adres.soort === 'afsluiten' || (adres.soort === 'elders' && !elders && adres.afgesloten === true);
   const beginHier = !eindHier && (adres.soort === 'overzicht' || (adres.soort === 'elders' && !elders) || (adres.soort === 'taak' && !open));
   kolommen.push({ soort: 'begin', label: n === 1 ? 'Start' : 'Vorige keer', spoor: null, overstap: n > 1 ? n - 1 : null, haltes: [{
     id: 'begin', rij: 0, href: n === 1 ? 'index.html' : `${pagina}#overzicht`, stand: stand3(gestart, beginHier), gestippeld: false,
     naam: `${n === 1 ? 'Start' : `Vorige keer, overstap van leerblok ${n - 1}`}, ${beginHier ? STAND_TEKST.hier : gestart ? 'geweest' : 'open'}`,
+    info: { titel: n === 1 ? 'Start' : 'Vorige keer', thema: n === 1 ? 'De startpagina met je vraagstuk en wat je A3 al heeft.' : `Je haalt eerst op wat je in leerblok ${n - 1} deed.` },
   }] });
 
   for (const t of blok.taken) {
@@ -114,27 +123,34 @@ export function metroModel({ blok, store: bron, adres }) {
         const kern = {
           id: `${t.id}-${slug}`, naam: `Taak ${t.id}, stap ${j + 1} van 4: ${STAP_NAMEN[j]}`,
           href: `${pagina}${maakAdres(t.id, j + 1)}`, af: stand.stappen[j].stand === 'voltooid', hier: j + 1 === hierStap,
+          info: { titel: `${t.id} · ${STAP_NAMEN[j]}`, thema: stapThema(t, j) },
         };
+        const infoVan = media ? (k) => ({ titel: `${t.id} · Stof: ${k.woord}`, thema: `Je neemt de uitleg door als ${k.woord}.` })
+          : (k) => ({ titel: `${t.id} · ${STAP_NAMEN[j]}: ${k.waarde}`, thema: stapThema(t, j) });
         kolommen.push({ soort: 'stap', taak: t.id, label: STAP_KORT[j], spoor: opSpoor ? `${t.id}:spoor` : media ? `${t.id}:media` : null,
-          haltes: takken ? takHaltes(takken, media ? route : keuze, kern) : [enkel(kern)] });
+          haltes: takken ? takHaltes(takken, media ? route : keuze, kern, infoVan) : [enkel(kern)] });
       });
     } else {
-      const kern = { id: t.id, naam: `Taak ${t.id}: ${t.titel}`, href: `${pagina}#taak-${t.id}`, af: stand.klaar, hier: t.id === elders };
+      const thema = t.thema?.tekst ?? '';
+      const kern = { id: t.id, naam: `Taak ${t.id}: ${t.titel}`, href: `${pagina}#taak-${t.id}`, af: stand.klaar, hier: t.id === elders, info: { titel: `${t.id} ${t.titel}`, thema } };
       kolommen.push({ soort: 'taak', taak: t.id, label: t.id, spoor: t.spoor ? `${t.id}:spoor` : null,
-        haltes: t.spoor ? takHaltes(t.spoor.takken, keuze, kern) : [enkel(kern)] });
+        haltes: t.spoor ? takHaltes(t.spoor.takken, keuze, kern, (k) => ({ titel: `${t.id} · ${k.waarde}`, thema })) : [enkel(kern)] });
     }
     // De verdieping is een zijtak, geen halte op de hoofdlijn (TK-13, TK-14): het doorgaande spoor loopt ernaast.
     if (blok.verdieping?.na === t.id) {
       kolommen.push({ soort: 'verdieping', label: '', spoor: null, haltes: [
         { id: 'doorgang', rij: 0, doorgang: true, gestippeld: false },
         { id: 'verdieping', rij: 1, label: '+', href: `${pagina}${maakAdres(t.id, 4)}`, stand: verdiepingGedaan ? 'af' : 'open',
-          gestippeld: !verdiepingGedaan, naam: `Verdieping na taak ${t.id}, optioneel, ${verdiepingGedaan ? 'gedaan' : 'open'}` }] });
+          gestippeld: !verdiepingGedaan, naam: `Verdieping na taak ${t.id}, optioneel, ${verdiepingGedaan ? 'gedaan' : 'open'}`,
+          info: { titel: `Verdieping na ${t.id} (optioneel)`, thema: blok.verdieping.thema?.tekst ?? '' } }] });
     }
   }
 
   kolommen.push({ soort: 'eind', label: n < 4 ? 'Afsluiten' : 'Dossier', spoor: null, overstap: n < 4 ? n + 1 : null, haltes: [{
     id: 'eind', rij: 0, href: n < 4 ? `${pagina}#afsluiten` : 'dossier.html', stand: stand3(afgerond, eindHier), gestippeld: false,
     naam: `${n < 4 ? `Afsluiten, overstap naar leerblok ${n + 1}` : 'Dossier, einde van de e-learning'}, ${eindHier ? STAND_TEKST.hier : afgerond ? 'leerblok afgerond' : 'open'}`,
+    info: n < 4 ? { titel: 'Afsluiten', thema: `Je ziet wat dit leerblok aan je A3 toevoegt en stapt over op leerblok ${n + 1}.` }
+      : { titel: 'Dossier', thema: 'Je ziet je stand en bewaart je werk.' },
   }] });
 
   const taakNr = open ? ids.indexOf(open) + 1 : null;

@@ -7,7 +7,7 @@
   "oefencasus": "Webshop X",
   "taken": [
     {
-      "id": "2.1",
+      "id": "2.1", "thema": { "tekst": "Je oefent taak 2.1 uit de fixture.", "bron": "lrd" },
       "titel": "De onderzoeksvraag als user story",
       "vorm": "Team",
       "richttijd": {
@@ -134,7 +134,7 @@
       "bewijsonderdeel": "EV-01"
     },
     {
-      "id": "2.2",
+      "id": "2.2", "thema": { "tekst": "Je oefent taak 2.2 uit de fixture.", "bron": "lrd" },
       "titel": "Zoekvragen vanuit drie frames",
       "vorm": "Team",
       "richttijd": {
@@ -344,7 +344,7 @@
       ]
     },
     {
-      "id": "3.1",
+      "id": "3.1", "thema": { "tekst": "Je oefent taak 3.1 uit de fixture.", "bron": "lrd" },
       "titel": "De A3 in één oogopslag",
       "vorm": "Alleen",
       "richttijd": {
@@ -423,7 +423,7 @@
       ]
     },
     {
-      "id": "3.2",
+      "id": "3.2", "thema": { "tekst": "Je oefent taak 3.2 uit de fixture.", "bron": "lrd" },
       "titel": "De A3 in één oogopslag",
       "vorm": "Alleen",
       "richttijd": {
@@ -502,7 +502,7 @@
       ]
     }
   ],
-  "verdieping": {
+  "verdieping": { "thema": { "tekst": "Je doet de verdieping uit de fixture.", "bron": "lrd" },
     "tekst": "Schrijf een vierde zoekvraag vanuit een frame dat je team nog niet gebruikte, en zeg wat die vraag verandert.",
     "bron": "lrd",
     "na": "2.2"

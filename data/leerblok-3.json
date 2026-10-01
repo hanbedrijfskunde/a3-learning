@@ -9,6 +9,7 @@
     {
       "id": "5.1",
       "titel": "Stakeholders van het vraagstuk",
+      "thema": { "tekst": "Je zet de mensen en partijen rond je vraagstuk (stakeholders) op het raster van invloed en belang.", "bron": "concept-auteur" },
       "vorm": "Team",
       "richttijd": {"tekst":"20 min","minuten":20,"bron":"werkboek"},
       "waarom": {"tekst":"Je plaatst het vraagstuk ten opzichte van de mensen en partijen die ermee te maken hebben. Gebruik invloed en belang uit THEO SM week 3.","bron":"werkboek"},
@@ -55,6 +56,7 @@
     {
       "id": "6.1",
       "titel": "Vul het canvas in met het vraagstuk centraal",
+      "thema": { "tekst": "Je kijkt vanuit de klant naar je vraagstuk: wat wil die bereiken, en wat zit hem in de weg?", "bron": "concept-auteur" },
       "vorm": "Team",
       "richttijd": {"tekst":"20 min","minuten":20,"bron":"werkboek"},
       "waarom": {"tekst":"Het canvas laat zien wat de klant wil bereiken, wat hem hindert en wat hij zoekt. Zo kijk je vanuit de klant naar je vraagstuk. Je ziet welke pain (wat hem hindert) of gain (wat hij zoekt) erbij hoort.","bron":"concept-auteur"},
@@ -97,6 +99,7 @@
     {
       "id": "7.1",
       "titel": "Markeer het vraagstuk per bouwsteen",
+      "thema": { "tekst": "Je ziet op het business model canvas welke onderdelen van het bedrijf je vraagstuk raakt.", "bron": "concept-auteur" },
       "vorm": "Team",
       "richttijd": {"tekst":"20 min","minuten":20,"bron":"werkboek"},
       "waarom": {"tekst":"Het business model canvas laat zien hoe de organisatie waarde maakt. Markeer je vraagstuk erop, dan zie je welke onderdelen van het bedrijf het raakt.","bron":"concept-auteur"},
@@ -138,6 +141,7 @@
     {
       "id": "8.1",
       "titel": "Impact van het vraagstuk per onderdeel",
+      "thema": { "tekst": "Je bepaalt met het TOM-model op welk niveau van de organisatie je vraagstuk speelt.", "bron": "concept-auteur" },
       "vorm": "Team",
       "richttijd": {"tekst":"20 min","minuten":20,"bron":"werkboek"},
       "waarom": {"tekst":"Met het TOM-model zie je op welk niveau van de organisatie het vraagstuk speelt: strategisch, tactisch of operationeel.","bron":"werkboek"},
@@ -179,6 +183,7 @@
     {
       "id": "9.1",
       "titel": "Plaats het vraagstuk",
+      "thema": { "tekst": "Je trekt uit de vier overzichten je eerste conclusies over waar je vraagstuk zit.", "bron": "concept-auteur" },
       "vorm": "Team",
       "richttijd": {"tekst":"15 min","minuten":15,"bron":"werkboek"},
       "waarom": {"tekst":"Met de vier overzichten kun je zeggen waar je vraagstuk zit. Je kijkt naar de mensen eromheen, de klant en de organisatie. Die eerste conclusies sturen je onderzoeksvraag.","bron":"concept-auteur"},
@@ -215,6 +220,7 @@
     {
       "id": "9.2",
       "titel": "Onze onderzoeksvraag voor de opdrachtgever",
+      "thema": { "tekst": "Je maakt je onderzoeksvraag scherper voor de opdrachtgever.", "bron": "concept-auteur" },
       "vorm": "Team",
       "richttijd": {"tekst":"10 min","minuten":10,"bron":"werkboek"},
       "waarom": {"tekst":"Je onderzoeksvraag was een eerste versie. Met wat je nu over stakeholders, klant en organisatie weet, maak je hem scherper voor de opdrachtgever.","bron":"concept-auteur"},
@@ -253,7 +259,7 @@
       "bc": ["BC1"]
     }
   ],
-  "verdieping": {"tekst":"Zoek de stakeholder die je vergat: wie merkt het vraagstuk pas na drie maanden?","bron":"lrd","na":"5.1"},
+  "verdieping": {"tekst":"Zoek de stakeholder die je vergat: wie merkt het vraagstuk pas na drie maanden?","bron":"lrd","na":"5.1","thema":{ "tekst": "Je zoekt de stakeholder die je vergat: iemand die het vraagstuk pas later merkt.", "bron": "concept-auteur" }},
   "bewijsonderdelen": [
     {
       "id": "EV-06",

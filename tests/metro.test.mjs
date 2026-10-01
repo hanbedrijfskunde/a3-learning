@@ -390,3 +390,80 @@ test('Afwerking: één tekening leest elk record hoogstens één keer', () => {
   metroModel({ blok: blok(2), store, adres: { soort: 'overzicht' } });
   assert.deepEqual([...gelezen].sort(), [...new Set(gelezen)].sort(), `dubbel gelezen: ${gelezen.join(', ')}`);
 });
+
+const eenZin = (t) => typeof t === 'string' && t.length > 0 && t.length <= 140 && /[.!?]$/.test(t) && (t.match(/[.!?](\s|$)/g) ?? []).length === 1;
+
+test('SX-20: elke taak en elke verdieping heeft een thema in één zin van hoogstens 140 tekens', () => {
+  let n = 0;
+  for (const nr of [1, 2, 3, 4]) {
+    const b = ruw(nr);
+    for (const t of [...b.taken, b.verdieping]) {
+      assert.ok(eenZin(t.thema?.tekst), `leerblok ${nr} ${t.id ?? 'verdieping'}: ${t.thema?.tekst}`);
+      n += 1;
+    }
+  }
+  assert.equal(n, 21, '17 taken en 4 verdiepingen');
+});
+
+test('SX-20: content-check eist het thema en keurt twee zinnen of een te lange zin af', () => {
+  const met = (zet) => { const b = blok(2); zet(b); return controleerFormaat(b, 'leerblok-2.json').fouten.join('\n'); };
+  assert.match(met((b) => { delete b.taken[0].thema; }), /taak 3\.1: thema moet een object met tekst en bron zijn/);
+  assert.match(met((b) => { b.taken[0].thema = { tekst: 'Eén zin. Nog een zin.', bron: 'lrd' }; }), /taak 3\.1: thema moet één zin van hoogstens 140 tekens zijn/);
+  assert.match(met((b) => { b.taken[0].thema = { tekst: `${'x'.repeat(141)}.`, bron: 'lrd' }; }), /taak 3\.1: thema moet één zin/);
+  assert.match(met((b) => { delete b.verdieping.thema; }), /verdieping\.thema moet een object met tekst en bron zijn/);
+});
+
+test('SX-20: elke halte heeft een infovenster met titel en thema', () => {
+  for (const n of [1, 2, 3, 4]) {
+    const b = blok(n);
+    for (const adres of adressen(b)) {
+      for (const h of alleHaltes(metroModel({ blok: b, store: keuzes, adres }))) {
+        assert.ok(h.info?.titel, `${n} ${h.id}: titel`);
+        assert.ok(eenZin(h.info?.thema), `${n} ${h.id}: thema „${h.info?.thema}”`);
+      }
+    }
+  }
+});
+
+test('SX-20: titels en thema\'s per soort halte', () => {
+  const b = blok(2);
+  const thema = (id) => b.taken.find((t) => t.id === id).thema.tekst;
+  const halte = (m, id) => alleHaltes(m).find((h) => h.id === id);
+  let m = metroModel({ blok: b, store: nepStore(), adres: { soort: 'overzicht' } });
+  assert.deepEqual(halte(m, '3.1').info, { titel: '3.1 Zoektermen', thema: thema('3.1') });
+  assert.deepEqual(halte(m, '3.2-B').info, { titel: '3.2 · B · AI-tool', thema: thema('3.2') });
+  assert.deepEqual(halte(m, 'begin').info, { titel: 'Vorige keer', thema: 'Je haalt eerst op wat je in leerblok 1 deed.' });
+  assert.deepEqual(halte(m, 'eind').info, { titel: 'Afsluiten', thema: 'Je ziet wat dit leerblok aan je A3 toevoegt en stapt over op leerblok 3.' });
+  assert.deepEqual(halte(m, 'verdieping').info, { titel: 'Verdieping na 4.1 (optioneel)', thema: b.verdieping.thema.tekst });
+  m = metroModel({ blok: b, store: nepStore(), adres: { soort: 'taak', taak: '4.1', stap: 2 } });
+  assert.deepEqual(halte(m, '4.1-waarom').info.titel, '4.1 · Waarom');
+  assert.deepEqual(halte(m, '4.1-stof-V').info, { titel: '4.1 · Stof: video', thema: 'Je neemt de uitleg door als video.' });
+  assert.equal(halte(m, '4.1-oefenen').info.thema, 'Je oefent op Webshop X en ziet daarna een modelantwoord.');
+  assert.equal(halte(m, '4.1-toepassen').info.thema, 'Je past het toe op je eigen vraagstuk, en dat komt in je dossier.');
+  m = metroModel({ blok: b, store: nepStore(), adres: { soort: 'taak', taak: '3.1', stap: 1 } });
+  assert.equal(halte(m, '3.1-toepassen').info.thema, 'Je past het toe op je eigen vraagstuk.', 'taak zonder bewijs');
+  assert.equal(halte(m, '3.1-stof').info.thema, 'De uitleg die je voor deze taak nodig hebt.');
+  const m1 = metroModel({ blok: blok(1), store: nepStore(), adres: { soort: 'overzicht' } });
+  assert.equal(halte(m1, 'begin').info.thema, 'De startpagina met je vraagstuk en wat je A3 al heeft.');
+  const m4 = metroModel({ blok: blok(4), store: nepStore(), adres: { soort: 'overzicht' } });
+  assert.deepEqual(halte(m4, 'eind').info, { titel: 'Dossier', thema: 'Je ziet je stand en bewaart je werk.' });
+});
+
+test('SX-20: het infovenster verschijnt bij muis en focus, niet bij aanraken, sluit met Esc en blijft staan als de muis erop komt', () => {
+  const js = lees('js/metro.js');
+  assert.match(js, /role: 'tooltip'/);
+  assert.match(js, /'aria-describedby'/);
+  assert.match(js, /pointerType === 'touch'/);
+  assert.match(js, /'focusin'/);
+  assert.match(js, /'focusout'/);
+  assert.match(js, /e\.key === 'Escape'/);
+  assert.match(js, /info\.addEventListener\('pointerenter'/, 'het venster blijft staan als de muis erop komt (WCAG 1.4.13)');
+  assert.match(js, /'data-titel': h\.info\.titel/);
+  assert.match(js, /info\.style\.top = `\$\{kaart\.bottom - basis\.top \+ 4\}px`/, 'onder de kaart: anders ligt het venster over de tikstroken van de haltes');
+  assert.doesNotMatch(js, /data-onder/);
+  const css = lees('css/site.css');
+  const blokCss = css.slice(css.indexOf('.metro-info'));
+  assert.match(blokCss, /\.metro-info \{[^}]*border:3px solid var\(--zwart\)/);
+  assert.match(blokCss, /\.metro-info \{[^}]*font-size:13px/);
+  assert.doesNotMatch(blokCss.slice(0, blokCss.indexOf('}') + 1), /box-shadow/, 'SX-7: geen schaduw op iets dat niet klikbaar is');
+});

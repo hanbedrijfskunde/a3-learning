@@ -480,3 +480,8 @@ html { scroll-padding-bottom:5rem; }
 .metro-label { font-size:13px; fill:var(--grijs-tekst); }
 .metro-label-hier, .metro-label-overstap { font-weight:700; fill:var(--zwart); }
 .metro-regel { font-size:.8125rem; color:var(--grijs-tekst); margin:.25rem 0 0; }
+/* infovenster bij een halte (SX-20, ADR B112): niet klikbaar, dus geen schaduw (SX-7) */
+.metro { position:relative; }
+.metro-info { position:absolute; z-index:10; max-width:16rem; background:var(--wit); color:var(--zwart); border:3px solid var(--zwart); padding:.4rem .6rem; font-size:13px; line-height:1.35; }
+.metro-info strong { display:block; }
+.metro-info[hidden] { display:none; }

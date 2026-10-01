@@ -108,6 +108,12 @@ export function controleerFormaat(inhoud, bestand) {
     if (!BRONNEN.includes(waarde.bron)) fout(wie, `${naam} heeft bron ${JSON.stringify(waarde.bron)}; kies uit ${BRONNEN.join(', ')}`);
     else if (waarde.bron === 'concept-auteur') waarschuwingen.push(`${bestand}: ${wie}${naam} is een concept van de bouwer (bron concept-auteur), wacht op akkoord van de auteur`);
   };
+  /** SX-20 (ADR B112): het thema voor het infovenster op de metrokaart is één zin van hoogstens 140 tekens. */
+  const themaZin = (wie, naam, waarde) => {
+    bronTekst(wie, naam, waarde);
+    const t = String(waarde?.tekst ?? '').trim();
+    if (t && (t.length > 140 || !/[.!?]$/.test(t) || (t.match(/[.!?](\s|$)/g) ?? []).length !== 1)) fout(wie, `${naam} moet één zin van hoogstens 140 tekens zijn (SX-20)`);
+  };
 
   const taken = Array.isArray(inhoud?.taken) ? inhoud.taken : [];
   const onderdelen = Array.isArray(inhoud?.bewijsonderdelen) ? inhoud.bewijsonderdelen : [];
@@ -272,6 +278,7 @@ export function controleerFormaat(inhoud, bestand) {
     } else if (taak.bewijsonderdeel === undefined) fout(wie, 'bewijsonderdeel moet een id of null zijn');
     if (Array.isArray(taak.luk) && !taak.luk.every((n) => Number.isInteger(n) && n >= 1 && n <= 5)) fout(wie, 'luk bevat een getal buiten 1 tot en met 5');
     if (Array.isArray(taak.bc) && !taak.bc.every((b) => /^BC\d+$/.test(b))) fout(wie, 'bc heeft de vorm BC1');
+    themaZin(wie, 'thema', taak.thema);
     // SX-19 (ADR B110): een splitsing op de metrokaart. De takken zijn opties van een keuzeveld van de oefening of toepassing.
     if (taak.spoor !== undefined) {
       const sp = taak.spoor;
@@ -311,6 +318,7 @@ export function controleerFormaat(inhoud, bestand) {
       if (t && t.bewijsonderdeel !== ev.id) fout('', `bewijsonderdeel ${ev.id} wordt niet genoemd door taak ${ev.taak}`);
     }
   }
+  if (isObject(inhoud?.verdieping)) themaZin('', 'verdieping.thema', inhoud.verdieping.thema); // SX-20, los van het verdiepingsblok
   for (const m of modellenZonderFiguur(inhoud)) waarschuwingen.push(`${bestand}: de stof noemt het ${m}, maar dat model heeft nog geen figuur (SX-15)`);
   return { fouten, waarschuwingen };
 }
