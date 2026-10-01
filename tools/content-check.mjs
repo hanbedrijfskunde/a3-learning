@@ -75,6 +75,8 @@ export const COMPONENTEN = Object.freeze(['feedbacklog', 'verbanden', 'starr']);
 /** Lange velden die een component vult en die de student niet als los tekstvak ziet (SX-11). */
 export const ZONDER_ZINSTARTER = Object.freeze(['verbanden', 'markering', 'syntheseKaarten', 'regels', 'teamactie']);
 export const VELDTYPEN = Object.freeze(['tekst', 'lang', 'keuze', 'lijst', 'meer']);
+/** De stappen waarin een taak kan splitsen op de metrokaart (SX-19, ADR B110). */
+export const SPOOR_STAPPEN = Object.freeze(['waarom', 'stof', 'oefenen', 'toepassen']);
 const MET_OPTIES = ['keuze', 'lijst', 'meer'];
 
 const isObject = (x) => x !== null && typeof x === 'object' && !Array.isArray(x);
@@ -270,6 +272,23 @@ export function controleerFormaat(inhoud, bestand) {
     } else if (taak.bewijsonderdeel === undefined) fout(wie, 'bewijsonderdeel moet een id of null zijn');
     if (Array.isArray(taak.luk) && !taak.luk.every((n) => Number.isInteger(n) && n >= 1 && n <= 5)) fout(wie, 'luk bevat een getal buiten 1 tot en met 5');
     if (Array.isArray(taak.bc) && !taak.bc.every((b) => /^BC\d+$/.test(b))) fout(wie, 'bc heeft de vorm BC1');
+    // SX-19 (ADR B110): een splitsing op de metrokaart. De takken zijn opties van een keuzeveld van de oefening of toepassing.
+    if (taak.spoor !== undefined) {
+      const sp = taak.spoor;
+      const velden = [...(taak.oefening?.velden ?? []), ...(taak.toepassing?.velden ?? [])].filter((v) => v?.id === sp?.veld);
+      const opties = new Set(velden.flatMap((v) => v.opties ?? []));
+      if (!Array.isArray(sp?.stappen) || sp.stappen.length === 0 || !sp.stappen.every((s) => SPOOR_STAPPEN.includes(s))) {
+        fout(wie, `spoor.stappen moet een lijst uit ${SPOOR_STAPPEN.join(', ')} zijn (SX-19)`);
+      }
+      if (velden.length === 0) fout(wie, `spoor.veld ${sp?.veld} bestaat niet in oefening of toepassing (SX-19)`);
+      if (!Array.isArray(sp?.takken) || sp.takken.length < 2 || sp.takken.length > 3) fout(wie, 'spoor heeft 2 of 3 takken (SX-19)');
+      else {
+        for (const t of sp.takken) {
+          if (velden.length > 0 && !opties.has(t?.waarde)) fout(wie, `spoor-tak ${JSON.stringify(t?.waarde)} staat niet in de opties van ${sp.veld} (SX-19)`);
+          if (!gevuld(t?.kort) || t.kort.length > 6) fout(wie, 'spoor-tak mist een kort label van hoogstens 6 tekens (SX-19)');
+        }
+      }
+    }
   }
 
   // TK-11: de zin „wat ik hiermee aan mijn A3 heb” aan het eind van leerblok 4 (afsluiting.a3Zin).

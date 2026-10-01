@@ -747,6 +747,7 @@
         }
       ],
       "bewijsonderdeel": "EV-03",
+      "spoor": { "stappen": ["oefenen", "toepassen"], "veld": "route", "takken": [{ "waarde": "A · databank", "kort": "A" }, { "waarde": "B · AI-tool", "kort": "B" }] },
       "luk": [
         1
       ],
@@ -2269,6 +2270,7 @@
         }
       ],
       "bewijsonderdeel": "EV-12",
+      "spoor": { "stappen": ["oefenen"], "veld": "artikel", "takken": [{ "waarde": "Artikel 1 · Visser & El Amrani", "kort": "Art. 1" }, { "waarde": "Artikel 2 · Bakker & De Vries", "kort": "Art. 2" }] },
       "luk": [
         1
       ],
