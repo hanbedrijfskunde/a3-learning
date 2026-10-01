@@ -3,6 +3,7 @@
 :root {
   --accent:#E50056; --zwart:#000000; --wit:#FFFFFF; --grijs:#F2F2F0;
   --grijs-tekst:#454545;              /* meta-tekst */
+  --lijn-1:#E50056; --lijn-2:#0063B2; --lijn-3:#00804A; --lijn-4:#C2410C; /* metrolijn per leerblok, ≥ 3:1 op wit (SX-18, ADR B110) */
   --fout:#B0003F;                     /* foutmelding, ook op grijs 4,5:1 */
   --accent-donker:#B8004A;            /* hover van de accentknop, wit erop */
   --roze:#FFD9E6;                     /* achtergrond van een afwijkende rij (controlelab) */

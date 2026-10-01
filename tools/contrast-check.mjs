@@ -11,6 +11,9 @@ export const MINIMUM = 4.5;
 export const OPPERVLAKKEN = ['--wit', '--grijs'];
 /** Rijen met alleen een achtergrond waarvan de tekstkleur uit een andere regel komt (naam, voorgrond, achtergrond). */
 export const EXTRA_PAREN = [['.knop-accent:hover (wit op donkere accent)', '--wit', '--accent-donker']];
+/** Lijnen en haltes van de metrokaart zijn grafische elementen: minstens 3:1 tegen wit (WCAG 1.4.11; SX-18, ADR B110). */
+export const MINIMUM_GRAFISCH = 3;
+export const LIJNEN = Object.freeze(['--lijn-1', '--lijn-2', '--lijn-3', '--lijn-4']);
 
 const HEX = /^#([0-9a-f]{3}|[0-9a-f]{6})$/i;
 
@@ -74,11 +77,16 @@ export function controleerContrast(root) {
     }
   }
   for (const [selector, fg, bg] of EXTRA_PAREN) lijst.push({ selector, fg: tokens[fg], bg: tokens[bg] });
+  for (const t of LIJNEN) {
+    lijst.push(tokens[t] ? { selector: `metrokaart ${t} op wit`, fg: tokens[t], bg: tokens['--wit'], minimum: MINIMUM_GRAFISCH }
+      : { selector: `metrokaart ${t}`, fout: 'token ontbreekt in :root' });
+  }
   const fouten = [];
   for (const p of lijst) {
     if (p.fout) { fouten.push(`${p.selector}: ${p.fout}`); continue; }
     p.ratio = contrast(p.fg, p.bg);
-    if (p.ratio < MINIMUM) fouten.push(`${p.selector}: ${p.fg} op ${p.bg} = ${p.ratio.toFixed(2)}:1 (minimaal ${MINIMUM}:1)`);
+    const minimum = p.minimum ?? MINIMUM;
+    if (p.ratio < minimum) fouten.push(`${p.selector}: ${p.fg} op ${p.bg} = ${p.ratio.toFixed(2)}:1 (minimaal ${minimum}:1)`);
   }
   return { paren: lijst, fouten };
 }

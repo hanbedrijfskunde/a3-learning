@@ -6,6 +6,7 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { controleerFormaat, SPOOR_STAPPEN } from '../tools/content-check.mjs';
 import { normaliseerBlok } from '../js/blok.js';
+import { controleerContrast, tokensUit, contrast, LIJNEN, MINIMUM_GRAFISCH } from '../tools/contrast-check.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const lees = (p) => readFileSync(resolve(root, p), 'utf8');
@@ -33,4 +34,15 @@ test('SX-19: content-check keurt een spoor met een onbekende stap, een onbekend 
   assert.match(zet({ ...goed, takken: [goed.takken[0], { waarde: 'C · bibliotheek', kort: 'C' }] }).join('\n'), /staat niet in de opties van route/);
   assert.match(zet({ ...goed, takken: [goed.takken[0]] }).join('\n'), /spoor heeft 2 of 3 takken/);
   assert.match(zet({ ...goed, takken: [goed.takken[0], { waarde: 'B · AI-tool', kort: 'B-route-lang' }] }).join('\n'), /kort label van hoogstens 6 tekens/);
+});
+
+test('SX-18: vier lijnkleuren als token, elk minstens 3:1 tegen wit (WCAG 1.4.11), en in de contrastcontrole', () => {
+  const tokens = tokensUit(lees('css/site.css'));
+  assert.deepEqual(LIJNEN, ['--lijn-1', '--lijn-2', '--lijn-3', '--lijn-4']);
+  assert.equal(MINIMUM_GRAFISCH, 3);
+  assert.deepEqual(LIJNEN.map((t) => tokens[t]?.toUpperCase()), ['#E50056', '#0063B2', '#00804A', '#C2410C']);
+  for (const t of LIJNEN) assert.ok(contrast(tokens[t], tokens['--wit']) >= 3, t);
+  const { paren, fouten } = controleerContrast(root);
+  assert.equal(paren.filter((p) => p.minimum === 3).length, 4, 'vier lijnparen met hun eigen minimum');
+  assert.deepEqual(fouten, []);
 });
