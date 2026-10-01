@@ -270,3 +270,11 @@ test('SX-4: de taakkop heeft geen segmentbalk meer; voortgang en routekeuze late
   assert.match(lees('js/media.js'), /dispatchEvent\(new CustomEvent\('a3-voortgang'/);
   assert.match(lees('js/metro-model.js'), /segmentLabel\(taakNr, ids\.length/);
 });
+
+test('SX-18: de kaart lijnt uit met de inhoud: dezelfde maximale breedte en zijmarge als header en main, ook op mobiel', () => {
+  const css = lees('css/site.css');
+  const metro = css.slice(css.indexOf('/* ---- metrokaart'));
+  assert.match(css, /header,main,footer \{ max-width:60rem; margin:0 auto; padding:1rem; \}/);
+  assert.match(metro, /\.metro \{ max-width:60rem; margin:\.25rem auto \.75rem; padding:0 1rem; \}/);
+  assert.match(metro, /@media \(max-width:40rem\) \{ \.metro \{ padding:0 \.75rem; \} \}/);
+});

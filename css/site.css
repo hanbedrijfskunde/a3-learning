@@ -457,7 +457,8 @@ html { scroll-padding-bottom:5rem; }
 .invulplek-gevuld { font-weight:700; }
 
 /* ---- metrokaart (SX-18, SX-19; DESIGN §6 Metrokaart; ADR B110) ---- */
-.metro { margin:.25rem 0 .75rem; }
+.metro { max-width:60rem; margin:.25rem auto .75rem; padding:0 1rem; } /* lijnt uit met header en main */
+@media (max-width:40rem) { .metro { padding:0 .75rem; } }
 .metro-doek { width:100%; }
 .metro-kaart { display:block; max-width:100%; overflow:visible; }
 .metro-spoor { stroke:var(--lijn); stroke-width:6; stroke-linecap:round; }
