@@ -15,6 +15,7 @@ import { normaliseerBlok } from './blok.js';
 import { klaarAlsLijst, stapStand, segmentLabel, a3Stand } from './voortgang.js'; // fase 17: SX-4, SX-5, SX-12
 import { isAfgerond, leesRecords } from './afgerond.js';
 import { leesAdres, maakAdres, voetActies } from './taakweergave.js'; // fase 19: SX-6
+import { zetStellingOm } from './migratie.js';
 
 const laad = async (pad) => (await fetch(new URL(pad, import.meta.url))).json();
 const laadBlok = async (pad) => normaliseerBlok(await laad(pad)); // reeksen velden uitschrijven
@@ -85,6 +86,7 @@ async function start() {
   };
   const { opslag, geblokkeerd } = kiesOpslag();
   const store = maakStore(opslag);
+  if (blok.leerblok === 2) zetStellingOm(store); // ADR B102: de stelling ging van 4.2 naar 4.3
   const context = () => wisselContext(store); // ontvangen wisselblokken voor de kopiecontrole (WS-7)
   const sessie = maakSessie({ store, blok, elearning: config.versie, context });
   // De Wissel hoort bij leerblok 4 (taak 6.2, EV-09); in leerblok 1 staat hij na de eerste versie van EV-02 (ST-7).
