@@ -83,3 +83,18 @@ test('DL-4: de waarden die de beschrijving noemt komen overeen met wat js/schema
   assert.match(html, /1 tot en met 4/);
   assert.match(html, /1 tot en met 5/);
 });
+
+test('DL-1, DL-2, DL-4: menu, tekst en voettekst van elke documentatiepagina staan in één kolom (dezelfde breedte en binnenmarge als .gids)', () => {
+  // De kolom van site.css geldt voor header, main en footer; op deze pagina's staat het menu los in body, zonder header.
+  for (const p of PAGINAS) assert.match(lees(p), /<body>\s*<a class="skip"[^>]*>[^<]*<\/a>\s*<nav aria-label="Hoofdmenu">/, `${p}: het menu staat direct in body`);
+  const css = lees('docs/gids.css').replace(/@media print\s*\{[\s\S]*?\n\}/, '');
+  const regel = (sel) => css.match(new RegExp(`(?:^|\\n)([^{}\\n]*${sel.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}[^{}\\n]*)\\{([^}]*)\\}`))?.[2] ?? '';
+  const waarde = (blok, eig) => blok.match(new RegExp(`${eig}\\s*:\\s*([^;]+)`))?.[1].trim();
+  const kolom = regel('.gids ');
+  for (const sel of ['body > nav', 'body > footer']) {
+    const blok = regel(sel);
+    assert.equal(waarde(blok, 'max-width'), waarde(kolom, 'max-width'), `${sel}: dezelfde breedte als .gids`);
+    assert.equal(waarde(blok, 'margin-left') ?? waarde(blok, 'margin')?.split(/\s+/).pop(), 'auto', `${sel}: gecentreerd`);
+    assert.equal(waarde(blok, 'padding-left') ?? waarde(blok, 'padding')?.split(/\s+/).pop(), waarde(kolom, 'padding'), `${sel}: dezelfde binnenmarge links als .gids`);
+  }
+});
