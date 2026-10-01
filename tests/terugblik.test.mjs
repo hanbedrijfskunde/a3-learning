@@ -61,12 +61,11 @@ test('7.1/TP-1: terugblik.json heeft 3 kaarten met elk 2 kennisvragen, een trans
   assert.deepEqual(controleerTerugblik(terugblik).fouten, []);
 });
 
-test('TP-1: elke bandbreedte duurt hoogstens 15 min en het leerblok samen hoogstens 60 min', () => {
-  for (const [band, b] of Object.entries(terugblik.bandbreedtes)) {
-    assert.ok(b.minuten > 0 && b.minuten <= 15, band);
-    assert.ok(45 + b.minuten <= 60, band);
-  }
+test('TP-1: elke bandbreedte duurt hoogstens 15 min en het leerblok samen hoogstens zijn richttijd + 15 min (B118)', () => {
+  for (const [band, b] of Object.entries(terugblik.bandbreedtes)) assert.ok(b.minuten > 0 && b.minuten <= 15, band);
   assert.equal(terugblik.bandbreedtes.middel.minuten, 5); // TP-7: ongeveer 5 min
+  const langste = Math.max(...Object.values(terugblik.bandbreedtes).map((b) => b.minuten));
+  assert.deepEqual([2, 3, 4].map((n) => overzicht.leerblokken.find((b) => b.nummer === n).richttijd + langste), [60, 120, 60]);
   for (const n of [2, 3, 4]) assert.equal(overzicht.leerblokken.find((b) => b.nummer === n).terugblik, 15);
 });
 
