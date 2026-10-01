@@ -2515,91 +2515,14 @@
     },
     "video": {
       "id": "V2",
-      "titel": "Zoeken en bronnen beoordelen: AAOCC en AI-bronnen controleren",
-      "concept": true,
-      "bron": "concept-auteur",
-      "bestand": "media/v2-bronnen-beoordelen.mp4",
-      "ondertitels": "media/v2-bronnen-beoordelen.vtt",
-      "dias": [
-        {
-          "titel": "Bronnen beoordelen",
-          "punten": [
-            "Leerblok 2 · Zoeken en beoordelen",
-            "Concept-video met computerstem"
-          ],
-          "spreektekst": "Dit is een conceptvideo met een computerstem. De docent kan later een eigen opname maken. In twee minuten zie je hoe je een bron beoordeelt en een bron van een AI-tool controleert."
-        },
-        {
-          "titel": "AAOCC: vijf vragen",
-          "punten": [
-            "Authority: wie schreef het?",
-            "Accuracy: klopt het?",
-            "Objectivity: welk belang?",
-            "Currency: actueel genoeg?",
-            "Coverage: volledig genoeg?"
-          ],
-          "spreektekst": "Een bron is pas bruikbaar als je weet of je hem kunt vertrouwen. AAOCC geeft je vijf vragen. Authority: wie schreef het en is die persoon deskundig? De bron is van 2016. Voor een markt die snel verandert, is dat oud. Zoek dus ook nieuwer onderzoek. Accuracy: klopt het en is het onderbouwd? De bron is van 2016. Voor een markt die snel verandert, is dat oud. Zoek dus ook nieuwer onderzoek. Objectivity: heeft de bron een belang? De bron is van 2016. Voor een markt die snel verandert, is dat oud. Zoek dus ook nieuwer onderzoek. Currency: is het actueel genoeg? De bron is van 2016. Voor een markt die snel verandert, is dat oud. Zoek dus ook nieuwer onderzoek. En Coverage: is het volledig genoeg? De bron is van 2016. Voor een markt die snel verandert, is dat oud. Zoek dus ook nieuwer onderzoek."
-        },
-        {
-          "titel": "Een oordeel per vraag",
-          "punten": [
-            "+ op orde",
-            "? onzeker",
-            "– een probleem",
-            "Eén zin toelichting per criterium"
-          ],
-          "spreektekst": "Geef elk criterium een plus, een vraagteken of een min, met één zin toelichting."
-        },
-        {
-          "titel": "Een AI-bron controleren",
-          "punten": [
-            "1 · De bron bestaat echt",
-            "2 · Er staat in wat de AI zegt",
-            "Open de bron zelf"
-          ],
-          "spreektekst": "Een AI-tool verzint soms bronnen of citeert ze verkeerd. Controleer daarom twee dingen: de bron bestaat echt, en er staat in wat de AI zegt. Open de bron zelf."
-        },
-        {
-          "titel": "De bron in APA",
-          "punten": [
-            "Achternaam, A. (jaar). Titel. Uitgever of tijdschrift. Link."
-          ],
-          "spreektekst": "Daarna zet je de bron in APA, zodat de lezer kan zien waar je het vandaan hebt. De regels staan in de Publication manual (American Psychological Association, 2020)."
-        },
-        {
-          "titel": "Voorbeeld",
-          "punten": [
-            "Blog van een webshopverkoper",
-            "Authority: ?",
-            "Objectivity: –"
-          ],
-          "spreektekst": "Voorbeeld: je vindt een blog van een webshopverkoper die schrijft dat klanten dol zijn op snelle bezorging. Bij Authority zet je een vraagteken, want er staat geen auteur bij. Bij Objectivity zet je een min, want de verkoper heeft er zelf belang bij. Dat is genoeg reden om verder te zoeken."
-        },
-        {
-          "titel": "Nu jij",
-          "punten": [
-            "Pauzeer de video",
-            "Doe taak 4.1 op webshop X",
-            "Kijk daarna verder"
-          ],
-          "spreektekst": "Nu ben jij aan de beurt. Pauzeer de video en doe de oefening bij taak 4.1 op webshop X. Kijk daarna pas verder.",
-          "pauzeNa": 4
-        },
-        {
-          "titel": "Modelantwoord voor webshop X",
-          "punten": [
-            "Authority: +",
-            "Currency: ?"
-          ],
-          "spreektekst": "Het modelantwoord voor webshop X. Authority: plus. De auteurs zijn onderzoekers aan een universiteit en publiceren in een wetenschappelijk tijdschrift. Currency: vraagteken. De bron is van 2016; voor een markt die snel verandert is dat oud, dus zoek ook nieuwer onderzoek."
-        },
-        {
-          "titel": "Klaar als",
-          "punten": [],
-          "spreektekst": "Je bent klaar als je van één bron de vijf AAOCC-oordelen met een zin toelichting hebt, bij een AI-bron beide controles hebt gedaan, een besluit hebt genomen en de bron in APA hebt opgeschreven.",
-          "klaarAls": true
-        }
-      ]
+      "titel": "Betrouwbaarheid",
+      "url": "https://www.youtube.com/watch?v=DS6ZHRWKQ00",
+      "kanaal": "HAN Bibliotheek",
+      "verwijzing": "(HAN Bibliotheek, 2023)",
+      "duur": "1:42",
+      "taal": "Nederlands",
+      "waarom": "Korte kennisclip van de HAN Bibliotheek: hoe ga je na of een website of andere bron betrouwbaar is? Hoe je een bron van een AI-tool controleert, staat in de tekst.",
+      "bron": "concept-auteur"
     },
     "spel": {
       "id": "bronnen-detective",

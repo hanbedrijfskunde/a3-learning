@@ -9,8 +9,8 @@
 // (env CHROME wijst het programma aan). De video's zijn eerlijk gemarkeerd als conceptvideo; de docent kan later een eigen opname
 // met dezelfde bestandsnaam en ondertitels in media/ zetten.
 //
-// Gebruik: node tools/maak-video.mjs            beide video's (V2 en V4)
-//          node tools/maak-video.mjs V2         alleen V2 (V1 tot en met V4)
+// Gebruik: node tools/maak-video.mjs            alle eigen video's (V1, V3, V4; V2 is extern, B105)
+//          node tools/maak-video.mjs V4         alleen V4
 //          STEM=Ellen node tools/maak-video.mjs  andere stem; TEMPO=170 (woorden per minuut, standaard 170)
 import { execFileSync } from 'node:child_process';
 import { existsSync, mkdtempSync, mkdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
@@ -138,7 +138,7 @@ function main() {
     const pad = resolve(root, `data/leerblok-${n}.json`);
     if (!existsSync(pad)) continue;
     const video = JSON.parse(readFileSync(pad, 'utf8')).media?.video;
-    if (!video || (gevraagd.length && !gevraagd.includes(video.id))) continue;
+    if (!video || video.url || (gevraagd.length && !gevraagd.includes(video.id))) continue; // B105: een externe video bouwen we niet
     console.log(`${video.id}: bouwen…`);
     const r = bouwVideo(n, video, tmpMap);
     meta[r.bestand] = { duurSeconden: r.duurSeconden, bytes: r.bytes, ondertitels: r.ondertitels, stem: `${STEM} (macOS say, ${TEMPO} woorden per minuut)` };

@@ -86,11 +86,14 @@ test('MD-3, BR-4: de uitleg noemt bronnen als (Auteur, jaar)', () => {
 
 // ---------------------------------------------------------------- MD-4, MD-5, MD-6, MD-7
 
-test('MD-4: er zijn vier eigen video\'s (V1 tot en met V4), elk hoogstens 3 minuten en hoogstens 20 MB (ffprobe, anders metadata)', () => {
+// B105: V2 is een externe video (een link naar YouTube); V1, V3 en V4 zijn eigen video's.
+const EIGEN = MET_MEDIA.filter((b) => !b.media.video.url);
+test('MD-4: er zijn drie eigen video\'s (V1, V3, V4), elk hoogstens 3 minuten en hoogstens 20 MB (ffprobe, anders metadata)', () => {
   const meta = json('media/metadata.json');
   assert.deepEqual(MET_MEDIA.map((b) => b.media.video.id), ['V1', 'V2', 'V3', 'V4']);
-  assert.equal(Object.keys(meta).length, 4, 'metadata voor precies vier video\'s');
-  for (const b of MET_MEDIA) {
+  assert.deepEqual(EIGEN.map((b) => b.media.video.id), ['V1', 'V3', 'V4']);
+  assert.equal(Object.keys(meta).length, 3, 'metadata voor precies drie eigen video\'s');
+  for (const b of EIGEN) {
     assert.deepEqual(controleerVideo(resolve(root, b.media.video.bestand), meta[b.media.video.bestand], b.media.video.id).fouten, [], `controleerVideo ${b.media.video.id}`);
     const v = b.media.video;
     const pad = resolve(root, v.bestand);
@@ -126,9 +129,9 @@ test('MD-4: de videocontrole faalt bij een echte video van 4 minuten, een bestan
   assert.match(controleerVideo(echteVideo, { duurSeconden: 200, bytes: statSync(echteVideo).size }, 'V1').fouten.join('\n'), /metadata zegt 200 s/, 'metadata boven 3 minuten faalt ook');
 });
 
-test('MD-5: elke video heeft WebVTT-ondertitels en een transcript dat uit dezelfde spreektekst komt', () => {
+test('MD-5: elke eigen video heeft WebVTT-ondertitels en een transcript dat uit dezelfde spreektekst komt', () => {
   const meta = json('media/metadata.json');
-  for (const b of MET_MEDIA) {
+  for (const b of EIGEN) {
     const v = b.media.video;
     const vtt = lees(v.ondertitels);
     assert.match(vtt, /^WEBVTT\n\n/);
@@ -174,7 +177,8 @@ test('MD-6: geen autoplay en geen video vóór de klik: geen <video> in een pagi
 
 test('MD-7: video, ondertitels en spellen staan op dezelfde site (geen adres naar een ander domein in media.js, spel.js en de data)', () => {
   for (const bestand of ['js/media.js', 'js/spel.js', 'js/spel-model.js']) assert.doesNotMatch(bron(bestand), /https?:\/\/|\/\/[\w-]+\.\w{2,}/, bestand);
-  for (const b of MET_MEDIA) for (const p of [b.media.video.bestand, b.media.video.ondertitels, b.media.spel.bestand]) assert.match(p, /^(media|spellen)\/[\w.-]+$/);
+  for (const b of EIGEN) for (const p of [b.media.video.bestand, b.media.video.ondertitels]) assert.match(p, /^media\/[\w.-]+$/);
+  for (const b of MET_MEDIA) assert.match(b.media.spel.bestand, /^spellen\/[\w.-]+$/);
   assert.match(lees('docent.html'), /media-src 'self'/);
   assert.doesNotMatch(lees('docent.html'), /media-src[^;]*https?:/);
 });
@@ -431,4 +435,33 @@ test('BR-5: een verwijzing in een spel zonder bronregel faalt', () => {
   const s = json('spellen/bronnen-detective.json');
   assert.match(s.intro, /\(American Psychological Association, 2020\)/);
   assert.match(json('spellen/waarde-simulator.json').intro, /\(International Integrated Reporting Council, 2021\)/);
+});
+
+// ---------------------------------------------------------------- B105: externe video (V2)
+
+test('B105: V2 is de kennisclip Betrouwbaarheid van de HAN Bibliotheek, als gewone link met afzender, duur, taal en bron', () => {
+  const v = blok(2).media.video;
+  assert.equal(v.url, 'https://www.youtube.com/watch?v=DS6ZHRWKQ00');
+  assert.equal(v.kanaal, 'HAN Bibliotheek');
+  assert.equal(v.verwijzing, '(HAN Bibliotheek, 2023)');
+  for (const k of ['titel', 'duur', 'taal', 'waarom']) assert.ok(v[k], k);
+  for (const k of ['bestand', 'ondertitels', 'dias']) assert.equal(v[k], undefined, `geen ${k}: geen eigen video meer`);
+  assert.ok(!existsSync(resolve(root, 'media/v2-bronnen-beoordelen.mp4')), 'het oude bestand is weg');
+});
+
+test('B105, MD-14: een externe video is een link in een nieuw tabblad, nooit een iframe of videoelement', () => {
+  const media = bron('js/media.js');
+  assert.match(media, /if \(video\.url\) return bouwExterneVideo\(\{ video, met \}\);/);
+  assert.match(media, /h\('a', \{ href: video\.url, target: '_blank', rel: 'noopener noreferrer' \}/);
+  assert.doesNotMatch(media, /iframe/i);
+});
+
+test('B105: de contentcontrole faalt bij een externe video zonder https-link of zonder verwijzing (Auteur, jaar)', () => {
+  const kapot = structuredClone(MET_MEDIA);
+  const v = kapot.find((b) => b.media.video.url).media.video;
+  v.url = 'http://example.org/x';
+  v.verwijzing = 'HAN';
+  const f = controleerMedia(resolve(root, 'data'), kapot).fouten.join('\n');
+  assert.match(f, /externe video: url moet een https-link naar YouTube zijn/);
+  assert.match(f, /externe video: verwijzing heeft de vorm \(Auteur, jaar\)/);
 });

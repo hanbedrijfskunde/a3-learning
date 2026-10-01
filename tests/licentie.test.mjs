@@ -48,7 +48,7 @@ test('LI-1: geen bestandsnaam wijst op Brightspace-materiaal, PhoneVentures, sli
 test('LI-1: elke video is een eigen video (metadata met stem en bron) en elk videobestand heeft ondertitels', () => {
   const meta = JSON.parse(readFileSync(resolve(root, 'media/metadata.json'), 'utf8'));
   const videos = bestanden().filter((f) => f.endsWith('.mp4'));
-  assert.equal(videos.length, 4);
+  assert.equal(videos.length, 3); // V1, V3, V4; V2 is een link naar de HAN Bibliotheek op YouTube, geen bestand op de site (B105)
   for (const v of videos) {
     assert.ok(meta[v], `${v}: staat in media/metadata.json`);
     assert.ok(meta[v].stem, `${v}: metadata noemt hoe het is gemaakt`);

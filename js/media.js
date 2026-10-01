@@ -76,6 +76,7 @@ async function leesMetadata(bestand) {
  * ondertitels als <track> en het transcript als tekst eronder (MD-5). Alles op dezelfde site (MD-7).
  */
 export function bouwVideo({ video, met = (t) => t }) {
+  if (video.url) return bouwExterneVideo({ video, met });
   const gebied = h('div', { class: 'md-speler' });
   const meta = h('span', { class: 'klein' }, '');
   const start = () => {
@@ -99,6 +100,17 @@ export function bouwVideo({ video, met = (t) => t }) {
     gebied,
     h('p', { class: 'klein' }, 'Met ondertitels (Nederlands) en een transcript. De video start niet vanzelf en wordt pas geladen als je op de knop drukt.'),
     transcript);
+}
+
+/**
+ * Een externe video (B105): een gewone link naar YouTube in een nieuw tabblad, zoals de kijktips (MD-14, MD-16). Geen iframe en
+ * geen verzoek naar een ander domein vóór de klik; de afzender, de duur, de taal en de bronvermelding staan erbij.
+ */
+export function bouwExterneVideo({ video, met = (t) => t }) {
+  return h('div', { class: 'md-video-blok' },
+    h('p', {}, h('a', { href: video.url, target: '_blank', rel: 'noopener noreferrer' }, `${video.titel} (opent YouTube in een nieuw tabblad)`)),
+    h('p', { class: 'klein' }, met(video.verwijzing), ` · ${video.duur} min · ${video.taal}`),
+    h('p', {}, video.waarom));
 }
 
 // ---------------------------------------------------------------- spel

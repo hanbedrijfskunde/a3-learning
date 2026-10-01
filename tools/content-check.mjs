@@ -733,7 +733,13 @@ export function controleerMedia(map, blokken, docentDelen = []) {
     if (aantal > MAX_WOORDEN_UITLEG) fout(bestand, wie, `uitleg heeft ${aantal} woorden; hoogstens ${MAX_WOORDEN_UITLEG} (MD-3)`);
     const v = m.video;
     if (!v) fout(bestand, wie, 'video ontbreekt');
-    else {
+    else if (v.url !== undefined) {
+      // B105: een externe video is een link, zoals een kijktip; de transcripteis (MD-3, MD-5) geldt alleen voor eigen video's.
+      if (!/^https:\/\/www\.youtube\.com\/watch\?v=[\w-]{11}$/.test(v.url)) fout(bestand, wie, 'externe video: url moet een https-link naar YouTube zijn (B105)');
+      for (const veld of ['id', 'titel', 'kanaal', 'verwijzing', 'duur', 'taal', 'waarom']) if (!gevuld(v[veld])) fout(bestand, wie, `externe video mist ${veld}`);
+      if (!/^\(.+, \d{4}\)$/.test(v.verwijzing ?? '')) fout(bestand, wie, 'externe video: verwijzing heeft de vorm (Auteur, jaar) (BR-4)');
+      for (const veld of ['bestand', 'ondertitels', 'dias']) if (v[veld] !== undefined) fout(bestand, wie, `externe video heeft geen ${veld}`);
+    } else {
       for (const veld of ['id', 'titel', 'bestand', 'ondertitels']) if (!gevuld(v[veld])) fout(bestand, wie, `video mist ${veld}`);
       if (v.concept !== true && v.concept !== false) fout(bestand, wie, 'video.concept moet true of false zijn (eerlijk markeren)');
       if (!lijstGevuld(v.dias) || v.dias.some((d) => !gevuld(d?.titel) || !gevuld(d?.spreektekst))) fout(bestand, wie, 'elke dia heeft titel en spreektekst (transcript, MD-5)');
