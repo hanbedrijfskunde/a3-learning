@@ -725,5 +725,22 @@
       "bestand": "spellen/waarde-simulator.json",
       "minuten": 5
     }
+  },
+  "kijktips": {
+    "titel": "Kijktips van anderen",
+    "intro": "Een filmpje over geld verdienen met een sociaal doel. Het staat op YouTube en opent in een nieuw tabblad. Je hebt het niet nodig om dit leerblok af te ronden.",
+    "bron": "auteur",
+    "items": [
+      {
+        "id": "yale-2025",
+        "rol": "Verdieping",
+        "titel": "702 | How Do Social Enterprises Make Money? Revenue Models",
+        "verwijzing": "(Yale University, 2025)",
+        "url": "https://www.youtube.com/watch?v=p1CRXRxnpBQ",
+        "duur": "5:03 (fragment 1:47 tot 6:50)",
+        "taal": "Engels",
+        "waarom": "Welgestelde klanten betalen mee voor klanten met weinig geld (Aravind), en een goedbedoeld model benadeelt lokale schoenmakers (TOMS). De video spreekt van verdienmodellen, niet van kapitalen. Welk kapitaal groeit, en welk neemt af?"
+      }
+    ]
   }
 }

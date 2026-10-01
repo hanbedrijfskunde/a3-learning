@@ -61,7 +61,7 @@ async function start() {
   const heeftWeergave = blok.taken.some((t) => t.toepassing.weergave || t.oefening?.weergave);
   const heeftBord = blok.taken.some((t) => bordGroep(t.toepassing.weergave) || bordGroep(t.oefening?.weergave));
   const heeftLb4Ui = blok.taken.some((t) => LB4_COMPONENTEN.includes(t.toepassing.component));
-  const heeftKijktips = Boolean(blok.kijktips); // leerblok 1: kijktips staan in het overzicht, dus media.js laadt meteen
+  const heeftKijktips = Boolean(blok.kijktips); // leerblok 1 en 4: kijktips staan in het overzicht, dus media.js laadt meteen
   await laadControles([blok.leerblok, blok.wissel?.leerblok]);
   // gewicht-alleen: wissel
   const [{ maakWissel, EV09_TAAK }, { bouwWisselPaneel }] = heeftWissel ? await Promise.all([import('./wissel.js'), import('./wissel-paneel.js')]) : [{}, {}];
@@ -543,7 +543,7 @@ async function start() {
       : h('p', {}, 'Je hebt nog geen vraagstuk ingevuld. ', h('a', { href: 'index.html' }, 'Vul het op de startpagina in'), ' of werk gewoon door.'),
     profiel.voorlopig ? h('p', { class: 'klein' }, 'Je werkt met een voorlopig vraagstuk: je bewijs krijgt het label voorlopig.') : null);
 
-  // Media (fase 12): leerblok 2 en 4 bieden drie routes met dezelfde „klaar als”; leerblok 1 toont de kijktips als gewone links.
+  // Media (fase 12): elk leerblok biedt drie routes met dezelfde „klaar als”; leerblok 1 en 4 tonen ook kijktips als gewone links.
   const mediaPlek = blok.media ? h('div', { class: 'media-plek' }) : null;
   let mediaSectie = null;
   let mediaLaden = null;

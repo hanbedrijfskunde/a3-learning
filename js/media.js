@@ -1,6 +1,6 @@
-// Media per leerblok (MD-1…MD-7, MD-14, MD-16): de routekeuze tekst, video of spel, de uitleg, de video's en de kijktips.
+// Media per leerblok (MD-1…MD-7, MD-14, MD-16, MD-18): de routekeuze tekst, video of spel, de uitleg, de video's en de kijktips.
 // Tekst is de standaard (MD-2). Alle drie de routes leiden naar dezelfde „klaar als” en dezelfde oefentaak (MD-1, MD-2).
-// De data staat in `media` in data/leerblok-N.json (formaat: zie README, fase 12) en `kijktips` in data/leerblok-1.json.
+// De data staat in `media` in data/leerblok-N.json (formaat: zie README, fase 12) en `kijktips` in data/leerblok-N.json van leerblok 1 en 4.
 //
 // Video (MD-5, MD-6, MD-7): geen <video> in de pagina en geen verzoek naar een videobestand voor de klik. Na de klik komt er een
 // element met preload="none" en zonder autoplay; het bestand en de ondertitels staan op dezelfde site. Het transcript staat als
@@ -218,9 +218,9 @@ export function bouwMediaSectie({ blok, store, met = (t) => t, modelZichtbaar = 
   return { element, ververs: () => { if (route === 'tekst') tekst?.ververs(); }, toon };
 }
 
-// ---------------------------------------------------------------- kijktips (MD-14, MD-16)
+// ---------------------------------------------------------------- kijktips (MD-14, MD-16, MD-18)
 
-/** Twee kijktips van derden als gewone links, met bron, duur en taal; nooit een iframe of embed (MD-14, MD-16). */
+/** Kijktips van derden als gewone links, met bron, duur en taal; nooit een iframe of embed (MD-14, MD-16, MD-18). */
 export function bouwKijktips({ kijktips, met = (t) => t }) {
   return h('section', { class: 'kaart kijktips', id: 'kijktips', 'aria-labelledby': 'kijktips-kop' },
     h('h2', { id: 'kijktips-kop' }, kijktips.titel),

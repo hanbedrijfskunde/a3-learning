@@ -375,6 +375,26 @@ test('MD-16, MD-14: leerblok 1 toont twee kijktips als gewone link met bron, duu
   for (const bestand of readdirSync(resolve(root, 'js')).filter((n) => n.endsWith('.js'))) assert.doesNotMatch(bron(`js/${bestand}`), /['"`]iframe['"`]|['"`]embed['"`]|<iframe/i, `js/${bestand} maakt een iframe`);
 });
 
+test('MD-18, MD-14: leerblok 4 toont één kijktip, het fragment van Yale als verdieping, met bron, duur en taal (ADR B115)', () => {
+  const kt = blok(4).kijktips;
+  assert.equal(kt.items.length, 1);
+  const [k] = kt.items;
+  assert.deepEqual([k.rol, k.duur.split(' ')[0], k.taal, k.verwijzing], ['Verdieping', '5:03', 'Engels', '(Yale University, 2025)']);
+  assert.match(k.duur, /1:47 tot 6:50/);
+  assert.match(k.url, /^https:\/\/www\.youtube\.com\/watch\?v=[\w-]+$/);
+  assert.ok(json('data/bronnen-4.json').bronnen.some((b) => b.link === k.url && b.citatie === 'Yale University, 2025'), 'dezelfde URL als op de bronnenpagina');
+  assert.match(k.waarom, /verdienmodellen/, 'de beschrijving zegt dat de video over verdienmodellen gaat');
+  assert.match(k.waarom, /kapita/, 'en legt de brug naar de kapitalen');
+});
+
+test('MD-16, MD-18: de contentcontrole staat één of twee kijktips toe, niet nul of drie', () => {
+  const met = (n) => { const b = structuredClone(MET_MEDIA); b[3].kijktips.items = Array.from({ length: n }, () => structuredClone(blok(4).kijktips.items[0])); return controleerMedia(resolve(root, 'data'), b).fouten.join('\n'); };
+  assert.doesNotMatch(met(1), /kijktips/);
+  assert.doesNotMatch(met(2), /kijktips/);
+  assert.match(met(0), /leerblok-4\.json: kijktips: één of twee kijktips/);
+  assert.match(met(3), /leerblok-4\.json: kijktips: één of twee kijktips/);
+});
+
 // ---------------------------------------------------------------- MD-12
 
 /** Een leerblok zonder de mediasleutels: wat een student met alleen tekst te zien krijgt. */

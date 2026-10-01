@@ -724,12 +724,12 @@ export function controleerVideo(pad, meta, naam = pad) {
 }
 
 /**
- * Controleert de media (fase 12): `media` in leerblok 2 en 4, `kijktips` in leerblok 1, de spellen in `spellen/`, de video's
+ * Controleert de media (fase 12): `media` in leerblok 2 en 4, `kijktips` in leerblok 1 en 4, de spellen in `spellen/`, de video's
  * in `media/` en het `media`-veld van de docentonderdelen. Geeft { fouten, waarschuwingen }.
  *   MD-2/MD-3  de uitleg is hoogstens 300 woorden, met voorbeeld en het modelantwoord van de oefencasus uit de taak zelf
  *   MD-5       een video heeft ondertitels (bestand) en een transcript (de spreektekst van de dia's), verbonden met de uitleg
  *   MD-8/10/11/13/15  de controle van elk spel (zie controleerSpel)
- *   MD-14/16   kijktips zijn gewone https-links met verwijzing, duur en taal
+ *   MD-14/16/18  één of twee kijktips per leerblok, gewone https-links met verwijzing, duur en taal
  */
 export function controleerMedia(map, blokken, docentDelen = []) {
   const fouten = [];
@@ -747,7 +747,7 @@ export function controleerMedia(map, blokken, docentDelen = []) {
     const kt = blok.kijktips;
     if (kt !== undefined) {
       if (!gevuld(kt.titel) || !gevuld(kt.intro)) fout(bestand, 'kijktips: ', 'titel en intro zijn nodig');
-      if (!Array.isArray(kt.items) || kt.items.length !== 2) fout(bestand, 'kijktips: ', 'precies twee kijktips (MD-16)');
+      if (!Array.isArray(kt.items) || ![1, 2].includes(kt.items.length)) fout(bestand, 'kijktips: ', 'één of twee kijktips (MD-16, MD-18)');
       for (const k of kt.items ?? []) {
         const wie = `kijktip ${k?.id}: `;
         if (!/^https:\/\//.test(k?.url ?? '')) fout(bestand, wie, 'url moet een https-link zijn (MD-14)');
