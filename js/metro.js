@@ -6,7 +6,7 @@ import { kiesOpslag, maakStore } from './store.js';
 import { normaliseerBlok } from './blok.js';
 import { leesAdres } from './taakweergave.js';
 import { metroModel, laatsteLeerblok } from './metro-model.js';
-import { metroIndeling } from './metro-indeling.js';
+import { metroIndeling, vormSleutel } from './metro-indeling.js';
 
 const SVG = 'http://www.w3.org/2000/svg';
 /** Een SVG-element (h() in dom.js maakt HTML-elementen). */
@@ -18,9 +18,16 @@ function s(tag, attrs = {}, ...kinderen) {
 }
 const laad = async (pad) => (await fetch(new URL(pad, import.meta.url))).json();
 
+/** Neemt attributen en tekst van `nieuw` over in `oud` (zelfde vorm), zodat CSS-overgangen zoals het vullen van een halte afspelen. */
+function werkBij(oud, nieuw) {
+  for (const a of [...oud.attributes]) if (!nieuw.hasAttribute(a.name)) oud.removeAttribute(a.name);
+  for (const a of [...nieuw.attributes]) if (oud.getAttribute(a.name) !== a.value) oud.setAttribute(a.name, a.value);
+  if (nieuw.children.length === 0) { if (oud.textContent !== nieuw.textContent) oud.textContent = nieuw.textContent; return; }
+  [...nieuw.children].forEach((kind, i) => werkBij(oud.children[i], kind));
+}
+
 /** De kaart als SVG: sporen en labels zijn decoratief, de haltes zijn links in een lijst. */
-export function tekenMetro(model, breedte) {
-  const ind = metroIndeling(model, breedte);
+export function tekenMetro(model, breedte, ind = metroIndeling(model, breedte)) {
   const svg = s('svg', {
     // kleur via klassen, niet via een style-attribuut: de CSP van het dossier (style-src 'self') blokkeert inline stijl
     class: `metro-kaart lijn-${model.leerblok}`, viewBox: `0 0 ${breedte} ${ind.hoogte}`, width: breedte, height: ind.hoogte,
@@ -65,10 +72,15 @@ async function plaatsMetro() {
   const regel = h('p', { class: 'metro-regel' });
   header.after(h('nav', { class: 'metro', 'aria-label': `Waar je bent in leerblok ${blok.leerblok}` }, doek, regel));
   let breedte = 0;
+  let vorm = null;
   function teken() {
     breedte = Math.floor(doek.clientWidth) || 328;
     const model = metroModel({ blok, store, adres: adres() });
-    wis(doek).append(tekenMetro(model, breedte));
+    const ind = metroIndeling(model, breedte);
+    const nieuw = tekenMetro(model, breedte, ind);
+    const sleutel = vormSleutel(ind);
+    if (doek.firstElementChild && sleutel === vorm) werkBij(doek.firstElementChild, nieuw); else wis(doek).append(nieuw);
+    vorm = sleutel;
     regel.textContent = model.tekst;
   }
   teken();

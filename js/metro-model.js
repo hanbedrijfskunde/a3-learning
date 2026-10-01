@@ -9,9 +9,9 @@ import { isAfgerond, leesRecords } from './afgerond.js';
 export const STAP_KORT = Object.freeze(['W', 'S', 'O', 'T']);
 /** De drie routes in de stap stof van de mediataak (MD-2). */
 export const MEDIA_TAKKEN = Object.freeze([
-  { waarde: 'tekst', kort: 'T', naam: 'Tekst' },
-  { waarde: 'video', kort: 'V', naam: 'Video' },
-  { waarde: 'spel', kort: 'S', naam: 'Spel' },
+  { waarde: 'tekst', kort: 'T', naam: 'Tekst', woord: 'tekst' },
+  { waarde: 'video', kort: 'V', naam: 'Video', woord: 'video' },
+  { waarde: 'spel', kort: 'S', naam: 'Spel', woord: 'spel' },
 ]);
 /** Rijen van de takken in één kolom: boven (-1), op (0) en onder (1) de hoofdlijn. */
 export const RIJEN = Object.freeze({ 1: [0], 2: [-1, 1], 3: [-1, 0, 1] });
@@ -61,7 +61,8 @@ function takHaltes(takken, keuze, { id, naam, href, af, hier }) {
   return takken.map((t, i) => {
     const stand = stand3(af, t.waarde === ring);
     return {
-      id: `${id}-${t.kort}`, rij: RIJEN[takken.length][i], label: t.kort, href, stand,
+      // label op de kaart: een woord voor de mediaroutes, want T en S zijn ook de stapletters van Toepassen en Stof
+      id: `${id}-${t.kort}`, rij: RIJEN[takken.length][i], label: t.woord ?? t.kort, href, stand,
       gestippeld: keuze !== null && t.waarde !== keuze,
       naam: `${naam}, ${t.naam ?? t.waarde}${t.waarde === keuze ? ' (gekozen)' : ''}, ${STAND_TEKST[stand]}`,
     };
@@ -76,7 +77,10 @@ function takHaltes(takken, keuze, { id, naam, href, af, hier }) {
  * @param {{soort: 'overzicht'|'afsluiten'|'taak'|'elders', taak?: string|null, stap?: number|null}} p.adres
  *   `elders`: start, dossier of bronnen, met de laatste positie (laatsteLeerblok)
  */
-export function metroModel({ blok, store, adres }) {
+export function metroModel({ blok, store: bron, adres }) {
+  // Elk record één keer lezen per tekening: get() parset de hele versiegeschiedenis (store.js).
+  const gelezen = new Map();
+  const store = { getMeta: (k) => bron.getMeta(k), get: (id) => { if (!gelezen.has(id)) gelezen.set(id, bron.get(id)); return gelezen.get(id); } };
   const n = blok.leerblok;
   const pagina = `leerblok-${n}.html`;
   const ids = blok.taken.map((t) => t.id);
@@ -134,8 +138,10 @@ export function metroModel({ blok, store, adres }) {
   }] });
 
   const taakNr = open ? ids.indexOf(open) + 1 : null;
-  const label = open ? segmentLabel(taakNr, ids.length, standen.get(open).stand) : `Leerblok ${n}: ${blok.titel}`;
-  const tekst = open ? `Leerblok ${n} · taak ${taakNr} van ${ids.length} · stap ${adres.stap ?? standen.get(open).stand.actief + 1} van 4`
+  const hierStap = open ? adres.stap ?? standen.get(open).stand.actief + 1 : null;
+  // label en tekstregel noemen dezelfde stap: die van het adres (SX-4)
+  const label = open ? segmentLabel(taakNr, ids.length, { klaar: false, actief: hierStap - 1 }) : `Leerblok ${n}: ${blok.titel}`;
+  const tekst = open ? `Leerblok ${n} · taak ${taakNr} van ${ids.length} · stap ${hierStap} van 4`
     : eindHier ? `Leerblok ${n} · ${adres.soort === 'afsluiten' ? 'afsluiten' : 'afgesloten'}`
       : elders ? `Leerblok ${n} · laatst bij taak ${elders}`
         : `Leerblok ${n} · ${blok.titel}`;

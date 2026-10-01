@@ -3,11 +3,11 @@
 //
 // Elke kolom is even breed. Het tikvlak van een halte is een strook: de volle hoogte van de kaart en de breedte van de
 // kolom; takken in één kolom delen de strook in de hoogte. Zo overlappen tikvlakken nooit (WCAG 2.5.8: ≥ 24 × 24 px).
-export const HOOGTE = 96; // ≥ 44 px
-export const Y_LIJN = 46;
+export const HOOGTE = 112; // ≥ 44 px
+export const Y_LIJN = 52; // ruimte boven de takken voor de labels van de overstappunten
 export const RIJ = 18; // afstand van een tak tot de hoofdlijn
 export const LABEL_BOVEN = 16; // labels van de overstappunten
-export const LABEL_ONDER = 90; // taaknummers, stapletters en „hier”
+export const LABEL_ONDER = 108; // taaknummers, stapletters en „hier”
 export const SMAL = 28; // onder deze kolombreedte alleen de labels van „hier” en de overstappunten
 export const TAK_LABEL = 56; // vanaf deze kolombreedte staan de korte labels van de takken naast hun halte
 export const STRAAL = Object.freeze({ begin: 9, eind: 9, taak: 7, stap: 5, verdieping: 5 });
@@ -43,7 +43,11 @@ export function metroIndeling(model, breedte) {
     else if (!smal && k.label && k.soort !== 'begin' && k.soort !== 'eind') labels.push({ tekst: k.label, x, y: LABEL_ONDER, anker: 'middle', soort: 'kolom' });
     if (kol >= TAK_LABEL) {
       for (const h of tikbaar) {
-        if (h.label) labels.push({ tekst: h.label, x: x + STRAAL[k.soort] + 4, y: yVan(h.rij) - STRAAL[k.soort] - 2, anker: 'start', soort: 'tak' });
+        // Links en rechts van een tak loopt het schuine spoor; het label staat dus boven de bovenste en onder de onderste tak.
+        // De middelste van drie takken (video) heeft geen label: hij ligt tussen de twee benoemde, en zijn naam staat op de link.
+        if (!h.label || h.rij === 0) continue;
+        const r = STRAAL[k.soort];
+        labels.push({ tekst: h.label, x, y: h.rij < 0 ? yVan(h.rij) - r - 4 : yVan(h.rij) + r + 13, anker: 'middle', soort: 'tak' });
       }
     }
   });
@@ -72,3 +76,9 @@ export function metroIndeling(model, breedte) {
   if (eind.overstap) lijn(midden(n - 1), Y_LIJN, breedte, Y_LIJN, false, eind.overstap);
   return { breedte, hoogte: HOOGTE, kol, smal, haltes, labels, sporen };
 }
+
+/**
+ * De vorm van een indeling: welke elementen er zijn en in welke volgorde. Is die gelijk aan de vorige tekening, dan werkt
+ * metro.js de bestaande SVG bij in plaats van haar te vervangen, zodat het vullen van een halte (200 ms) zichtbaar is (SX-9).
+ */
+export const vormSleutel = (ind) => JSON.stringify([ind.breedte, ind.haltes.map((h) => h.id), ind.sporen.length, ind.labels.length]);

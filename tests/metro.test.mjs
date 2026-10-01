@@ -8,7 +8,7 @@ import { controleerFormaat, SPOOR_STAPPEN } from '../tools/content-check.mjs';
 import { normaliseerBlok } from '../js/blok.js';
 import { leesAdres } from '../js/taakweergave.js';
 import { metroModel, laatsteLeerblok, gekozenTak, MEDIA_TAKKEN } from '../js/metro-model.js';
-import { metroIndeling, HOOGTE, Y_LIJN, RIJ } from '../js/metro-indeling.js';
+import { metroIndeling, vormSleutel, HOOGTE, Y_LIJN, RIJ } from '../js/metro-indeling.js';
 import { paginaBestanden, gewichten, GRENS, GRENS_BRON } from '../tools/gewicht-check.mjs';
 import { controleerContrast, tokensUit, contrast, LIJNEN, MINIMUM_GRAFISCH } from '../tools/contrast-check.mjs';
 
@@ -94,7 +94,7 @@ test('SX-4, SX-18: de huidige taak klapt open in vier stap-haltes; „hier” op
   assert.ok(stappen.every((k) => k.taak === '3.1'));
   assert.equal(hier(m).id, '3.1-stof');
   assert.equal(stappen[2].haltes[0].href, 'leerblok-2.html#taak-3.1/oefenen');
-  assert.equal(m.label, 'Taak 1 van 5, stap 1 van 4');
+  assert.equal(m.label, 'Taak 1 van 5, stap 2 van 4', 'het label noemt de stap van het adres, net als de tekstregel');
   assert.equal(m.tekst, 'Leerblok 2 · taak 1 van 5 · stap 2 van 4');
   const zonderStap = metroModel({ blok: blok(2), store: nepStore(), adres: { soort: 'taak', taak: '3.1', stap: null } });
   assert.equal(hier(zonderStap).id, '3.1-waarom', 'zonder stap in het adres: de stap waar de student is');
@@ -122,7 +122,7 @@ test('SX-19: 4.2 met artikel 2 in de oefening; tekst/video/spel alleen bij de op
   assert.equal(kolom(m, '4.1').haltes.length, 1, 'ingeklapt is de mediataak een gewone halte');
   m = metroModel({ blok: b, store: nepStore({ 'media:route:2': 'video' }), adres: { soort: 'taak', taak: '4.1', stap: 2 } });
   const stof = m.kolommen.find((k) => k.taak === '4.1' && k.label === 'S');
-  assert.deepEqual(stof.haltes.map((h) => [h.label, h.rij, h.gestippeld]), [['T', -1, true], ['V', 0, false], ['S', 1, true]]);
+  assert.deepEqual(stof.haltes.map((h) => [h.label, h.rij, h.gestippeld]), [['tekst', -1, true], ['video', 0, false], ['spel', 1, true]]);
   assert.equal(hier(m).id, '4.1-stof-V');
   m = metroModel({ blok: b, store: nepStore({ 'media:route:2': 'podcast' }), adres: { soort: 'taak', taak: '4.1', stap: 2 } });
   assert.equal(hier(m).id, '4.1-stof-T', 'een onbekende route telt als tekst (MD-2)');
@@ -214,7 +214,7 @@ test('SX-18: het smalste geval, leerblok 3 met 5.1 open, heeft 12 kolommen; onde
   const breed = metroIndeling(m, 1024);
   assert.equal(breed.smal, false);
   assert.ok(breed.labels.some((l) => l.soort === 'kolom' && l.tekst === '6.1'));
-  assert.ok(breed.labels.some((l) => l.soort === 'tak' && l.tekst === 'V'));
+  assert.ok(breed.labels.some((l) => l.soort === 'tak' && l.tekst === 'tekst'));
 });
 
 test('SX-19: takken liggen op ±18 px; dezelfde splitsing loopt parallel door; stompjes in de kleur van de vorige en volgende lijn', () => {
@@ -318,4 +318,75 @@ test('Review: een halte is een link binnen een lijstitem (g[role=listitem] > a),
   const js = lees('js/metro.js');
   assert.match(js, /s\('g', \{ role: 'listitem' \},\n\s*s\('a', \{/);
   assert.doesNotMatch(js, /s\('a', \{[^}]*role:/, 'geen rol op de link');
+});
+
+/** Geschatte doos van een label van 13 px (vet ongeveer 7,5 px per teken). */
+const labelDoos = (l) => {
+  const b = l.tekst.length * 7.5;
+  const x0 = l.anker === 'start' ? l.x : l.anker === 'end' ? l.x - b : l.x - b / 2;
+  return { x0, x1: x0 + b, y0: l.y - 11, y1: l.y + 3 };
+};
+const raakt = (a, c, marge = 0) => a.x0 - marge < c.x1 && c.x0 - marge < a.x1 && a.y0 - marge < c.y1 && c.y0 - marge < a.y1;
+const elkScenario = (doe) => {
+  for (const n of [1, 2, 3, 4]) {
+    const b = blok(n);
+    for (const store of [nepStore(), keuzes]) for (const adres of adressen(b)) for (const breedte of [336, 600, 1024]) doe(metroIndeling(metroModel({ blok: b, store, adres }), breedte), `leerblok ${n} ${JSON.stringify(adres)} ${breedte}px`);
+  }
+};
+
+test('Afwerking: het label van een tak ligt niet op een spoor', () => {
+  elkScenario((ind, wie) => {
+    for (const l of ind.labels.filter((x) => x.soort === 'tak')) {
+      const d = labelDoos(l);
+      for (const sp of ind.sporen) {
+        for (let t = 0; t <= 1; t += 0.02) {
+          const x = sp.x1 + (sp.x2 - sp.x1) * t; const y = sp.y1 + (sp.y2 - sp.y1) * t;
+          assert.ok(!(x > d.x0 - 3 && x < d.x1 + 3 && y > d.y0 - 3 && y < d.y1 + 3), `${wie}: label ${l.tekst} raakt een spoor`);
+        }
+      }
+      for (const ander of ind.labels) if (ander !== l) assert.ok(!raakt(d, labelDoos(ander), 2), `${wie}: label ${l.tekst} raakt label ${ander.tekst}`);
+    }
+  });
+  const ind = metroIndeling(metroModel({ blok: blok(2), store: nepStore(), adres: { soort: 'taak', taak: '4.1', stap: 2 } }), 1024);
+  const xStof = ind.haltes.find((h) => h.id === '4.1-stof-T').x;
+  assert.deepEqual(ind.labels.filter((l) => l.soort === 'tak' && l.x === xStof).map((l) => l.tekst), ['tekst', 'spel'], 'mediaroutes als woord; de middelste tak zonder label');
+});
+
+test('Afwerking: de labels van de overstappunten raken geen halte (minstens 4 px ertussen)', () => {
+  elkScenario((ind, wie) => {
+    for (const l of ind.labels.filter((x) => x.soort === 'overstap')) {
+      const d = labelDoos(l);
+      for (const h of ind.haltes) assert.ok(!raakt(d, { x0: h.x - h.r, x1: h.x + h.r, y0: h.y - h.r, y1: h.y + h.r }, 4), `${wie}: ${l.tekst} raakt ${h.id}`);
+    }
+  });
+});
+
+test('Afwerking: dezelfde vorm bij een andere stand (dan werkt de kaart bij en speelt de vulanimatie), een andere vorm bij een andere taak of breedte', () => {
+  const b = blok(2);
+  const v = (store, adres, breedte = 600) => vormSleutel(metroIndeling(metroModel({ blok: b, store, adres }), breedte));
+  const adres = { soort: 'taak', taak: '3.2', stap: 3 };
+  assert.equal(v(nepStore(), adres), v(nepStore({ 'klaar:3.1': { op: 'x' }, 'oefening:3.2': { invoer: { route: 'B · AI-tool' } } }), adres));
+  assert.notEqual(v(nepStore(), adres), v(nepStore(), { soort: 'taak', taak: '4.1', stap: 3 }));
+  assert.equal(v(nepStore(), adres), v(nepStore(), { soort: 'taak', taak: '3.2', stap: 4 }), '„hier” op een andere stap van dezelfde taak: alleen attributen en tekst veranderen');
+  assert.notEqual(v(nepStore(), adres), v(nepStore(), adres, 336));
+  const js = lees('js/metro.js');
+  assert.match(js, /vormSleutel\(/);
+  assert.match(js, /function werkBij\(/, 'bij dezelfde vorm worden de attributen bijgewerkt in plaats van de kaart te vervangen');
+});
+
+test('Afwerking: het aria-label van de kaart en de tekstregel noemen dezelfde stap', () => {
+  const store = nepStore({ 'klaar:3.1': { op: 'x' } });
+  for (const stap of [1, 2, 3, 4]) {
+    const m = metroModel({ blok: blok(2), store, adres: { soort: 'taak', taak: '3.1', stap } });
+    assert.equal(m.label, `Taak 1 van 5, stap ${stap} van 4`);
+    assert.match(m.tekst, new RegExp(`stap ${stap} van 4$`));
+  }
+});
+
+test('Afwerking: één tekening leest elk record hoogstens één keer', () => {
+  const gelezen = [];
+  const records = Object.fromEntries(['EV-03', 'EV-04', 'EV-12', 'EV-05'].map((id) => [id, { status: 'compleet', inhoud: {} }]));
+  const store = { getMeta: () => undefined, get: (id) => { gelezen.push(id); return records[id]; } };
+  metroModel({ blok: blok(2), store, adres: { soort: 'overzicht' } });
+  assert.deepEqual([...gelezen].sort(), [...new Set(gelezen)].sort(), `dubbel gelezen: ${gelezen.join(', ')}`);
 });
