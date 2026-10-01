@@ -22,13 +22,14 @@ const laad = async (pad) => (await fetch(new URL(pad, import.meta.url))).json();
 export function tekenMetro(model, breedte) {
   const ind = metroIndeling(model, breedte);
   const svg = s('svg', {
-    class: 'metro-kaart', viewBox: `0 0 ${breedte} ${ind.hoogte}`, width: breedte, height: ind.hoogte,
-    role: 'list', 'aria-label': model.label, style: `--lijn: var(--lijn-${model.leerblok})`,
+    // kleur via klassen, niet via een style-attribuut: de CSP van het dossier (style-src 'self') blokkeert inline stijl
+    class: `metro-kaart lijn-${model.leerblok}`, viewBox: `0 0 ${breedte} ${ind.hoogte}`, width: breedte, height: ind.hoogte,
+    role: 'list', 'aria-label': model.label,
   });
   for (const sp of ind.sporen) {
     svg.append(s('line', {
       x1: sp.x1, y1: sp.y1, x2: sp.x2, y2: sp.y2, 'aria-hidden': 'true',
-      class: `metro-spoor${sp.gestippeld ? ' gestippeld' : ''}`, style: sp.lijn === model.leerblok ? null : `stroke: var(--lijn-${sp.lijn})`,
+      class: `metro-spoor${sp.gestippeld ? ' gestippeld' : ''}${sp.lijn === model.leerblok ? '' : ` spoor-lijn-${sp.lijn}`}`,
     }));
   }
   for (const l of ind.labels) {

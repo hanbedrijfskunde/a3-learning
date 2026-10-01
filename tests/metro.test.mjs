@@ -278,3 +278,16 @@ test('SX-18: de kaart lijnt uit met de inhoud: dezelfde maximale breedte en zijm
   assert.match(metro, /\.metro \{ max-width:60rem; margin:\.25rem auto \.75rem; padding:0 1rem; \}/);
   assert.match(metro, /@media \(max-width:40rem\) \{ \.metro \{ padding:0 \.75rem; \} \}/);
 });
+
+test('SX-18: de kaart werkt onder de CSP van het dossier (style-src \'self\'): geen inline stijl, kleur via klassen', () => {
+  assert.match(lees('dossier.html'), /style-src 'self'/);
+  const js = lees('js/metro.js');
+  assert.doesNotMatch(js, /\bstyle:/, 'geen style-attribuut: de CSP blokkeert het');
+  assert.match(js, /`metro-kaart lijn-\$\{model\.leerblok\}`/);
+  assert.match(js, /spoor-lijn-\$\{sp\.lijn\}/);
+  const css = lees('css/site.css');
+  for (const n of [1, 2, 3, 4]) {
+    assert.ok(css.includes(`.metro-kaart.lijn-${n} { --lijn:var(--lijn-${n}); }`), `klasse lijn-${n}`);
+    assert.ok(css.includes(`.metro-spoor.spoor-lijn-${n} { stroke:var(--lijn-${n}); }`), `stompje lijn-${n}`);
+  }
+});

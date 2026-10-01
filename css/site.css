@@ -463,6 +463,14 @@ html { scroll-padding-bottom:5rem; }
 .metro-kaart { display:block; max-width:100%; overflow:visible; }
 .metro-spoor { stroke:var(--lijn); stroke-width:6; stroke-linecap:round; }
 .metro-spoor.gestippeld { stroke-dasharray:6 4; stroke-linecap:butt; }
+.metro-kaart.lijn-1 { --lijn:var(--lijn-1); }
+.metro-kaart.lijn-2 { --lijn:var(--lijn-2); }
+.metro-kaart.lijn-3 { --lijn:var(--lijn-3); }
+.metro-kaart.lijn-4 { --lijn:var(--lijn-4); }
+.metro-spoor.spoor-lijn-1 { stroke:var(--lijn-1); }
+.metro-spoor.spoor-lijn-2 { stroke:var(--lijn-2); }
+.metro-spoor.spoor-lijn-3 { stroke:var(--lijn-3); }
+.metro-spoor.spoor-lijn-4 { stroke:var(--lijn-4); }
 .metro-tik { fill:transparent; }
 .metro-halte circle { fill:var(--wit); stroke:var(--lijn); stroke-width:3; transition:fill 200ms ease; }
 .metro-halte.halte-af circle { fill:var(--lijn); }
