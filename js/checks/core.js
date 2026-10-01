@@ -31,6 +31,12 @@ export function telZinnen(tekst) {
  */
 export const tellers = { telWoorden, telZinnen };
 
+/** Aantal verschillende woorden van minstens 3 letters, zonder onderscheid in hoofdletters (B107). Geen tekst: 0. */
+export function telVerschillendeWoorden(tekst) {
+  if (typeof tekst !== 'string') return 0;
+  return new Set((tekst.match(/\p{L}{3,}/gu) ?? []).map((w) => w.toLocaleLowerCase('nl'))).size;
+}
+
 // ---------------------------------------------------------------- contract
 
 /** Bouwt een controleresultaat en dwingt het contract af (BW-9: bij niet-ok altijd een melding). */
@@ -120,6 +126,22 @@ export function minWoorden({ id, veld, label, min }) {
  * Minstens `min` zinnen (soort C, alleen tellen). Geen zinnen: `mist`; te weinig: `let op`.
  * @param {{id: string, veld: string, label: string, min: number}} o
  */
+/**
+ * B107: het antwoord staat in eigen woorden: minstens `min` verschillende woorden van 3 of meer letters. Te weinig: `let op`
+ * (status Bijna), zodat „bla bla bla?” niet Compleet wordt. Leeg of geen tekst: `ok`, want daarover gaan andere controles.
+ * Dit telt alleen (BW-11); of het antwoord goed is, bespreek je met je coach (BW-6).
+ * @param {{id: string, veld: string, label: string, min: number}} o
+ */
+export function eigenWoorden({ id, veld, label, min }) {
+  return (invoer) => {
+    const waarde = invoer?.[veld];
+    if (typeof waarde !== 'string' || waarde.trim() === '') return resultaat(id, 'A', 'ok');
+    const n = telVerschillendeWoorden(waarde);
+    if (n >= min) return resultaat(id, 'A', 'ok');
+    return resultaat(id, 'A', 'let op', `Schrijf ${label} in je eigen woorden: nu ${n === 1 ? 'staat er 1 verschillend woord' : `staan er ${n} verschillende woorden`}, gebruik er minstens ${min}.`);
+  };
+}
+
 export function minZinnen({ id, veld, label, min }) {
   return (invoer) => {
     const n = tellers.telZinnen(invoer?.[veld]);

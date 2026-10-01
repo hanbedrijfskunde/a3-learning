@@ -347,11 +347,11 @@ test('EV-05 en LB-8: twee kanten, één argumentveld, argument van twee zinnen (
   const t = taak('4.3');
   assert.deepEqual(t.toepassing.velden.find((v) => v.id === 'kant').opties, ['voor', 'tegen']);
   assert.equal(t.toepassing.velden.filter((v) => v.type === 'lang').length, 1);
-  assert.equal(status(t, { kant: 'voor', argument: 'Eerste zin. Tweede zin.' }), 'compleet');
+  assert.equal(status(t, { kant: 'voor', argument: 'AI vat een artikel snel samen. Ik controleer elk citaat zelf.' }), 'compleet');
   assert.equal(status(t, { kant: 'voor' }), 'bijna', 'zonder argument: soort C mist');
   const kort = voerUit(bouwControles(t.controles, t.toepassing.velden), { kant: 'voor', argument: 'Eerste zin.' }, { taak: t });
   assert.equal(kort.find((c) => c.id === 'argument-zinnen').resultaat, 'let op', 'één zin: let op (telt niet mee voor de status, BW-11)');
-  assert.equal(status(t, { argument: 'Eerste zin. Tweede zin.' }), 'nog niet');
+  assert.equal(status(t, { argument: 'AI vat een artikel snel samen. Ik controleer elk citaat zelf.' }), 'nog niet');
 });
 
 test('LB-5/LB-7: de weergave verwijst alleen naar bestaande velden en toont elk veld precies één keer', () => {
@@ -466,9 +466,9 @@ test('QA-3 (sabotage): de contentcontrole meldt een modelNa met een onbekend vel
 // ---------------------------------------------------------------- taak 4.2: een artikel ontleden met IMRAD (EV-12, ADR B102, B103)
 
 const EV12_GOED = {
-  ai: 'nee', iWat: 'Bouwt op Oliver (1980).', iWaar: 'Inleiding', iMee: 'ja', iWaarom: 'Past bij onze analyse.',
+  ai: 'nee', iWat: 'Bouwt op het model van Oliver (1980).', iWaar: 'Inleiding', iMee: 'ja', iWaarom: 'Past bij onze analyse.',
   mWat: 'Enquête onder 300 klanten.', mWaar: 'p. 4', mMee: 'deels', mWaarom: 'Te groot voor ons.',
-  rWat: 'Eén staafdiagram.', rWaar: 'Figuur 1', rMee: 'ja', rWaarom: 'Past op de A3.',
+  rWat: 'Eén staafdiagram met de boodschap in de titel.', rWaar: 'Figuur 1', rMee: 'ja', rWaarom: 'Past op de A3.',
   oogst: 'Ik neem het model mee. Ik doe een kleine enquête. Ik toon de uitkomst in één grafiek.',
 };
 test('EV-12: volledig is Compleet; vage vindplaats Bijna; AI om te ontleden zonder vinkje Te doen; lege oogst Te doen', () => {
@@ -478,7 +478,7 @@ test('EV-12: volledig is Compleet; vage vindplaats Bijna; AI om te ontleden zond
   assert.equal(status(t, { ...EV12_GOED, ai: AI_ONTLEDEN }), 'nog niet');
   assert.equal(status(t, { ...EV12_GOED, ai: AI_ONTLEDEN, aiCheck: ['Ik heb elk citaat en elke vindplaats zelf in het artikel teruggevonden.'] }), 'compleet');
   assert.equal(status(t, { ...EV12_GOED, oogst: '' }), 'nog niet');
-  assert.equal(status(t, { ...EV12_GOED, oogst: 'Alleen het model.' }), 'compleet', 'te kort: soort C, alleen feedback (BW-11)');
+  assert.equal(status(t, { ...EV12_GOED, oogst: 'Alleen het model.' }), 'bijna', 'te weinig eigen woorden (B107); de zinnentelling zelf blijft alleen feedback (BW-11)');
 });
 
 test('B102: de oefening van 4.2 toont het model pas na eigen werk, niet na alleen een artikelkeuze', () => {

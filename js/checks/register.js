@@ -2,9 +2,9 @@
 // Een declaratie is { id, soort, type, veld?, velden?, label?, ...parameters }. `type` is de naam van een fabriek.
 // PF-4 (ADR B69): dit bestand bevat alleen de kernfabrieken. De fabrieken van een leerblok staan in checks/lbN.js en worden
 // per pagina geladen met `laadControles` (alleen wat die pagina nodig heeft). Tests en tools laden alles via checks/index.js.
-import { veldGevuld, keuzeUitLijst, eindigtOp, minWoorden, minZinnen } from './core.js';
+import { veldGevuld, keuzeUitLijst, eindigtOp, minWoorden, minZinnen, eigenWoorden } from './core.js';
 
-const FABRIEKEN = { veldGevuld, keuzeUitLijst, eindigtOp, minWoorden, minZinnen };
+const FABRIEKEN = { veldGevuld, keuzeUitLijst, eindigtOp, minWoorden, minZinnen, eigenWoorden };
 /** Bouwers voor het live voorbeeld van een toepassing (LB-2), op naam. */
 const VOORBEELDEN = {};
 
@@ -58,4 +58,6 @@ export function bouwControle(decl, velden = []) {
   };
 }
 
-export const bouwControles = (decls, velden = []) => decls.map((d) => bouwControle(d, velden));
+// B107: elk veld met `eigenWoorden: n` krijgt er automatisch een controle bij (id eigen-woorden-<veld>, soort A).
+const eigenWoordenDecl = (v) => ({ id: `eigen-woorden-${v.id}`, soort: 'A', type: 'eigenWoorden', veld: v.id, label: `„${v.label}”`, min: v.eigenWoorden });
+export const bouwControles = (decls, velden = []) => [...decls, ...velden.filter((v) => v.eigenWoorden).map(eigenWoordenDecl)].map((d) => bouwControle(d, velden));

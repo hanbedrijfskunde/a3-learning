@@ -163,7 +163,7 @@
           {
             "id": "synthese",
             "label": "Synthese in hoogstens vijf zinnen",
-            "type": "lang", "zinstarter": "Als … verandert, leidt dat tot …"
+            "type": "lang", "eigenWoorden": 4, "zinstarter": "Als … verandert, leidt dat tot …"
           },
           {
             "id": "syntheseKaarten",
@@ -173,17 +173,17 @@
           {
             "id": "nietZien1",
             "label": "Wat laat de user story niet zien?",
-            "type": "lang", "zinstarter": "De user story laat niet zien …"
+            "type": "lang", "eigenWoorden": 3, "zinstarter": "De user story laat niet zien …"
           },
           {
             "id": "nietZien2",
             "label": "Wat laat het value proposition canvas niet zien?",
-            "type": "lang", "zinstarter": "Het canvas laat niet zien …"
+            "type": "lang", "eigenWoorden": 3, "zinstarter": "Het canvas laat niet zien …"
           },
           {
             "id": "nietZien3",
             "label": "Wat laten de zes kapitalen niet zien?",
-            "type": "lang", "zinstarter": "De zes kapitalen laten niet zien …"
+            "type": "lang", "eigenWoorden": 3, "zinstarter": "De zes kapitalen laten niet zien …"
           }
         ]
       },
@@ -470,27 +470,27 @@
           {
             "id": "situatie",
             "label": "Situatie",
-            "type": "lang", "zinstarter": "Tijdens de gallery walk …"
+            "type": "lang", "eigenWoorden": 3, "zinstarter": "Tijdens de gallery walk …"
           },
           {
             "id": "taak",
             "label": "Taak",
-            "type": "lang", "zinstarter": "Mijn taak was om …"
+            "type": "lang", "eigenWoorden": 3, "zinstarter": "Mijn taak was om …"
           },
           {
             "id": "actie",
             "label": "Actie",
-            "type": "lang", "zinstarter": "Ik deed …"
+            "type": "lang", "eigenWoorden": 3, "zinstarter": "Ik deed …"
           },
           {
             "id": "resultaat",
             "label": "Resultaat",
-            "type": "lang", "zinstarter": "Daardoor …"
+            "type": "lang", "eigenWoorden": 3, "zinstarter": "Daardoor …"
           },
           {
             "id": "reflectie",
             "label": "Reflectie",
-            "type": "lang", "zinstarter": "Volgende keer zou ik …, omdat …"
+            "type": "lang", "eigenWoorden": 4, "zinstarter": "Volgende keer zou ik …, omdat …"
           },
           {
             "id": "gedrag",

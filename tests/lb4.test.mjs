@@ -85,7 +85,7 @@ const MARK = KAPITALEN.map((k, i) => ({ kapitaal: k, waarde: MARKERINGEN[i % 3] 
 const SYNTHESE = { synthese: `De planner wil sneller roosters. ${chipTekst(KAARTEN.kaarten.get('us:gebruiker'))} ${chipTekst(KAARTEN.kaarten.get('kap:menselijk'))}`, syntheseKaarten: [{ id: 'us:gebruiker', tekst: chipTekst(KAARTEN.kaarten.get('us:gebruiker')) }, { id: 'kap:menselijk', tekst: chipTekst(KAARTEN.kaarten.get('kap:menselijk')) }] };
 const NIETZIEN = { nietZien1: 'Het hoe en de prijs.', nietZien2: 'Negatieve uitkomsten en kapitalen.', nietZien3: 'De klanttaak van de planner.' };
 const EV11 = { verbanden: V6, markering: MARK, ...SYNTHESE, ...NIETZIEN };
-const STARR = { situatie: 'Oefenronde.', taak: 'Feedback geven.', actie: 'Ik beschreef en vroeg.', resultaat: 'Hij paste zijn vraag aan.', reflectie: 'Beschrijven werkt beter dan oordelen.', gedrag: blok4.taken[2].toepassing.velden.find((v) => v.id === 'gedrag').opties[4], volgende: 'Ik vraag eerst wat de ander mist' };
+const STARR = { situatie: 'Oefenronde met ons team.', taak: 'Feedback geven op een A3.', actie: 'Ik beschreef wat ik zag en vroeg door.', resultaat: 'Hij paste zijn vraag aan.', reflectie: 'Beschrijven werkt beter dan oordelen.', gedrag: blok4.taken[2].toepassing.velden.find((v) => v.id === 'gedrag').opties[4], volgende: 'Ik vraag eerst wat de ander mist' };
 const CTX = { eigen: { 'EV-01': { inhoud: EV01 }, 'EV-06': { inhoud: EV06 } }, records: { 'EV-06': { inhoud: EV06 } } };
 
 function nieuw({ profiel = { alias: 'Testa', teamnummer: '3', vraagstuk: 'Hoe verkorten we de wachttijd voor roosters?', waaromZin: 'Planners verliezen uren aan late roosters.', voorlopig: false }, voorEerder = true } = {}) {

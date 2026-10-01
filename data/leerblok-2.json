@@ -595,7 +595,7 @@
           {
             "id": "werkte",
             "label": "Route A of B: wat werkte wel, wat niet?",
-            "type": "lang",
+            "type": "lang", "eigenWoorden": 3,
             "zinstarter": "Goed ging: …; minder goed ging: …"
           }
         ],
@@ -2038,7 +2038,7 @@
           {
             "id": "iWat",
             "label": "Wat doet de auteur in de Inleiding? Welke theorie, modellen of begrippen gebruikt de auteur, en van wie komen ze?",
-            "type": "lang",
+            "type": "lang", "eigenWoorden": 3,
             "zinstarter": "De auteur bouwt op …"
           },
           {
@@ -2064,7 +2064,7 @@
           {
             "id": "mWat",
             "label": "Wat doet de auteur in de Methode? Hoe zijn de data verzameld en verwerkt?",
-            "type": "lang",
+            "type": "lang", "eigenWoorden": 3,
             "zinstarter": "De auteurs verzamelden data door …"
           },
           {
@@ -2090,7 +2090,7 @@
           {
             "id": "rWat",
             "label": "Hoe toont de auteur de Resultaten? Tabel, grafiek, model of tekst, en wat valt op?",
-            "type": "lang",
+            "type": "lang", "eigenWoorden": 3,
             "zinstarter": "De uitkomst staat in …"
           },
           {
@@ -2116,7 +2116,7 @@
           {
             "id": "oogst",
             "label": "Dit neem ik mee naar mijn A3: theorie, methode en presentatie samen",
-            "type": "lang",
+            "type": "lang", "eigenWoorden": 4,
             "zinstarter": "Voor mijn A3 neem ik mee: …"
           }
         ],
@@ -2419,7 +2419,7 @@
           {
             "id": "argument",
             "label": "Mijn sterkste argument",
-            "type": "lang",
+            "type": "lang", "eigenWoorden": 4,
             "zinstarter": "Mijn sterkste argument is dat …, omdat …"
           }
         ]

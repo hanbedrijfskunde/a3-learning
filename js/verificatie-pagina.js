@@ -15,7 +15,10 @@ async function start() {
   const resultaten = [];
 
   const status = (c) => h('td', { class: `ver-cel ver-${c.status.replace(' ', '-')}` },
-    statusChip(c.status, c.heeftRecord ? c.statusTekst : 'Ontbreekt'), c.voorlopig ? h('span', { class: 'klein' }, ' voorlopig') : null);
+    statusChip(c.status, c.heeftRecord ? c.statusTekst : 'Ontbreekt'), c.voorlopig ? h('span', { class: 'klein' }, ' voorlopig') : null,
+    // B107 (optie 4): een seintje voor de steekproef; de status van de student verandert er niet door.
+    c.signalen?.length ? h('span', { class: 'klein ver-signaal', title: c.signalen.map((s) => `${s.veld}: ${s.reden}`).join('; ') },
+      ` · ${c.signalen.length} ${c.signalen.length === 1 ? 'antwoord' : 'antwoorden'} kort of herhalend`) : null);
 
   function teken() {
     wis(uitkomsten); wis(tabelGebied);

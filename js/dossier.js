@@ -337,6 +337,25 @@ export function bouwAfdruk(dossier, luk, labels = {}) {
  * studenten met de meeste ontbrekende onderdelen bovenaan. Bestanden die geen dossier zijn staan in `afgekeurd`.
  * @param {{bestand: string, uitkomst: object}[]} resultaten uitkomsten van controleerDossier
  */
+/**
+ * B107 (optie 4): antwoorden in een record die de docent even moet bekijken, zonder dat de status van de student verandert:
+ * een veld waarop de controle eigen woorden „let op” gaf, of een tekst van minstens 4 woorden waarvan minder dan de helft verschilt.
+ * @returns {{veld: string, reden: string}[]}
+ */
+export function signalenVan(record) {
+  if (!isObject(record)) return [];
+  const uit = [];
+  for (const c of Array.isArray(record.controles) ? record.controles : []) {
+    if (typeof c?.id === 'string' && c.id.startsWith('eigen-woorden-') && c.resultaat === 'let op') uit.push({ veld: c.id.slice('eigen-woorden-'.length), reden: 'te weinig eigen woorden' });
+  }
+  for (const [veld, w] of Object.entries(isObject(record.inhoud) ? record.inhoud : {})) {
+    if (typeof w !== 'string' || uit.some((s) => s.veld === veld)) continue;
+    const woorden = (w.match(/\p{L}{3,}/gu) ?? []).map((x) => x.toLocaleLowerCase('nl'));
+    if (woorden.length >= 4 && new Set(woorden).size / woorden.length < 0.5) uit.push({ veld, reden: 'herhalend' });
+  }
+  return uit;
+}
+
 export function bouwVerificatie(resultaten, luk) {
   const studenten = [];
   const afgekeurd = [];
@@ -345,7 +364,7 @@ export function bouwVerificatie(resultaten, luk) {
     const d = uitkomst.dossier;
     const records = Object.fromEntries((Array.isArray(d.records) ? d.records : [])
       .filter((r) => isObject(r?.record)).map((r) => [r.record.id, r.record]));
-    const cellen = bouwMijnStand(luk, records);
+    const cellen = bouwMijnStand(luk, records).map((c) => ({ ...c, signalen: signalenVan(records[c.id]) }));
     studenten.push({
       bestand,
       alias: d.alias ?? '', teamnummer: d.teamnummer ?? '', elearning: d.elearning ?? '', geexporteerd: d.geexporteerd ?? '',
