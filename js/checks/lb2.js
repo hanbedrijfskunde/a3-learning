@@ -130,11 +130,11 @@ export function promptZonderVerboden({ id, veld, lijstVeld, routeVeld }) {
     if (!isRouteB(invoer?.[routeVeld])) return resultaat(id, 'B', 'ok');
     if (isLeeg(invoer?.[veld])) return resultaat(id, 'B', 'mist', 'Maak je prompt voor route B.');
     if (splitsLijst(invoer?.[lijstVeld]).length === 0) {
-      return resultaat(id, 'B', 'let op', 'Vul de „niet noemen"-lijst in: namen van de opdrachtgever, personen en vertrouwelijke termen.');
+      return resultaat(id, 'B', 'let op', 'Vul de „niet noemen”-lijst in: namen van de opdrachtgever, personen en vertrouwelijke termen.');
     }
     const gevonden = verbodenWoorden(invoer[veld], invoer[lijstVeld]);
     if (gevonden.length > 0) {
-      return resultaat(id, 'B', 'let op', `In je prompt staat ${gevonden.length === 1 ? 'een woord' : 'staan woorden'} van je „niet noemen"-lijst: ${gevonden.join(', ')}.`);
+      return resultaat(id, 'B', 'let op', `In je prompt staat ${gevonden.length === 1 ? 'een woord' : 'staan woorden'} van je „niet noemen”-lijst: ${gevonden.join(', ')}.`);
     }
     return resultaat(id, 'B', 'ok');
   };
@@ -214,7 +214,7 @@ export function apaJaarGelijk({ id, veld, jaarVeld, blok, optioneel = false }) {
     const jaar = tekst(invoer?.[jaarVeld]).replace(/[a-z]$/, '');
     const inApa = apaJaar(invoer?.[veld]);
     if (jaar === '' || inApa === undefined) return resultaat(id, 'B', 'ok');
-    if (jaar !== inApa) return resultaat(id, 'B', 'let op', `Het jaar in je APA-regel (${inApa}) is niet gelijk aan het jaar dat je bij de bron invulde (${jaar}).`);
+    if (jaar !== inApa) return resultaat(id, 'B', 'let op', `Het jaar in je APA-regel (${inApa}) verschilt van het jaar dat je bij de bron invulde (${jaar}); maak ze gelijk.`);
     return resultaat(id, 'B', 'ok');
   }, { id, soort: 'B', blok, optioneel });
 }

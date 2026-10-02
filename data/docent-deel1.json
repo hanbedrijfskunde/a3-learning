@@ -26,7 +26,7 @@
     "tekst": "je weet wat we vandaag doen en wat er van je gevraagd wordt.",
     "bron": "auteur"
    },
-   "watDocentDoet": "Blik terug op dinsdag: \"Gisteren pitchten jullie voor een opdrachtgever. Vanaf vandaag werken jullie voor een echte.\" Laat het dagprogramma zien.",
+   "watDocentDoet": "Blik terug op dinsdag: „Gisteren pitchten jullie voor een opdrachtgever. Vanaf vandaag werken jullie voor een echte.” Laat het dagprogramma zien.",
    "kernboodschap": "Vanaf vandaag werken de teams voor hun echte opdrachtgever.",
    "rondloopvragen": [],
    "alsHetAndersLoopt": [
@@ -52,7 +52,7 @@
     "tekst": "Kijk het filmpje. Beantwoord dan de drie vragen van 1.1: welke drie C's, wat past er niet op één A3, en wat weet je nog van de Lean Yellow Belt?",
     "bron": "auteur"
    },
-   "watDocentDoet": "Filmpje Bureau Tromp (4:38). Daarna A3-denken (dia 4): één A3 als praatplaatje, 3xC. Laat de lege template (7) en het voorbeeld (8) zien en eindig bij vak 1 (9) met de hulpvragen (6). Bespreek na dia 4 kort de drie vragen van taak 1.1.",
+   "watDocentDoet": "Filmpje Bureau Tromp (4:38). Daarna A3-denken (dia 4): één A3 als praatplaatje, 3xC. Bespreek dan kort de drie vragen van taak 1.1. Laat daarna de lege template (7) en het voorbeeld (8) zien en eindig bij vak 1 (9) met de hulpvragen (6).",
    "kernboodschap": "De A3 is iteratief: jullie bespreken hem elke week met de opdrachtgever en werken hem steeds bij.",
    "rondloopvragen": [
     "Wat weten jullie nog van de A3 uit de Lean Yellow Belt-training?"
@@ -88,7 +88,7 @@
    "watDocentDoet": "Praktijkgericht tegenover wetenschappelijk onderzoek (dia 10–12): praktijkonderzoek bestudeert één geval om een diagnose te stellen en een verbeterplan te maken. Vijf stappen van zoeken (13). Laat elk team een tool kiezen (14). Leg framing uit met het verzuimvoorbeeld (15).",
    "kernboodschap": "Welke data je nodig hebt, weet je pas na de literatuur.",
    "rondloopvragen": [
-    "Waar halen jullie bij je opdrachtgever data vandaan?"
+    "Waar halen jullie data vandaan bij de opdrachtgever?"
    ],
    "alsHetAndersLoopt": [
     "Te weinig tijd in deel 1: sla dia 12 en 14 over."
@@ -113,7 +113,7 @@
     "tekst": "Maak de vraag over webshop X concreet en schrijf hem als onderzoeksvraag in het format: Wat is de beste oplossing voor <gebruiker> om <probleem / pain / gain>, zodat <waardecreatie volgens de six capitals>?",
     "bron": "auteur"
    },
-   "watDocentDoet": "Brug naar week 4: daar formuleerden studenten het probleem. Nu formuleren ze de vraag die ze uiteindelijk met onderzoek beantwoorden. Laat eerst de vraag concreet maken met context (17). Introduceer dan het user-story-format en het voorbeeld van webshop X.",
+   "watDocentDoet": "Brug naar week 4: daar formuleerden studenten het probleem. Nu formuleren ze de vraag die ze uiteindelijk met onderzoek beantwoorden. Laat ze eerst de vraag concreet maken met context (17). Introduceer dan het user-story-format en het voorbeeld van webshop X.",
    "kernboodschap": "De onderzoeksvraag is de vraag die je uiteindelijk met onderzoek beantwoordt: gebruiker, probleem en waarde, in het format.",
    "rondloopvragen": [
     "Zijn alle drie de delen concreet?",
@@ -143,10 +143,10 @@
     "tekst": "Deel de onderzoeksvraag op in drie zoekvragen, elk vanuit een ander frame, en kies één model: 7S, Strategy Map of Six Capitals.",
     "bron": "auteur"
    },
-   "watDocentDoet": "Een onderzoeksvraag beantwoord je niet in één keer: je deelt hem op in zoekvragen die elk vanuit een ander frame kijken. Frames zijn functioneel (HR, financieel, logistiek, marketing), intern of extern, theoretisch of empirisch. Zet de timer en loop rond.",
+   "watDocentDoet": "Een onderzoeksvraag is te groot om in één keer te beantwoorden. Daarom deel je hem op in zoekvragen die elk vanuit een ander frame kijken. Frames zijn functioneel (HR, financieel, logistiek, marketing), intern of extern, theoretisch of empirisch. Zet de timer en loop rond.",
    "kernboodschap": "Elke zoekvraag kijkt vanuit een ander frame.",
    "rondloopvragen": [
-    "Welk perspectief ontbreekt nog?"
+    "Welk frame ontbreekt nog?"
    ],
    "alsHetAndersLoopt": [
     "Een team is vroeg klaar: laat het al een eerste bron zoeken voor een van de zoekvragen."
@@ -168,17 +168,17 @@
    ],
    "laptop": "dicht",
    "opdracht": {
-    "tekst": "Noem je frames en zoekvragen. Wat mis je als je maar één frame kiest? Welk model hielp jullie?",
+    "tekst": "Noem jullie frames en zoekvragen. Wat mis je als je maar één frame kiest? Welk model hielp jullie?",
     "bron": "auteur"
    },
-   "watDocentDoet": "Laat twee of drie teams hun frames en zoekvragen noemen. Er is geen beste frame.",
+   "watDocentDoet": "Laat twee of drie teams hun frames en zoekvragen noemen.",
    "kernboodschap": "Er is geen beste frame; wie maar één frame kiest, mist de rest.",
    "rondloopvragen": [
     "Wat mis je als je maar één frame kiest?",
     "Welk model hielp jullie?"
    ],
    "alsHetAndersLoopt": [
-    "Weinig tijd: laat één team noemen en vraag de rest alleen wat ze missen."
+    "Weinig tijd: laat één team zijn frames noemen en vraag de rest alleen wat ze missen."
    ],
    "veelgemaakteFouten": [],
    "bron": "draaiboek"
@@ -257,7 +257,7 @@
    ],
    "laptop": "dicht",
    "opdracht": {
-    "tekst": "Stelling: \"Je kunt prima AI gebruiken om inspiratiemateriaal te vinden.\" Voor: ga links staan. Tegen: ga rechts staan. Geef een argument.",
+    "tekst": "Stelling: „Je kunt prima AI gebruiken om inspiratiemateriaal te vinden.” Voor: ga links staan. Tegen: ga rechts staan. Geef een argument.",
     "bron": "auteur"
    },
    "watDocentDoet": "Laat beide kanten argumenten geven en gebruik wat de teams net bij route B zagen. Conclusie: AI is goed om je te oriënteren en ideeën te vinden; een bron wordt het pas als je hem zelf hebt gevonden, geopend en beoordeeld (4.1).",
@@ -288,7 +288,7 @@
     "tekst": "Beoordeel de bron uit de wedstrijd met de AAOCC-criteria: gebruiken of verder zoeken?",
     "bron": "auteur"
    },
-   "watDocentDoet": "AAOCC-criteria (25). Opdracht (26). Loop rond en check of teams echt beoordelen en niet alleen afvinken. Sluit af met APA (27).",
+   "watDocentDoet": "AAOCC-criteria (25). Opdracht (26). Loop rond en kijk of teams echt beoordelen en niet alleen afvinken. Sluit af met APA (27).",
    "kernboodschap": "Beoordelen is meer dan afvinken: je onderbouwt per criterium.",
    "rondloopvragen": [
     "Beoordelen jullie echt, of vinken jullie alleen af?"
@@ -320,7 +320,7 @@
     "tekst": "je weet dat wat de opdrachtgever zegt één waarneming vanuit één frame is.",
     "bron": "auteur"
    },
-   "watDocentDoet": "Gebruik de schietschijf. Blijf niet hangen bij de begrippen (28–29), maar ga naar de vertaling naar het project (30). Brug naar deel 2 (31).",
+   "watDocentDoet": "Gebruik de schietschijf. Behandel de begrippen kort (28–29) en neem de tijd voor de vertaling naar het project (30). Brug naar deel 2 (31).",
    "kernboodschap": "Wat de opdrachtgever zegt, is één waarneming vanuit één frame.",
    "rondloopvragen": [],
    "alsHetAndersLoopt": [

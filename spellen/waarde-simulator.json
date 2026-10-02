@@ -67,7 +67,7 @@
         },
         {
           "id": "b",
-          "tekst": "Een programma laten aanbevelingen doen",
+          "tekst": "Een programma aanbevelingen laten doen",
           "feedback": "Je hebt geen extra mensen nodig. Wel kan het effect op de relatie omslaan. Wat eerst persoonlijk voelt, wordt later routine.",
           "effect": {
             "financieel": { "termijn": ["min", "plus", "plus"], "toelichting": "Software kost geld. Extra bestellingen verdienen dat terug." },

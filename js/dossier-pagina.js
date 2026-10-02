@@ -107,7 +107,7 @@ async function start() {
       h('div', { class: 'fb-kolommen' },
         h('div', { id: 'zin-waarom' }, h('h3', {}, 'Waarom (leerblok 1)'), h('p', {}, z.waarom || 'Je hebt nog geen waarom-zin ingevuld op de startpagina.')),
         h('div', { id: 'zin-nut' }, h('h3', {}, 'Wat ik hiermee aan mijn A3 heb (leerblok 4)'), h('p', {}, z.nut || 'Die zin schrijf je aan het eind van leerblok 4.'))),
-      h('p', { class: 'klein', id: 'verdieping-gedaan' }, gedaan.length ? `Verdieping gedaan: leerblok ${gedaan.join(', ')}. Dat heeft geen invloed op je status.` : 'Je hebt nog geen verdieping als gedaan gemarkeerd. Verdieping is optioneel.'));
+      h('p', { class: 'klein', id: 'verdieping-gedaan' }, gedaan.length ? `Verdieping gedaan: leerblok ${gedaan.join(', ')}. Dat telt niet mee voor je status.` : 'Je hebt nog geen verdieping als gedaan gemarkeerd. Verdieping is optioneel.'));
   }
 
   // ---------------------------------------------------------------- kopieer naar A3 vak 1 (LB-16, LB-17, VB-8)
@@ -155,7 +155,7 @@ async function start() {
     if (!p.voorlopig && paren.length === 0 && voorlopigeIds.length === 0) return;
     versieGebied.append(h('h2', { id: 'versies-kop' }, 'Voorlopig vraagstuk en opnieuw gedaan'));
     if (p.voorlopig || voorlopigeIds.length) {
-      versieGebied.append(h('p', { id: 'voorlopig-label' }, `Je werkt met een voorlopig vraagstuk: je bewijs krijgt het label voorlopig${voorlopigeIds.length ? ` (nu: ${voorlopigeIds.map((id) => titels[id] ?? id).join(', ')})` : ''}. Bij elk onderdeel in het leerblok staat een knop Opnieuw doen zodra je vraagstuk scherp is.`));
+      versieGebied.append(h('p', { id: 'voorlopig-label' }, `Je werkt met een voorlopig vraagstuk: je bewijs krijgt het label voorlopig${voorlopigeIds.length ? ` (nu: ${voorlopigeIds.map((id) => titels[id] ?? id).join(', ')})` : ''}. Is je vraagstuk scherp, gebruik dan in het leerblok de knop „Opnieuw doen” bij elk voorlopig onderdeel.`));
     }
     if (paren.length === 0) return;
     const nummers = [...new Set(paren.map((x) => x.nieuw.leerblok))];
@@ -202,7 +202,7 @@ async function start() {
 
   const exportGebied = h('section', { id: 'exporteren', class: 'kaart', 'aria-labelledby': 'export-kop' },
     h('h2', { id: 'export-kop' }, 'Dossier bewaren'),
-    h('p', {}, 'Het bestand bevat je resultaten (de nieuwste versie en hoeveel eerdere versies er waren), je alias, je teamnummer en de versie van de e-learning, met een controlesom. Het gaat nergens naartoe: de browser slaat het op je eigen apparaat op.'),
+    h('p', {}, 'Het bestand bevat van elk resultaat de nieuwste versie en het aantal eerdere versies. Daarnaast staan erin: je alias, je teamnummer, de versie van de e-learning en een controlesom. Het gaat nergens naartoe: de browser slaat het op je eigen apparaat op.'),
     h('div', { class: 'knoppen' }, exportKnop(store, config.versie),
       h('button', { type: 'button', class: 'knop', 'data-actie': 'afdruk-tonen', onclick: () => toonAfdruk(true) }, 'Afdrukbare pagina’s per leeruitkomst')));
 

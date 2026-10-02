@@ -91,7 +91,7 @@ export function keuzeUitLijst({ id, veld, label, toegestaan, soort = 'A' }) {
     const geldig = keuzes.filter((k) => toegestaan.includes(k)).length;
     if (geldig === keuzes.length) return resultaat(id, soort, 'ok');
     if (geldig === 0) return resultaat(id, soort, 'mist', `Kies ${label} uit de lijst: ${lijst}.`);
-    return resultaat(id, soort, 'let op', `Een deel van je keuze staat niet in de lijst: ${lijst}.`);
+    return resultaat(id, soort, 'let op', `Een deel van je keuze staat niet in de lijst; kies alleen uit: ${lijst}.`);
   };
 }
 

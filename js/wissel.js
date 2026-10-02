@@ -162,7 +162,7 @@ export function herinneringen(inhoud, nu, drempel = HERINNER_NA_DAGEN) {
     .filter((k) => k.dagen >= drempel);
 }
 
-export const herinneringTekst = (h) => `Je actie „${plat(h.actie)}” staat al ${h.dagen} dagen op „${h.status}”. Zet de status als er iets is veranderd.`;
+export const herinneringTekst = (h) => `Je actie „${plat(h.actie)}” staat al ${h.dagen} dagen op „${h.status}”. Pas de status aan als er iets is veranderd.`;
 
 /** Herinneringen uit de opslag, voor pagina's die de Wissel zelf niet tonen. */
 export const herinneringenUitStore = (store, nu = () => new Date()) => herinneringen(store.get('EV-09')?.inhoud, nu());

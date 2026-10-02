@@ -69,7 +69,7 @@ export async function vorigeKeerSectie({ store, opslag, overzicht, leerblok, nu 
     }
     dossierGebied.append(
       h('p', { class: c.aanwezig ? '' : 'fout', role: c.aanwezig ? undefined : 'alert' },
-        c.aanwezig ? 'In deze browser ontbreken resultaten van eerdere leerblokken:' : 'Er staat geen dossier in deze browser. Heb je eerder gewerkt en je dossier bewaard? Lees het hier weer in. Onderdelen die ontbreken:'),
+        c.aanwezig ? 'In deze browser ontbreken resultaten van eerdere leerblokken:' : 'Er staat geen dossier in deze browser. Heb je eerder gewerkt en je dossier bewaard? Lees het hier weer in. Resultaten die ontbreken:'),
       h('ul', { class: 'tb-ontbrekend' }, c.ontbrekend.map((o) => h('li', { 'data-ev': o.id }, `${o.titel} (leerblok ${o.leerblok})`))),
       bestandKiezer({ id: 'tb-import-bestand', titel: 'Kies je dossierbestand', bijKeuze: async ([b]) => neemOver(await b.text()) }),
       importUitkomst,
@@ -106,12 +106,12 @@ export async function vorigeKeerSectie({ store, opslag, overzicht, leerblok, nu 
       h('h4', {}, `Meenemen uit leerblok ${m.vorig}`),
       h('ul', { class: 'tb-items-lijst' }, k.items.map((i) => h('li', {}, i))),
       k.samenvatting ? h('div', { class: 'tb-samenvatting' }, h('h5', {}, `Samenvatting van leerblok ${m.vorig}`), h('p', {}, k.samenvatting)) : null,
-      h('h5', {}, `Jouw bewijsstukken uit leerblok ${m.vorig}`),
+      h('h5', {}, `Jouw resultaten uit leerblok ${m.vorig}`),
       k.eigenBewijs.map((b) => h('div', { class: 'tb-bewijs', 'data-ev': b.id },
         h('strong', {}, b.titel),
         b.velden.length
           ? h('dl', { class: 'dos-velden' }, b.velden.flatMap((v) => [h('dt', {}, v.label), h('dd', {}, v.waarde)]))
-          : h('p', { class: 'klein' }, b.heeftRecord ? 'Dit bewijsstuk is nog leeg.' : 'Hier heb je in deze browser nog niets van.')))));
+          : h('p', { class: 'klein' }, b.heeftRecord ? 'Dit resultaat is nog leeg.' : 'Hier heb je in deze browser nog niets van.')))));
   }
 
   function tekenTerugblik(m) {

@@ -276,7 +276,7 @@ export function bouwVerbandenToepassing({ velden, waarden, bijWijziging, store, 
 
   const geenBron = !store.get('EV-01') || kaarten.kolommen[1].kaarten.length === 0;
   const element = h('div', { class: 'vb-toepassing' },
-    geenBron ? h('p', { class: 'klein', id: `${voorvoegsel}-bronmelding` }, 'Let op: je user story (leerblok 1) of het register van je VPC (leerblok 3) is nog leeg, dus sommige kolommen hebben weinig kaarten. Je kunt de kaart wel al gebruiken.') : null,
+    geenBron ? h('p', { class: 'klein', id: `${voorvoegsel}-bronmelding` }, 'Let op: je user story (leerblok 1) of het register van je VPC (leerblok 3) is nog leeg. Daardoor hebben sommige kolommen weinig kaarten. Je kunt de kaart wel al gebruiken.') : null,
     kaart.element,
     h('h5', {}, 'Markeer de zes kapitalen'), h('p', { class: 'klein' }, 'Gaat het kapitaal erin als input, of komt het eruit als uitkomst, positief (+) of negatief (−)?'), markeerBlok,
     h('h5', {}, 'Je synthese'), h('div', { class: 'veld' }, h('label', { for: `${voorvoegsel}-synthese` }, label('synthese')), synthese), teller,

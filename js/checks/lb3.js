@@ -56,7 +56,7 @@ export function internEnExtern({ id, ...p }) {
     if (lijst.length === 0) return resultaat(id, 'A', 'mist', 'Noteer stakeholders, minstens één intern en één extern.');
     const ontbreekt = ['intern', 'extern'].filter((soort) => !lijst.some((s) => s.soort === soort));
     return ontbreekt.length > 0
-      ? resultaat(id, 'A', 'let op', `Er staat nog geen ${enLijst(ontbreekt)} stakeholder in je lijst; kies intern of extern bij elke stakeholder.`)
+      ? resultaat(id, 'A', 'let op', `Er staat nog geen ${enLijst(ontbreekt)}e stakeholder in je lijst; kies intern of extern bij elke stakeholder.`)
       : resultaat(id, 'A', 'ok');
   };
 }
@@ -83,7 +83,7 @@ export function gebruikerInLijst({ id, bron = 'EV-01', ...p }) {
   const rijen = stakeholderRijen(p);
   return (invoer, context = {}) => {
     const gebruiker = tekst(context?.eigen?.[bron]?.inhoud?.gebruiker);
-    if (gebruiker === '') return resultaat(id, 'B', 'let op', `Je onderzoeksvraag uit leerblok 1 (${bron}) is nog leeg; daarom kan ik niet nagaan of je gebruiker in de lijst staat.`);
+    if (gebruiker === '') return resultaat(id, 'B', 'let op', `Je onderzoeksvraag uit leerblok 1 (${bron}) is nog leeg; vul die eerst in, dan zoekt de site je gebruiker in de lijst.`);
     return gebruikerStaatInLijst(gebruiker, stakeholdersUit(invoer, rijen))
       ? resultaat(id, 'B', 'ok')
       : resultaat(id, 'B', 'mist', `Je gebruiker uit ${bron} („${gebruiker}”) staat niet in je stakeholderlijst. Zet hem erin, of pas je onderzoeksvraag aan.`);
@@ -118,7 +118,7 @@ export function feitMetHerkomst({ id, ...p }) {
     const zonder = beweringenVan(invoer, rijen).filter((b) => b.label === 'feit' && b.bron === '');
     return zonder.length === 0
       ? resultaat(id, 'A', 'ok')
-      : resultaat(id, 'A', 'let op', `Een feit heeft een herkomst nodig: waar komt het vandaan? (${volgnummers(zonder, () => 'noem de bron of herkomst')}).`);
+      : resultaat(id, 'A', 'let op', `Noem bij elk feit de bron of herkomst (${volgnummers(zonder, () => 'ontbreekt nog')}).`);
   };
 }
 
@@ -133,8 +133,8 @@ export function aannameMetZoekvraag({ id, bron = 'EV-02', ...p }) {
     const leeg = aannames.filter((b) => tekst(inhoud?.[`zoekvraag${b.zoek.slice(-1)}`]) === '');
     if (leeg.length === 0) return resultaat(id, 'B', 'ok');
     return resultaat(id, 'B', 'let op', inhoud
-      ? `Een aanname wijst naar een zoekvraag die in leerblok 1 (${bron}) leeg is (${volgnummers(leeg, (b) => b.zoek)}).`
-      : `Je zoekvragen uit leerblok 1 (${bron}) ontbreken nog; daarom kan ik niet nagaan of je aannames naar een zoekvraag wijzen.`);
+      ? `Een aanname wijst naar een lege zoekvraag uit leerblok 1 (${bron}); vul die in of kies een andere (${volgnummers(leeg, (b) => b.zoek)}).`
+      : `Je zoekvragen uit leerblok 1 (${bron}) ontbreken nog; vul die eerst in, dan controleert de site de koppeling met je aannames.`);
   };
 }
 
@@ -142,8 +142,8 @@ export function aannameMetZoekvraag({ id, bron = 'EV-02', ...p }) {
 export function minGevuld({ id, velden, min, label }) {
   return (invoer) => {
     const n = velden.filter((v) => !isLeeg(invoer?.[v])).length;
-    if (n === 0) return resultaat(id, 'C', 'mist', `Vul ${label} in: minstens ${min} velden.`);
-    return n < min ? resultaat(id, 'C', 'let op', `Je vulde ${n} van de ${min} velden in die ik minstens verwacht; ${label}.`) : resultaat(id, 'C', 'ok');
+    if (n === 0) return resultaat(id, 'C', 'mist', `Vul minstens ${min} velden in: ${label}.`);
+    return n < min ? resultaat(id, 'C', 'let op', `Je vulde ${n} van de ${min} velden in die minstens nodig zijn: ${label}.`) : resultaat(id, 'C', 'ok');
   };
 }
 
@@ -167,7 +167,7 @@ export function noemtStakeholder({ id, velden, label = 'je antwoorden', bron = '
     const teksten = velden.map((v) => tekst(invoer?.[v])).filter((t) => t !== '');
     if (teksten.length === 0) return resultaat(id, 'B', 'ok');
     const lijst = stakeholdersUit(context?.records?.[bron]?.inhoud, rijen);
-    if (lijst.length === 0) return resultaat(id, 'B', 'let op', `Je stakeholderlijst (${bron}, taak 5.1) is nog leeg; daarom kan ik niet nagaan of ${label} een stakeholder noemen.`);
+    if (lijst.length === 0) return resultaat(id, 'B', 'let op', `Je stakeholderlijst (${bron}, taak 5.1) is nog leeg; vul die eerst in, dan controleert de site de stakeholders in ${label}.`);
     const zonder = teksten.filter((t) => !noemtEenVan(t, lijst));
     return zonder.length > 0
       ? resultaat(id, 'B', 'let op', `Noem in ${zonder.length === 1 ? 'dit antwoord' : 'deze antwoorden'} minstens één stakeholder uit je lijst (${enLijst(lijst.slice(0, 3).map((s) => s.naam))}, …).`)

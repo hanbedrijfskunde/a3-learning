@@ -144,7 +144,7 @@ export function bouwWeergave(velden, voorvoegsel, waarden, bijWijziging, weergav
     const kopieerStatus = h('span', { class: 'klein', role: 'status' });
     const kopieer = h('button', { type: 'button', class: 'knop', onclick: async () => {
       try { await navigator.clipboard.writeText(waarde(p.prompt)); kopieerStatus.textContent = ' Gekopieerd.'; }
-      catch (e) { kopieerStatus.textContent = ' Kopiëren lukt hier niet; selecteer de tekst en kopieer hem zelf.'; }
+      catch (e) { kopieerStatus.textContent = ' Kopiëren is niet gelukt; selecteer de tekst en kopieer hem zelf.'; }
     } }, 'Kopieer de prompt');
     return h('div', { class: 'lb2-generator' }, overnemen,
       h('p', { class: 'klein' }, 'Vul de velden in; de prompt hieronder wordt dan opnieuw gemaakt. Je kunt hem daarna nog aanpassen.'),
@@ -159,7 +159,7 @@ export function bouwWeergave(velden, voorvoegsel, waarden, bijWijziging, weergav
     const status = h('span', { class: 'klein', role: 'status' });
     const knop = h('button', { type: 'button', class: 'knop', onclick: async () => {
       try { await navigator.clipboard.writeText(tekstEl.textContent); status.textContent = ' Gekopieerd.'; }
-      catch (e) { status.textContent = ' Kopiëren lukt hier niet; selecteer de tekst en kopieer hem zelf.'; }
+      catch (e) { status.textContent = ' Kopiëren is niet gelukt; selecteer de tekst en kopieer hem zelf.'; }
     } }, 'Kopieer de prompt');
     return h('div', { class: 'lb2-generator' }, tekstEl, h('div', { class: 'lb2-generator-acties' }, knop, status));
   }

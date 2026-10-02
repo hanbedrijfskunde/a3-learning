@@ -38,7 +38,7 @@ export function bouwWisselPaneel({ wissel, alias = '', metTeamactie = false, bij
     const w = wissel.mijnWisselblok(alias);
     if (w.leeg) { klaar(eigenMelding, 'Vul eerst je onderzoeksvraag en je zoekvragen in; dan is er iets om te delen.', false); return; }
     const ok = await naarKlembord(w.tekst, eigen);
-    klaar(eigenMelding, ok ? 'Gekopieerd. Plak het in de app waarmee je je wisselpartner bereikt.' : 'Kopiëren lukte niet. De tekst is geselecteerd: kopieer hem zelf.', ok);
+    klaar(eigenMelding, ok ? 'Gekopieerd. Plak het in de app waarmee je je wisselpartner bereikt.' : 'Kopiëren is niet gelukt. De tekst is geselecteerd: kopieer hem zelf.', ok);
   } }, 'Kopieer mijn wisselblok');
   const tekenEigen = () => {
     const w = wissel.mijnWisselblok(alias);
@@ -77,7 +77,7 @@ export function bouwWisselPaneel({ wissel, alias = '', metTeamactie = false, bij
       tekst.value = r.tekst;
       const kopieer = h('button', { type: 'button', class: 'knop knop-accent', id: `wis-fb-${b.id}-kopieer`, onclick: async () => {
         const ok = await naarKlembord(r.tekst, tekst);
-        klaar(m, ok ? 'Gekopieerd. Stuur het terug aan je wisselpartner.' : 'Kopiëren lukte niet. De tekst is geselecteerd: kopieer hem zelf.', ok);
+        klaar(m, ok ? 'Gekopieerd. Stuur het terug aan je wisselpartner.' : 'Kopiëren is niet gelukt. De tekst is geselecteerd: kopieer hem zelf.', ok);
       } }, 'Kopieer feedback om terug te sturen');
       uitvoer.append(tekst, kopieer);
       uitvoer.hidden = false;

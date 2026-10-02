@@ -269,10 +269,10 @@ if (modusUitAdres(location.search)) startDocentmodus(main);
 else {
   wis(main);
   main.append(h('h1', {}, 'Docentmodus'),
-    h('p', {}, 'Kies hoe je deze site gebruikt. Er is geen account nodig en er wordt niets van studenten bewaard.'),
+    h('p', {}, 'Kies hoe je deze site gebruikt. Je hebt geen account nodig en de site bewaart niets van studenten.'),
     h('div', { class: 'knoppen' },
       h('button', { type: 'button', class: 'knop knop-accent', onclick: () => { history.replaceState(null, '', docentAdres(location.pathname.split('/').pop() || 'docent.html')); startDocentmodus(main); } }, 'Ik ben docent: open de docentmodus'),
       h('a', { class: 'knop', href: 'index.html' }, 'Ik ben student: naar de start')),
-    h('p', { class: 'meta' }, 'Een docentmodus die je direct wilt openen: docent.html?modus=docent.'),
+    h('p', { class: 'meta' }, 'Direct naar de docentmodus: docent.html?modus=docent.'),
     h('p', {}, 'Voor het eerst? Lees de ', h('a', { href: 'docs/docentgids.html' }, 'docentgids van twee pagina’s'), '.'));
 }

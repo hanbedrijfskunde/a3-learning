@@ -41,7 +41,7 @@ async function start() {
 
     if (m.studenten.length === 0) return;
     tabelGebied.append(h('h2', {}, `Status per student (${m.studenten.length})`),
-      h('p', { class: 'klein' }, 'De studenten met de meeste ontbrekende bewijsonderdelen staan bovenaan. Ontbreekt: geen record of nog niet. Leeruitkomst: het slechtste van de bijbehorende bewijsonderdelen.'),
+      h('p', { class: 'klein' }, 'De studenten met de meeste ontbrekende bewijsonderdelen staan bovenaan. Ontbreekt: geen record of nog niet. Leeruitkomst: de laagste status van de bijbehorende bewijsonderdelen.'),
       h('div', { class: 'ver-tabelwrap' }, h('table', { class: 'ver-tabel', id: 'ver-tabel' },
         h('thead', {}, h('tr', {},
           h('th', { scope: 'col' }, 'Student'), h('th', { scope: 'col' }, 'Team'), h('th', { scope: 'col' }, 'Ontbreekt'),
@@ -69,7 +69,7 @@ async function start() {
   } });
 
   main.append(h1,
-    h('p', {}, 'Lees de dossiers (.json) van je studenten in. De controlesom wordt hier in je browser opnieuw uitgerekend; een bestand dat daarna is aangepast krijgt de melding „gewijzigd na export”.'),
+    h('p', {}, 'Lees de dossiers (.json) van je studenten in. Deze pagina rekent de controlesom in je browser opnieuw uit; een bestand dat na de export is aangepast, krijgt de melding „gewijzigd na export”.'),
     h('p', { class: 'klein' }, 'Deze pagina stuurt niets naar een server: de bestanden blijven op je eigen apparaat. De controlesom laat zien dat een bestand is aangepast; ze is geen handtekening. Wie de som zelf opnieuw uitrekent, kan een bestand ongemerkt aanpassen.'),
     veld,
     uitkomsten, tabelGebied);

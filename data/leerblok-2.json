@@ -40,7 +40,7 @@
         "bron": "auteur",
         "opmerking": "Het werkboek geeft bij 3.1 alleen de opdracht en de tabel; de uitleg over kernbegrippen en de verwijzing naar Mayer (2004) zijn door de bouwer geschreven.",
         "alineas": [
-          "Een kernbegrip is het woord in je zoekvraag dat het onderwerp draagt. In „Welke factoren bepalen de klanttevredenheid bij webshops?” zijn dat klanttevredenheid en webshop. Voor elk begrip bestaan andere woorden voor hetzelfde (synoniemen en verwante termen). Veel wetenschappelijke bronnen zijn Engelstalig, dus de Engelse term hoort erbij. Soms helpt een breder of smaller begrip.",
+          "Een kernbegrip is het woord in je zoekvraag dat het onderwerp draagt. In „Welke factoren bepalen de klanttevredenheid bij webshops?” zijn dat klanttevredenheid en webshop. Voor elk begrip bestaan andere woorden met dezelfde of een verwante betekenis (synoniemen en verwante termen). Veel wetenschappelijke bronnen zijn Engelstalig, dus de Engelse term hoort erbij. Soms helpt een breder of smaller begrip.",
           "Eerst een voorbeeld en dan zelf doen werkt voor beginners beter dan alles zelf ontdekken (Mayer, 2004)."
         ]
       },
@@ -258,7 +258,7 @@
         "bron": "werkboek"
       },
       "waarom": {
-        "tekst": "Een goede bron vind je zelden met je eerste zoekopdracht. Je vergelijkt twee routes. In de databank bepaal jij de zoekstring. Bij een AI-tool bepaalt de prompt (de opdracht die je aan de tool geeft) wat je krijgt. Wat beter werkt, ontdek je alleen door het te doen.",
+        "tekst": "Een goede bron vind je zelden met je eerste zoekopdracht. Je vergelijkt twee routes. In de databank bepaal jij de zoekstring. Bij een AI-tool bepaalt de prompt (de opdracht die je aan de tool geeft) wat je krijgt. Welke route beter werkt, zie je pas als je de uitkomsten naast elkaar legt.",
         "bron": "auteur"
       },
       "klaarAls": {
@@ -295,7 +295,7 @@
       },
       "oefening": {
         "opdracht": {
-          "tekst": "Werk met een medestudent. Spreek af wie route A neemt en wie route B, en zoek allebei bij dezelfde zoekvraag over webshop X: „Welke factoren bepalen de klanttevredenheid bij webshops?” De opdrachtgever wil niet dat de naam webshop X buiten het team komt. Vergelijk daarna wat jullie vonden. Werk je alleen? Doe dan beide routes na elkaar.",
+          "tekst": "Werk met een medestudent. Spreek af wie route A neemt en wie route B. Zoek allebei bij dezelfde zoekvraag over webshop X: „Welke factoren bepalen de klanttevredenheid bij webshops?” De opdrachtgever wil niet dat de naam webshop X buiten het team komt. Vergelijk daarna wat jullie vonden. Werk je alleen? Doe dan beide routes na elkaar.",
           "bron": "auteur"
         },
         "modelNa": [
@@ -391,7 +391,7 @@
             "label": "Prompt voor route B",
             "type": "lang",
             "zinstarter": "Zoek wetenschappelijke bronnen over …",
-            "hint": "De prompt vult zichzelf uit de velden hierboven. Lees hem na voordat je hem kopieert: staat er een naam in die er niet in mag?",
+            "hint": "Deze site maakt de prompt uit de velden hierboven. Lees hem na voordat je hem kopieert: staat er een naam in die er niet in mag?",
             "hintBron": [
               {
                 "soort": "stof",
@@ -1736,7 +1736,7 @@
         "bron": "auteur"
       },
       "waarom": {
-        "tekst": "Een artikel vertelt je wat er bekend is. Maar je kunt er meer uit halen: een begrip, een onderzoeksaanpak en een manier om je uitkomst te tonen. IMRAD wijst je waar je dat vindt.",
+        "tekst": "Een artikel vertelt je wat er bekend is. Je kunt er nog drie dingen uit halen: een begrip, een onderzoeksaanpak en een manier om je uitkomst te tonen. IMRAD wijst je waar je die vindt.",
         "bron": "auteur"
       },
       "klaarAls": {
@@ -2293,7 +2293,7 @@
         "bron": "werkboek"
       },
       "waarom": {
-        "tekst": "Een AI-tool kan een artikel in seconden samenvatten. Bij taak 4.2 heb je dat zelf gedaan, of juist niet. Als je een kant kiest en die onderbouwt, merk je wat jij ervan vindt en waarop dat rust.",
+        "tekst": "Een AI-tool kan een artikel in seconden samenvatten. Bij taak 4.2 besliste je zelf of je daarbij een AI-tool gebruikte. Als je een kant kiest en die onderbouwt, merk je wat jij ervan vindt en waarop dat rust.",
         "bron": "auteur"
       },
       "klaarAls": {
@@ -2405,7 +2405,7 @@
         "opmerking": "Door de bouwer geschreven naar de lijn van de auteur (ADR B104); een ander goed antwoord kiest tegen, met dezelfde voorwaarde.",
         "velden": {
           "kant": "voor",
-          "argument": "Het hangt af van hoe je het doet. Deze collega dacht bij het ontwerp van de AI-tool al na over validiteit (meet de tool wat hij moet meten?) en betrouwbaarheid (geeft hij steeds dezelfde uitkomst?), en liet de tool daarop toetsen. Daarom geeft de tool bij elke samenvatting een AAOCC-oordeel met vindplaats, en is niet alles een plus."
+          "argument": "Het hangt af van hoe je het doet. Deze collega dacht bij het ontwerp van de AI-tool al na over validiteit (meet de tool wat hij moet meten?) en betrouwbaarheid (geeft hij steeds dezelfde uitkomst?). De collega liet de tool daar ook op toetsen. Daarom geeft de tool bij elke samenvatting een AAOCC-oordeel met vindplaats, en is niet alles een plus."
         }
       },
       "toepassing": {
@@ -2529,7 +2529,7 @@
       "verwijzing": "(HAN Bibliotheek, 2023)",
       "duur": "1:42",
       "taal": "Nederlands",
-      "waarom": "Kennisclip van de HAN Bibliotheek met een checklist voor een website. Hij behandelt de auteur (Authority), het doel (Objectivity) en het nalezen van de bronnen (Accuracy). Hoe actueel en volledig een bron is (Currency en Coverage), en hoe je een bron van een AI-tool controleert, staat in de tekst.",
+      "waarom": "Kennisclip van de HAN Bibliotheek met een checklist om een website te beoordelen. Hij behandelt de auteur (Authority), het doel (Objectivity) en het nalezen van de bronnen (Accuracy). Hoe actueel en volledig een bron is (Currency en Coverage), en hoe je een bron van een AI-tool controleert, staat in de tekst.",
       "bron": "auteur"
     },
     "spel": {

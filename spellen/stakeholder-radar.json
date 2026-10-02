@@ -6,7 +6,7 @@
   "leerblok": 3,
   "taak": "5.1",
   "bron": "auteur",
-  "intro": "Bij webshop X stijgt het aantal retouren. Je plaatst zes stakeholders op invloed en belang en leest bij elke keuze de feedback. Daarna zie je je raster en beantwoord je twee vragen. Wie merkt het probleem het eerst? En wie heeft er belang bij dat het blijft zoals het is?",
+  "intro": "Bij webshop X stijgt het aantal retouren. Een stakeholder is een persoon of partij die het vraagstuk merkt of er invloed op heeft. Je plaatst zes stakeholders op invloed en belang en leest bij elke keuze de feedback. Daarna zie je je raster en beantwoord je twee vragen. Wie merkt het probleem het eerst? En wie heeft er belang bij dat het blijft zoals het is?",
   "fictiefUitleg": "Webshop X en de stakeholders zijn verzonnen.",
   "geenBewijs": "Dit komt niet in je dossier.",
   "vakken": [
@@ -116,7 +116,7 @@
               "id": "laag",
               "tekst": "Laag",
               "passend": true,
-              "feedback": "Klopt. Voor het platform is één webshop een klein deel van het geheel, dus het raakt het weinig."
+              "feedback": "Klopt. Voor het platform is één webshop een klein deel van het geheel, dus het vraagstuk raakt het platform weinig."
             }
           ]
         }
@@ -350,7 +350,7 @@
         {
           "id": "s3",
           "tekst": "Magazijnmedewerkers",
-          "feedback": "Het magazijn heeft extra werk van de retouren. Het heeft er geen voordeel bij dat het zo blijft."
+          "feedback": "Magazijnmedewerkers hebben extra werk van de retouren. Ze hebben er geen voordeel bij dat het zo blijft."
         },
         {
           "id": "s4",
@@ -371,5 +371,5 @@
       ]
     }
   ],
-  "slot": "Je hebt zes stakeholders geplaatst. Belang bij het vraagstuk is iets anders dan belang bij de huidige situatie. Kijk nu naar je eigen vraagstuk. Wie merkt het eerst? En wie heeft er belang bij dat het blijft zoals het is? Schrijf dat op in taak 5.1."
+  "slot": "Belang bij het vraagstuk is iets anders dan belang bij de huidige situatie. Kijk nu naar je eigen vraagstuk. Wie merkt het eerst? En wie heeft er belang bij dat het blijft zoals het is? Schrijf dat op in taak 5.1."
 }

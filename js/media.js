@@ -142,7 +142,7 @@ export function bouwSpelPaneel({ spel, met = (t) => t }) {
       melding.hidden = false;
     }
   } }, `Start het spel: ${spel.titel}`);
-  gebied.append(h('p', { class: 'klein' }, `Ongeveer ${spel.minuten} minuten, met toetsenbord te bedienen, met een tekstversie. Alle voorbeelden zijn verzonnen (fictief). Het levert niets op voor je dossier.`), knop, melding);
+  gebied.append(h('p', { class: 'klein' }, `Ongeveer ${spel.minuten} minuten, met toetsenbord te bedienen, met een tekstversie. Alle voorbeelden zijn verzonnen (fictief). Het telt niet mee voor je dossier.`), knop, melding);
   return gebied;
 }
 

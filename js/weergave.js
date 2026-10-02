@@ -10,7 +10,7 @@ import { verbandRegel } from './verbandregel.js';
 export { STAP_NAMEN as STAPPEN } from './voortgang.js';
 import { STAP_NAMEN as STAPPEN } from './voortgang.js';
 
-export const BEWAARMELDING = 'Bewaar je dossier: je werk staat alleen in deze browser. Ga naar het dossier om het te bewaren.';
+export const BEWAARMELDING = 'Bewaar je dossier: je werk staat alleen in deze browser.';
 
 const heeftWaarde = (w) => (Array.isArray(w) ? w.length > 0 : typeof w === 'string' ? w.trim() !== '' : w !== undefined && w !== null);
 

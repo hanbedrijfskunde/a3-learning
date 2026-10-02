@@ -19,7 +19,7 @@ const regelsVan = (invoer, veld = 'regels') => (Array.isArray(invoer?.[veld]) ? 
 const heeftInhoud = (r) => gevuld(r.zie) || gevuld(r.mis) || gevuld(r.vraag);
 
 /** WS-8: zolang er geen ontvangen feedback is, is dat een `let op` (status Bijna), ook na 14 dagen; er is geen klok in de regel. */
-const WACHT = 'Wacht op de feedback van je wisselpartner en plak die hier zodra je hem hebt.';
+const WACHT = 'Wacht op de feedback van je wisselpartner en plak hem hier zodra je hem hebt.';
 
 /**
  * Minstens één zelf gegeven feedbackregel (EV-09). Geen: `mist`.
@@ -230,7 +230,7 @@ export function userStoryVerbonden({ id }) {
 export function kapitalenUitEv01Verbonden({ id, bron = 'EV-01' }) {
   return (invoer, context = {}) => {
     const ev = context?.eigen?.[bron]?.inhoud ?? context?.records?.[bron]?.inhoud;
-    if (!ev) return resultaat(id, 'B', 'let op', `Je user story (${bron}, leerblok 1) ontbreekt; daarom kan ik niet nagaan of je gekozen kapitalen zijn verbonden.`);
+    if (!ev) return resultaat(id, 'B', 'let op', `Je user story (${bron}, leerblok 1) ontbreekt; vul die eerst in, dan controleert de site of je gekozen kapitalen zijn verbonden.`);
     const verbanden = verbandenUit(invoer);
     const zonder = [].concat(ev.kapitalen ?? []).filter((k) => KAPITALEN.includes(k)).filter((k) => !verbanden.some((v) => v.naar === `kap:${k}`
       && String(v.van).startsWith('vpc:') && OPLOSSING_ONDERDELEN.includes(v.vpcOnderdeel)));
@@ -254,7 +254,7 @@ export function spanningMetStakeholder({ id, bron = 'EV-06', ...p }) {
     if (benoemd.length === 0) return resultaat(id, 'B', 'let op', 'Noem bij een verband „gaat ten koste van” de stakeholder die dat merkt.');
     const ev = context?.eigen?.[bron]?.inhoud ?? context?.records?.[bron]?.inhoud;
     const lijst = ev ? stakeholdersUit(ev, rijen) : [];
-    if (lijst.length === 0) return resultaat(id, 'B', 'let op', `Je stakeholderlijst (${bron}, taak 5.1) is nog leeg; daarom kan ik niet nagaan of de stakeholder die de spanning merkt erin staat.`);
+    if (lijst.length === 0) return resultaat(id, 'B', 'let op', `Je stakeholderlijst (${bron}, taak 5.1) is nog leeg; vul die eerst in, dan controleert de site de stakeholder bij je spanning.`);
     return benoemd.some((v) => lijst.some((s) => sleutel(s.naam) === sleutel(v.stakeholder)))
       ? resultaat(id, 'B', 'ok')
       : resultaat(id, 'B', 'let op', `De stakeholder bij je spanning staat niet in je stakeholderlijst (${bron}); kies een stakeholder uit die lijst.`);

@@ -35,7 +35,7 @@
       "kernpunt": "Controleer bij een AI-bron eerst of de bron bestaat.",
       "opties": [
         { "id": "gebruiken", "tekst": "Gebruiken", "feedback": "Riskant. Een AI-tool verzint soms bronnen en hier wijst alles erop. Een bron die je niet kunt openen, kun je ook niet in APA verantwoorden." },
-        { "id": "voorzichtig", "tekst": "Voorzichtig gebruiken", "feedback": "Voorzichtig zijn is een goede reflex. Toch valt hier niets voorzichtig te gebruiken, want de bron bestaat niet." },
+        { "id": "voorzichtig", "tekst": "Voorzichtig gebruiken", "feedback": "Hier valt niets voorzichtig te gebruiken, want de bron bestaat niet." },
         { "id": "niet", "tekst": "Niet gebruiken", "passend": true, "feedback": "Dat past. Je kon de bron niet openen. Vraag de AI-tool om een echte bron met een link, of zoek zelf verder." }
       ]
     },
@@ -158,7 +158,7 @@
       "id": "k6",
       "fictief": true,
       "titel": "Klanttevredenheid bij Nederlandse webwinkels in 2023",
-      "soort": "Branchrapport",
+      "soort": "Brancherapport",
       "auteur": "Nederlandse Branchevereniging voor Webwinkels",
       "jaar": "2023",
       "uitgever": "De vereniging zelf",
@@ -183,5 +183,5 @@
       ]
     }
   ],
-  "slot": "Wat gaf telkens de doorslag? Bestond de bron niet? Had de afzender een belang? Is de bron te oud, ontbreekt de auteur, of is de bron gewoon goed? Zo beoordeel je in taak 4.1 een eigen bron."
+  "slot": "Wat gaf telkens de doorslag? Bestond de bron niet? Had de afzender een belang? Was de bron te oud, ontbrak de auteur, of was de bron gewoon goed? Zo beoordeel je in taak 4.1 een eigen bron."
 }

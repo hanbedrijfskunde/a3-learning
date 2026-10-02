@@ -24,7 +24,7 @@
         "opmerking": "De acht vakken en de Lean Yellow Belt komen uit werkboek 1.1; de zin over een praatplaat, de uitleg van 3xC en de indeling naar PDCA zijn door de bouwer geschreven; de figuur is figuur 1 uit Schwagerman & Ulmer (2013), als citaat (media/citaten.json).",
         "figuur": "a3-vel",
         "alineas": [
-          "Een A3 is één vel met acht vakken. Daarop beschrijf je een vraagstuk, van aanleiding tot vervolgstappen. De linkerhelft is het plan. Daar staat waarom, hoe het nu is, waar je heen wilt en wat de oorzaak is. Op de rechterhelft voer je het plan uit, controleer je het effect en stuur je bij. Zo volgt het vel de cirkel plan, do, check, act (Schwagerman & Ulmer, 2013). Vandaag begin je aan vak 1.",
+          "Een A3 is één vel met acht vakken. Daarop beschrijf je een vraagstuk, van aanleiding tot vervolgstappen. De linkerhelft is het plan. Daar staat waarom, hoe het nu is, waar je heen wilt en wat de oorzaak is. Op de rechterhelft voer je het plan uit, controleer je het effect en stuur je bij. Zo volgt het vel de cirkel plan, do, check, act (Schwagerman & Ulmer, 2013).",
           "Een A3 moet voldoen aan 3xC: concreet, compleet en consistent. Concreet betekent kort en ter zake, zodat de lezer tijd bespaart. Compleet betekent dat alle vakken samen het hele verhaal vertellen. Consistent betekent dat de vakken op elkaar aansluiten.",
           "Alles moet op één vel passen. Dat dwingt je om samen te vatten (MIT OpenCourseWare, 2014). Past iets niet, dan schrijf je te veel op of begrijp je het probleem nog niet goed genoeg."
         ]
@@ -84,7 +84,7 @@
         "figuur": "six-capitals",
         "format": "Wat is de beste oplossing voor <gebruiker> om <probleem / pain / gain>, zodat <waardecreatie volgens de six capitals>?",
         "alineas": [
-          "Een vraag in dit format heet een user story: een korte beschrijving van wie iets wil bereiken en waarom. Je vult drie delen in. De gebruiker is de persoon of groep voor wie je het onderzoek doet. Een pain is een last of ergernis van die gebruiker. Een gain is een winst die hij of zij wil. De waardecreatie zegt wat het oplevert.",
+          "Een vraag in dit format heet een user story: een korte beschrijving van wie iets wil bereiken en waarom. Je vult drie delen in. De gebruiker is de persoon of groep voor wie je het onderzoek doet. Het tweede deel beschrijft het probleem als pain of als gain. Een pain is een last of ergernis van die gebruiker. Een gain is een winst die hij of zij wil. De waardecreatie zegt wat de oplossing oplevert.",
           "De six capitals (zes kapitalen) zijn zes soorten waarde die een organisatie kan opbouwen of verliezen. Het gaat om financieel, productie-, intellectueel, menselijk, sociaal en relationeel, en natuurlijk kapitaal.",
           "Een voorbeeld uit een andere organisatie. Bij organisatie Y luidt de onderzoeksvraag: „Wat is de beste oplossing voor de controller om milieucijfers zonder handwerk te verzamelen, zodat de organisatie haar milieu-impact kan sturen?” De waarde raakt hier drie kapitalen. Natuurlijk kapitaal: de organisatie stuurt op haar milieu-impact. Menselijk kapitaal: medewerkers zijn minder tijd kwijt aan rapporteren. Sociaal en relationeel kapitaal: klanten en financiers vertrouwen de cijfers."
         ]
@@ -270,7 +270,7 @@
       "titel": "Van vage vraag naar user story",
       "bron": "auteur",
       "alineas": [
-        "Een A3 is een verbetermethode waarbij je het hele verhaal van een probleem op één blad zet (Bureau Tromp, 2023). Zo'n blad is goed als het concreet, compleet en consistent is.",
+        "Een A3 is een verbetermethode waarbij je het hele verhaal van een probleem op één vel zet (Bureau Tromp, 2023). Zo'n vel is goed als het concreet, compleet en consistent is.",
         "Je begint met een vage vraag, zoals „Hoe kan de klanttevredenheid verhoogd worden?” Die vraag maak je scherp met het format van de user story. Dat luidt: „Wat is de beste oplossing voor de gebruiker om het probleem op te lossen, zodat er waarde ontstaat?” Beschrijf die waarde in de zes kapitalen. Kies er minstens één die niet financieel is.",
         "Daarna splits je de vraag in drie zoekvragen. Elke zoekvraag komt uit een ander frame, bijvoorbeeld theoretisch, functioneel of intern. Zo kijk je vanuit meer dan één kant naar het probleem."
       ],

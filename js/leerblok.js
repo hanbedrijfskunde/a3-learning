@@ -388,7 +388,7 @@ async function start() {
         h('p', {}, met(model.verdieping.tekst)),
         link ? h('p', {}, h('a', { href: link.url, target: '_blank', rel: 'noopener noreferrer' }, link.titel), ' (opent in een nieuw tabblad)') : null,
         link ? h('p', { class: 'klein' }, 'Bron: ', met(link.verwijzing), ` · Taal: ${link.taal}`) : null,
-        h('p', { class: 'klein' }, 'Dit is optioneel. Het telt niet mee voor je status en niet voor de tijd.'),
+        h('p', { class: 'klein' }, 'De verdieping telt niet mee voor je status en niet voor de tijd.'),
         h('div', { class: 'veld' }, h('label', { for: `verdieping-${id}` }, 'Jouw antwoord (optioneel)'), tekstVeld),
         h('div', { class: 'optie' }, gedaan, h('label', { for: `verdieping-gedaan-${id}` }, 'Verdieping gedaan')));
     } else {
@@ -500,7 +500,7 @@ async function start() {
       logKopie(store);
       afsluitMelding.textContent = 'Gekopieerd. Plak het in vak 1 van de A3 van je team.';
     } catch (e) {
-      afsluitMelding.textContent = 'Kopiëren lukte niet in deze browser. Op de dossierpagina staat het tekstblok om zelf te selecteren.';
+      afsluitMelding.textContent = 'Kopiëren is niet gelukt in deze browser. Op de dossierpagina staat het tekstblok om zelf te selecteren.';
     }
   } }, 'Kopieer naar mijn A3');
   const afsluiten = h('section', { class: 'afsluit-moment', id: 'afsluiten', 'aria-labelledby': 'afsluiten-kop' },
@@ -553,7 +553,7 @@ async function start() {
     mediaLaden ??= laadMedia().then(({ bouwMediaSectie }) => {
       mediaSectie = bouwMediaSectie({ blok, store, met, bord, modelZichtbaar: () => sessie.oefening(blok.media.taak).modelZichtbaar });
       mediaPlek.append(mediaSectie.element);
-    }).catch(() => mediaPlek.append(h('p', { class: 'klein' }, 'De keuze tussen tekst, video en spel kon niet laden; de tekst hierboven is genoeg om verder te gaan (MD-12).')));
+    }).catch(() => mediaPlek.append(h('p', { class: 'klein' }, 'De keuze tussen tekst, video en spel kon niet laden. De tekst hierboven is genoeg om verder te gaan.')));
   }
   if (mediaPlek) document.addEventListener('a3-oefening', (e) => { if (e.detail.taak === blok.media.taak) mediaSectie?.ververs(); });
   const kijktips = blok.kijktips ? mediaDirect.bouwKijktips({ kijktips: blok.kijktips, met }) : null;
