@@ -478,7 +478,7 @@ test('B120: V4 is het fragment van Yale University over verdienmodellen vanaf 1:
   assert.equal(v.url, 'https://www.youtube.com/watch?v=p1CRXRxnpBQ&t=107s', 'de link start op 1:47');
   assert.equal(v.kanaal, 'Yale University');
   assert.equal(v.verwijzing, '(Yale University, 2025)');
-  assert.deepEqual([v.duur, v.taal], ['5:05 (fragment 1:47 tot 6:52)', 'Engels']);
+  assert.deepEqual([v.duur, v.fragment, v.taal], ['5:05', '1:47 tot 6:52', 'Engels']);
   assert.match(v.waarom, /Aravind/);
   assert.match(v.waarom, /TOMS/);
   assert.match(v.waarom, /staat in de tekst/, 'de verbanden tussen de drie modellen staan in de tekst');
@@ -494,6 +494,14 @@ test('B120: een externe video mag op een startplek beginnen (&t=…s), maar heef
   assert.doesNotMatch(met('https://www.youtube.com/watch?v=p1CRXRxnpBQ&t=107s'), /url moet een https-link/);
   assert.match(met('https://www.youtube.com/watch?v=p1CRXRxnpBQ&list=abc'), /url moet een https-link/);
   assert.match(met('https://www.youtube.com/watch?v=p1CRXRxnpBQ&t=107'), /url moet een https-link/);
+});
+
+test('B120: de duur van een externe video staat in m:ss; een fragment staat apart en verschijnt achter de duur', () => {
+  const met = (veld, waarde) => { const b = structuredClone(MET_MEDIA); b.find((x) => x.media.video.url).media.video[veld] = waarde; return controleerMedia(resolve(root, 'data'), b).fouten.join('\n'); };
+  assert.match(met('duur', '5:05 (fragment 1:47 tot 6:52)'), /externe video: duur in m:ss/);
+  assert.doesNotMatch(met('duur', '5:05'), /externe video: duur/);
+  assert.match(met('fragment', ''), /externe video: fragment/);
+  assert.match(bron('js/media.js'), /\$\{video\.duur\} min\$\{video\.fragment \? ` \(fragment \$\{video\.fragment\}\)` : ''\}/);
 });
 
 test('B105, MD-14: een externe video is een link in een nieuw tabblad, nooit een iframe of videoelement', () => {

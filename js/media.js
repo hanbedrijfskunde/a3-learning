@@ -109,7 +109,7 @@ export function bouwVideo({ video, met = (t) => t }) {
 export function bouwExterneVideo({ video, met = (t) => t }) {
   return h('div', { class: 'md-video-blok' },
     h('p', {}, h('a', { href: video.url, target: '_blank', rel: 'noopener noreferrer' }, `${video.titel} (opent YouTube in een nieuw tabblad)`)),
-    h('p', { class: 'klein' }, met(video.verwijzing), ` · ${video.duur} min · ${video.taal}`),
+    h('p', { class: 'klein' }, met(video.verwijzing), ` · ${video.duur} min${video.fragment ? ` (fragment ${video.fragment})` : ''} · ${video.taal}`),
     h('p', {}, video.waarom));
 }
 

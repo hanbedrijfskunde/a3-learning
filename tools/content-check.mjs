@@ -820,6 +820,9 @@ export function controleerMedia(map, blokken, docentDelen = []) {
       if (!/^https:\/\/www\.youtube\.com\/watch\?v=[\w-]{11}(&t=\d+s)?$/.test(v.url)) fout(bestand, wie, 'externe video: url moet een https-link naar YouTube zijn, eventueel met een startplek &t=…s (B105, B120)');
       for (const veld of ['id', 'titel', 'kanaal', 'verwijzing', 'duur', 'taal', 'waarom']) if (!gevuld(v[veld])) fout(bestand, wie, `externe video mist ${veld}`);
       if (!/^\(.+, \d{4}\)$/.test(v.verwijzing ?? '')) fout(bestand, wie, 'externe video: verwijzing heeft de vorm (Auteur, jaar) (BR-4)');
+      // B120: de pagina zet „min” achter de duur; een fragment staat daarom in een eigen veld.
+      if (gevuld(v.duur) && !/^\d+:\d\d$/.test(v.duur)) fout(bestand, wie, 'externe video: duur in m:ss, zonder toelichting (een fragment hoort in fragment)');
+      if (v.fragment !== undefined && !/^\d+:\d\d tot \d+:\d\d$/.test(v.fragment)) fout(bestand, wie, 'externe video: fragment heeft de vorm m:ss tot m:ss');
       for (const veld of ['bestand', 'ondertitels', 'dias']) if (v[veld] !== undefined) fout(bestand, wie, `externe video heeft geen ${veld}`);
     } else {
       for (const veld of ['id', 'titel', 'bestand', 'ondertitels']) if (!gevuld(v[veld])) fout(bestand, wie, `video mist ${veld}`);
