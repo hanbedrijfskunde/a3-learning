@@ -770,12 +770,12 @@ export function controleerVideo(pad, meta, naam = pad) {
 }
 
 /**
- * Controleert de media (fase 12): `media` in leerblok 2 en 4, `kijktips` in leerblok 1 en 4, de spellen in `spellen/`, de video's
+ * Controleert de media (fase 12): `media` in leerblok 2 en 4, `kijktips` in leerblok 1 (ADR B120: de Yale-video van leerblok 4 is nu de video van de mediaroute), de spellen in `spellen/`, de video's
  * in `media/` en het `media`-veld van de docentonderdelen. Geeft { fouten, waarschuwingen }.
  *   MD-2/MD-3  de uitleg is hoogstens 300 woorden, met voorbeeld en het modelantwoord van de oefencasus uit de taak zelf
  *   MD-5       een video heeft ondertitels (bestand) en een transcript (de spreektekst van de dia's), verbonden met de uitleg
  *   MD-8/10/11/13/15  de controle van elk spel (zie controleerSpel)
- *   MD-14/16/18  één of twee kijktips per leerblok, gewone https-links met verwijzing, duur en taal
+ *   MD-14/16     één of twee kijktips per leerblok, gewone https-links met verwijzing, duur en taal
  */
 export function controleerMedia(map, blokken, docentDelen = []) {
   const fouten = [];
@@ -793,7 +793,7 @@ export function controleerMedia(map, blokken, docentDelen = []) {
     const kt = blok.kijktips;
     if (kt !== undefined) {
       if (!gevuld(kt.titel) || !gevuld(kt.intro)) fout(bestand, 'kijktips: ', 'titel en intro zijn nodig');
-      if (!Array.isArray(kt.items) || ![1, 2].includes(kt.items.length)) fout(bestand, 'kijktips: ', 'één of twee kijktips (MD-16, MD-18)');
+      if (!Array.isArray(kt.items) || ![1, 2].includes(kt.items.length)) fout(bestand, 'kijktips: ', 'één of twee kijktips (MD-16)');
       for (const k of kt.items ?? []) {
         const wie = `kijktip ${k?.id}: `;
         if (!/^https:\/\//.test(k?.url ?? '')) fout(bestand, wie, 'url moet een https-link zijn (MD-14)');
@@ -817,7 +817,7 @@ export function controleerMedia(map, blokken, docentDelen = []) {
     if (!v) fout(bestand, wie, 'video ontbreekt');
     else if (v.url !== undefined) {
       // B105: een externe video is een link, zoals een kijktip; de transcripteis (MD-3, MD-5) geldt alleen voor eigen video's.
-      if (!/^https:\/\/www\.youtube\.com\/watch\?v=[\w-]{11}$/.test(v.url)) fout(bestand, wie, 'externe video: url moet een https-link naar YouTube zijn (B105)');
+      if (!/^https:\/\/www\.youtube\.com\/watch\?v=[\w-]{11}(&t=\d+s)?$/.test(v.url)) fout(bestand, wie, 'externe video: url moet een https-link naar YouTube zijn, eventueel met een startplek &t=…s (B105, B120)');
       for (const veld of ['id', 'titel', 'kanaal', 'verwijzing', 'duur', 'taal', 'waarom']) if (!gevuld(v[veld])) fout(bestand, wie, `externe video mist ${veld}`);
       if (!/^\(.+, \d{4}\)$/.test(v.verwijzing ?? '')) fout(bestand, wie, 'externe video: verwijzing heeft de vorm (Auteur, jaar) (BR-4)');
       for (const veld of ['bestand', 'ondertitels', 'dias']) if (v[veld] !== undefined) fout(bestand, wie, `externe video heeft geen ${veld}`);

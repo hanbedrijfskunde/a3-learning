@@ -138,7 +138,7 @@ test('11.17/BW-12/QA-3: alle 12 bewijsonderdelen komen in de leerblokken voor, e
 
 test('11.16/LI-2: bronnen-4.json bevat het IIRC-kader, staat in het manifest en de content-check laat het niet als wees staan', () => {
   const b4 = json('data/bronnen-4.json');
-  assert.deepEqual(b4.bronnen.map((b) => b.id), ['iirc-2021', 'mitsubishi-corporation-2023', 'yale-university-2025']); // Mitsubishi: verdieping (ADR B114); Yale: kijktip (ADR B115)
+  assert.deepEqual(b4.bronnen.map((b) => b.id), ['iirc-2021', 'mitsubishi-corporation-2023', 'yale-university-2025']); // Mitsubishi: verdieping (ADR B114); Yale: video in de mediaroute (ADR B120, eerst kijktip B115)
   assert.ok(json('data/bronnen.json').bestanden.includes('bronnen-4.json'));
   const r = controleerMap(resolve(root, 'data'));
   assert.ok(!r.waarschuwingen.some((w) => /iirc/i.test(w) && /wachten nog/.test(w)));

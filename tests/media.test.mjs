@@ -92,28 +92,12 @@ test('MD-3, BR-4: de uitleg noemt bronnen als (Auteur, jaar)', () => {
 
 // ---------------------------------------------------------------- MD-4, MD-5, MD-6, MD-7
 
-// B105, B108, B109: V1, V2 en V3 zijn externe video's (een link naar YouTube); V4 is de enige eigen video.
+// B105, B108, B109, B120: V1 tot en met V4 zijn externe video's (een link naar YouTube); er is geen eigen video meer.
 const EIGEN = MET_MEDIA.filter((b) => !b.media.video.url);
-test('MD-4: er is één eigen video (V4), hoogstens 3 minuten en hoogstens 20 MB (ffprobe, anders metadata)', () => {
-  const meta = json('media/metadata.json');
+test('MD-4: er is geen eigen video meer; V1 tot en met V4 zijn links naar YouTube (B105, B108, B109, B120)', () => {
   assert.deepEqual(MET_MEDIA.map((b) => b.media.video.id), ['V1', 'V2', 'V3', 'V4']);
-  assert.deepEqual(EIGEN.map((b) => b.media.video.id), ['V4']);
-  assert.equal(Object.keys(meta).length, 1, 'metadata voor precies één eigen video');
-  for (const b of EIGEN) {
-    assert.deepEqual(controleerVideo(resolve(root, b.media.video.bestand), meta[b.media.video.bestand], b.media.video.id).fouten, [], `controleerVideo ${b.media.video.id}`);
-    const v = b.media.video;
-    const pad = resolve(root, v.bestand);
-    assert.ok(existsSync(pad), `${v.bestand} bestaat`);
-    const bytes = statSync(pad).size;
-    assert.ok(bytes <= MAX_VIDEO_BYTES, `${v.id}: ${bytes} bytes`);
-    assert.ok(meta[v.bestand].bytes <= MAX_VIDEO_BYTES);
-    const duur = heeftFfprobe ? ffprobeDuur(pad) : meta[v.bestand].duurSeconden;
-    assert.ok(duur > 30 && duur <= MAX_VIDEO_SECONDS_OF(duur), `${v.id}: ${duur} s`);
-    if (heeftFfprobe) {
-      assert.ok(Math.abs(meta[v.bestand].duurSeconden - duur) < 1, `metadata klopt met ffprobe (${meta[v.bestand].duurSeconden} tegen ${duur})`);
-      assert.equal(meta[v.bestand].bytes, bytes, 'metadata klopt met de bestandsgrootte');
-    }
-  }
+  assert.deepEqual(EIGEN.map((b) => b.media.video.id), []);
+  assert.deepEqual(json('media/metadata.json'), {}, 'geen metadata zonder eigen video');
 });
 const MAX_VIDEO_SECONDS_OF = () => MAX_VIDEO_SECONDEN;
 
@@ -131,8 +115,9 @@ test('MD-4: de videocontrole faalt bij een echte video van 4 minuten, een bestan
   writeFileSync(groot, Buffer.alloc(MAX_VIDEO_BYTES + 1));
   assert.match(controleerVideo(groot, { duurSeconden: 60, bytes: MAX_VIDEO_BYTES + 1 }, 'groot').fouten.join('\n'), /is meer dan 20 MB/);
   assert.match(controleerVideo(join(map, 'kort.mp4'), {}, 'kort').fouten.join('\n'), /bestaat niet/);
-  const echteVideo = resolve(root, EIGEN[0].media.video.bestand);
-  assert.match(controleerVideo(echteVideo, { duurSeconden: 200, bytes: statSync(echteVideo).size }, EIGEN[0].media.video.id).fouten.join('\n'), /metadata zegt 200 s/, 'metadata boven 3 minuten faalt ook');
+  const kortEcht = join(map, 'kort-echt.mp4');
+  execFileSync('ffmpeg', ['-y', '-v', 'error', '-f', 'lavfi', '-i', 'color=c=white:s=64x64:r=1', '-f', 'lavfi', '-i', 'anullsrc=r=8000:cl=mono', '-t', '60', '-c:v', 'libx264', '-preset', 'ultrafast', '-c:a', 'aac', '-shortest', kortEcht]);
+  assert.match(controleerVideo(kortEcht, { duurSeconden: 200, bytes: statSync(kortEcht).size }, 'kort-echt').fouten.join('\n'), /metadata zegt 200 s/, 'metadata boven 3 minuten faalt ook');
 });
 
 test('MD-5: elke eigen video heeft WebVTT-ondertitels en een transcript dat uit dezelfde spreektekst komt', () => {
@@ -154,12 +139,12 @@ test('MD-5: elke eigen video heeft WebVTT-ondertitels en een transcript dat uit 
   }
 });
 
-test('MD-5: het transcript en de uitleg horen bij elkaar (voorbeeld, modelantwoord, „klaar als” letterlijk erin)', () => {
+test('MD-5: het transcript van een eigen video en de uitleg horen bij elkaar (voorbeeld, modelantwoord, „klaar als” letterlijk erin)', () => {
   const r = controleerMedia(resolve(root, 'data'), MET_MEDIA);
   assert.deepEqual(r.fouten, []);
+  // Er is geen eigen video meer (B120); een eigen video zonder voorbeeld in de spreektekst faalt nog steeds.
   const kapot = structuredClone(MET_MEDIA);
-  const eigen = kapot.find((b) => !b.media.video.url).media.video;
-  eigen.dias = eigen.dias.filter((d) => d.titel !== 'Voorbeeld');
+  kapot[3].media.video = { id: 'V9', titel: 'Eigen video', concept: true, bestand: 'media/v9.mp4', ondertitels: 'media/v9.vtt', dias: [{ titel: 'Uitleg', punten: ['punt'], spreektekst: 'Alleen een uitleg, zonder voorbeeld.' }] };
   assert.match(controleerMedia(resolve(root, 'data'), kapot).fouten.join('\n'), /transcript bevat voorbeeld/);
 });
 
@@ -375,24 +360,13 @@ test('MD-16, MD-14: leerblok 1 toont twee kijktips als gewone link met bron, duu
   for (const bestand of readdirSync(resolve(root, 'js')).filter((n) => n.endsWith('.js'))) assert.doesNotMatch(bron(`js/${bestand}`), /['"`]iframe['"`]|['"`]embed['"`]|<iframe/i, `js/${bestand} maakt een iframe`);
 });
 
-test('MD-18, MD-14: leerblok 4 toont één kijktip, het fragment van Yale als verdieping, met bron, duur en taal (ADR B115)', () => {
-  const kt = blok(4).kijktips;
-  assert.equal(kt.items.length, 1);
-  const [k] = kt.items;
-  assert.deepEqual([k.rol, k.duur.split(' ')[0], k.taal, k.verwijzing], ['Verdieping', '5:03', 'Engels', '(Yale University, 2025)']);
-  assert.match(k.duur, /1:47 tot 6:50/);
-  assert.match(k.url, /^https:\/\/www\.youtube\.com\/watch\?v=[\w-]+$/);
-  assert.ok(json('data/bronnen-4.json').bronnen.some((b) => b.link === k.url && b.citatie === 'Yale University, 2025'), 'dezelfde URL als op de bronnenpagina');
-  assert.match(k.waarom, /verdienmodellen/, 'de beschrijving zegt dat de video over verdienmodellen gaat');
-  assert.match(k.waarom, /kapita/, 'en legt de brug naar de kapitalen');
-});
 
-test('MD-16, MD-18: de contentcontrole staat één of twee kijktips toe, niet nul of drie', () => {
-  const met = (n) => { const b = structuredClone(MET_MEDIA); b[3].kijktips.items = Array.from({ length: n }, () => structuredClone(blok(4).kijktips.items[0])); return controleerMedia(resolve(root, 'data'), b).fouten.join('\n'); };
+test('MD-16: de contentcontrole staat één of twee kijktips toe, niet nul of drie', () => {
+  const met = (n) => { const b = structuredClone(MET_MEDIA); b[0].kijktips.items = Array.from({ length: n }, () => structuredClone(blok(1).kijktips.items[0])); return controleerMedia(resolve(root, 'data'), b).fouten.join('\n'); };
   assert.doesNotMatch(met(1), /kijktips/);
   assert.doesNotMatch(met(2), /kijktips/);
-  assert.match(met(0), /leerblok-4\.json: kijktips: één of twee kijktips/);
-  assert.match(met(3), /leerblok-4\.json: kijktips: één of twee kijktips/);
+  assert.match(met(0), /leerblok-1\.json: kijktips: één of twee kijktips/);
+  assert.match(met(3), /leerblok-1\.json: kijktips: één of twee kijktips/);
 });
 
 // ---------------------------------------------------------------- MD-12
@@ -497,6 +471,29 @@ test('B109: V3 is de video over de stakeholderanalyse van Bureau Tromp (uitzonde
   assert.match(v.waarom, /TOM³ staan in de tekst/);
   for (const k of ['bestand', 'ondertitels', 'dias']) assert.equal(v[k], undefined, `geen ${k}: geen eigen video meer`);
   assert.ok(!existsSync(resolve(root, 'media/v3-vraagstuk-plaatsen.mp4')), 'het oude bestand is weg');
+});
+
+test('B120: V4 is het fragment van Yale University over verdienmodellen vanaf 1:47, met afzender, duur, taal en de verwijzing naar de tekst; de conceptvideo en de kijktip zijn weg', () => {
+  const v = blok(4).media.video;
+  assert.equal(v.url, 'https://www.youtube.com/watch?v=p1CRXRxnpBQ&t=107s', 'de link start op 1:47');
+  assert.equal(v.kanaal, 'Yale University');
+  assert.equal(v.verwijzing, '(Yale University, 2025)');
+  assert.deepEqual([v.duur, v.taal], ['5:05 (fragment 1:47 tot 6:52)', 'Engels']);
+  assert.match(v.waarom, /Aravind/);
+  assert.match(v.waarom, /TOMS/);
+  assert.match(v.waarom, /staat in de tekst/, 'de verbanden tussen de drie modellen staan in de tekst');
+  assert.match(v.waarom, /kapitaal/, 'een vraag die de brug naar de kapitalen slaat');
+  for (const k of ['bestand', 'ondertitels', 'dias', 'concept']) assert.equal(v[k], undefined, `geen ${k}: geen eigen video meer`);
+  assert.ok(!existsSync(resolve(root, 'media/v4-verbanden.mp4')) && !existsSync(resolve(root, 'media/v4-verbanden.vtt')), 'de conceptvideo is weg');
+  assert.equal(blok(4).kijktips, undefined, 'de video staat niet ook nog als kijktip (MD-18 vervalt)');
+  assert.ok(json('data/bronnen-4.json').bronnen.some((b) => b.link === v.url.replace(/&t=\d+s$/, '') && b.citatie === 'Yale University, 2025'), 'dezelfde video als op de bronnenpagina');
+});
+
+test('B120: een externe video mag op een startplek beginnen (&t=…s), maar heeft verder geen parameters', () => {
+  const met = (url) => { const b = structuredClone(MET_MEDIA); b.find((x) => x.media.video.url).media.video.url = url; return controleerMedia(resolve(root, 'data'), b).fouten.join('\n'); };
+  assert.doesNotMatch(met('https://www.youtube.com/watch?v=p1CRXRxnpBQ&t=107s'), /url moet een https-link/);
+  assert.match(met('https://www.youtube.com/watch?v=p1CRXRxnpBQ&list=abc'), /url moet een https-link/);
+  assert.match(met('https://www.youtube.com/watch?v=p1CRXRxnpBQ&t=107'), /url moet een https-link/);
 });
 
 test('B105, MD-14: een externe video is een link in een nieuw tabblad, nooit een iframe of videoelement', () => {

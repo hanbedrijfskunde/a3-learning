@@ -9,8 +9,8 @@
 // (env CHROME wijst het programma aan). De video's zijn eerlijk gemarkeerd als conceptvideo; de docent kan later een eigen opname
 // met dezelfde bestandsnaam en ondertitels in media/ zetten.
 //
-// Gebruik: node tools/maak-video.mjs            alle eigen video's (V4; V1, V2 en V3 zijn extern, B105, B108, B109)
-//          node tools/maak-video.mjs V4         alleen V4
+// Gebruik: node tools/maak-video.mjs            alle eigen video's (nu geen: V1 tot en met V4 zijn extern, B105, B108, B109, B120)
+//          node tools/maak-video.mjs <id>       alleen die video
 //          STEM=Ellen node tools/maak-video.mjs  andere stem; TEMPO=170 (woorden per minuut, standaard 170)
 import { execFileSync } from 'node:child_process';
 import { existsSync, mkdtempSync, mkdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
